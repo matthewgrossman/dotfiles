@@ -1,0 +1,47 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'chriskempson/base16-vim'
+
+call vundle#end()            " required
+
+" Change color theme
+set background=dark
+colorscheme base16-default
+
+filetype plugin indent on 
+
+set number
+set backspace=indent,eol,start
+set history=1000
+set showmode
+set gcr=a:blinkon0
+set visualbell
+
+set autoread
+set hidden
+
+syntax on
+set wildmenu
+
+set expandtab
+set shiftround
+set shiftwidth=2
+set softtabstop=2
+set smartindent
+
+imap jj <Esc>
+
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {   
+inoremap {}     {}  
+
+set autoread
