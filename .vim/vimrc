@@ -8,9 +8,17 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'chriskempson/base16-vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-surround'
+Plugin 'Raimondi/delimitMate'
 
 call vundle#end()            " required
+
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
 
 " Change color theme
 set background=dark
@@ -38,10 +46,5 @@ set softtabstop=2
 set smartindent
 
 imap jj <Esc>
-
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {   
-inoremap {}     {}  
 
 set autoread
