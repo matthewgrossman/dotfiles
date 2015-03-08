@@ -24,14 +24,15 @@ let g:ycm_confirm_extra_conf = 1
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
+filetype plugin indent on 
+
 " Change color theme
 set background=dark
 colorscheme base16-default
-
-filetype plugin indent on 
+syntax on
 
 set number
-set backspace=indent,eol,start
+set backspace=2
 set history=1000
 set showmode
 set gcr=a:blinkon0
@@ -41,7 +42,6 @@ autocmd CompleteDone * pclose
 set autoread
 set hidden
 
-syntax on
 set wildmenu
 
 set expandtab
@@ -52,4 +52,5 @@ set cindent
 
 imap jj <Esc>
 
-set autoread
+set mouse=a
+set clipboard=unnamed
