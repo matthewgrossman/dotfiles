@@ -16,6 +16,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'othree/html5.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'chriskempson/base16-vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()            " required
 
@@ -31,13 +33,14 @@ set background=dark
 colorscheme base16-default
 syntax on
 
-set number
+set rnu
 set backspace=2
 set history=1000
 set showmode
 set gcr=a:blinkon0
 set visualbell
 autocmd CompleteDone * pclose
+set incsearch
 
 set autoread
 set hidden
