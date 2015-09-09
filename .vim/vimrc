@@ -38,6 +38,7 @@ set gcr=a:blinkon0
 set visualbell
 autocmd CompleteDone * pclose
 set incsearch
+set hls
 
 set autoread
 set hidden
