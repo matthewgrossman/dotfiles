@@ -2,3 +2,4 @@
 !.vim/bundle/Vundle.vim/*
 .vim/.netrwhist
 *.pyc
+base16-shell/

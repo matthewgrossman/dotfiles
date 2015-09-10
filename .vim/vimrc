@@ -20,6 +20,7 @@ Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()            " required
 
+let base16colorspace=256
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
