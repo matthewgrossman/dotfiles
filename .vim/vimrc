@@ -20,7 +20,6 @@ Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()            " required
 
-let base16colorspace=256
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
@@ -28,7 +27,7 @@ filetype plugin indent on
 
 " Change color theme
 set background=dark
-colorscheme base16-default
+colorscheme base16-tomorrow
 syntax on
 
 set rnu

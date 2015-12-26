@@ -1,13 +1,7 @@
+brew 'zsh'
 brew 'git'
 brew 'tmux'
 brew 'python'
 brew 'python3'
+brew 'node'
 brew 'macvim', args: ['with-override-system-vim']
-
-tap 'caskroom/cask'
-cask_args appdir: '/Applications'
-cask 'google-chrome'
-cask 'google-drive'
-cask 'caffeine'
-cask 'bettertouchtool'
-
