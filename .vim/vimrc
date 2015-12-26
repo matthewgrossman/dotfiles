@@ -27,7 +27,7 @@ filetype plugin indent on
 
 " Change color theme
 set background=dark
-colorscheme base16-tomorrow
+colorscheme base16-default
 syntax on
 
 set rnu
