@@ -11,7 +11,9 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
-Plugin 'Raimondi/delimitMate'
+Plugin 'raimondi/delimitMate'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'wellle/targets.vim'
 Plugin 'othree/html5.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'chriskempson/base16-vim'
@@ -30,6 +32,7 @@ set background=dark
 colorscheme base16-default
 syntax on
 
+map <SPACE> <leader>
 set rnu
 set backspace=2
 set history=1000
@@ -38,7 +41,7 @@ set gcr=a:blinkon0
 set visualbell
 autocmd CompleteDone * pclose
 set incsearch
-set hls
+set hlsearch
 
 set autoread
 set hidden
