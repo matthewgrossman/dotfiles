@@ -13,3 +13,4 @@ compinit
 # End of lines added by compinstall
 
 alias ls="ls -G"
+export EDITOR='vim'

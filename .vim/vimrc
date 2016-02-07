@@ -12,13 +12,15 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
 Plugin 'raimondi/delimitMate'
-Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'wellle/targets.vim'
 Plugin 'othree/html5.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'chriskempson/base16-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'justinmk/vim-sneak'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 call vundle#end()            " required
 
@@ -39,7 +41,6 @@ set history=1000
 set showmode
 set gcr=a:blinkon0
 set visualbell
-autocmd CompleteDone * pclose
 set incsearch
 set hlsearch
 
@@ -52,7 +53,6 @@ set expandtab
 set shiftround
 set shiftwidth=4
 set softtabstop=4
-set cindent
 
 imap jj <Esc>
 
