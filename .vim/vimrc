@@ -11,16 +11,17 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
 Plugin 'raimondi/delimitMate'
 Plugin 'wellle/targets.vim'
 Plugin 'othree/html5.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'chriskempson/base16-vim'
-Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'justinmk/vim-sneak'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ervandew/supertab'
 
 call vundle#end()            " required
 
@@ -28,6 +29,23 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
 filetype plugin indent on 
+
+" supertab config
+set omnifunc=syntaxcomplete#Complete
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabClosePreviewOnPopupClose = 1
+autocmd FileType *
+\ if &omnifunc != '' |
+\   call SuperTabChain(&omnifunc, "<c-n>") |
+\ endif
+
+"
+let g:airline#extensions#tabline#enabled = 1
+
+" syntastic settings
+let g:syntastic_javascript_checkers = ['eslint']
+
 
 " Change color theme
 set background=dark
@@ -58,3 +76,6 @@ imap jj <Esc>
 
 set mouse=a
 set clipboard=unnamed
+
+" js settings
+autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2

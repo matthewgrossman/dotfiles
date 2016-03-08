@@ -6,3 +6,4 @@ brew 'python3'
 brew 'node'
 brew 'macvim', args: ['with-override-system-vim', 'with-cscope', 'with-lua', 'with-features=huge']
 brew 'reattach-to-user-namespace'
+brew 'ssh-copy-id'
