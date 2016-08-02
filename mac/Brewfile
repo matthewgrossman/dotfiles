@@ -1,9 +1,10 @@
-brew 'zsh'
 brew 'git'
+brew 'wget'
+brew 'zsh'
 brew 'tmux'
 brew 'python'
 brew 'python3'
 brew 'node'
-brew 'macvim', args: ['with-override-system-vim', 'with-cscope', 'with-lua', 'with-features=huge']
+brew 'vim', args: ['--override-system-vi']
 brew 'reattach-to-user-namespace'
 brew 'ssh-copy-id'
