@@ -6,7 +6,6 @@ setopt autocd extendedglob
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/matthewgrossman/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -14,3 +13,29 @@ compinit
 
 alias ls="ls -G"
 export EDITOR='vim'
+source ~/.lyftrc
+
+# load zgen
+source "${HOME}/.zgen/zgen.zsh"
+
+# if the init scipt doesn't exist
+if ! zgen saved; then
+
+    # prezto options
+    zgen prezto editor key-bindings 'emacs'
+    zgen prezto prompt theme 'sorin'
+
+    # prezto and modules
+    zgen prezto
+    zgen prezto git
+    zgen prezto command-not-found
+    zgen prezto history
+    zgen prezto history-substring-search
+    zgen prezto syntax-highlighting
+    zgen prezto directory
+    zgen prezto prompt
+
+
+    # generate the init script from plugins above
+    zgen save
+fi
