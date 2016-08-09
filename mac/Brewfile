@@ -6,5 +6,7 @@ brew 'python'
 brew 'python3'
 brew 'node'
 brew 'vim', args: ['--override-system-vi']
-brew 'reattach-to-user-namespace'
+brew 'ag'
+brew 'fzf'
+brew 'ctags'
 brew 'ssh-copy-id'

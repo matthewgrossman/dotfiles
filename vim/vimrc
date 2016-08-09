@@ -7,13 +7,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
-Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'raimondi/delimitMate'
 Plug 'wellle/targets.vim'
-Plug 'othree/html5.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
@@ -21,8 +19,13 @@ Plug 'justinmk/vim-sneak'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ervandew/supertab'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
+
+" fzf config
+nnoremap <c-p> :FZF<cr>
 
 " delimitMate config
 let delimitMate_expand_cr = 1
@@ -73,5 +76,3 @@ imap jj <Esc>
 set mouse=a
 set clipboard=unnamed
 
-" js settings
-autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2

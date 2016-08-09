@@ -39,3 +39,6 @@ if ! zgen saved; then
     # generate the init script from plugins above
     zgen save
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
