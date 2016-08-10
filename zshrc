@@ -1,8 +1,9 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 setopt autocd extendedglob
+setopt INC_APPEND_HISTORY
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
@@ -36,10 +37,12 @@ if ! zgen saved; then
 
     zgen load bhilburn/powerlevel9k powerlevel9k
 
-
     # generate the init script from plugins above
     zgen save
 fi
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
