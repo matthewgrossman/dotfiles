@@ -23,7 +23,6 @@ if ! zgen saved; then
 
     # prezto options
     zgen prezto editor key-bindings 'emacs'
-    zgen prezto prompt theme 'sorin'
 
     # prezto and modules
     zgen prezto
@@ -35,10 +34,24 @@ if ! zgen saved; then
     zgen prezto directory
     zgen prezto prompt
 
+    zgen load bhilburn/powerlevel9k powerlevel9k
+
 
     # generate the init script from plugins above
     zgen save
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+
+# Modified version where you can press
+#   - CTRL-O to open with `open` command,
+#   - CTRL-E or Enter key to open with the $EDITOR
+fo() {
+  local out file key
+  out=$(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
+}

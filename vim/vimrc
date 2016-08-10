@@ -1,4 +1,4 @@
-set nocompatible              " be iMproved, required
+set nocompatible              " be improved, required
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -31,6 +31,9 @@ nnoremap <c-p> :FZF<cr>
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
+" airline config
+let g:airline#extensions#tabline#enabled = 1
+
 filetype plugin indent on 
 
 " supertab config
@@ -42,9 +45,6 @@ autocmd FileType *
 \ if &omnifunc != '' |
 \   call SuperTabChain(&omnifunc, "<c-n>") |
 \ endif
-
-"
-let g:airline#extensions#tabline#enabled = 1
 
 " Change color theme
 set background=dark

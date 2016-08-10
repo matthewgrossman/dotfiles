@@ -4,3 +4,5 @@
 .vim/.netrwhist
 *.pyc
 base16-shell/
+*.swp
+*.swo
