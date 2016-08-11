@@ -6,8 +6,8 @@ setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 bindkey -e
 # End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
 
+# The following lines were added by compinstall
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -15,6 +15,11 @@ compinit
 alias ls="ls -G"
 export EDITOR='vim'
 source ~/.lyftrc
+
+setopt CLOBBER
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1"  ] && [ -s $BASE16_SHELL/profile_helper.sh  ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # load zgen
 source "${HOME}/.zgen/zgen.zsh"
