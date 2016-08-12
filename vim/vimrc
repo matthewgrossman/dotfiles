@@ -68,6 +68,7 @@ set hlsearch
 
 set autoread
 set hidden
+set tags=./tags;
 
 set wildmenu
 
