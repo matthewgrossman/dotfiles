@@ -7,10 +7,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
+Plug 'hynek/vim-python-pep8-indent'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 Plug 'raimondi/delimitMate'
 Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
@@ -19,14 +21,18 @@ Plug 'mhinz/vim-signify'
 Plug 'justinmk/vim-sneak'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar'
+Plug 'ajh17/VimCompletesMe'
 
 call plug#end()
 
+" jedi-vim config
+let g:jedi#documentation_command = ""
+
 " fzf config
-nnoremap <c-p> :GFiles<cr>
+nnoremap <c-p> :GFiles <cr>
 
 " delimitMate config
 let delimitMate_expand_cr = 1
@@ -34,20 +40,14 @@ let delimitMate_expand_space = 1
 
 " airline config
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
 
 filetype plugin indent on
 
-" supertab config
+" completion config
 set omnifunc=syntaxcomplete#Complete
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabClosePreviewOnPopupClose = 1
-autocmd FileType *
-\ if &omnifunc != '' |
-\   call SuperTabChain(&omnifunc, "<c-n>") |
-\ endif
 
 " Change color theme
 set background=dark
@@ -56,15 +56,33 @@ colorscheme base16-default-dark
 syntax on
 
 map <SPACE> <leader>
+nnoremap K :Ag <C-R><C-W><CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+
+" Make capital y act more normal
+nnoremap Y y$
+
+" Make saving quicker
+noremap <Leader>w :w<CR>
+
+" speed improvements
+set ttyfast
+set synmaxcol=120
+
+" search options
+set incsearch
+set hlsearch
+set smartcase
+
 set rnu
 set number
 set backspace=2
 set history=1000
 set showmode
 set gcr=a:blinkon0
+set cursorline
 set visualbell
-set incsearch
-set hlsearch
 
 set autoread
 set hidden
@@ -83,3 +101,7 @@ set mouse=a " enable mouse
 set ttymouse=xterm2 " enable mouse split dragging
 
 set clipboard=unnamed
+
+let g:sneak#streak = 1
+
+set foldmethod=syntax
