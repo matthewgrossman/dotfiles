@@ -65,4 +65,9 @@ fo() {
     [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
+
+pr() {
+    hub pull-request -m "$1" | pbcopy
+}
+
 export PATH="/usr/local/sbin:$PATH"
