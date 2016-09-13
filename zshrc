@@ -1,7 +1,7 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 bindkey -e
@@ -13,7 +13,7 @@ compinit
 # End of lines added by compinstall
 
 alias ls="ls -G"
-export EDITOR='vim'
+export EDITOR='/usr/local/bin/nvim'
 source ~/.lyftrc
 
 setopt CLOBBER
@@ -64,12 +64,12 @@ fo() {
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-nvim} "$file"
   fi
 }
 
 pr() {
-    hub pull-request -m "$1" | pbcopy
+    hub pull-request -o -m "$1" | pbcopy
 }
 
 export PATH="/usr/local/sbin:$PATH"
