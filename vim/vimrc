@@ -1,7 +1,14 @@
-set nocompatible              " be improved, required
+let plug_path='~/.config/nvim/autoload/plug.vim'
+if !has('nvim')
+    set ttymouse=xterm2
+    set ttyfast
+    set nocompatible
+    let plug_path='~/.vim/autoload/plug.vim'
+endif
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+" autoinstall vimplug
+if empty(glob(plug_path))
+  silent !curl -fLo plug_path --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
@@ -45,9 +52,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
 
-let g:indent_guides_start_level = 2
-let g:indent_guides_auto_colors = 0
-
 filetype plugin indent on
 
 " completion config
@@ -73,7 +77,6 @@ nnoremap Y y$
 noremap <Leader>w :w<CR>
 
 " speed improvements
-set ttyfast
 set synmaxcol=120
 
 " search options
@@ -87,7 +90,6 @@ set backspace=2
 set history=1000
 set showmode
 set gcr=a:blinkon0
-set cursorline
 set visualbell
 
 set autoread
@@ -102,10 +104,9 @@ set shiftwidth=4
 set softtabstop=4
 
 set mouse=a " enable mouse
-set ttymouse=xterm2 " enable mouse split dragging
 
 set clipboard=unnamed
 
 let g:sneak#streak = 1
 
-set foldmethod=syntax
+set foldmethod=indent
