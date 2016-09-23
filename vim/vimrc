@@ -4,6 +4,8 @@ if !has('nvim')
     set ttyfast
     set nocompatible
     let plug_path='~/.vim/autoload/plug.vim'
+else
+    nmap <BS> :<C-u>TmuxNavigateLeft<CR>
 endif
 
 " autoinstall vimplug
@@ -108,5 +110,6 @@ set mouse=a " enable mouse
 set clipboard=unnamed
 
 let g:sneak#streak = 1
-
-set foldmethod=indent
+hi link SneakPluginTarget Error
+hi link SneakStreakTarget Error
+hi link SneakStreakMask Error
