@@ -69,8 +69,9 @@ fo() {
   fi
 }
 
-pr() {
-    hub pull-request -o -m "$1" | pbcopy
+gpr() {
+    local last_commit=$(git log -1 --pretty=%B)
+    gpc && hub pull-request -o -m "$last_commit" | pbcopy
 }
 
 export PATH="/usr/local/sbin:$PATH"
