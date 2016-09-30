@@ -35,6 +35,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'ajh17/VimCompletesMe'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'qpkorr/vim-bufkill'
+Plug 'davidhalter/jedi-vim'
 
 call plug#end()
 
@@ -42,7 +44,7 @@ call plug#end()
 let g:jedi#documentation_command = ""
 
 " fzf config
-nnoremap <c-p> :GFiles <cr>
+nnoremap <c-p> :GFiles<cr>
 
 " delimitMate config
 let delimitMate_expand_cr = 1
@@ -77,9 +79,6 @@ nnoremap Y y$
 
 " Make saving quicker
 noremap <Leader>w :w<CR>
-
-" speed improvements
-set synmaxcol=120
 
 " search options
 set incsearch
