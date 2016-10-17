@@ -13,15 +13,15 @@ compinit
 # End of lines added by compinstall
 
 alias ls="ls -G"
+alias df="cd $HOME/dotfiles"
 export EDITOR='/usr/local/bin/nvim'
 source ~/.lyftrc
 
 setopt CLOBBER
 
+# color options
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1"  ] && [ -s $BASE16_SHELL/profile_helper.sh  ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-base16_default-dark
-unlink $HOME/.base16_theme
 
 # load zgen
 source "${HOME}/.zgen/zgen.zsh"
@@ -73,6 +73,14 @@ fo() {
 gpr() {
     local last_commit=$(git log -1 --pretty=%B)
     gpc && hub pull-request -o -m "$last_commit" | pbcopy
+}
+
+tbr() {
+    tmux rename-window "$(git-branch-current)"
+}
+
+tco () {
+    git checkout "$(tmux display-message -p '#W')"
 }
 
 export PATH="/usr/local/sbin:$PATH"

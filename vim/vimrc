@@ -90,6 +90,7 @@ set number
 set backspace=2
 set history=1000
 set showmode
+set timeoutlen=400
 set gcr=a:blinkon0
 set visualbell
 
@@ -108,7 +109,10 @@ set mouse=a " enable mouse
 
 set clipboard=unnamed
 
+" vim-sneak config
 let g:sneak#streak = 1
 hi link SneakPluginTarget Error
 hi link SneakStreakTarget Error
 hi link SneakStreakMask Error
+
+set lazyredraw
