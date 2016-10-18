@@ -15,9 +15,6 @@ compinit -u
 alias ls="ls -G"
 alias df="cd $HOME/dotfiles"
 export EDITOR='/usr/local/bin/vim'
-if [ -f ~/.lyftrc  ]; then
-    source ~/.lyftrc
-fi
 
 setopt CLOBBER
 
@@ -86,3 +83,7 @@ tco () {
 }
 
 export PATH="/usr/local/sbin:$PATH"
+
+if [ -f ~/.lyftrc  ]; then
+    source ~/.lyftrc
+fi
