@@ -9,12 +9,14 @@ bindkey -e
 
 # The following lines were added by compinstall
 autoload -Uz compinit
-compinit
+compinit -u
 # End of lines added by compinstall
 
 alias ls="ls -G"
-export EDITOR='/usr/local/bin/nvim'
-source ~/.lyftrc
+export EDITOR='/usr/local/bin/vim'
+if [ -f ~/.lyftrc  ]; then
+    source ~/.lyftrc
+fi
 
 setopt CLOBBER
 
@@ -66,7 +68,7 @@ fo() {
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-nvim} "$file"
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR} "$file"
   fi
 }
 

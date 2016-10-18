@@ -4,7 +4,12 @@ brew tap homebrew/bundle
 brew bundle
 rehash
 
-# install powerline fonts
-pip install powerline-status && ./powerline-status/install.sh
-
+# base16-shell
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# powerline fonts
+git clone https://github.com/powerline/fonts.git && ./fonts/install.sh && rm -rf fonts
