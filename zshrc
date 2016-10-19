@@ -13,7 +13,7 @@ compinit -u
 # End of lines added by compinstall
 
 alias ls="ls -G"
-alias df="cd $HOME/dotfiles"
+alias dot="cd $HOME/dotfiles"
 export EDITOR='/usr/local/bin/vim'
 
 setopt CLOBBER
