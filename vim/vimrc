@@ -1,19 +1,5 @@
-let plug_path='~/.config/nvim/autoload/plug.vim'
-if !has('nvim')
-    set ttymouse=xterm2
-    set ttyfast
-    set nocompatible
-    let plug_path='~/.vim/autoload/plug.vim'
-else
-    nmap <BS> :<C-u>TmuxNavigateLeft<CR>
-endif
+set nocompatible
 
-" autoinstall vimplug
-if empty(glob(plug_path))
-  silent !curl -fLo plug_path --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'hynek/vim-python-pep8-indent'
@@ -85,14 +71,22 @@ set incsearch
 set hlsearch
 set smartcase
 
+" gotta go fast
+set lazyredraw
+set timeoutlen=400
+set ttyfast
+set ttyscroll=3
+hi NonText cterm=NONE ctermfg=NONE
+
+" normal setings
 set rnu
 set number
 set backspace=2
 set history=1000
 set showmode
-set timeoutlen=400
 set gcr=a:blinkon0
 set visualbell
+set ttymouse=xterm2
 
 set autoread
 set hidden
@@ -115,4 +109,3 @@ hi link SneakPluginTarget Error
 hi link SneakStreakTarget Error
 hi link SneakStreakMask Error
 
-set lazyredraw
