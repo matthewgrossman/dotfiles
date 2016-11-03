@@ -35,7 +35,6 @@ if ! zgen saved; then
     # prezto and modules
     zgen prezto
     zgen prezto git
-    zgen prezto command-not-found
     zgen prezto history
     zgen prezto history-substring-search
     zgen prezto syntax-highlighting
@@ -54,7 +53,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS="--exact --multi --ansi"
+export FZF_DEFAULT_OPTS="--multi --ansi"
 export FZF_CTRL_R_OPTS="--sort"
 
 # Modified version where you can press
@@ -87,5 +86,5 @@ export PATH="/usr/local/sbin:$PATH"
 
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
-    source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
 fi
+source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
