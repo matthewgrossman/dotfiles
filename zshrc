@@ -85,6 +85,6 @@ tco () {
 export PATH="/usr/local/sbin:$PATH"
 
 if [ -f ~/.lyftrc  ]; then
+    source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
     source ~/.lyftrc
 fi
-source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
