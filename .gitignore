@@ -1,8 +1,5 @@
 .DS_Store
-.vim/bundle/*
-!.vim/bundle/Vundle.vim/*
-.vim/.netrwhist
-*.pyc
-base16-shell/
 *.swp
 *.swo
+*.bak
+.vim/bundle/*
