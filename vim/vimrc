@@ -7,8 +7,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
+Plug 'neomake/neomake'
 Plug 'hynek/vim-python-pep8-indent'
-Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -31,6 +31,9 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'davidhalter/jedi-vim'
 
 call plug#end()
+
+" neomake config
+autocmd! BufWritePost * Neomake
 
 " jedi-vim config
 let g:jedi#documentation_command = ""
