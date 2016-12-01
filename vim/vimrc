@@ -117,4 +117,3 @@ let g:sneak#streak = 1
 hi link SneakPluginTarget Error
 hi link SneakStreakTarget Error
 hi link SneakStreakMask Error
-
