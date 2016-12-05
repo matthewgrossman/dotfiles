@@ -69,19 +69,6 @@ fo() {
   fi
 }
 
-gpr() {
-    local last_commit=$(git log -1 --pretty=%B)
-    gpc && hub pull-request -o -m "$last_commit" | pbcopy
-}
-
-tbr() {
-    tmux rename-window "$(git-branch-current)"
-}
-
-tco () {
-    git checkout "$(tmux display-message -p '#W')"
-}
-
 export PATH="/usr/local/sbin:$PATH"
 
 if [ -f ~/.lyftrc  ]; then
