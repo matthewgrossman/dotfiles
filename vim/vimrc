@@ -97,9 +97,9 @@ set gcr=a:blinkon0
 set visualbell
 set ttymouse=xterm2
 
-set autoread
 set hidden
 set tags=./tags;
+set autoread
 
 set wildmenu
 
