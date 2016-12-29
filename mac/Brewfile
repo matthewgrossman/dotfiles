@@ -13,6 +13,7 @@ brew 'ctags'
 brew 'ssh-copy-id'
 brew 'flake8'
 brew 'hub'
+brew 'zplug'
 
 cask 'google-chrome'
 cask 'caffeine'
