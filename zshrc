@@ -13,7 +13,6 @@ alias ls="ls -G"
 alias dot="cd $HOME/dotfiles"
 export EDITOR='/usr/local/bin/vim'
 
-
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 
@@ -26,12 +25,9 @@ source $ZPLUG_HOME/init.zsh
 zplug "modules/git", from:prezto
 zplug "modules/osx", from:prezto
 zplug "modules/history", from:prezto
-
 zplug "modules/utility", from:prezto
 zplug "modules/completion", from:prezto
-
 zplug "modules/directory", from:prezto
-
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 zplug load
 
@@ -49,7 +45,6 @@ export FZF_CTRL_R_OPTS="--sort"
 
 # lyft
 if [ -f ~/.lyftrc  ]; then
-    source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
     source ~/.lyftrc
 fi
 
@@ -68,3 +63,4 @@ gpr() {
     local last_commit=$(git log -1 --pretty=%B)
     gpc && hub pull-request -o -m "$last_commit" | pbcopy
 }
+source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias

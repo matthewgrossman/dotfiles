@@ -1,4 +1,9 @@
 #!/bin/sh
+
+# need xcode to do anything fun on macs
+xcode-select --install
+
+# install homebrew and all programs in mac/Brewfile
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew tap homebrew/bundle
 brew bundle
@@ -16,3 +21,4 @@ git clone https://github.com/powerline/fonts.git && ./fonts/install.sh && rm -rf
 
 # reload ZSH now that setup is done
 source ~/.zshrc
+zplug install
