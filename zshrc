@@ -46,6 +46,7 @@ export FZF_CTRL_R_OPTS="--sort"
 # lyft
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
+    source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
 fi
 
 # custom functions
@@ -63,4 +64,3 @@ gpr() {
     local last_commit=$(git log -1 --pretty=%B)
     gpc && hub pull-request -o -m "$last_commit" | pbcopy
 }
-source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
