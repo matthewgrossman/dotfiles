@@ -90,6 +90,7 @@ hi NonText cterm=NONE ctermfg=NONE
 " normal setings
 set rnu
 set number
+set cursorline
 set backspace=2
 set history=1000
 set showmode
