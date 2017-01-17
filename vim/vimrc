@@ -7,28 +7,37 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
-Plug 'neomake/neomake'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug 'raimondi/delimitMate'
-Plug 'wellle/targets.vim'
+" movement
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'chriskempson/base16-vim'
-Plug 'mhinz/vim-signify'
 Plug 'justinmk/vim-sneak'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+
+" completion
+Plug 'tpope/vim-commentary'
+Plug 'raimondi/delimitMate'
+Plug 'ajh17/VimCompletesMe'
+
+" file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar'
-Plug 'ajh17/VimCompletesMe'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'qpkorr/vim-bufkill'
+Plug 'tpope/vim-fugitive'
+
+" usability
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'wellle/targets.vim'
+
+" ui
+Plug 'neomake/neomake'
+Plug 'mhinz/vim-signify'
+Plug 'chriskempson/base16-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" python
 Plug 'davidhalter/jedi-vim'
+Plug 'hynek/vim-python-pep8-indent'
 
 call plug#end()
 
