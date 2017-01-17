@@ -65,23 +65,3 @@ gpr() {
     local last_commit=$(git log -1 --pretty=%B)
     gpc && hub pull-request -o -m "$last_commit" | pbcopy
 }
-
-update_services() {
-    rm -f /tmp/services.txt; touch /tmp/services.txt
-    for dir in $LYFTSRC/*/manifest.yaml; do
-        srv=$(head -n 1 $dir | awk '{print $2}')
-        groups=$(control manifest $srv | jq -r '.groups | .[] | .name')
-        echo $groups | awk -vT="${srv}." '{print T $0}' >> /tmp/services.txt
-    done
-}
-
-sg() {
-    if [ ! -f /tmp/services.txt ]; then
-        echo "updating services list"
-        update_services
-    fi
-    services=$(cat /tmp/services.txt | fzf)
-    if [ -n "$services" ]; then
-        echo $services | while read line; do control start -g $line; done
-    fi
-}
