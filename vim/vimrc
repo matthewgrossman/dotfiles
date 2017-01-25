@@ -83,8 +83,9 @@ nnoremap <S-Tab> :bprevious<CR>
 " Make capital y act more normal
 nnoremap Y y$
 
-" Make saving quicker
-noremap <Leader>w :w<CR>
+" leader commands
+noremap <Leader>w :w<CR> |" easier saving
+noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 
 " search options
 set incsearch
