@@ -66,6 +66,7 @@ filetype plugin indent on
 
 " completion config
 set omnifunc=syntaxcomplete#Complete
+let b:vcm_tab_complete = 'omni'
 
 " Change color theme
 set background=dark
