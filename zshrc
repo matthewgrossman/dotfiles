@@ -65,3 +65,10 @@ gpr() {
     local last_commit=$(git log -1 --pretty=%B)
     gpc && hub pull-request -o -m "$last_commit" | pbcopy
 }
+
+# checkout recent branches
+co() {
+    local branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
+    local branch=$(fzf --tac <<< $branches)
+    git checkout $branch
+}
