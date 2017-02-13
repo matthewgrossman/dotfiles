@@ -91,6 +91,7 @@ noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 " search options
 set incsearch
 set hlsearch
+set ignorecase
 set smartcase
 
 " gotta go fast
