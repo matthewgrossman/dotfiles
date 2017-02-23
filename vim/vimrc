@@ -1,4 +1,27 @@
+""" BASIC COMMANDS
 set nocompatible
+
+" move by screen-line instead of text-line
+nmap j gj
+nmap k gk
+
+" Make capital y act more normal
+nnoremap Y y$
+
+" search options
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" line numbering
+set relativenumber
+set number
+
+" link to system clipboard
+set clipboard=unnamed
+
+""" PLUGINS
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -78,21 +101,10 @@ map <SPACE> <leader>
 
 " fix this by using the --query arg as the initial
 nnoremap K :Ag <C-R><C-W><CR>
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
-
-" Make capital y act more normal
-nnoremap Y y$
 
 " leader commands
 noremap <Leader>w :w<CR> |" easier saving
 noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
-
-" search options
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
 
 " gotta go fast
 set lazyredraw
@@ -102,8 +114,6 @@ set ttyscroll=3
 hi NonText cterm=NONE ctermfg=NONE
 
 " normal setings
-set rnu
-set number
 set cursorline
 set backspace=2
 set history=1000
@@ -124,8 +134,6 @@ set shiftwidth=4
 set softtabstop=4
 
 set mouse=a " enable mouse
-
-set clipboard=unnamed
 
 " vim-sneak config
 let g:sneak#streak = 1
