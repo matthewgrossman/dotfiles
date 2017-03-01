@@ -21,6 +21,19 @@ set number
 " link to system clipboard
 set clipboard=unnamed
 
+""" TERMINAL SPECIFIC
+set mouse=a
+
+" gotta go fast
+set lazyredraw
+set timeoutlen=400
+set ttyfast
+set ttyscroll=3
+
+" leader commands
+noremap <Leader>w :w<CR> |" easier saving
+noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
+
 """ PLUGINS
 
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -102,17 +115,6 @@ map <SPACE> <leader>
 " fix this by using the --query arg as the initial
 nnoremap K :Ag <C-R><C-W><CR>
 
-" leader commands
-noremap <Leader>w :w<CR> |" easier saving
-noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
-
-" gotta go fast
-set lazyredraw
-set timeoutlen=400
-set ttyfast
-set ttyscroll=3
-hi NonText cterm=NONE ctermfg=NONE
-
 " normal setings
 set cursorline
 set backspace=2
@@ -133,7 +135,6 @@ set shiftround
 set shiftwidth=4
 set softtabstop=4
 
-set mouse=a " enable mouse
 
 " vim-sneak config
 let g:sneak#streak = 1
