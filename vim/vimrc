@@ -76,6 +76,7 @@ Plug 'vim-airline/vim-airline-themes'
 " python
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
+Plug 'fisadev/vim-isort'
 
 call plug#end()
 
