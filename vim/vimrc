@@ -21,6 +21,10 @@ set number
 " link to system clipboard
 set clipboard=unnamed
 
+" make splits more intuitive
+set splitbelow
+set splitright
+
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -77,8 +81,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'fisadev/vim-isort'
+Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
+
+" bufkill config
+nmap <C-c> :BD<CR>
 
 " neomake config
 autocmd! BufWritePost * Neomake
