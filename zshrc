@@ -69,6 +69,6 @@ gpr() {
 # checkout recent branches
 co() {
     local branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
-    local branch=$(fzf --tac <<< $branches)
+    local branch=$(fzf --tac --no-sort <<< $branches)
     git checkout $branch
 }

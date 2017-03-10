@@ -71,7 +71,7 @@ Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 
 " ui
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
 Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
@@ -88,8 +88,9 @@ call plug#end()
 " bufkill config
 nmap <C-c> :BD<CR>
 
-" neomake config
-autocmd! BufWritePost * Neomake
+" ale config
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_save = 1
 
 " jedi-vim config
 let g:jedi#documentation_command = ""
