@@ -62,6 +62,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-fugitive'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
 
 " usability
 Plug 'tpope/vim-surround'
@@ -81,7 +82,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'fisadev/vim-isort'
-Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
 
@@ -97,6 +97,10 @@ let g:jedi#documentation_command = ""
 
 " fzf config
 nnoremap <c-p> :GFiles<cr>
+
+" tagbar config
+noremap <Leader>t :TagbarToggle<CR>
+autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 
 " delimitMate config
 let delimitMate_expand_cr = 1
