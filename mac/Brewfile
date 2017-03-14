@@ -15,6 +15,7 @@ brew 'flake8'
 brew 'hub'
 brew 'zplug'
 brew 'unrar'
+brew 'entr'
 
 cask 'google-chrome'
 cask 'caffeine'
