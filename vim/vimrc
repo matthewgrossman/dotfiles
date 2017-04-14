@@ -55,6 +55,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-commentary'
 Plug 'raimondi/delimitMate'
 Plug 'ajh17/VimCompletesMe'
+Plug 'maralla/completor.vim'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
