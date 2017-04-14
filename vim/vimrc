@@ -25,6 +25,9 @@ set clipboard=unnamed
 set splitbelow
 set splitright
 
+" turn on syntax highlighting
+syntax on
+
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -123,7 +126,6 @@ let b:vcm_tab_complete = 'omni'
 set background=dark
 let base16colorspace=256
 colorscheme base16-default-dark
-syntax on
 
 map <SPACE> <leader>
 
