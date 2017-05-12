@@ -5,8 +5,11 @@ set nocompatible
 nmap j gj
 nmap k gk
 
-" Make capital y act more normal
+" make capital Y act more normal
 nnoremap Y y$
+
+" easily rehighlight recently pasted text
+nnoremap gp `[v`]
 
 " search options
 set incsearch
@@ -52,7 +55,6 @@ call plug#begin('~/.vim/plugged')
 
 " movement
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'justinmk/vim-sneak'
 
 " completion
 Plug 'tpope/vim-commentary'
@@ -152,9 +154,3 @@ set shiftround
 set shiftwidth=4
 set softtabstop=4
 
-
-" vim-sneak config
-let g:sneak#streak = 1
-hi link SneakPluginTarget Error
-hi link SneakStreakTarget Error
-hi link SneakStreakMask Error
