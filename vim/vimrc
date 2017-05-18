@@ -88,6 +88,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'fisadev/vim-isort'
+Plug 'jmcantrell/vim-virtualenv'
+
+" javascript
+Plug 'pangloss/vim-javascript'
 
 call plug#end()
 

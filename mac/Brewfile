@@ -16,6 +16,7 @@ brew 'hub'
 brew 'zplug'
 brew 'unrar'
 brew 'entr'
+brew 'ranger'
 
 cask 'google-chrome'
 cask 'caffeine'
