@@ -58,7 +58,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " completion
 Plug 'tpope/vim-commentary'
-Plug 'raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
 Plug 'maralla/completor.vim'
 
@@ -67,6 +67,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 
@@ -87,11 +88,13 @@ Plug 'vim-airline/vim-airline-themes'
 " python
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
-Plug 'fisadev/vim-isort'
 Plug 'jmcantrell/vim-virtualenv'
 
 " javascript
 Plug 'pangloss/vim-javascript'
+
+" other filetypes
+Plug 'chrisbra/csv.vim'
 
 call plug#end()
 
@@ -119,7 +122,6 @@ let delimitMate_expand_space = 1
 " airline config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
 
 filetype plugin indent on
@@ -158,3 +160,5 @@ set shiftround
 set shiftwidth=4
 set softtabstop=4
 
+" autocmds
+autocmd BufNewFile,BufRead *.sls  set syntax=yaml
