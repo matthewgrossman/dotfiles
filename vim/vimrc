@@ -28,7 +28,8 @@ set clipboard=unnamed
 set splitbelow
 set splitright
 
-" turn on syntax highlighting
+" turn on syntax highlighting and file specifics
+filetype plugin indent on
 syntax on
 
 """ TERMINAL SPECIFIC
@@ -124,7 +125,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_theme = 'base16'
 
-filetype plugin indent on
 
 " completion config
 set omnifunc=syntaxcomplete#Complete

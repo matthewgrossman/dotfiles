@@ -1,6 +1,7 @@
 brew 'git'
 brew 'wget'
 brew 'zsh'
+brew 'fish'
 brew 'tmux'
 brew 'python'
 brew 'python3'
