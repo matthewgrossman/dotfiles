@@ -28,7 +28,7 @@ set clipboard=unnamed
 set splitbelow
 set splitright
 
-" turn on syntax highlighting and file specifics
+" turn on syntax highlighting
 filetype plugin indent on
 syntax on
 
