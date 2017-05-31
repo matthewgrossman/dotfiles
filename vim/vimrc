@@ -162,3 +162,4 @@ set softtabstop=4
 
 " autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
+autocmd filetype crontab setlocal nobackup nowritebackup
