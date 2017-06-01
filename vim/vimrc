@@ -94,9 +94,6 @@ Plug 'jmcantrell/vim-virtualenv'
 " javascript
 Plug 'pangloss/vim-javascript'
 
-" other filetypes
-Plug 'chrisbra/csv.vim'
-
 call plug#end()
 
 " bufkill config
