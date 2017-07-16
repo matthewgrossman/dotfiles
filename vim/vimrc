@@ -2,11 +2,19 @@
 set nocompatible
 
 " move by screen-line instead of text-line
-nmap j gj
-nmap k gk
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+
+" make register-global replacements the default
+set gdefault
 
 " make capital Y act more normal
 nnoremap Y y$
+
+" make saving easier
+nnoremap <c-s> :w<CR>
+inoremap <c-s> <c-o>:w<CR>
+vnoremap <c-s> <esc>:w<CR>gv
 
 " easily rehighlight recently pasted text
 nnoremap gp `[v`]
@@ -15,7 +23,7 @@ nnoremap gp `[v`]
 set incsearch
 set hlsearch
 set ignorecase
-set smartcase
+set infercase
 
 " line numbering
 set relativenumber
@@ -41,9 +49,9 @@ set timeoutlen=400
 set ttyfast
 set ttyscroll=3
 
-" leader commands
-noremap <Leader>w :w<CR> |" easier saving
-noremap <Leader>c :let @+ = expand("%")<CR> |" copy filepath
+" Leader commands
+nnoremap <silent> <Leader>w :w<CR> |" easier saving
+nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 
 """ PLUGINS
 
@@ -85,6 +93,9 @@ Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" productivity
+Plug 'vimwiki/vimwiki'
 
 " python
 Plug 'davidhalter/jedi-vim'
