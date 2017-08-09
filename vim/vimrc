@@ -69,7 +69,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
-Plug 'maralla/completor.vim'
+" Plug 'maralla/completor.vim' currently broken and deleted my text
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -88,11 +88,10 @@ Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 
 " ui
-Plug 'w0rp/ale'
 Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'w0rp/ale'
 
 " productivity
 Plug 'vimwiki/vimwiki'
@@ -105,6 +104,9 @@ Plug 'jmcantrell/vim-virtualenv'
 " javascript
 Plug 'pangloss/vim-javascript'
 
+" vim
+Plug 'junegunn/vader.vim'
+
 call plug#end()
 
 " bufkill config
@@ -113,6 +115,7 @@ nmap <C-c> :BD<CR>
 " ale config
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
+let g:ale_python_flake8_options = '--format=default'
 
 " jedi-vim config
 let g:jedi#documentation_command = ""
@@ -128,10 +131,10 @@ autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
-" airline config
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_theme = 'base16'
+" " lightline config
+let g:lightline = {
+\   'colorscheme': 'wombat'
+\ }
 
 
 " completion config
