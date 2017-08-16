@@ -2,8 +2,8 @@
 set nocompatible
 
 " move by screen-line instead of text-line
-nnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
+nnoremap j gj
+nnoremap k gk
 
 " make register-global replacements the default
 set gdefault
@@ -40,6 +40,10 @@ set splitright
 filetype plugin indent on
 syntax on
 
+" folding
+set foldmethod=syntax
+set foldlevelstart=99
+
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -48,6 +52,7 @@ set lazyredraw
 set timeoutlen=400
 set ttyfast
 set ttyscroll=3
+set noesckeys
 
 " Leader commands
 nnoremap <silent> <Leader>w :w<CR> |" easier saving
@@ -86,6 +91,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
+Plug 'godlygeek/tabular'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -100,11 +106,11 @@ Plug 'vimwiki/vimwiki'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'tmhedberg/SimpylFold'
 
-" javascript
+" languages
 Plug 'pangloss/vim-javascript'
-
-" vim
+Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/vader.vim'
 
 call plug#end()
@@ -115,23 +121,27 @@ nmap <C-c> :BD<CR>
 " ale config
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
-let g:ale_python_flake8_options = '--format=default'
 
 " jedi-vim config
 let g:jedi#documentation_command = ""
 
 " fzf config
 nnoremap <c-p> :GFiles<cr>
+nnoremap - :Buffers<cr>
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
-autocmd FileType tagbar setlocal nocursorline nocursorcolumn
 
 " delimitMate config
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
+" SimpylFold
+let g:SimpylFold_fold_docstring = 0
+let g:SimpylFold_fold_import = 0
+
 " " lightline config
+set laststatus=2
 let g:lightline = {
 \   'colorscheme': 'wombat'
 \ }
@@ -152,7 +162,6 @@ map <SPACE> <leader>
 nnoremap K :Ag <C-R><C-W><CR>
 
 " normal setings
-set cursorline
 set backspace=2
 set history=1000
 set showmode
