@@ -40,10 +40,6 @@ set splitright
 filetype plugin indent on
 syntax on
 
-" folding
-set foldmethod=syntax
-set foldlevelstart=99
-
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -106,12 +102,12 @@ Plug 'vimwiki/vimwiki'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'jmcantrell/vim-virtualenv'
-Plug 'tmhedberg/SimpylFold'
 
 " languages
 Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/vader.vim'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
