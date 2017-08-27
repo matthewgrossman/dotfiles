@@ -69,11 +69,4 @@ co() {
     git checkout $branch
 }
 
-git_status() {
-    local color="%{$bg[yellow]%}%{$fg[black]%}"
-    local branch=$(git rev-parse --abbrev-ref HEAD)
-}
-
-
-local path_name="%{$bg[blue]%}%{$fg[black]%} %~"
-PROMPT="${path_name} %{$reset_color%}"
+. $HOME/dotfiles/theme.zsh
