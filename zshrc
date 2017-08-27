@@ -13,11 +13,6 @@ alias ls="ls -G"
 alias dot="cd $HOME/dotfiles"
 export EDITOR='/usr/local/bin/vim'
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
-
-# plugins
-
 # TODO: fix mac specific directory for zplug
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
@@ -28,7 +23,6 @@ zplug "modules/history", from:prezto
 zplug "modules/utility", from:prezto
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
-zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 zplug load
 
 alias vi='vim'
@@ -74,3 +68,12 @@ co() {
     local branch=$(fzf --tac --no-sort <<< $branches)
     git checkout $branch
 }
+
+git_status() {
+    local color="%{$bg[yellow]%}%{$fg[black]%}"
+    local branch=$(git rev-parse --abbrev-ref HEAD)
+}
+
+
+local path_name="%{$bg[blue]%}%{$fg[black]%} %~"
+PROMPT="${path_name} %{$reset_color%}"
