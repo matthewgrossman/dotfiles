@@ -88,6 +88,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 Plug 'godlygeek/tabular'
+Plug 'mhinz/vim-grepper'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -124,6 +125,15 @@ let g:jedi#documentation_command = ""
 " fzf config
 nnoremap <c-p> :GFiles<cr>
 nnoremap - :Buffers<cr>
+
+" vim-grepper config
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
+let g:grepper = {
+\   'prompt': 0,
+\   'highlight': 1,
+\   'tools': ['ag']
+\ }
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
