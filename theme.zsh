@@ -11,10 +11,12 @@ zc(){
 
 # return git branch, yellow bg if there are diffs, green bg if there aren't
 git_status() {
-    local gstatus=$(git status --short --untracked-files=no)
-    [ -n "$gstatus" ] && local status_color='yellow' || local status_color='green'
-    local branch=$(git rev-parse --abbrev-ref HEAD)
-    zc $branch 'black' $status_color
+    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [ "$branch" ]; then
+        local gstatus=$(git status --short --untracked-files=no)
+        [ -n "$gstatus" ] && local status_color='yellow' || local status_color='green'
+        zc $branch 'black' $status_color
+    fi
 }
 
 setopt prompt_subst
