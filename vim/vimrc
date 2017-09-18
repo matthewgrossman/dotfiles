@@ -24,6 +24,7 @@ set incsearch
 set hlsearch
 set ignorecase
 set infercase
+vnoremap // y/\V<C-R>"<CR>
 
 " line numbering
 set relativenumber
@@ -70,7 +71,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
-" Plug 'maralla/completor.vim' currently broken and deleted my text
+Plug 'maralla/completor.vim'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -166,6 +167,8 @@ map <SPACE> <leader>
 
 " fix this by using the --query arg as the initial
 nnoremap K :Ag <C-R><C-W><CR>
+
+
 
 " normal setings
 set backspace=2
