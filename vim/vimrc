@@ -16,7 +16,7 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
-" easily rehighlight recently pasted text
+" easily highlight recently pasted text
 nnoremap gp `[v`]
 
 " search options
@@ -128,8 +128,8 @@ nnoremap <c-p> :GFiles<cr>
 nnoremap - :Buffers<cr>
 
 " vim-grepper config
-nmap gs  <plug>(GrepperOperator)
-xmap gs  <plug>(GrepperOperator)
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
 let g:grepper = {
 \   'prompt': 0,
 \   'highlight': 1,
@@ -167,7 +167,6 @@ map <SPACE> <leader>
 
 " fix this by using the --query arg as the initial
 nnoremap K :Ag <C-R><C-W><CR>
-
 
 
 " normal setings

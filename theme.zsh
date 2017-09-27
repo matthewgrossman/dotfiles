@@ -1,3 +1,6 @@
+# set the reset_color to black and white
+reset_color="%{$bg[black]%}%{$fg[white]%}"
+
 # function to colorize text
 zc(){
     # $ zc 'hello world' 'red' 'white'
