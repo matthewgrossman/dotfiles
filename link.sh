@@ -4,3 +4,4 @@ ln -s $HOME/dotfiles/vim $HOME/.vim
 ln -s $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
 ln -s $HOME/dotfiles/ctags $HOME/.ctags
 ln -s $HOME/dotfiles/git/config $HOME/.gitconfig
+ln -s $HOME/dotfiles/hammerspoon/init.lua $HOME/.hammerspoon/init.lua

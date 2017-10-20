@@ -43,7 +43,6 @@ export FZF_CTRL_R_OPTS="--sort"
 # lyft
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
-    source '/Users/matthewgrossman/src/blessclient/lyftprofile' # bless ssh alias
 fi
 
 # custom functions
@@ -71,3 +70,4 @@ co() {
 }
 
 . $HOME/dotfiles/theme.zsh
+source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias
