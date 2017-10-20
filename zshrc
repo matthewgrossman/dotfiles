@@ -8,23 +8,12 @@ setopt CLOBBER
 bindkey -e
 autoload -Uz compinit
 compinit -u
+autoload -U colors && colors
 
 alias ls="ls -G"
 alias dot="cd $HOME/dotfiles"
 alias g="git"
 export EDITOR='/usr/local/bin/vim'
-
-# TODO: fix mac specific directory for zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
-zplug "modules/git", from:prezto
-zplug "modules/osx", from:prezto
-zplug "modules/history", from:prezto
-zplug "modules/utility", from:prezto
-zplug "modules/completion", from:prezto
-zplug "modules/directory", from:prezto
-zplug load
 
 alias vi='vim'
 
