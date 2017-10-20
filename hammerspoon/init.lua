@@ -14,3 +14,17 @@ end
 
 spaces_hyper = {"ctrl", "shift"}
 
+
+arrow_hyper = {"fn"}
+arrow_mapping = {
+    h = "LEFT",
+    l = "RIGHT",
+    j = "DOWN",
+    k = "UP"
+}
+
+-- for key, direction in pairs(arrow_mapping) do
+--     hs.hotkey.bind(arrow_hyper, key, function()
+--         hs.eventtap.keyStroke({}, direction)
+--     end)
+-- end
