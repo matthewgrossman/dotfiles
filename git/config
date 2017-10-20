@@ -10,5 +10,5 @@
     a = add
     rv = revert
     rs = reset
-    d = diff
+    d = diff --no-ext-diff
     s = status

@@ -1,3 +1,4 @@
+-- gotta go fast
 hs.window.animationDuration = 0
 
 layout_hyper = {"cmd", "alt"}
@@ -12,16 +13,31 @@ for key, layout in pairs(layout_mapping) do
     end)
 end
 
+hs.hotkey.bind(layout_hyper, 'j', function()
+    win = hs.window.focusedWindow()
+    win:moveToScreen(win:screen():next())
+end)
+
 spaces_hyper = {"ctrl", "shift"}
-
-
-arrow_hyper = {"fn"}
-arrow_mapping = {
+spaces_mapping = {
     h = "LEFT",
-    l = "RIGHT",
-    j = "DOWN",
-    k = "UP"
+    l = "RIGHT"
 }
+
+for key, direction in pairs(spaces_mapping) do
+    hs.hotkey.bind(spaces_hyper, key, function()
+        hs.eventtap.keyStroke({"ctrl"}, direction)
+    end)
+end
+
+
+-- arrow_hyper = {"fn"}
+-- arrow_mapping = {
+--     h = "LEFT",
+--     l = "RIGHT",
+--     j = "DOWN",
+--     k = "UP"
+-- }
 
 -- for key, direction in pairs(arrow_mapping) do
 --     hs.hotkey.bind(arrow_hyper, key, function()
