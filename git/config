@@ -2,6 +2,8 @@
     name = Matthew Grossman
     email = matthewryangrossman@gmail.com
 [alias]
+    branch-name = rev-parse --abbrev-ref HEAD
+
     p = push
     fm = pull
     co = checkout
@@ -12,3 +14,5 @@
     rs = reset
     d = diff --no-ext-diff
     s = status
+
+    po = "!git push -u origin $(git branch-name)"
