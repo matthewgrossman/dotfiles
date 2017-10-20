@@ -11,6 +11,7 @@ compinit -u
 
 alias ls="ls -G"
 alias dot="cd $HOME/dotfiles"
+alias g="git"
 export EDITOR='/usr/local/bin/vim'
 
 # TODO: fix mac specific directory for zplug
