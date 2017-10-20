@@ -1,0 +1,14 @@
+[user]
+    name = Matthew Grossman
+    email = matthewryangrossman@gmail.com
+[alias]
+    p = push
+    fm = pull
+    co = checkout
+    cob = checkout -b
+    ca = commit --all
+    a = add
+    rv = revert
+    rs = reset
+    d = diff
+    s = status
