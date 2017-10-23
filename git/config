@@ -9,7 +9,7 @@
     fm = pull
     co = checkout
     cob = checkout -b
-    ca = commit --all
+    ca = commit --all --message
     a = add
     rv = revert
     rs = reset
@@ -17,4 +17,4 @@
     s = status
 
     po = "!git push -u origin $(git branch-name)"
-    pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy "
+    pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
