@@ -15,6 +15,7 @@
     rs = reset
     d = diff --no-ext-diff
     s = status
+    m = merge
 
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
