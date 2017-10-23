@@ -3,6 +3,7 @@
     email = matthewryangrossman@gmail.com
 [alias]
     branch-name = rev-parse --abbrev-ref HEAD
+    last-commit = log -1 --pretty=%B
 
     p = push
     fm = pull
@@ -16,3 +17,4 @@
     s = status
 
     po = "!git push -u origin $(git branch-name)"
+    pr = "!git po; hub pull-request -o -m \"$(git last-commit)\""
