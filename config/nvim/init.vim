@@ -48,6 +48,8 @@ if !has('nvim')
     set ttyfast
     set ttyscroll=3
     set noesckeys
+    set ttymouse=xterm2
+end
 
 " gotta go fast
 set lazyredraw
@@ -73,7 +75,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
-" Plug 'maralla/completor.vim'
+Plug 'Shougo/deoplete.nvim'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -104,9 +106,10 @@ Plug 'w0rp/ale'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'zchee/deoplete-jedi'
 
 " languages
 Plug 'pangloss/vim-javascript'
@@ -138,7 +141,7 @@ let g:grepper = {
 \   'highlight': 1,
 \   'tools': ['ag']
 \ }
-command Grep :Grepper -prompt
+" command Grep :Grepper -prompt
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
@@ -157,10 +160,12 @@ let g:lightline = {
 \   'colorscheme': 'wombat'
 \ }
 
+" deoplete config
+let g:deoplete#enable_at_startup = 1
 
-" completion config
-set omnifunc=syntaxcomplete#Complete
-let b:vcm_tab_complete = 'omni'
+" " completion config
+" set omnifunc=syntaxcomplete#Complete
+" let b:vcm_tab_complete = 'omni'
 
 " Change color theme
 set background=dark
@@ -179,7 +184,6 @@ set history=1000
 set showmode
 set gcr=a:blinkon0
 set visualbell
-set ttymouse=xterm2
 
 set hidden
 set tags=./tags;

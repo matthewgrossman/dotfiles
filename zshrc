@@ -13,7 +13,7 @@ autoload -U colors && colors
 alias ls="ls -G"
 alias dot="cd $HOME/dotfiles"
 alias g="git"
-export EDITOR='/usr/local/bin/vim'
+export EDITOR='/usr/local/bin/nvim'
 
 alias vi='vim'
 

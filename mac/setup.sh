@@ -21,4 +21,3 @@ ln -s $HOME/dotfiles/hammerspoon/init.lua $HOME/.hammerspoon/init.lua
 
 # reload ZSH now that setup is done
 source ~/.zshrc
-zplug install
