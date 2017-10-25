@@ -43,12 +43,15 @@ syntax on
 """ TERMINAL SPECIFIC
 set mouse=a
 
+" nvim compat
+if !has('nvim')
+    set ttyfast
+    set ttyscroll=3
+    set noesckeys
+
 " gotta go fast
 set lazyredraw
 set timeoutlen=400
-set ttyfast
-set ttyscroll=3
-set noesckeys
 
 " Leader commands
 nnoremap <silent> <Leader>w :w<CR> |" easier saving
@@ -70,7 +73,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
-Plug 'maralla/completor.vim'
+" Plug 'maralla/completor.vim'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }

@@ -9,7 +9,7 @@
     fm = pull
     co = checkout
     cob = checkout -b
-    ca = commit --all --message
+    ca = commit --all
     a = add
     rv = revert
     rs = reset
