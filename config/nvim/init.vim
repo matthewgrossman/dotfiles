@@ -27,7 +27,6 @@ set infercase
 vnoremap // y/\V<C-R>"<CR>
 
 " line numbering
-set relativenumber
 set number
 
 " link to system clipboard
@@ -78,6 +77,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-fugitive'
+
 Plug 'tpope/vim-rhubarb'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
@@ -135,6 +135,7 @@ let g:grepper = {
 \   'highlight': 1,
 \   'tools': ['ag']
 \ }
+command Grep :Grepper -prompt
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
