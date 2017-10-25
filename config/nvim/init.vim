@@ -126,9 +126,6 @@ nmap <C-c> :BD<CR>
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 
-" jedi-vim config
-let g:jedi#documentation_command = ""
-
 " fzf config
 nnoremap <c-p> :GFiles<cr>
 nnoremap - :Buffers<cr>
@@ -162,10 +159,6 @@ let g:lightline = {
 
 " deoplete config
 let g:deoplete#enable_at_startup = 1
-
-" " completion config
-" set omnifunc=syntaxcomplete#Complete
-" let b:vcm_tab_complete = 'omni'
 
 " Change color theme
 set background=dark
