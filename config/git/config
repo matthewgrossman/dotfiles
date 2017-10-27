@@ -8,7 +8,7 @@
     p = push
     fm = pull
     co = checkout
-    cob = checkout -b
+    bc = checkout -b
     ca = commit --all
     a = add
     rv = revert

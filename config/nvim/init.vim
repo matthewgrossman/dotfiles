@@ -61,12 +61,12 @@ nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 
 """ PLUGINS
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " movement
 Plug 'christoomey/vim-tmux-navigator'
@@ -106,10 +106,10 @@ Plug 'w0rp/ale'
 Plug 'vimwiki/vimwiki'
 
 " python
-" Plug 'davidhalter/jedi-vim'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'jmcantrell/vim-virtualenv'
+Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'vim-python/python-syntax'
 
 " languages
 Plug 'pangloss/vim-javascript'
@@ -138,7 +138,7 @@ let g:grepper = {
 \   'highlight': 1,
 \   'tools': ['ag']
 \ }
-" command Grep :Grepper -prompt
+" command GP :Grepper -prompt
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
@@ -159,6 +159,13 @@ let g:lightline = {
 
 " deoplete config
 let g:deoplete#enable_at_startup = 1
+
+" python config
+let g:jedi#completions_enabled = 0
+let g:deoplete#sources#jedi#show_docstring = 0
+let g:python_highlight_indent_errors = 0
+let g:python_highlight_space_errors = 0
+let g:python_highlight_all = 1
 
 " Change color theme
 set background=dark

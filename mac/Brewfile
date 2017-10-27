@@ -17,6 +17,7 @@ brew 'hub'
 brew 'unrar'
 brew 'entr'
 brew 'ranger'
+brew 'nvim'
 
 cask 'google-chrome'
 cask 'caffeine'
