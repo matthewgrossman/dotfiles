@@ -17,7 +17,7 @@ chsh -s $(which zsh)
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 
 # link hammerspoon data
-ln -s $HOME/dotfiles/hammerspoon/init.lua $HOME/.hammerspoon/init.lua
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 
 # reload ZSH now that setup is done
 source ~/.zshrc
