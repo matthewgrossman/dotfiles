@@ -80,7 +80,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
-Plug 'qpkorr/vim-bufkill'
+Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'tpope/vim-fugitive'
 
 Plug 'tpope/vim-rhubarb'
@@ -119,12 +119,16 @@ Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
-" bufkill config
-nmap <C-c> :BD<CR>
+" Sayonara config
+nmap <C-c> :Sayonara!<CR>
 
 " ale config
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
+let g:ale_fixers = {
+\   'python': ['isort'],
+\}
+let g:ale_fix_on_save = 1
 
 " fzf config
 nnoremap <c-p> :GFiles<cr>
@@ -139,6 +143,9 @@ let g:grepper = {
 \   'tools': ['ag']
 \ }
 " command GP :Grepper -prompt
+
+" vim-signify config
+let g:signify_vcs_list = [ 'git']
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>

@@ -9,6 +9,7 @@
     fm = pull
     co = checkout
     bc = checkout -b
+    c = commit
     ca = commit --all
     a = add
     rv = revert
@@ -19,3 +20,5 @@
 
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
+[core]
+    excludesfile = ~/.config/git/gitignore_global

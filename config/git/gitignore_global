@@ -1,0 +1,12 @@
+# mac
+.DS_STORE
+
+# vim
+*~
+
+# python
+venv/
+*.py[cod]
+__pycache__/
+.mypy_cache/
+
