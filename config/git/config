@@ -17,6 +17,8 @@
     d = diff --no-ext-diff
     s = status
     m = merge
+    l = log
+    ld = log --stat --patch --full-diff
 
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"

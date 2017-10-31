@@ -142,7 +142,7 @@ let g:grepper = {
 \   'highlight': 1,
 \   'tools': ['ag']
 \ }
-" command GP :Grepper -prompt
+noremap <Leader>g :Grepper -prompt
 
 " vim-signify config
 let g:signify_vcs_list = [ 'git']

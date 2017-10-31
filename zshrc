@@ -15,7 +15,8 @@ alias dot="cd $HOME/dotfiles"
 alias g="git"
 export EDITOR='/usr/local/bin/nvim'
 
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
 
 # color
 BASE16_SHELL=$HOME/.config/base16-shell/
