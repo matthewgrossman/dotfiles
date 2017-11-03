@@ -182,7 +182,7 @@ colorscheme base16-default-dark
 map <SPACE> <leader>
 
 " fix this by using the --query arg as the initial
-nnoremap K :Ag <C-R><C-W><CR>
+nnoremap <leader>a :Ag <C-R><C-W><CR>
 
 
 " normal setings
@@ -206,3 +206,24 @@ set softtabstop=4
 " autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
+
+function! GetBufferNames()
+    let full_paths = map(copy(getbufinfo()), 'v:val.name')
+    return map(full_paths, 'fnamemodify(v:val, ":.")')
+endfunction
+
+function! GetBufferNames_sh()
+    let buffers_str = join(GetBufferNames(), "\n")
+    return 'printf "'.buffers_str.'"'
+endfunction
+
+function! GetFZFCommand_sh()
+    let buffers = GetBufferNames()
+    " let exlude_str = join(map(copy(buffers), "'--exclude='.v:val"), ' ')
+    let filter_grep = 'grep -vE "'.join(buffers, '|').'"'
+    return 'git ls-files | '.filter_grep
+endfunction
+
+command! FZFTest call fzf#run(fzf#wrap({
+            \'source': GetBufferNames_sh().';'.GetFZFCommand_sh(),
+            \}))
