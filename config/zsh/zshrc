@@ -7,7 +7,6 @@ setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
-autoload -U colors && colors
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
