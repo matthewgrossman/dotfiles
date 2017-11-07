@@ -1,29 +1,13 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# Lines configured by zsh
-HISTFILE=~/.histfile
+HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
 HISTSIZE=100000
 SAVEHIST=100000
 setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
-autoload -Uz compinit
-compinit -u
 autoload -U colors && colors
-
-alias ls="ls -G"
-alias dot="cd $HOME/dotfiles"
-alias g="git"
-export EDITOR='/usr/local/bin/nvim'
-
-alias vi='nvim'
-alias vim='nvim'
-
-# color
-BASE16_SHELL=$XDG_CONFIG_HOME/base16-shell/
-[ -n "$PS1"  ] && [ -s $BASE16_SHELL/profile_helper.sh  ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-[ ! -f $HOME/.vimrc_background ] && base16_default-dark
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -37,22 +21,6 @@ if [ -f ~/.lyftrc  ]; then
     source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias
 fi
 
-# custom functions
-fo() {
-  local out file key
-  out=$(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)
-  key=$(head -1 <<< "$out")
-  file=$(head -2 <<< "$out" | tail -1)
-  if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR} "$file"
-  fi
-}
-
-# checkout recent branches
-co() {
-    local branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
-    local branch=$(fzf --tac --no-sort <<< $branches)
-    git checkout $branch
-}
-
+. $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.zsh
+. $XDG_CONFIG_HOME/zsh/functions.zsh
