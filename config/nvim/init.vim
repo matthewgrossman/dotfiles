@@ -131,7 +131,7 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 
 " fzf config
-nnoremap <c-p> :GFiles<cr>
+nnoremap <c-p> :FZFBuffers<cr>
 nnoremap - :Buffers<cr>
 
 " vim-grepper config
@@ -208,22 +208,23 @@ autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 function! GetBufferNames()
-    let full_paths = map(copy(getbufinfo()), 'v:val.name')
+    let full_paths = map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
     return map(full_paths, 'fnamemodify(v:val, ":.")')
 endfunction
 
 function! GetBufferNames_sh()
-    let buffers_str = join(GetBufferNames(), "\n")
-    return 'printf "'.buffers_str.'"'
+    let buffers_str = join(GetBufferNames(), "\n")."\n"
+    let colors_str = '\e[34m%s\e[0m'
+    let command_str = 'printf "'.colors_str.'" "'.buffers_str.'"'
+    return 'bash -c '''.command_str.''''
 endfunction
 
 function! GetFZFCommand_sh()
     let buffers = GetBufferNames()
-    " let exlude_str = join(map(copy(buffers), "'--exclude='.v:val"), ' ')
-    let filter_grep = 'grep -vE "'.join(buffers, '|').'"'
+    let filter_grep = 'grep -Ev "'.join(buffers, '|').'"'
     return 'git ls-files | '.filter_grep
 endfunction
 
-command! FZFTest call fzf#run(fzf#wrap({
+command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().';'.GetFZFCommand_sh(),
             \}))

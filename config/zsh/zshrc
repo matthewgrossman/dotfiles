@@ -1,3 +1,5 @@
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Lines configured by zsh
 HISTFILE=~/.histfile
 HISTSIZE=100000
@@ -19,7 +21,7 @@ alias vi='nvim'
 alias vim='nvim'
 
 # color
-BASE16_SHELL=$HOME/.config/base16-shell/
+BASE16_SHELL=$XDG_CONFIG_HOME/base16-shell/
 [ -n "$PS1"  ] && [ -s $BASE16_SHELL/profile_helper.sh  ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 [ ! -f $HOME/.vimrc_background ] && base16_default-dark
 
@@ -46,12 +48,6 @@ fo() {
   fi
 }
 
-# push local branch to remote and create a PR
-gpr() {
-    local last_commit=$(git log -1 --pretty=%B)
-    gpc && hub pull-request -o -m "$last_commit" | pbcopy
-}
-
 # checkout recent branches
 co() {
     local branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
@@ -59,4 +55,4 @@ co() {
     git checkout $branch
 }
 
-. $HOME/dotfiles/theme.zsh
+. $XDG_CONFIG_HOME/zsh/theme.zsh
