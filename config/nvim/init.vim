@@ -94,6 +94,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 Plug 'godlygeek/tabular'
+Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
 
 " ui
@@ -119,8 +120,15 @@ Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
+" terminal config
+tnoremap <Esc> <C-\><C-n>
+autocmd BufWinEnter,WinEnter term://* startinsert
+
 " Sayonara config
 nmap <C-c> :Sayonara!<CR>
+let g:sayonara_filetypes = {
+            \ 'terminal': '',
+            \ }
 
 " ale config
 let g:ale_lint_on_text_changed = 0
@@ -153,6 +161,9 @@ noremap <Leader>t :TagbarToggle<CR>
 " delimitMate config
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
+
+"vim-test config
+" nmap <silent> <leader>t :TestNearest<CR>
 
 " SimpylFold
 let g:SimpylFold_fold_docstring = 0
@@ -208,7 +219,9 @@ autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 function! GetBufferNames()
-    let full_paths = map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.name')
+    let bufnrs = map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.bufnr')
+    let buffers = filter(copy(bufnrs), 'getbufvar(v:val,''&buftype'') == ''''')
+    let full_paths = map(copy(buffers), 'bufname(v:val)')
     return map(full_paths, 'fnamemodify(v:val, ":.")')
 endfunction
 
