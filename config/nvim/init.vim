@@ -176,11 +176,11 @@ let g:lightline = {
 \ }
 
 " deoplete config
-let g:deoplete#enable_at_startup = 1
 
 " python config
 let g:jedi#completions_enabled = 0
 let g:jedi#goto_command = "<c-]>"
+let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
