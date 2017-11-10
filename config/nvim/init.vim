@@ -220,25 +220,34 @@ autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 function! GetBufferNames()
-    let bufnrs = map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.bufnr')
-    let buffers = filter(copy(bufnrs), 'getbufvar(v:val,''&buftype'') == ''''')
-    let full_paths = map(copy(buffers), 'bufname(v:val)')
+    let bufnrs = map(filter(copy(getbufinfo()), 'v:val.listed && len(v:val.name)'), 'v:val.bufnr')
+    let filtered_bufnrs = filter(copy(bufnrs), 'getbufvar(v:val,''&buftype'') == ''''')
+    let full_paths = map(copy(filtered_bufnrs), 'bufname(v:val)')
     return map(full_paths, 'fnamemodify(v:val, ":.")')
 endfunction
 
 function! GetBufferNames_sh()
-    let buffers_str = join(GetBufferNames(), "\n")."\n"
-    let colors_str = '\e[34m%s\e[0m'
-    let command_str = 'printf "'.colors_str.'" "'.buffers_str.'"'
-    return 'bash -c '''.command_str.''''
+    let buffer_names = GetBufferNames()
+    if len(buffer_names)
+        let buffers_str = join(buffer_names, "\n")."\n"
+        let colors_str = '\e[34m%s\e[0m'
+        let command_str = 'printf "'.colors_str.'" "'.buffers_str.'"'
+        return 'bash -c '''.command_str.''';'
+    else
+        return ''
+    endif
 endfunction
 
 function! GetFZFCommand_sh()
-    let buffers = GetBufferNames()
-    let filter_grep = 'grep -Ev "'.join(buffers, '|').'"'
-    return 'git ls-files | '.filter_grep
+    let search_cmd = 'git ls-files'
+    let buffer_names = GetBufferNames()
+    if len(buffer_names)
+        let filter_grep = 'grep -Ev "'.join(buffer_names, '|').'"'
+        let search_cmd = search_cmd.' | '. filter_grep
+    endif
+    return search_cmd.';'
 endfunction
 
 command! FZFBuffers call fzf#run(fzf#wrap({
-            \'source': GetBufferNames_sh().';'.GetFZFCommand_sh(),
+            \'source': GetBufferNames_sh().GetFZFCommand_sh(),
             \}))
