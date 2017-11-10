@@ -220,10 +220,10 @@ autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 function! GetBufferNames()
-    let bufnrs = map(filter(copy(getbufinfo()), 'v:val.listed && len(v:val.name)'), 'v:val.bufnr')
-    let filtered_bufnrs = filter(copy(bufnrs), 'getbufvar(v:val,''&buftype'') == ''''')
+    let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
+    let filtered_bufnrs = filter(copy(bufnrs), {i,b -> getbufvar(b, '&buftype') == ''})
     let full_paths = map(copy(filtered_bufnrs), 'bufname(v:val)')
-    return map(full_paths, 'fnamemodify(v:val, ":.")')
+    return map(full_paths, {i,b -> fnamemodify(b, ':.')})
 endfunction
 
 function! GetBufferNames_sh()
