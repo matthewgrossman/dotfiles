@@ -107,10 +107,10 @@ Plug 'w0rp/ale'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim'
-Plug 'zchee/deoplete-jedi'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'vim-python/python-syntax'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
+Plug 'vim-python/python-syntax', { 'for': 'python' }
 
 " languages
 Plug 'pangloss/vim-javascript'
@@ -180,6 +180,7 @@ let g:deoplete#enable_at_startup = 1
 
 " python config
 let g:jedi#completions_enabled = 0
+let g:jedi#goto_command = "<c-]>"
 let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
