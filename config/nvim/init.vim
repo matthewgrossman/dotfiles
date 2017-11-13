@@ -187,6 +187,7 @@ let g:python_highlight_all = 1
 " Change color theme
 set background=dark
 let base16colorspace=256
+set termguicolors
 colorscheme base16-default-dark
 
 map <SPACE> <leader>
