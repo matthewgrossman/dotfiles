@@ -44,7 +44,6 @@ syntax on
 set mouse=a
 
 " Leader commands
-nnoremap <silent> <Leader>w :w<CR> |" easier saving
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 
 """ PLUGINS
@@ -111,8 +110,8 @@ tnoremap <Esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 autocmd TermOpen * setlocal nonumber norelativenumber
 
-nnoremap <C-w>\| :vsplit<CR> <C-\><C-n> :terminal<CR>
-nnoremap <C-w>- :split<CR> <C-\><C-n> :terminal<CR>
+nnoremap <C-w>\| :vsplit<CR> <C-\><C-n> :terminal<CR> :startinsert<CR>
+nnoremap <C-w>- :split<CR> <C-\><C-n> :terminal<CR> :startinsert<CR>
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
@@ -143,7 +142,6 @@ let g:ale_fix_on_save = 1
 
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
-nnoremap - :Buffers<cr>
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)
