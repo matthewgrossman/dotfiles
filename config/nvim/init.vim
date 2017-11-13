@@ -108,8 +108,11 @@ call plug#end()
 " NEOVIM TERMINAL CONFIG
 
 tnoremap <Esc> <C-\><C-n>
-autocmd BufWinEnter,WinEnter term://* startinsert
+autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 autocmd TermOpen * setlocal nonumber norelativenumber
+
+nnoremap <C-w>\| :vsplit<CR> <C-\><C-n> :terminal<CR>
+nnoremap <C-w>- :split<CR> <C-\><C-n> :terminal<CR>
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
