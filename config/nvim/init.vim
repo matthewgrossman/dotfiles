@@ -43,18 +43,6 @@ syntax on
 """ TERMINAL SPECIFIC
 set mouse=a
 
-" nvim compat
-if !has('nvim')
-    set ttyfast
-    set ttyscroll=3
-    set noesckeys
-    set ttymouse=xterm2
-end
-
-" gotta go fast
-set lazyredraw
-set timeoutlen=400
-
 " Leader commands
 nnoremap <silent> <Leader>w :w<CR> |" easier saving
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
@@ -67,9 +55,6 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 call plug#begin('~/.local/share/nvim/plugged')
-
-" movement
-Plug 'christoomey/vim-tmux-navigator'
 
 " completion
 Plug 'tpope/vim-commentary'
@@ -107,10 +92,10 @@ Plug 'w0rp/ale'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
-Plug 'vim-python/python-syntax', { 'for': 'python' }
+Plug 'davidhalter/jedi-vim'
+Plug 'zchee/deoplete-jedi'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'vim-python/python-syntax'
 
 " languages
 Plug 'pangloss/vim-javascript'
@@ -120,9 +105,24 @@ Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
-" terminal config
+" NEOVIM TERMINAL CONFIG
+
 tnoremap <Esc> <C-\><C-n>
 autocmd BufWinEnter,WinEnter term://* startinsert
+autocmd TermOpen * setlocal nonumber norelativenumber
+
+tnoremap <C-h> <C-\><C-N><C-w>h
+tnoremap <C-j> <C-\><C-N><C-w>j
+tnoremap <C-k> <C-\><C-N><C-w>k
+tnoremap <C-l> <C-\><C-N><C-w>l
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-j> <C-\><C-N><C-w>j
+inoremap <C-k> <C-\><C-N><C-w>k
+inoremap <C-l> <C-\><C-N><C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Sayonara config
 nmap <C-c> :Sayonara!<CR>
@@ -153,7 +153,7 @@ let g:grepper = {
 noremap <Leader>g :Grepper -prompt
 
 " vim-signify config
-let g:signify_vcs_list = [ 'git']
+let g:signify_vcs_list = ['git']
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
@@ -172,10 +172,8 @@ let g:SimpylFold_fold_import = 0
 " " lightline config
 set laststatus=2
 let g:lightline = {
-\   'colorscheme': 'wombat'
+\   'colorscheme': 'seoul256',
 \ }
-
-" deoplete config
 
 " python config
 let g:jedi#completions_enabled = 0
