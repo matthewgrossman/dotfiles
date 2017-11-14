@@ -110,8 +110,8 @@ tnoremap <Esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 autocmd TermOpen * setlocal nonumber norelativenumber
 
-nnoremap <C-w>\| :vsplit<CR> <C-\><C-n> :terminal<CR> :startinsert<CR>
-nnoremap <C-w>- :split<CR> <C-\><C-n> :terminal<CR> :startinsert<CR>
+nnoremap <C-w>\| :vsplit term://$SHELL <bar> startinsert<CR>
+nnoremap <C-w>- :split term://$SHELL <bar> startinsert<CR>
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j

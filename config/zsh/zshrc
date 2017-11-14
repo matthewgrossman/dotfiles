@@ -8,6 +8,8 @@ setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
 
+export EDITOR=`which nvim`
+
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -g ""'
