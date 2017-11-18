@@ -45,6 +45,7 @@ set mouse=a
 
 " Leader commands
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 """ PLUGINS
 
@@ -128,9 +129,6 @@ nnoremap <C-l> <C-w>l
 
 " Sayonara config
 nmap <C-c> :Sayonara!<CR>
-let g:sayonara_filetypes = {
-            \ 'terminal': '',
-            \ }
 
 " ale config
 let g:ale_lint_on_text_changed = 0
@@ -158,6 +156,7 @@ let g:signify_vcs_list = ['git']
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
+let g:tagbar_left = 1
 
 " delimitMate config
 let delimitMate_expand_cr = 1
