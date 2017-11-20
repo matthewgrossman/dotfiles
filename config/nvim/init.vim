@@ -40,6 +40,9 @@ set splitright
 filetype plugin indent on
 syntax on
 
+" easily replace recent macro
+nnoremap Q @q
+
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -105,11 +108,22 @@ Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
-" NEOVIM TERMINAL CONFIG
+" NEOVIM SPECIFIC
+set inccommand=split
 
-tnoremap <Esc> <C-\><C-n>
+" NEOVIM TERMINAL CONFIG
+tnoremap <esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
-autocmd TermOpen * setlocal nonumber norelativenumber
+
+autocmd TermOpen * call SetTermBufferConfig()
+function! SetTermBufferConfig()
+    setlocal nonumber
+    set bufhidden=delete
+
+    " override sayonara
+    nnoremap <buffer> <C-c> :startinsert<CR>
+    nnoremap <buffer> <C-b> :startinsert<CR>
+endfunction
 
 nnoremap <C-w>\| :vsplit term://$SHELL <bar> startinsert<CR>
 nnoremap <C-w>- :split term://$SHELL <bar> startinsert<CR>
@@ -128,7 +142,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Sayonara config
-nmap <C-c> :Sayonara!<CR>
+nnoremap <C-c> :Sayonara!<CR>
 
 " ale config
 let g:ale_lint_on_text_changed = 0
@@ -158,9 +172,8 @@ let g:signify_vcs_list = ['git']
 noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
-" delimitMate config
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
+" autopairs config
+let g:AutoPairsShortcutJump = '<C-m>'
 
 "vim-test config
 " nmap <silent> <leader>t :TestNearest<CR>
