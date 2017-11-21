@@ -16,8 +16,8 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
-" easily highlight recently pasted text
-nnoremap gp `[v`]
+" reformat pasted text
+nnoremap gp p`[v`]=
 
 " search options
 set incsearch
@@ -115,18 +115,27 @@ set inccommand=split
 tnoremap <esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 
-autocmd TermOpen * call SetTermBufferConfig()
-function! SetTermBufferConfig()
+autocmd TermOpen * call InitTermBuffer()
+function! InitTermBuffer()
     setlocal nonumber
-    set bufhidden=delete
-
-    " override sayonara
     nnoremap <buffer> <C-c> :startinsert<CR>
     nnoremap <buffer> <C-b> :startinsert<CR>
+    nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
-nnoremap <C-w>\| :vsplit term://$SHELL <bar> startinsert<CR>
-nnoremap <C-w>- :split term://$SHELL <bar> startinsert<CR>
+function! MakeTermSplit(direction)
+    if(a:direction == 'v')
+        vsplit term://$SHELL
+    else
+        split term://$SHELL
+    endif
+
+    set bufhidden=delete
+    startinsert
+endfunction
+
+nnoremap <C-w>\| :call MakeTermSplit('v')<CR>
+nnoremap <C-w>- :call MakeTermSplit('s')<CR>
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
@@ -154,6 +163,7 @@ let g:ale_fix_on_save = 1
 
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
+let g:fzf_layout = {'window': 'enew'}
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)
@@ -173,16 +183,19 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " autopairs config
-let g:AutoPairsShortcutJump = '<C-m>'
+" let g:AutoPairsShortcutJump = '<C-m>'
 
 "vim-test config
-" nmap <silent> <leader>t :TestNearest<CR>
+let test#strategy = "neovim"
+nmap <silent> <leader>r :TestNearest<CR>
 
-" SimpylFold
-let g:SimpylFold_fold_docstring = 0
-let g:SimpylFold_fold_import = 0
+function! ServiceVenv(cmd) abort
+    return 'service_venv '.a:cmd
+endfunction
+let g:test#custom_transformations = {'service_venv': function('ServiceVenv')}
+let g:test#transformation = 'service_venv'
 
-" " lightline config
+" lightline config
 set laststatus=2
 let g:lightline = {
 \   'colorscheme': 'seoul256',
