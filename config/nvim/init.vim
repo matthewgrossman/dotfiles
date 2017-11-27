@@ -186,7 +186,7 @@ let g:tagbar_left = 1
 " let g:AutoPairsShortcutJump = '<C-m>'
 
 "vim-test config
-let test#strategy = "neovim"
+let test#strategy = "basic"
 nmap <silent> <leader>r :TestNearest<CR>
 
 function! ServiceVenv(cmd) abort
@@ -204,6 +204,7 @@ let g:lightline = {
 " python config
 let g:jedi#completions_enabled = 0
 let g:jedi#goto_command = "<c-]>"
+let g:jedi#rename_command = ""
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
