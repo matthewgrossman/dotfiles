@@ -109,7 +109,7 @@ Plug 'leafgarland/typescript-vim'
 call plug#end()
 
 " NEOVIM SPECIFIC
-set inccommand=split
+set inccommand=nosplit
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
@@ -212,9 +212,8 @@ let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 
 " Change color theme
-set background=dark
-let base16colorspace=256
 set termguicolors
+set background=dark
 colorscheme base16-default-dark
 
 map <SPACE> <leader>
