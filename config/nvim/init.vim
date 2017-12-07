@@ -186,9 +186,13 @@ let g:tagbar_left = 1
 " let g:AutoPairsShortcutJump = '<C-m>'
 
 "vim-test config
-let test#strategy = "basic"
 nmap <silent> <leader>r :TestNearest<CR>
 
+function! ClipboardStrategy(cmd)
+    let @+ = a:cmd
+endfunction
+let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
+let g:test#strategy = 'clipboard'
 function! ServiceVenv(cmd) abort
     return 'service_venv '.a:cmd
 endfunction
