@@ -1,5 +1,4 @@
 """ BASIC COMMANDS
-set nocompatible
 
 " move by screen-line instead of text-line
 nnoremap j gj
@@ -20,8 +19,6 @@ vnoremap <c-s> <esc>:w<CR>gv
 nnoremap gp `[v`]
 
 " search options
-set incsearch
-set hlsearch
 set ignorecase
 set infercase
 vnoremap // y/\V<C-R>"<CR>
@@ -35,10 +32,6 @@ set clipboard=unnamed
 " make splits more intuitive
 set splitbelow
 set splitright
-
-" turn on syntax highlighting and filetypes
-filetype plugin indent on
-syntax on
 
 " easily replace recent macro
 nnoremap Q @q
@@ -206,7 +199,6 @@ let g:test#custom_transformations = {'service_venv': function('ServiceVenv')}
 let g:test#transformation = 'service_venv'
 
 " lightline config
-set laststatus=2
 let g:lightline = {
 \   'colorscheme': 'seoul256',
 \ }
@@ -234,19 +226,8 @@ map <SPACE> <leader>
 " fix this by using the --query arg as the initial
 nnoremap <leader>a :Ag <C-R><C-W><CR>
 
-
 " normal setings
-set backspace=2
-set history=1000
-set showmode
-set gcr=a:blinkon0
-set visualbell
-
 set hidden
-set tags=./tags;
-set autoread
-
-set wildmenu
 
 set expandtab
 set shiftround
