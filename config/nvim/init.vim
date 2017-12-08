@@ -17,7 +17,7 @@ inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
 " reformat pasted text
-nnoremap gp p`[v`]=
+nnoremap gp `[v`]
 
 " search options
 set incsearch
@@ -120,6 +120,7 @@ function! InitTermBuffer()
     setlocal nonumber
     nnoremap <buffer> <C-c> :startinsert<CR>
     nnoremap <buffer> <C-b> :startinsert<CR>
+    nnoremap <buffer> <C-e> :startinsert<CR>
     nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
@@ -215,6 +216,9 @@ let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
+
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1
 
 " Change color theme
 set termguicolors
