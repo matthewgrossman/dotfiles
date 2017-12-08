@@ -114,7 +114,6 @@ set inccommand=nosplit
 " neovim remote
 let $VISUAL = 'nvr -cc split --remote-wait'
 
-
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
@@ -189,7 +188,7 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " autopairs config
-" let g:AutoPairsShortcutJump = '<C-m>'
+let g:AutoPairsShortcutJump = '<C-e>'
 
 "vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
