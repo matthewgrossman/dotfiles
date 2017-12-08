@@ -111,6 +111,10 @@ call plug#end()
 " NEOVIM SPECIFIC
 set inccommand=nosplit
 
+" neovim remote
+let $VISUAL = 'nvr -cc split --remote-wait'
+
+
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
@@ -120,7 +124,8 @@ function! InitTermBuffer()
     setlocal nonumber
     nnoremap <buffer> <C-c> :startinsert<CR>
     nnoremap <buffer> <C-b> :startinsert<CR>
-    nnoremap <buffer> <C-e> :startinsert<CR>
+    nnoremap <buffer> <C-e> :startinsert<CR><C-e>
+    nnoremap <buffer> <C-a> :startinsert<CR><C-a>
     nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
