@@ -97,7 +97,6 @@ Plug 'vimwiki/vimwiki'
 " python
 Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
-Plug 'hynek/vim-python-pep8-indent'
 Plug 'vim-python/python-syntax'
 
 " languages
@@ -105,6 +104,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/vader.vim'
 Plug 'leafgarland/typescript-vim'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -187,6 +187,7 @@ let g:tagbar_left = 1
 
 "vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
+nmap <silent> <leader>R :TestFile<CR>
 
 function! ClipboardStrategy(cmd)
     let @+ = a:cmd
