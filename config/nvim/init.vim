@@ -192,10 +192,7 @@ function! ClipboardStrategy(cmd)
 endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
-function! ServiceVenv(cmd) abort
-    return 'service_venv '.a:cmd
-endfunction
-let g:test#custom_transformations = {'service_venv': function('ServiceVenv')}
+let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv'.cmd})}
 let g:test#transformation = 'service_venv'
 
 " lightline config
