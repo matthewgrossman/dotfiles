@@ -8,7 +8,7 @@ setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
 
-export VISUAL=`which nvim`
+export EDITOR=`which nvim`
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
