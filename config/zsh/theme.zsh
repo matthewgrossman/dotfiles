@@ -1,7 +1,7 @@
 autoload -U colors && colors
 
 # set the reset_color to black and white
-reset_color="%{$bg[black]%}%{$fg[white]%}"
+reset_color="%{$bg[default]%}%{$fg[default]%}"
 
 # function to colorize text
 zc(){
