@@ -1,6 +1,6 @@
 autoload -U colors && colors
 
-# set the reset_color to black and white
+# set the reset_color back to defaults
 reset_color="%{$bg[default]%}%{$fg[default]%}"
 
 # function to colorize text

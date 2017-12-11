@@ -1,6 +1,7 @@
 brew 'git'
 brew 'wget'
 brew 'zsh'
+brew 'zsh-autosuggestion'
 brew 'zplug'
 brew 'tmux'
 brew 'python'

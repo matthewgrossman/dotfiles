@@ -8,6 +8,7 @@ setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
 
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 export EDITOR=`which nvim`
 
 # fzf
