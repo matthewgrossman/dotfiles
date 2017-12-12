@@ -7,6 +7,11 @@ nnoremap k gk
 " make capital Y act more normal
 nnoremap Y y$
 
+" make saving easier
+nnoremap <c-s> :w<CR>
+inoremap <c-s> <c-o>:w<CR>
+vnoremap <c-s> <esc>:w<CR>gv
+
 " paste over visual mode without clobbering the unnamed register
 vnoremap x "0p
 
@@ -19,11 +24,6 @@ vnoremap . :normal .<CR>
 
 " make register-global replacements the default
 set gdefault
-
-" make saving easier
-nnoremap <c-s> :w<CR>
-inoremap <c-s> <c-o>:w<CR>
-vnoremap <c-s> <esc>:w<CR>gv
 
 " highlight pasted text
 nnoremap gp `[v`]
