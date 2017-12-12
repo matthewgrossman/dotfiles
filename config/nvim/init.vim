@@ -4,18 +4,28 @@
 nnoremap j gj
 nnoremap k gk
 
-" make register-global replacements the default
-set gdefault
-
 " make capital Y act more normal
 nnoremap Y y$
+
+" paste over visual mode without clobbering the unnamed register
+vnoremap x "0p
+
+" easily replace recent macro
+nnoremap Q @q
+
+" improve visual commands
+vnoremap Q :normal @q<CR>
+vnoremap . :normal .<CR>
+
+" make register-global replacements the default
+set gdefault
 
 " make saving easier
 nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
-" reformat pasted text
+" highlight pasted text
 nnoremap gp `[v`]
 
 " search options
@@ -32,9 +42,6 @@ set clipboard=unnamed
 " make splits more intuitive
 set splitbelow
 set splitright
-
-" easily replace recent macro
-nnoremap Q @q
 
 """ TERMINAL SPECIFIC
 set mouse=a
