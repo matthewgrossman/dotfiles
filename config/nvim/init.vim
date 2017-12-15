@@ -64,6 +64,10 @@ Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': './install.sh'
+    \ }
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -216,6 +220,11 @@ let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
+
+" language service config
+" let g:LanguageClient_serverCommands = {
+"     \ 'python': ['pyls'],
+"     \ }
 
 " vim-markdown
 let g:vim_markdown_folding_disabled = 1
