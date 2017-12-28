@@ -12,6 +12,9 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
+" normal setings
+set hidden
+
 " paste over visual mode without clobbering the unnamed register
 vnoremap x "0p
 
@@ -43,6 +46,10 @@ set clipboard=unnamed
 set splitbelow
 set splitright
 
+" fold settings
+set foldmethod=indent
+set foldlevelstart=99
+
 """ TERMINAL SPECIFIC
 set mouse=a
 
@@ -64,10 +71,6 @@ Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': './install.sh'
-    \ }
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -221,14 +224,6 @@ let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 
-" language service config
-" let g:LanguageClient_serverCommands = {
-"     \ 'python': ['pyls'],
-"     \ }
-
-" vim-markdown
-let g:vim_markdown_folding_disabled = 1
-
 " Change color theme
 set termguicolors
 set background=dark
@@ -238,9 +233,6 @@ map <SPACE> <leader>
 
 " fix this by using the --query arg as the initial
 nnoremap <leader>a :Ag <C-R><C-W><CR>
-
-" normal setings
-set hidden
 
 set expandtab
 set shiftround
