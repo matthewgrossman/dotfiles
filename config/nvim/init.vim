@@ -1,4 +1,5 @@
-""" BASIC COMMANDS
+" normal setings
+set hidden
 
 " move by screen-line instead of text-line
 nnoremap j gj
@@ -11,9 +12,6 @@ nnoremap Y y$
 nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
-
-" normal setings
-set hidden
 
 " paste over visual mode without clobbering the unnamed register
 vnoremap x "0p
@@ -50,7 +48,7 @@ set splitright
 set foldmethod=indent
 set foldlevelstart=99
 
-""" TERMINAL SPECIFIC
+" use mouse
 set mouse=a
 
 " Leader commands
@@ -95,8 +93,9 @@ Plug 'mhinz/vim-grepper'
 " ui
 Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
-Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " productivity
 Plug 'vimwiki/vimwiki'
@@ -208,11 +207,6 @@ let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
 let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
 let g:test#transformation = 'service_venv'
-
-" lightline config
-let g:lightline = {
-\   'colorscheme': 'seoul256',
-\ }
 
 " python config
 let g:jedi#completions_enabled = 0
