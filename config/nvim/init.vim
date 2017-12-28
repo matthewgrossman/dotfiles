@@ -84,11 +84,13 @@ Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-rsi'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 Plug 'godlygeek/tabular'
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
+Plug 'romainl/vim-qf'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -194,7 +196,7 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " autopairs config
-let g:AutoPairsShortcutJump = '<C-e>'
+let g:AutoPairsShortcutJump = '<C-v>'
 
 "vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
