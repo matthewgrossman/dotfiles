@@ -16,7 +16,7 @@ vnoremap <c-s> <esc>:w<CR>gv
 " paste over from the copy buffer
 vnoremap x "0p
 
-" easily replace recent macro
+" easily replay recent macro
 nnoremap Q @q
 
 " improve visual commands
