@@ -13,7 +13,7 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
-" paste over visual mode without clobbering the unnamed register
+" paste over from the copy buffer
 vnoremap x "0p
 
 " easily replace recent macro
@@ -52,6 +52,7 @@ set foldlevelstart=99
 set mouse=a
 
 " Leader commands
+map <SPACE> <leader>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
@@ -115,6 +116,11 @@ Plug 'leafgarland/typescript-vim'
 Plug 'sheerun/vim-polyglot'
 
 call plug#end()
+
+" theming
+set termguicolors
+set background=dark
+colorscheme base16-default-dark
 
 " NEOVIM SPECIFIC
 set inccommand=nosplit
@@ -195,10 +201,13 @@ let g:signify_vcs_list = ['git']
 noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
+" vim-qf config
+let g:qf_mapping_ack_style = 1
+
 " autopairs config
 let g:AutoPairsShortcutJump = '<C-v>'
 
-"vim-test config
+" vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
 nmap <silent> <leader>R :TestFile<CR>
 
@@ -220,20 +229,8 @@ let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 
-" Change color theme
-set termguicolors
-set background=dark
-colorscheme base16-default-dark
-
-map <SPACE> <leader>
-
 " fix this by using the --query arg as the initial
 nnoremap <leader>a :Ag <C-R><C-W><CR>
-
-set expandtab
-set shiftround
-set shiftwidth=4
-set softtabstop=4
 
 " autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
