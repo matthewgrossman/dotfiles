@@ -13,10 +13,10 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
-" paste over from the copy buffer
+" paste from the copy buffer
 vnoremap x "0p
 
-" easily replay recent macro
+" easily replace recent macro
 nnoremap Q @q
 
 " improve visual commands
@@ -95,8 +95,9 @@ Plug 'romainl/vim-qf'
 
 " ui
 Plug 'mhinz/vim-signify'
-Plug 'chriskempson/base16-vim'
 Plug 'w0rp/ale'
+Plug 'machakann/vim-highlightedyank'
+Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -111,7 +112,6 @@ Plug 'vim-python/python-syntax'
 " languages
 Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
-Plug 'junegunn/vader.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'sheerun/vim-polyglot'
 
@@ -179,6 +179,9 @@ let g:ale_fixers = {
 \   'python': ['isort'],
 \}
 let g:ale_fix_on_save = 1
+
+" highlightedyank config
+let g:highlightedyank_highlight_duration = 500
 
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
