@@ -29,18 +29,3 @@ for key, direction in pairs(spaces_mapping) do
         hs.eventtap.keyStroke({"ctrl"}, direction)
     end)
 end
-
-
--- arrow_hyper = {"fn"}
--- arrow_mapping = {
---     h = "LEFT",
---     l = "RIGHT",
---     j = "DOWN",
---     k = "UP"
--- }
-
--- for key, direction in pairs(arrow_mapping) do
---     hs.hotkey.bind(arrow_hyper, key, function()
---         hs.eventtap.keyStroke({}, direction)
---     end)
--- end
