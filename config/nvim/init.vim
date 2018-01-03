@@ -214,7 +214,7 @@ let g:tagbar_left = 1
 let g:qf_mapping_ack_style = 1
 
 " autopairs config
-inoremap <silent> <C-v> <esc>:call AutoPairsJump()<CR>a
+inoremap <silent> <C-Space> <esc>:call AutoPairsJump()<CR>a
 
 " vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
