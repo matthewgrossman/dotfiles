@@ -56,6 +56,12 @@ map <SPACE> <leader>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+" TODO use vim polyglot
+set expandtab
+set shiftround
+set shiftwidth=4
+set softtabstop=4
+
 """ PLUGINS
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -208,7 +214,7 @@ let g:tagbar_left = 1
 let g:qf_mapping_ack_style = 1
 
 " autopairs config
-let g:AutoPairsShortcutJump = '<C-v>'
+inoremap <silent> <C-v> <esc>:call AutoPairsJump()<CR>a
 
 " vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
@@ -271,3 +277,25 @@ endfunction
 command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().GetFZFCommand_sh(),
             \}))
+
+" TODO experimental, currently has problem due to nvim resize bug
+let g:named_terms = {}
+function! OpenNamedTerm(name, direction)
+    if has_key(g:named_terms, a:name)
+        let l:bufnr = g:named_terms[a:name]
+
+        if(a:direction == 'v')
+            vsplit
+        else
+            split
+        endif
+        execute 'buffer' l:bufnr
+    else
+        if(a:direction == 'v')
+            vsplit term://$SHELL
+        else
+            split term://$SHELL
+        endif
+        let g:named_terms[a:name] = bufnr('%')
+    endif
+endfunction
