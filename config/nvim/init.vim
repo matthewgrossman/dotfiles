@@ -187,7 +187,7 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 
 " highlightedyank config
-let g:highlightedyank_highlight_duration = 500
+let g:highlightedyank_highlight_duration = 100
 
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
