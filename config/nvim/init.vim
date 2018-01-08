@@ -186,6 +186,9 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 
+" vimwiki config
+let g:vimwiki_folding='syntax'
+
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 100
 
