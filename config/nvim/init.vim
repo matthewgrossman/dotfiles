@@ -55,6 +55,7 @@ set mouse=a
 map <SPACE> <leader>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <silent> <leader>l :redraw!<CR>
 
 " TODO use vim polyglot
 set expandtab
