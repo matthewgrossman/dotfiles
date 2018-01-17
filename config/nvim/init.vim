@@ -201,7 +201,6 @@ let g:fzf_layout = {'window': 'enew'}
 nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 let g:grepper = {
-\   'prompt': 0,
 \   'highlight': 1,
 \   'tools': ['ag']
 \ }
