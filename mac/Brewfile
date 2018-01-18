@@ -10,6 +10,7 @@ brew 'python3'
 brew 'node'
 brew 'vim', args: ['--override-system-vi']
 brew 'ag'
+brew 'ripgrep'
 brew 'reattach-to-user-namespace'
 brew 'fzf'
 brew 'ctags'
