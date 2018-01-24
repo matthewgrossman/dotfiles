@@ -9,4 +9,3 @@ venv/
 *.py[cod]
 __pycache__/
 .mypy_cache/
-

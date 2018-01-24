@@ -48,6 +48,7 @@ set splitright
 set foldmethod=indent
 set foldlevelstart=99
 
+
 " use mouse
 set mouse=a
 
@@ -177,7 +178,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Sayonara config
-nnoremap <C-c> :Sayonara!<CR>
+nnoremap <C-q> :Sayonara!<CR>
 
 " ale config
 let g:ale_lint_on_text_changed = 0
@@ -199,6 +200,11 @@ let g:highlightedyank_highlight_duration = 100
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
 let g:fzf_layout = {'window': 'enew'}
+let g:fzf_action = {
+    \ 'ctrl-q': 'wall | bdelete',
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)
@@ -282,6 +288,7 @@ endfunction
 
 command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().GetFZFCommand_sh(),
+            \'options': ['--multi'],
             \}))
 
 " TODO experimental, currently has problem due to nvim resize bug
