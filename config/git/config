@@ -6,6 +6,7 @@
     last-commit = log -1 --pretty=%B
 
     p = push
+    b = branch
     fm = pull
     co = checkout
     bc = checkout -b
