@@ -181,8 +181,6 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-q> :Sayonara!<CR>
 
 " ale config
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_save = 1
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
