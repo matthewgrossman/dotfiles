@@ -187,7 +187,7 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 
 " gutentags config
-let g:gutentags_cache_dir = '$HOME/gutentags'
+let g:gutentags_cache_dir = 'build/gutentags'
 
 " vimwiki config
 let g:vimwiki_folding='syntax'
