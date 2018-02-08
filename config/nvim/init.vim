@@ -250,6 +250,7 @@ let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
+abbreviate dbg import ipdb; ipdb.set_trace()
 
 " fix this by using the --query arg as the initial
 nnoremap <leader>a :Ag <C-R><C-W><CR>
