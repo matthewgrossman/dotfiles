@@ -48,6 +48,8 @@ set splitright
 set foldmethod=indent
 set foldlevelstart=99
 
+" don't redraw during macros
+set lazyredraw
 
 " use mouse
 set mouse=a
@@ -138,6 +140,7 @@ let $VISUAL = 'nvr -cc split --remote-wait'
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
+tmap gt <esc>gt
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 
 autocmd TermOpen * call InitTermBuffer()
@@ -185,6 +188,8 @@ let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
@@ -212,7 +217,7 @@ nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 let g:grepper = {
 \   'highlight': 1,
-\   'tools': ['ag']
+\   'tools': ['rg']
 \ }
 noremap <Leader>g :Grepper -prompt
 
