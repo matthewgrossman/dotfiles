@@ -13,9 +13,6 @@ rehash
 which zsh | sudo tee -a /etc/shells
 chsh -s $(which zsh)
 
-# base16-shell colors
-git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-
 # link hammerspoon data
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 
