@@ -118,6 +118,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
 Plug 'vim-python/python-syntax'
+Plug 'kana/vim-textobj-user'
+Plug 'bps/vim-textobj-python'
 
 " languages
 Plug 'pangloss/vim-javascript'
