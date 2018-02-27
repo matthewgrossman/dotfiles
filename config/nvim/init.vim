@@ -54,6 +54,9 @@ set lazyredraw
 " use mouse
 set mouse=a
 
+" stop resizing windows on close
+set noequalalways
+
 " Leader commands
 map <SPACE> <leader>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
