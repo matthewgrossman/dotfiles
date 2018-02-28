@@ -203,7 +203,6 @@ let g:gutentags_cache_dir = 'build/gutentags'
 let g:vimwiki_folding='syntax'
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
 nmap <Leader>di <Plug>VimwikiDiaryIndex
-autocmd BufRead,BufEnter diary.wiki VimwikiDiaryGenerateLinks
 
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 100
