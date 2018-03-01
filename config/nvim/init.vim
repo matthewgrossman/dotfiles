@@ -129,6 +129,9 @@ Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
 Plug 'leafgarland/typescript-vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript'
+
 
 call plug#end()
 
@@ -189,6 +192,9 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-q> :Sayonara!<CR>
 
 " ale config
+let g:ale_linters = {
+\   'typescript': ['tslint', 'tsserver', 'typecheck'],
+\}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}

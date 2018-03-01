@@ -23,6 +23,7 @@ brew 'ranger'
 brew 'nvim'
 brew 'pipenv'
 brew 'tldr'
+brew 'yarn'
 
 cask 'google-chrome'
 cask 'caffeine'
