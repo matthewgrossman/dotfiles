@@ -193,7 +193,7 @@ nnoremap <C-q> :Sayonara!<CR>
 
 " ale config
 let g:ale_linters = {
-\   'typescript': ['tslint', 'tsserver', 'typecheck'],
+\   'typescript': ['tsserver'],
 \}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
