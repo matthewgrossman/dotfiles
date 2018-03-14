@@ -24,6 +24,7 @@ brew 'nvim'
 brew 'pipenv'
 brew 'tldr'
 brew 'yarn'
+brew 'lzop'
 
 cask 'google-chrome'
 cask 'caffeine'
