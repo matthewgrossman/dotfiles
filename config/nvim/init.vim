@@ -54,6 +54,9 @@ set lazyredraw
 " use mouse
 set mouse=a
 
+" disable preview window
+set completeopt-=preview
+
 " stop resizing windows on close
 set noequalalways
 
