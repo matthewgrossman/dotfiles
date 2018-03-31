@@ -300,7 +300,7 @@ function! GetFZFCommand_sh()
     let search_cmd = 'git ls-files'
     let buffer_names = GetBufferNames()
     if len(buffer_names)
-        let filter_grep = 'grep -Ev "'.join(buffer_names, '|').'"'
+        let filter_grep = 'grep -wv "'.join(buffer_names, '|').'"'
         let search_cmd = search_cmd.' | '. filter_grep
     endif
     return search_cmd.';'
