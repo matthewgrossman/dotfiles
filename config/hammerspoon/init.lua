@@ -5,7 +5,11 @@ layout_hyper = {"cmd", "alt"}
 layout_mapping = {
     h = hs.layout.left50,
     l = hs.layout.right50,
-    k = hs.layout.maximized
+    k = hs.layout.maximized,
+    -- m = hs.layout.bottomRight,
+    -- n = hs.layout.bottomLeft,
+    -- o = hs.layout.topRight,
+    -- u = hs.layout.topLeft,
 }
 for key, layout in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
