@@ -6,10 +6,10 @@ layout_mapping = {
     h = hs.layout.left50,
     l = hs.layout.right50,
     k = hs.layout.maximized,
-    -- m = hs.layout.bottomRight,
-    -- n = hs.layout.bottomLeft,
-    -- o = hs.layout.topRight,
-    -- u = hs.layout.topLeft,
+    m = {x=0.5, y=0.5, w=0.5, h=0.5},
+    n = {x=0, y=0.5, w=0.5, h=0.5},
+    o = {x=0.5, y=0, w=0.5, h=0.5},
+    u = {x=0, y=0, w=0.5, h=0.5}
 }
 for key, layout in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
