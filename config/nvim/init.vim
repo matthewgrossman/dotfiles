@@ -261,6 +261,7 @@ let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
 let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
 let g:test#transformation = 'service_venv'
+let g:test#python#runner = 'pytest'
 
 " python config
 let g:jedi#completions_enabled = 0
