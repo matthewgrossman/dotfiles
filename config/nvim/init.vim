@@ -94,7 +94,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'tpope/vim-fugitive'
-
 Plug 'tpope/vim-rhubarb'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
@@ -110,6 +109,7 @@ Plug 'godlygeek/tabular'
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
 Plug 'romainl/vim-qf'
+Plug 'kana/vim-textobj-user'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -123,19 +123,18 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim'
-Plug 'zchee/deoplete-jedi'
-Plug 'vim-python/python-syntax'
-Plug 'kana/vim-textobj-user'
-Plug 'bps/vim-textobj-python'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+Plug 'vim-python/python-syntax', { 'for': 'python' }
+Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
 " languages
-Plug 'pangloss/vim-javascript'
-Plug 'plasticboy/vim-markdown'
-Plug 'leafgarland/typescript-vim'
 Plug 'sheerun/vim-polyglot'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 
 
 call plug#end()
