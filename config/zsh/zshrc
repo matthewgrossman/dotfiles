@@ -21,9 +21,9 @@ export FZF_DEFAULT_OPTS="--ansi --no-height"
 # lyft
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
-    source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias
 fi
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.zsh
 . $XDG_CONFIG_HOME/zsh/functions.zsh
+source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias

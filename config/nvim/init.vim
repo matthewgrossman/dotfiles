@@ -68,12 +68,6 @@ nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <leader>l :redraw!<CR>
 
-" TODO use vim polyglot
-set expandtab
-set shiftround
-set shiftwidth=4
-set softtabstop=4
-
 """ PLUGINS
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -88,6 +82,7 @@ Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'tpope/vim-sleuth'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
