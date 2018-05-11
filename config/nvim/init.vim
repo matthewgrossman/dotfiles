@@ -33,8 +33,6 @@ nnoremap gp `[v`]
 set ignorecase
 set infercase
 vnoremap // y/\V<C-R>"<CR>
-nnoremap / /\v
-cnoremap %s/ %s/\v
 
 " line numbering
 set number
