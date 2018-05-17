@@ -67,12 +67,6 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <leader>l :redraw!<CR>
 
 """ PLUGINS
-
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
-endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 " completion
@@ -98,7 +92,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
-Plug 'godlygeek/tabular'
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
 Plug 'romainl/vim-qf'
@@ -121,14 +114,15 @@ Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
-" languages
-Plug 'sheerun/vim-polyglot'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+" typescript
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 
+" other languages
+Plug 'sheerun/vim-polyglot'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 
 call plug#end()
 
@@ -145,7 +139,6 @@ let $VISUAL = 'nvr -cc split --remote-wait'
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
-tmap gt <esc>gt
 autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
 
 autocmd TermOpen * call InitTermBuffer()
@@ -237,6 +230,9 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
+nmap [l <Plug>(qf_loc_previous)
+nmap ]l <Plug>(qf_loc_next)
+noremap <leader>q <Plug>(qf_qf_toggle_stay)
 let g:qf_mapping_ack_style = 1
 
 " autopairs config
@@ -266,7 +262,6 @@ let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 abbreviate dbg import ipdb; ipdb.set_trace()
 
-" fix this by using the --query arg as the initial
 nnoremap <leader>a :Ag <C-R><C-W><CR>
 
 " autocmds
