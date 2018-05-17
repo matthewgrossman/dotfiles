@@ -51,14 +51,15 @@ set foldlevelstart=99
 " don't redraw during macros
 set lazyredraw
 
+" add toggle for pinning a window at a size
+nnoremap ]st :set winfixheight winfixwidth<CR>
+nnoremap [st :set nowinfixheight nowinfixwidth<CR>
+
 " use mouse
 set mouse=a
 
 " disable preview window
 set completeopt-=preview
-
-" stop resizing windows on close
-set noequalalways
 
 " Leader commands
 map <SPACE> <leader>
