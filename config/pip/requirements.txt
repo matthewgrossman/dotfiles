@@ -1,2 +1,2 @@
-pygments
-csvkit
+neovim
+pipenv
