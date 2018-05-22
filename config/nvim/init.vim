@@ -52,8 +52,8 @@ set foldlevelstart=99
 set lazyredraw
 
 " add toggle for pinning a window at a size
-nnoremap ]st :set winfixheight winfixwidth<CR>
-nnoremap [st :set nowinfixheight nowinfixwidth<CR>
+nnoremap ]st :set winfixheight<CR>
+nnoremap [st :set nowinfixheight<CR>
 
 " use mouse
 set mouse=a
