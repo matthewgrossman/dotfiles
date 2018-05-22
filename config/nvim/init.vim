@@ -5,6 +5,10 @@ set hidden
 nnoremap j gj
 nnoremap k gk
 
+" hop to the beginning and ends of line easily
+nnoremap H ^
+nnoremap L $
+
 " make capital Y act more normal
 nnoremap Y y$
 
