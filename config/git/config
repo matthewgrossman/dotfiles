@@ -21,8 +21,8 @@
     l = log
     ld = log --stat --patch --full-diff
     mm = merge master
-    pm = pull origin master:master
 
+    pm = '!git checkout master; git pull; git checkout -; git merge master'
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
 [core]
