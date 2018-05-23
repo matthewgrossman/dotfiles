@@ -89,6 +89,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
+Plug 'francoiscabrol/ranger.vim'
 
 " usability
 Plug 'tpope/vim-surround'
@@ -170,6 +171,8 @@ endfunction
 nnoremap <C-w>\| :call MakeTermSplit('v')<CR>
 nnoremap <C-w>- :call MakeTermSplit('s')<CR>
 
+autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
+
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
 tnoremap <C-k> <C-\><C-N><C-w>k
@@ -205,6 +208,10 @@ let g:gutentags_cache_dir = 'build/gutentags'
 let g:vimwiki_folding='syntax'
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
 nmap <Leader>di <Plug>VimwikiDiaryIndex
+
+" ranger config
+let g:ranger_map_keys = 0
+nnoremap - :Ranger<CR>
 
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 100
