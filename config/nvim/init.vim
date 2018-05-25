@@ -54,6 +54,7 @@ set foldlevelstart=99
 
 " don't redraw during macros
 set lazyredraw
+set cursorline
 
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
@@ -213,6 +214,9 @@ nmap <Leader>di <Plug>VimwikiDiaryIndex
 let g:ranger_map_keys = 0
 nnoremap - :Ranger<CR>
 
+" fugitive config
+nmap <Leader>g :Git<space>
+
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 100
 
@@ -232,10 +236,12 @@ let g:grepper = {
 \   'highlight': 1,
 \   'tools': ['rg']
 \ }
-noremap <Leader>g :Grepper -prompt
 
 " vim-signify config
 let g:signify_vcs_list = ['git']
+let g:signify_vcs_cmds = {
+\ 'git': 'git diff master --no-color --no-ext-diff -U0 -- %f',
+\ }
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
