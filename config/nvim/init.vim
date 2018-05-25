@@ -103,6 +103,7 @@ Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
 Plug 'romainl/vim-qf'
 Plug 'kana/vim-textobj-user'
+Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
 Plug 'mhinz/vim-signify'
