@@ -107,7 +107,6 @@ Plug 'kana/vim-textobj-user'
 " ui
 Plug 'mhinz/vim-signify'
 Plug 'w0rp/ale'
-Plug 'machakann/vim-highlightedyank'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
