@@ -56,6 +56,12 @@ set foldlevelstart=99
 set lazyredraw
 set cursorline
 
+" sane defaults for languages not covered by file plugins
+set expandtab
+set shiftround
+set shiftwidth=4
+set softtabstop=4
+
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
 nnoremap [st :set nowinfixheight<CR>
