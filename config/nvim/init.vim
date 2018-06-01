@@ -115,6 +115,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mhinz/vim-signify'
 Plug 'w0rp/ale'
 Plug 'chriskempson/base16-vim'
+Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -224,7 +225,7 @@ nnoremap - :Ranger<CR>
 nmap <Leader>g :Git<space>
 
 " highlightedyank config
-let g:highlightedyank_highlight_duration = 100
+let g:highlightedyank_highlight_duration = 150
 
 " fzf config
 nnoremap <c-p> :FZFBuffers<cr>
@@ -245,9 +246,19 @@ let g:grepper = {
 
 " vim-signify config
 let g:signify_vcs_list = ['git']
-let g:signify_vcs_cmds = {
-\ 'git': 'git diff master --no-color --no-ext-diff -U0 -- %f',
-\ }
+nnoremap [d :call SignifyToggle('against_head')<CR>
+nnoremap ]d :call SignifyToggle('against_master')<CR>
+function! SignifyToggle(against_master)
+    if(a:against_master == 'against_master')
+        let g:signify_vcs_cmds = {
+        \ 'git': 'git diff master --no-color --no-ext-diff -U0 -- %f',
+        \ }
+    else
+        let g:signify_vcs_cmds = {
+        \ 'git': 'git diff --no-color --no-ext-diff -U0 -- %f',
+        \ }
+    endif
+endfunction
 
 " tagbar config
 noremap <Leader>t :TagbarToggle<CR>
