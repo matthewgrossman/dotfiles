@@ -246,9 +246,9 @@ let g:grepper = {
 
 " vim-signify config
 let g:signify_vcs_list = ['git']
-nnoremap [d :call SignifyToggle('head')<CR>
-nnoremap ]d :call SignifyToggle('master')<CR>
-function! SignifyToggle(diff_commit)
+nnoremap [d :call SignifyToggleDiff('head')<CR>
+nnoremap ]d :call SignifyToggleDiff('master')<CR>
+function! SignifyToggleDiff(diff_commit)
     if(a:diff_commit == 'master')
         let g:signify_vcs_cmds = {
         \ 'git': 'git diff master --no-color --no-ext-diff -U0 -- %f',
