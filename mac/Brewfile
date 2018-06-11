@@ -20,6 +20,7 @@ brew 'pipenv'
 brew 'tldr'
 brew 'yarn'
 brew 'lzop'
+brew 'jq'
 
 cask 'google-chrome'
 cask 'caffeine'
