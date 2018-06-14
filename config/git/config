@@ -9,7 +9,7 @@
     b = branch
     fm = pull
     co = checkout
-    bc = checkout -b
+    pm = pull origin master
     dm = diff master
     c = commit
     ca = commit --all
@@ -23,7 +23,7 @@
     ld = log --stat --patch --full-diff
     mm = merge master
 
-    pm = "!git checkout master; git pull; git checkout -; git merge --no-edit master"
+    bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
 [core]
