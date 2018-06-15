@@ -20,7 +20,7 @@ vnoremap <c-s> <esc>:w<CR>gv
 " paste from the copy buffer
 vnoremap x "0p
 
-" easily replace recent macro
+" easily replay recent macro
 nnoremap Q @q
 
 " improve visual commands
@@ -200,6 +200,7 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
+\   'python': ['flake8', 'mypy'],
 \}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
