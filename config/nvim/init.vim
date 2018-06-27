@@ -62,6 +62,11 @@ set shiftround
 set shiftwidth=4
 set softtabstop=4
 
+" autocmds
+autocmd BufNewFile,BufRead *.sls  set syntax=yaml
+autocmd BufNewFile,BufRead *.tsx  set syntax=typescript
+autocmd filetype crontab setlocal nobackup nowritebackup
+
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
 nnoremap [st :set nowinfixheight<CR>
@@ -267,8 +272,8 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
-nmap [l <Plug>(qf_loc_previous)
-nmap ]l <Plug>(qf_loc_next)
+nmap [l <Plug>(ale_previous_wrap)
+nmap ]l <Plug>(ale_next_wrap)
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
 let g:qf_mapping_ack_style = 1
 
@@ -302,9 +307,6 @@ nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a :Ag <C-R><C-W><CR>
 
-" autocmds
-autocmd BufNewFile,BufRead *.sls  set syntax=yaml
-autocmd filetype crontab setlocal nobackup nowritebackup
 
 function! GetBufferNames()
     let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')

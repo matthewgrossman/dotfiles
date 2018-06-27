@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # need xcode to do anything fun on macs
 xcode-select --install
@@ -18,3 +18,7 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 
 # reload ZSH now that setup is done
 source ~/.zshrc
+
+# install non-brew deps
+pip install -r $HOME/.config/pip/requirements.txt
+sh /$HOME/.config/node/node.sh
