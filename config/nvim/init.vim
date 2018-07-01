@@ -64,7 +64,6 @@ set softtabstop=4
 
 " autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
-autocmd BufNewFile,BufRead *.tsx  set syntax=typescript
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 " add toggle for pinning a window at a size
@@ -128,7 +127,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
@@ -137,7 +135,7 @@ Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 " typescript
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+Plug 'mhartington/nvim-typescript', { 'do': './install.sh', 'for': 'typescript' }
 
 " other languages
 Plug 'sheerun/vim-polyglot'
@@ -206,18 +204,20 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy'],
+\   'python': ['flake8', 'mypy', 'pyls'],
 \}
+let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
-let g:ale_completion_enabled = 0
+nmap gd <Plug>(ale_go_to_definition)
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
+set nofsync
 
 " vimwiki config
 let g:vimwiki_folding='syntax'
@@ -294,11 +294,7 @@ let g:test#transformation = 'service_venv'
 let g:test#python#runner = 'pytest'
 
 " python config
-let g:jedi#completions_enabled = 0
-let g:jedi#goto_command = "<c-]>"
-let g:jedi#rename_command = ""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#jedi#show_docstring = 0
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
