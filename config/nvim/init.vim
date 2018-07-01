@@ -127,6 +127,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 
 " python
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
@@ -204,16 +205,14 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy', 'pyls'],
+\   'python': ['flake8', 'mypy'],
 \}
-let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
-nmap gd <Plug>(ale_go_to_definition)
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
@@ -294,6 +293,8 @@ let g:test#transformation = 'service_venv'
 let g:test#python#runner = 'pytest'
 
 " python config
+let g:jedi#completions_enabled = 0
+let g:jedi#goto_command = "<c-]>"
 let g:deoplete#enable_at_startup = 1
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
