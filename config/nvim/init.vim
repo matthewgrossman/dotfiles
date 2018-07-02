@@ -74,7 +74,7 @@ nnoremap [st :set nowinfixheight<CR>
 set mouse=a
 
 " disable preview window
-set completeopt-=preview
+set completeopt=menuone,noselect,noinsert
 
 " Leader commands
 map <SPACE> <leader>
@@ -205,8 +205,9 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy'],
+\   'python': ['flake8', 'mypy', 'pyls'],
 \}
+let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
