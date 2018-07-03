@@ -296,6 +296,7 @@ let g:test#python#runner = 'pytest'
 " python config
 let g:jedi#completions_enabled = 0
 let g:jedi#goto_command = "<c-]>"
+let g:jedi#rename_command = ""
 let g:deoplete#enable_at_startup = 1
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
