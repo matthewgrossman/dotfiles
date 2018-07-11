@@ -135,7 +135,6 @@ Plug 'bps/vim-textobj-python', { 'for': 'python' }
 Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
 " typescript
-Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', { 'do': './install.sh', 'for': 'typescript' }
 
@@ -206,9 +205,8 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy', 'pyls'],
+\   'python': ['flake8', 'mypy'],
 \}
-let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
