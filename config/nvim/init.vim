@@ -172,9 +172,9 @@ endfunction
 
 function! MakeTermSplit(direction)
     if(a:direction == 'v')
-        vsplit term://$SHELL
+        vsplit | terminal
     else
-        split term://$SHELL
+        split | terminal
     endif
 
     set bufhidden=delete
