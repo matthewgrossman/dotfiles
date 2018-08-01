@@ -132,7 +132,6 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
 " typescript
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
