@@ -249,6 +249,9 @@ let g:grepper = {
 \   'tools': ['rg']
 \ }
 
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
+
 " vim-signify config
 let g:signify_vcs_list = ['git']
 nnoremap [d :call SignifyToggleDiff('head')<CR>
