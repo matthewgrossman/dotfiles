@@ -75,6 +75,7 @@ set mouse=a
 
 " disable preview window
 set completeopt=menuone,noselect,noinsert
+set pumheight=30
 
 " Leader commands
 map <SPACE> <leader>
