@@ -222,6 +222,7 @@ set nofsync
 let g:vimwiki_folding='syntax'
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
 nmap <Leader>di <Plug>VimwikiDiaryIndex
+nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
 
 " ranger config
 let g:ranger_map_keys = 0
