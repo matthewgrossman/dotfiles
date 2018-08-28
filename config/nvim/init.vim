@@ -231,6 +231,9 @@ nnoremap - :Ranger<CR>
 " fugitive config
 nmap <Leader>g :Git<space>
 
+" airline config
+let g:airline_highlighting_cache = 1
+
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 150
 
