@@ -21,6 +21,7 @@ brew 'tldr'
 brew 'yarn'
 brew 'lzop'
 brew 'jq'
+brew 'asciinema'
 
 cask 'google-chrome'
 cask 'caffeine'
