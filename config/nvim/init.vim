@@ -33,6 +33,9 @@ set gdefault
 " highlight pasted text
 nnoremap gp `[v`]
 
+" https://github.com/neovim/neovim/issues/7994
+au InsertLeave * set nopaste
+
 " search options
 set ignorecase
 set infercase
