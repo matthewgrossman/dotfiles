@@ -108,10 +108,10 @@ Plug 'majutsushi/tagbar'
 Plug 'francoiscabrol/ranger.vim'
 
 " usability
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
+Plug 'machakann/vim-sandwich'
 Plug 'wellle/targets.vim'
 Plug 'peterrincker/vim-argumentative'
 Plug 'janko-m/vim-test'
@@ -142,6 +142,7 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', { 'do': './install.sh', 'for': 'typescript' }
 
 " other languages
+Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'sheerun/vim-polyglot'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
@@ -150,8 +151,8 @@ call plug#end()
 
 " theming
 set termguicolors
-set background=dark
 colorscheme base16-default-dark
+set background=dark
 
 " NEOVIM SPECIFIC
 set inccommand=nosplit
@@ -201,6 +202,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" vim-sandwich
+runtime macros/sandwich/keymap/surround.vim
+let g:sandwich#recipes += [{'buns': ['{% translatable "CONTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
 
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
