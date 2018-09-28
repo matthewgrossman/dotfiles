@@ -27,6 +27,10 @@ nnoremap Q @q
 vnoremap Q :normal @q<CR>
 vnoremap . :normal .<CR>
 
+" add line text object
+xnoremap il g_o^
+onoremap il :normal vil<CR>
+
 " make register-global replacements the default
 set gdefault
 
@@ -50,6 +54,8 @@ set clipboard=unnamed
 " make splits more intuitive
 set splitbelow
 set splitright
+
+nnoremap <C-w>z :tab split<CR>
 
 " fold settings
 set foldmethod=indent
@@ -205,7 +211,7 @@ nnoremap <C-l> <C-w>l
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
-let g:sandwich#recipes += [{'buns': ['{% translatable "CONTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
+let g:sandwich#recipes += [{'buns': ['{% translatable "COCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTNTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
 
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>

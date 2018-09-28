@@ -23,6 +23,7 @@ brew 'lzop'
 brew 'jq'
 brew 'asciinema'
 brew 'xonsh'
+brew 'gawk'
 
 cask 'google-chrome'
 cask 'caffeine'
