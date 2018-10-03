@@ -24,6 +24,7 @@ brew 'jq'
 brew 'asciinema'
 brew 'xonsh'
 brew 'gawk'
+brew 'rust'
 
 cask 'google-chrome'
 cask 'caffeine'
