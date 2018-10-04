@@ -89,6 +89,7 @@ set pumheight=30
 
 " Leader commands
 map <SPACE> <leader>
+nnoremap <silent> <Leader><SPACE> :nohlsearch<CR>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <leader>l :redraw!<CR>
@@ -126,7 +127,6 @@ Plug 'mhinz/vim-grepper'
 Plug 'romainl/vim-qf'
 Plug 'kana/vim-textobj-user'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'pgdouyon/vim-evanesco'
 
 " ui
 Plug 'mhinz/vim-signify'
