@@ -23,9 +23,11 @@
     mm = merge master
     giff = diff
 
+    ticket-prefix = "!git branch-name | sed -E 's/(XD-[[:digit:]]{4}).*/\\1/'"
+    pr-name = "!echo \"$(git ticket-prefix)\": \"$(git last-commit)\""
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!git po; hub pull-request -o -m \"$(git last-commit)\" | pbcopy"
+    pr = "!git po; hub pull-request -o -m \"$(git pr-name)\" | pbcopy"
 [core]
     excludesfile = ~/.config/git/gitignore_global
