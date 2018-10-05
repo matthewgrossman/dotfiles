@@ -23,7 +23,7 @@
     mm = merge master
     giff = diff
 
-    ticket-prefix = "!git branch-name | sed -E 's/(XD-[[:digit:]]{4}).*/\\1/'"
+    ticket-prefix = "!git branch-name | perl -pe 's/(XD-\\d{4}).*/\\1/'"
     pr-name = "!echo \"$(git ticket-prefix)\": \"$(git last-commit)\""
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
