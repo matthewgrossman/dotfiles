@@ -214,6 +214,10 @@ nnoremap <C-l> <C-w>l
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
 let g:sandwich#recipes += [{'buns': ['{% translatable "COCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTNTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
+for recipe in g:sandwich#recipes
+    let recipe.cursor = 'head'
+endfor
+
 
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
