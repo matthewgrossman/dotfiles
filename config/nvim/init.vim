@@ -302,6 +302,8 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
+nmap [l <Plug>(ale_previous_wrap)
+nmap ]l <Plug>(ale_next_wrap)
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
 let g:qf_mapping_ack_style = 1
 
