@@ -84,7 +84,6 @@ nnoremap [st :set nowinfixheight<CR>
 set mouse=a
 
 " disable preview window
-set completeopt=menuone,noselect,noinsert
 set pumheight=30
 
 " Leader commands
@@ -101,8 +100,15 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ajh17/VimCompletesMe'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-sleuth'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -140,14 +146,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+Plug 'ncm2/ncm2-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
-
-" typescript
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript', { 'do': './install.sh', 'for': 'typescript' }
 
 " other languages
 Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
@@ -218,7 +219,6 @@ for recipe in g:sandwich#recipes
     let recipe.cursor = 'head'
 endfor
 
-
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
 
@@ -233,6 +233,10 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
+highlight link ALEErrorSign error
+highlight link ALEWarningSign todo
+let g:ale_sign_error = "⬤"
+let g:ale_sign_warning = "⬤"
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
@@ -298,8 +302,6 @@ noremap <Leader>t :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
-nmap [l <Plug>(ale_previous_wrap)
-nmap ]l <Plug>(ale_next_wrap)
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
 let g:qf_mapping_ack_style = 1
 
@@ -319,11 +321,29 @@ let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_v
 let g:test#transformation = 'service_venv'
 let g:test#python#runner = 'pytest'
 
+" ncm2 config
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+set shortmess+=c
+call ncm2#override_source('LanguageClient_python', {'enable': 0})
+
+" LanguageClient config
+let g:LanguageClient_serverCommands = {
+\ 'python': ['pyls'],
+\ 'typescript': ['javascript-typescript-stdio']
+\ }
+function! LC_maps()
+    if has_key(g:LanguageClient_serverCommands, &filetype)
+        nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+        nnoremap <buffer> <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
+    endif
+endfunction
+autocmd FileType * call LC_maps()
+let g:LanguageClient_hoverPreview = 'Never'
+set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
+let g:LanguageClient_diagnosticsEnable = 0
+
 " python config
-let g:jedi#completions_enabled = 0
-let g:jedi#goto_command = "<c-]>"
-let g:jedi#rename_command = ""
-let g:deoplete#enable_at_startup = 1
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
