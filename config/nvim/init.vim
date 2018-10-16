@@ -155,6 +155,7 @@ Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'sheerun/vim-polyglot'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'junegunn/vader.vim'
 
 call plug#end()
 
@@ -338,11 +339,11 @@ function! LC_maps()
     if has_key(g:LanguageClient_serverCommands, &filetype)
         nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
         nnoremap <buffer> <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
+        setlocal formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
     endif
 endfunction
 autocmd FileType * call LC_maps()
 let g:LanguageClient_hoverPreview = 'Never'
-set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
 let g:LanguageClient_diagnosticsEnable = 0
 
 " python config
