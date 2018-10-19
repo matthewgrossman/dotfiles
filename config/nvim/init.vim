@@ -339,6 +339,7 @@ function! LC_maps()
     if has_key(g:LanguageClient_serverCommands, &filetype)
         nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
         nnoremap <buffer> <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
+        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:call LanguageClient#textDocument_definition()<cr>
         setlocal formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
     endif
 endfunction
