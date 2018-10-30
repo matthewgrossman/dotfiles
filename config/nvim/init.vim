@@ -155,6 +155,7 @@ Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'sheerun/vim-polyglot'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'junegunn/vader.vim'
 
 call plug#end()
