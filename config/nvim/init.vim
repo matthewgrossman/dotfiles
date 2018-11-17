@@ -174,7 +174,7 @@ let $VISUAL = 'nvr -cc split --remote-wait'
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
 nnoremap <C-w>t :tabnew <bar> :terminal<CR> <bar> :file term://
-autocmd BufEnter,BufWinEnter,WinEnter term://* startinsert
+autocmd BufEnter,BufWinEnter,WinEnter * if &buftype=='terminal' | startinsert | endif
 
 autocmd TermOpen * call InitTermBuffer()
 function! InitTermBuffer()
