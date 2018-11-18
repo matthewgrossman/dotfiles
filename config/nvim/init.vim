@@ -105,10 +105,6 @@ Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -151,8 +147,9 @@ Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
 " other languages
-Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'sheerun/vim-polyglot'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
@@ -227,18 +224,25 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy'],
+\   'python': ['flake8', 'mypy', 'pyls'],
 \}
+" ignore diagnostic from pyls, but load so we can do LSP functionality
+let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
-highlight link ALEErrorSign error
-highlight link ALEWarningSign todo
-let g:ale_sign_error = "⬤"
-let g:ale_sign_warning = "⬤"
+
+function! LC_maps()
+    if has_key(g:ale_linters, &filetype)
+        nnoremap <buffer> <silent> K :ALEHover<cr>
+        nnoremap <buffer> <silent> <C-]> :ALEGoToDefinition<cr>
+        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:ALEGoToDefinition<cr>
+    endif
+endfunction
+autocmd FileType * call LC_maps()
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
@@ -329,24 +333,6 @@ let g:test#python#runner = 'pytest'
 autocmd BufEnter * call ncm2#enable_for_buffer()
 set completeopt=noinsert,menuone,noselect
 set shortmess+=c
-call ncm2#override_source('LanguageClient_python', {'enable': 0})
-
-" LanguageClient config
-let g:LanguageClient_serverCommands = {
-\ 'python': ['pyls'],
-\ 'typescript': ['javascript-typescript-stdio']
-\ }
-function! LC_maps()
-    if has_key(g:LanguageClient_serverCommands, &filetype)
-        nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
-        nnoremap <buffer> <silent> <C-]> :call LanguageClient#textDocument_definition()<cr>
-        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:call LanguageClient#textDocument_definition()<cr>
-        setlocal formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
-    endif
-endfunction
-autocmd FileType * call LC_maps()
-let g:LanguageClient_hoverPreview = 'Never'
-let g:LanguageClient_diagnosticsEnable = 0
 
 " python config
 let g:python_highlight_indent_errors = 0
