@@ -86,6 +86,9 @@ set mouse=a
 " disable preview window
 set pumheight=30
 
+" reload external changes
+set autoread
+
 " Leader commands
 map <SPACE> <leader>
 nnoremap <silent> <Leader><SPACE> :nohlsearch<CR>
