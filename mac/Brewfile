@@ -26,6 +26,7 @@ brew 'xonsh'
 brew 'gawk'
 brew 'rust'
 brew 'abduco'
+brew 'weechat'
 
 cask 'google-chrome'
 cask 'caffeine'

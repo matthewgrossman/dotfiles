@@ -307,7 +307,7 @@ function! SignifyToggleDiff(diff_commit)
 endfunction
 
 " tagbar config
-noremap <Leader>t :TagbarToggle<CR>
+noremap <Leader>t :TagbarOpenAutoClose<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
