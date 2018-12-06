@@ -346,6 +346,9 @@ nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a :Ag <C-R><C-W><CR>
 
+" commands
+command! -range=% jsonformat :<line1>,<line2>!python -m json.tool
+command! -range=% xmlformat :<line1>,<line2>!xmllint --format -
 
 function! GetBufferNames()
     let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
