@@ -349,6 +349,7 @@ nnoremap <leader>a :Ag <C-R><C-W><CR>
 " commands
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
+command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 
 function! GetBufferNames()
     let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
