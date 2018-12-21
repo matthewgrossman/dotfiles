@@ -22,3 +22,12 @@ ab() {
     abduco -a "$session"
   )
 }
+
+# cd to repo in src/
+src() {
+    local repos=$(ls -ltr "$HOME/src" | awk '/^d/{print $NF}')
+    local repo=$(fzf --tac --no-sort <<< $repos)
+    deactivate 2>/dev/null  # deactivate python venv
+    cd "$HOME/src/$repo"
+    source venv/bin/activate 2>/dev/null || true  # activate new python venv
+}
