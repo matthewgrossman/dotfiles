@@ -75,6 +75,8 @@ set softtabstop=4
 " autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
+autocmd FileType json let &formatprg='python -m json.tool'
+autocmd FileType xml let &formatprg='xmllint --format -'
 
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
@@ -125,6 +127,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
 Plug 'machakann/vim-sandwich'
 Plug 'wellle/targets.vim'
+Plug 'kana/vim-textobj-indent'
 Plug 'peterrincker/vim-argumentative'
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
