@@ -31,6 +31,7 @@ brew 'nmap'
 brew 'moreutils'
 brew 'cowsay'
 brew 'fortune'
+brew 'grip'
 
 cask 'google-chrome'
 cask 'caffeine'
