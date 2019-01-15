@@ -1,3 +1,4 @@
 neovim
 pipenv
 python-language-server
+grip
