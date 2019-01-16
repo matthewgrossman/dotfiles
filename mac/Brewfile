@@ -32,6 +32,7 @@ brew 'moreutils'
 brew 'cowsay'
 brew 'fortune'
 brew 'grip'
+brew 'pandoc'
 
 cask 'google-chrome'
 cask 'caffeine'
