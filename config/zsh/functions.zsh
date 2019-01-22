@@ -25,10 +25,13 @@ ab() {
 
 # cd to repo in src/
 src() {
-    project_root="$HOME/src/"
+    local project_root="$HOME/src/"
     local repos=$(ls -ltr "$project_root" | awk '/^d/{print $NF}')
     local repo=$(fzf --tac --no-sort <<< $repos)
-    deactivate 2>/dev/null  # deactivate python venv
-    cd "$project_root$repo"
-    source venv/bin/activate 2>/dev/null || true  # activate new python venv
+    if [[ -n "$repo" ]]
+    then
+        deactivate 2>/dev/null  # deactivate python venv
+        cd "$project_root$repo"
+        source venv/bin/activate 2>/dev/null || true  # activate new python venv
+    fi
 }
