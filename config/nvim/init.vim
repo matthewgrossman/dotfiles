@@ -239,6 +239,7 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
+let g:ale_python_autopep8_options = '--max-line-length=10000'
 
 function! LC_maps()
     if has_key(g:ale_linters, &filetype)
