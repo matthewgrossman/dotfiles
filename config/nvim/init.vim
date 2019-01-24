@@ -234,7 +234,7 @@ let g:ale_linters = {
 " ignore diagnostic from pyls, but load so we can do LSP functionality
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
-\   'python': ['isort', 'trim_whitespace'],
+\   'python': ['isort', 'trim_whitespace', 'autopep8'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
