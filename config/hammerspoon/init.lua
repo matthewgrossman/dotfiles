@@ -30,6 +30,6 @@ spaces_mapping = {
 
 for key, direction in pairs(spaces_mapping) do
     hs.hotkey.bind(spaces_hyper, key, function()
-        hs.eventtap.keyStroke({"ctrl"}, direction)
+        hs.eventtap.keyStroke({"fn", "ctrl"}, direction)
     end)
 end
