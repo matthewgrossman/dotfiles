@@ -215,6 +215,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+vnoremap <C-h> <esc><C-w>h
+vnoremap <C-j> <esc><C-w>j
+vnoremap <C-k> <esc><C-w>k
+vnoremap <C-l> <esc><C-w>l
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim

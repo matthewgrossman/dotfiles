@@ -33,6 +33,7 @@ brew 'cowsay'
 brew 'fortune'
 brew 'grip'
 brew 'pandoc'
+brew 'xsv'
 
 cask 'google-chrome'
 cask 'caffeine'
