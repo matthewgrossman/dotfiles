@@ -172,6 +172,7 @@ set inccommand=nosplit
 
 " neovim remote
 let $VISUAL = 'nvr -cc split --remote-wait'
+autocmd FileType gitcommit set bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
