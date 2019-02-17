@@ -235,6 +235,8 @@ nnoremap <C-q> :Sayonara!<CR>
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
 \   'python': ['flake8', 'mypy', 'pyls'],
+\   'zsh': ['shellcheck'],
+\   'bash': ['shellcheck'],
 \}
 " ignore diagnostic from pyls, but load so we can do LSP functionality
 let g:ale_linters_ignore = {'python': ['pyls']}

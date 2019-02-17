@@ -1,37 +1,47 @@
-# custom functions
+#!/usr/bin/env bash
+
+# open files
 fo() {
-  local out file key
-  files=$(fzf --query="$1" --multi --exit-0)
-  if [ -n "$files" ]; then
-      $EDITOR -o $(tr '\n' ' ' <<< $files)
-  fi
+    local files joined
+    files=$(fzf --query="$1" --multi --exit-0)
+    if [ -n "$files" ]; then
+        joined=$(tr '\n' ' ' <<< "$files")
+        $EDITOR -o "$joined"
+    fi
 }
 
 # checkout recent branches
 co() {
-    local branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
-    local branch=$(fzf --tac --no-sort <<< $branches)
-    git checkout $branch
+    local branch branches
+    branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
+    branch=$(fzf --tac --no-sort <<< "$branches")
+    git checkout "$branch"
 }
 
 # attach to abduco session
 ab() {
-  [[ $1 ]] && abduco -c "$1" "$SHELL" || (
-    local sessions=$(abduco | tail -n +2 | sed 's/*//' | awk '{print $4}')
-    local session=$(fzf --tac --no-sort <<< $sessions)
-    abduco -a "$session"
-  )
+    if [[ $1 ]]; then
+        abduco -c "$1" "$SHELL"
+    else
+        local session sessions
+        sessions=$(abduco | tail -n +2 | sed 's/*//' | awk '{print $4}')
+        session=$(fzf --tac --no-sort <<< "$sessions")
+        abduco -a "$session"
+    fi
 }
 
 # cd to repo in src/
 src() {
-    local project_root="$HOME/src/"
-    local repos=$(ls -ltr "$project_root" | awk '/^d/{print $NF}')
-    local repo=$(fzf --tac --no-sort <<< $repos)
+    local root_path repos repo
+    root_path="${PROJECT_ROOT:-$HOME/src/}"
+    repos=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d -exec basename {} +)
+    repo=$(fzf --tac --no-sort <<< "$repos")
     if [[ -n "$repo" ]]
     then
         deactivate 2>/dev/null  # deactivate python venv
-        cd "$project_root$repo"
-        source venv/bin/activate 2>/dev/null || true  # activate new python venv
+        cd "$root_path$repo" || return
+
+        # shellcheck disable=SC1091
+        source "venv/bin/activate" 2>/dev/null || true  # activate new python venv
     fi
 }

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 export XDG_CONFIG_HOME="$HOME/.config"
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
@@ -17,9 +18,10 @@ export EDITOR="$(which nvim)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS="--ansi --no-height"
+export FZF_DEFAULT_OPTS="--ansi --no-height --tiebreak='index'"
 
 # lyft
+export PROJECT_ROOT="$HOME/src/"
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
 fi

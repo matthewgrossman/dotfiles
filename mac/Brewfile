@@ -34,6 +34,7 @@ brew 'fortune'
 brew 'grip'
 brew 'pandoc'
 brew 'xsv'
+brew 'shellcheck'
 
 cask 'google-chrome'
 cask 'caffeine'
