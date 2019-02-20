@@ -2,11 +2,10 @@
 
 # open files
 fo() {
-    local files joined
-    files=$(fzf --query="$1" --multi --exit-0)
-    if [ -n "$files" ]; then
-        joined=$(tr '\n' ' ' <<< "$files")
-        $EDITOR -o "$joined"
+    local files
+    IFS=$'\n' files=( $(fzf --query="$1" --multi --exit-0) )
+    if [ "${#files}" -ne 0 ]; then
+        $EDITOR "${files[@]}"
     fi
 }
 
@@ -35,7 +34,7 @@ src() {
     local root_path repos repo
     root_path="${PROJECT_ROOT:-$HOME/src/}"
     repos=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d -exec basename {} +)
-    repo=$(fzf --tac --no-sort <<< "$repos")
+    repo=$(fzf <<< "$repos")
     if [[ -n "$repo" ]]
     then
         deactivate 2>/dev/null  # deactivate python venv
