@@ -35,6 +35,7 @@ brew 'grip'
 brew 'pandoc'
 brew 'xsv'
 brew 'shellcheck'
+brew 'luarocks'
 
 cask 'google-chrome'
 cask 'caffeine'

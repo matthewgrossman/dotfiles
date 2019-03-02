@@ -33,3 +33,7 @@ for key, direction in pairs(spaces_mapping) do
         hs.eventtap.keyStroke({"fn", "ctrl"}, direction)
     end)
 end
+
+pl = require "pl.pretty"
+wf=hs.window.filter
+wf_force = wf.new{overrides={forceRefreshOnSpaceChange=true}}

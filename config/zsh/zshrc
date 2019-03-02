@@ -2,6 +2,7 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
+export PATH="$HOME/bin:$PATH"
 HISTSIZE=1000000
 SAVEHIST=1000000
 setopt autocd extendedglob

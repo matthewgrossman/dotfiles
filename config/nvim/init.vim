@@ -338,7 +338,8 @@ function! ClipboardStrategy(cmd)
 endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
-let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
+" let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
+let g:test#custom_transformations = {'service_venv': function({cmd -> './test_unit.sh '.join(split(cmd)[1:])})}
 let g:test#transformation = 'service_venv'
 let g:test#python#runner = 'pytest'
 
