@@ -3,7 +3,7 @@
 # open files
 fo() {
     local files
-    IFS=$'\n' files=( $(fzf --query="$1" --multi --exit-0) )
+    IFS=$'\n' files=( $(fzf --query="$1" --multi --exit-0 --preview 'bat --color=always {}') )
     if [ "${#files}" -ne 0 ]; then
         $EDITOR "${files[@]}"
     fi
@@ -14,7 +14,7 @@ co() {
     local branch branches
     branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
     branch=$(fzf --tac --no-sort <<< "$branches")
-    git checkout "$branch"
+    [ -n "$branch" ] && git checkout "$branch"
 }
 
 # attach to abduco session

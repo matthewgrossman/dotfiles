@@ -17,9 +17,10 @@ export EDITOR="$(which nvim)"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS="--ansi --no-height"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS="--ansi --no-height"
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 
 # lyft
 export PROJECT_ROOT="$HOME/src/"
@@ -31,3 +32,6 @@ fi
 . $XDG_CONFIG_HOME/zsh/theme.zsh
 . $XDG_CONFIG_HOME/zsh/functions.zsh
 source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias
+source '/Users/mgrossman/src/awsaccess/awsaccess2.sh' # awsaccess
+source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
+export PS1="\$(ps1_mfa_context)$PS1" # awsaccess

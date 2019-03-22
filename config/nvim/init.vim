@@ -42,7 +42,7 @@ au InsertLeave * set nopaste
 
 " search options
 set ignorecase
-set infercase
+set smartcase
 vnoremap // y/\V<C-R>"<CR>
 
 " line numbering
@@ -90,6 +90,7 @@ set pumheight=30
 
 " reload external changes
 set autoread
+au FocusGained,BufEnter * checktime
 
 " Leader commands
 map <SPACE> <leader>
@@ -104,11 +105,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " completion
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ajh17/VimCompletesMe'
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -147,13 +144,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 
 " python
-Plug 'ncm2/ncm2-jedi', { 'for': 'python' }
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
 " other languages
 Plug 'sheerun/vim-polyglot'
-Plug 'HerringtonDarkholme/yats.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
@@ -234,12 +231,10 @@ nnoremap <C-q> :Sayonara!<CR>
 " ale config
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy', 'pyls'],
+\   'python': ['flake8', 'mypy'],
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
 \}
-" ignore diagnostic from pyls, but load so we can do LSP functionality
-let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': ['isort', 'trim_whitespace', 'autopep8'],
 \}
@@ -247,15 +242,6 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
-
-function! LC_maps()
-    if has_key(g:ale_linters, &filetype)
-        nnoremap <buffer> <silent> K :ALEHover<cr>
-        nnoremap <buffer> <silent> <C-]> :ALEGoToDefinition<cr>
-        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:ALEGoToDefinition<cr>
-    endif
-endfunction
-autocmd FileType * call LC_maps()
 
 " gutentags config
 let g:gutentags_cache_dir = 'build/gutentags'
@@ -272,7 +258,11 @@ let g:ranger_map_keys = 0
 nnoremap - :Ranger<CR>
 
 " fugitive config
-nmap <Leader>g :Git<space>
+nmap <Leader>gg :Git<space>
+nmap <Leader>gc :Gdiff<cr>
+nmap <Leader>gs :Gstatus<cr>
+nmap <Leader>gb :Gblame<cr>
+nmap <Leader>ga :Gwrite<cr>
 
 " airline config
 let g:airline_highlighting_cache = 1
@@ -339,14 +329,33 @@ endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
 " let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
-let g:test#custom_transformations = {'service_venv': function({cmd -> './test_unit.sh '.join(split(cmd)[1:])})}
+let g:test#custom_transformations = {'service_venv': function({cmd -> cmd})}
 let g:test#transformation = 'service_venv'
 let g:test#python#runner = 'pytest'
 
-" ncm2 config
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
+" coc config
+" set completeopt=noinsert,menuone,noselect
 set shortmess+=c
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+let g:lc_languages = ["typescript", "python", "typescript.tsx"]
+function! LC_maps()
+    if index(g:lc_languages, &filetype) != -1
+        nnoremap <buffer> <silent> <C-]> :call CocAction('jumpDefinition')<cr>
+        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:call CocAction('jumpDefinition')<cr>
+        nnoremap <buffer> <silent> K :call CocAction('doHover')<cr>
+        nnoremap <buffer> <silent> gr :call CocAction('jumpReferences')<cr>
+    endif
+endfunction
+autocmd FileType * call LC_maps()
 
 " python config
 let g:python_highlight_indent_errors = 0
@@ -393,7 +402,7 @@ endfunction
 
 command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().GetFZFCommand_sh(),
-            \'options': ['--multi'],
+            \'options': '--multi',
             \}))
 
 " TODO experimental, currently has problem due to nvim resize bug

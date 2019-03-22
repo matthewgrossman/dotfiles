@@ -34,6 +34,6 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
-pl = require "pl.pretty"
-wf=hs.window.filter
-wf_force = wf.new{overrides={forceRefreshOnSpaceChange=true}}
+-- pl = require "pl.pretty"
+-- wf=hs.window.filter
+-- wf_force = wf.new{overrides={forceRefreshOnSpaceChange=true}}
