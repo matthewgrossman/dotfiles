@@ -72,7 +72,7 @@ set shiftround
 set shiftwidth=4
 set softtabstop=4
 
-" autocmds
+" filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd FileType json let &formatprg='python -m json.tool'
@@ -404,25 +404,3 @@ command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().GetFZFCommand_sh(),
             \'options': '--multi',
             \}))
-
-" TODO experimental, currently has problem due to nvim resize bug
-let g:named_terms = {}
-function! OpenNamedTerm(name, direction)
-    if has_key(g:named_terms, a:name)
-        let l:bufnr = g:named_terms[a:name]
-
-        if(a:direction == 'v')
-            vsplit
-        else
-            split
-        endif
-        execute 'buffer' l:bufnr
-    else
-        if(a:direction == 'v')
-            vsplit term://$SHELL
-        else
-            split term://$SHELL
-        endif
-        let g:named_terms[a:name] = bufnr('%')
-    endif
-endfunction
