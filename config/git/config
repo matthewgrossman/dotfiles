@@ -29,6 +29,6 @@
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!hub pull-request --push --copy --browse --no-edit"
+    pr = "!hub pull-request --push --copy --browse -e"
 [core]
     excludesfile = ~/.config/git/gitignore_global
