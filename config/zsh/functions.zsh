@@ -44,3 +44,12 @@ src() {
         source "venv/bin/activate" 2>/dev/null || true  # activate new python venv
     fi
 }
+
+_fzf_complete_git() {
+    local branches
+    if [ "$*" = "git co " ]; then
+        echo "inside"
+        branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
+        _fzf_complete "--tac --no-sort" "$*" < <(echo "$branches")
+    fi
+}
