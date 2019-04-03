@@ -25,10 +25,11 @@
 
     ticket-prefix = "!git branch-name | perl -ne 's/(XD-\\d{4,}).*/\\1: / && print'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
+    template = ""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!git po; hub pull-request -o -m \"$(git msg)\" | pbcopy"
+    pr = "!hub pull-request --push --copy --browse -e"
 [core]
     excludesfile = ~/.config/git/gitignore_global
