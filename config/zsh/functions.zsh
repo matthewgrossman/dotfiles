@@ -45,10 +45,10 @@ src() {
     fi
 }
 
+# TODO mess w/ this more pls
 _fzf_complete_git() {
     local branches
     if [ "$*" = "git co " ]; then
-        echo "inside"
         branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
         _fzf_complete "--tac --no-sort" "$*" < <(echo "$branches")
     fi
