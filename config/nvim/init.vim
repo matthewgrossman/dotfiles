@@ -116,7 +116,6 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
-Plug 'francoiscabrol/ranger.vim'
 
 " usability
 Plug 'tpope/vim-repeat'
@@ -168,8 +167,8 @@ set background=dark
 set inccommand=nosplit
 
 " neovim remote
-let $VISUAL = 'nvr -cc split --remote-wait'
-autocmd FileType gitcommit set bufhidden=delete
+let $VISUAL = 'nvr'
+autocmd FileType gitcommit setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
@@ -198,8 +197,6 @@ endfunction
 
 nnoremap <C-w>\| :call MakeTermSplit('v')<CR>
 nnoremap <C-w>- :call MakeTermSplit('s')<CR>
-
-autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
@@ -254,8 +251,9 @@ nmap <Leader>di <Plug>VimwikiDiaryIndex
 nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
 
 " ranger config
-let g:ranger_map_keys = 0
-nnoremap - :Ranger<CR>
+nnoremap - :e term://ranger<CR>
+autocmd filetype crontab setlocal nobackup nowritebackup
+autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 " fugitive config
 nmap <Leader>gg :Git<space>

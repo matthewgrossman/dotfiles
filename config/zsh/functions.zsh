@@ -5,7 +5,7 @@ fo() {
     local files
     IFS=$'\n' files=( $(fzf --query="$1" --multi --exit-0 --preview 'bat --color=always {}') )
     if [ "${#files}" -ne 0 ]; then
-        $EDITOR "${files[@]}"
+        $VISUAL "${files[@]}"
     fi
 }
 
