@@ -34,4 +34,3 @@ fi
 source '/Users/mgrossman/src/awsaccess/awsaccess2.sh' # awsaccess
 source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
-source '/Users/mgrossman/src/blessclient/lyftprofile' # bless ssh alias
