@@ -185,18 +185,8 @@ function! InitTermBuffer()
     nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
-function! MakeTermSplit(direction)
-    if(a:direction == 'v')
-        vsplit | terminal
-    else
-        split | terminal
-    endif
-
-    startinsert
-endfunction
-
-nnoremap <C-w>\| :call MakeTermSplit('v')<CR>
-nnoremap <C-w>- :call MakeTermSplit('s')<CR>
+nnoremap <C-w>\| :vsplit <bar> terminal <CR>a
+nnoremap <C-w>- :split <bar> terminal <CR>a
 
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
