@@ -168,6 +168,7 @@ set inccommand=nosplit
 
 " neovim remote
 let $VISUAL = 'nvr'
+let $GIT_EDITOR = 'nvr -cc split --remote-wait'
 autocmd FileType gitcommit setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
@@ -241,7 +242,7 @@ nmap <Leader>di <Plug>VimwikiDiaryIndex
 nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
 
 " ranger config
-nnoremap - :e term://ranger<CR>
+nnoremap - :edit term://ranger --selectfile==expand('%')<CR><CR>
 autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
