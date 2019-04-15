@@ -257,6 +257,7 @@ nmap <Leader>gc :Gdiff<cr>
 nmap <Leader>gs :Gstatus<cr>
 nmap <Leader>gb :Gblame<cr>
 nmap <Leader>ga :Gwrite<cr>
+nmap <Leader>gh V:Gbrowse<cr>
 
 " airline config
 let g:airline_highlighting_cache = 1
