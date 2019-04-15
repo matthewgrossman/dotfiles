@@ -242,7 +242,12 @@ nmap <Leader>di <Plug>VimwikiDiaryIndex
 nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
 
 " ranger config
-nnoremap - :edit term://ranger --selectfile==expand('%')<CR><CR>
+function! Ranger()
+    let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
+    execute 'terminal ranger'.args
+    startinsert
+endfunction
+nnoremap - :call Ranger()<CR>
 autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
