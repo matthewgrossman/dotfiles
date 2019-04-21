@@ -74,9 +74,11 @@ set softtabstop=4
 
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
-autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd FileType json let &formatprg='python -m json.tool'
 autocmd FileType xml let &formatprg='xmllint --format -'
+autocmd FileType python let &formatprg='black --quiet -'
+autocmd FileType crontab setlocal nobackup nowritebackup
+autocmd FileType vimwiki setlocal noexpandtab
 
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
@@ -236,7 +238,6 @@ let g:gutentags_cache_dir = 'build/gutentags'
 set nofsync
 
 " vimwiki config
-let g:vimwiki_folding='syntax'
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
 nmap <Leader>di <Plug>VimwikiDiaryIndex
 nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
