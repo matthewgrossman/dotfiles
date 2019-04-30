@@ -219,6 +219,9 @@ endfor
 nnoremap <C-q> :Sayonara!<CR>
 
 " ale config
+function! ReorderPythonImports(buffer)
+    return { 'command': 'reorder-python-imports --print-only %t'}
+endfunction
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
 \   'python': ['flake8', 'mypy'],
@@ -226,7 +229,7 @@ let g:ale_linters = {
 \   'bash': ['shellcheck'],
 \}
 let g:ale_fixers = {
-\   'python': ['isort', 'trim_whitespace', 'autopep8'],
+\   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
