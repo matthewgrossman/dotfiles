@@ -229,7 +229,7 @@ let g:ale_linters = {
 \   'bash': ['shellcheck'],
 \}
 let g:ale_fixers = {
-\   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8'],
+\   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
@@ -237,7 +237,7 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
 
 " gutentags config
-let g:gutentags_cache_dir = 'build/gutentags'
+let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
 set nofsync
 
 " vimwiki config
