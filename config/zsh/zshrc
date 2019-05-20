@@ -45,3 +45,5 @@ fi
 source '/Users/mgrossman/src/awsaccess/awsaccess2.sh' # awsaccess
 source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
+alias runlyft="aws-okta exec zimride-developer -- runlyft"
+PATH=$PATH:/Users/mgrossman/.lyftkube-bin
