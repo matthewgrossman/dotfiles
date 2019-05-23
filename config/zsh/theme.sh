@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 autoload -U colors && colors
 
 # set the reset_color back to defaults

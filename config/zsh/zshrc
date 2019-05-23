@@ -40,8 +40,9 @@ if [ -f ~/.lyftrc  ]; then
 fi
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
-. $XDG_CONFIG_HOME/zsh/theme.zsh
-. $XDG_CONFIG_HOME/zsh/functions.zsh
+. $XDG_CONFIG_HOME/zsh/theme.sh
+. $XDG_CONFIG_HOME/zsh/functions.sh
+. $XDG_CONFIG_HOME/zsh/lyft.sh
 source '/Users/mgrossman/src/awsaccess/awsaccess2.sh' # awsaccess
 source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
