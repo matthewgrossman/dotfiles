@@ -132,6 +132,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'romainl/vim-qf'
 Plug 'kana/vim-textobj-user'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'stefandtw/quickfix-reflector.vim'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -315,7 +316,6 @@ let g:tagbar_left = 1
 nmap [l <Plug>(ale_previous_wrap)
 nmap ]l <Plug>(ale_next_wrap)
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
-let g:qf_mapping_ack_style = 1
 
 " autopairs config
 inoremap <silent> <C-Space> <esc>:call AutoPairsJump()<CR>a
