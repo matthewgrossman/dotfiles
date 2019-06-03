@@ -219,6 +219,9 @@ endfor
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
 
+" polyglot config
+let g:polyglot_disabled = ['csv']
+
 " ale config
 function! ReorderPythonImports(buffer)
     return { 'command': 'reorder-python-imports --print-only %t'}
