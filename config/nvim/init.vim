@@ -17,6 +17,12 @@ nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
 vnoremap <c-s> <esc>:w<CR>gv
 
+" common typos
+command! -bang Qa qa
+command! -bang QA qa
+command! -bang Wq wq
+command! -bang WQ wq
+
 " paste from the copy buffer
 vnoremap x "0p
 
