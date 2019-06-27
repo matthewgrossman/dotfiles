@@ -22,6 +22,7 @@ command! -bang Qa qa
 command! -bang QA qa
 command! -bang Wq wq
 command! -bang WQ wq
+command! -bang Wqa wqa
 
 " paste from the copy buffer
 vnoremap x "0p
@@ -150,6 +151,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 " productivity
 Plug 'vimwiki/vimwiki'
+Plug 'junegunn/goyo.vim'
 
 " python
 Plug 'vim-python/python-syntax', { 'for': 'python' }
@@ -234,10 +236,11 @@ function! ReorderPythonImports(buffer)
 endfunction
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy'],
+\   'python': ['flake8', 'mypy', 'pyls'],
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
 \}
+let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
 \}
@@ -372,9 +375,9 @@ let g:coc_global_extensions = [
 let g:lc_languages = ["typescript", "python", "typescript.tsx"]
 function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
-        nnoremap <buffer> <silent> <C-]> :call CocAction('jumpDefinition')<cr>
-        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:call CocAction('jumpDefinition')<cr>
-        nnoremap <buffer> <silent> K :call CocAction('doHover')<cr>
+        nnoremap <buffer> <silent> <C-]> :ALEGoToDefinition<CR>
+        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:ALEGoToDefinition<CR>
+        nnoremap <buffer> <silent> K :ALEHover<CR>
         nnoremap <buffer> <silent> gr :call CocAction('jumpReferences')<cr>
     endif
 endfunction
