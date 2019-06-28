@@ -140,6 +140,7 @@ Plug 'romainl/vim-qf'
 Plug 'kana/vim-textobj-user'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'stefandtw/quickfix-reflector.vim'
+Plug 'junegunn/vim-easy-align'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -259,6 +260,10 @@ set nofsync
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
 nmap <Leader>di <Plug>VimwikiDiaryIndex
 nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
+
+" vim-easy-align config
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " ranger config
 function! Ranger()
