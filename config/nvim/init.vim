@@ -250,7 +250,7 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
 
-autocmd BufEnter __init__.py let b:ale_fix_on_save = 0
+autocmd BufEnter __init__.py,manage.py let b:ale_fix_on_save = 0
 
 " gutentags config
 let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
