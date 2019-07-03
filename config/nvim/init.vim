@@ -175,6 +175,9 @@ set termguicolors
 colorscheme base16-default-dark
 set background=dark
 
+" json config
+autocmd FileType json setlocal foldmethod=syntax
+
 " NEOVIM SPECIFIC
 set inccommand=nosplit
 
@@ -201,6 +204,7 @@ endfunction
 nnoremap <C-w>\| :vsplit <bar> terminal <CR>a
 nnoremap <C-w>- :split <bar> terminal <CR>a
 
+tnoremap <M-[> <Esc>
 tnoremap <C-h> <C-\><C-N><C-w>h
 tnoremap <C-j> <C-\><C-N><C-w>j
 tnoremap <C-k> <C-\><C-N><C-w>k
@@ -220,7 +224,6 @@ vnoremap <C-l> <esc><C-w>l
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
-let g:sandwich#recipes += [{'buns': ['{% translatable "COCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTNTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
 for recipe in g:sandwich#recipes
     let recipe.cursor = 'head'
 endfor
@@ -232,9 +235,6 @@ nnoremap <C-q> :Sayonara!<CR>
 let g:polyglot_disabled = ['csv']
 
 " ale config
-function! ReorderPythonImports(buffer)
-    return { 'command': 'reorder-python-imports --print-only %t'}
-endfunction
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
 \   'python': ['flake8', 'mypy', 'pyls'],
@@ -243,7 +243,7 @@ let g:ale_linters = {
 \}
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
-\   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
+\   'python': ['reorder-python-imports', 'isort', 'trim_whitespace', 'autopep8', 'black'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
