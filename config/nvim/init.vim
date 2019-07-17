@@ -50,7 +50,6 @@ au InsertLeave * set nopaste
 " search options
 set ignorecase
 set smartcase
-vnoremap // y/\V<C-R>"<CR>
 
 " line numbering
 set number
@@ -141,6 +140,7 @@ Plug 'kana/vim-textobj-user'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'nelstrom/vim-visual-star-search'
 
 " ui
 Plug 'mhinz/vim-signify'
