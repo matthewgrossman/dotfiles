@@ -50,6 +50,8 @@ au InsertLeave * set nopaste
 " search options
 set ignorecase
 set smartcase
+nnoremap n nzz
+nnoremap N Nzz
 
 " line numbering
 set number
@@ -387,7 +389,7 @@ function! LC_maps()
         nnoremap <buffer> <silent> <C-]> :ALEGoToDefinition<CR>
         nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:ALEGoToDefinition<CR>
         nnoremap <buffer> <silent> K :ALEHover<CR>
-        nnoremap <buffer> <silent> gr :call CocAction('jumpReferences')<cr>
+        nnoremap <buffer> <silent> gr :ALEFindReferences<cr>
     endif
 endfunction
 autocmd FileType * call LC_maps()
