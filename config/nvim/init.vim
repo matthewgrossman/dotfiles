@@ -177,6 +177,9 @@ set termguicolors
 colorscheme base16-default-dark
 set background=dark
 
+" cron config
+autocmd filetype crontab setlocal nobackup nowritebackup
+
 " json config
 autocmd FileType json setlocal foldmethod=syntax
 
@@ -278,7 +281,6 @@ function! Ranger()
     startinsert
 endfunction
 nnoremap - :call Ranger()<CR>
-autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 " fugitive config
