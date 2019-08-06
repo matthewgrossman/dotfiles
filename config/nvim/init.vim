@@ -37,6 +37,8 @@ vnoremap . :normal .<CR>
 " add line text object
 xnoremap il g_o^
 onoremap il :normal vil<CR>
+xnoremap al $o0
+onoremap al :normal val<CR>
 
 " make register-global replacements the default
 set gdefault
