@@ -40,7 +40,7 @@ onoremap il :normal vil<CR>
 xnoremap al $o0
 onoremap al :normal val<CR>
 
-" make register-global replacements the default
+" make line-global replacements the default
 set gdefault
 
 " highlight pasted text
