@@ -68,6 +68,9 @@ set splitright
 " zoom in function to take a split to the full screen
 nnoremap <C-w>z :tab split<CR>
 
+" diff
+set diffopt=internal,algorithm:patience,indent-heuristic
+
 " fold settings
 set foldmethod=indent
 set foldlevelstart=99
@@ -84,7 +87,7 @@ set softtabstop=4
 
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
-autocmd FileType json let &formatprg='python -m json.tool'
+autocmd FileType json let &formatprg='python3 -m json.tool'
 autocmd FileType xml let &formatprg='xmllint --format -'
 autocmd FileType python let &formatprg='black --quiet -'
 autocmd FileType crontab setlocal nobackup nowritebackup
