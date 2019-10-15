@@ -34,43 +34,43 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
--- pl = require "pl.pretty"
--- tb = require "pl.tablex"
+pl = require "pl.pretty"
+tb = require "pl.tablex"
 
--- wf = hs.window.filter.new()
--- wf:keepActive()
--- switcher = hs.window.switcher.new(wf)
--- hs.hotkey.bind('alt','tab','Next window', function()
---     switcher:next()
--- end)
--- hs.hotkey.bind('alt-shift','tab','Prev window',function()switcher:previous()end)
--- window_chooser = hs.chooser.new(function(choice)
---     if not choice then return end
---     print (choice.windowId)
---     win = idToWindow[choice.windowId]
---     print(win)
---     win:focus()
--- end)
--- idToWindow = {}
--- window_chooser:choices(function()
---     local ret = {}
---     for k, v in pairs(wf:getWindows()) do
---         print(k:id())
---         idToWindow[k.id] = k
---         row = {
---             text = k.title,
---             subText = 'subtext',
---             windowId = k.id
---         }
---         table.insert(ret, row)
---     end
---     return ret
--- end)
--- hs.hotkey.bind('alt', 'tab', function() 
---     window_chooser:refreshChoicesCallback()
---     window_chooser:show() 
--- end)
+wf = hs.window.filter.new()
+wf:keepActive()
 
+-- create a new chooser that'll focus on whichever the selected window
+window_chooser = hs.chooser.new(function(choice)
+    if not choice then return end
+    win = idToWindow[choice.windowId]
+    win:focus()
+end)
+idToWindow = {}
+idToName = {}
+window_chooser:choices(function()
+    local ret = {}
+    for _, window in pairs(wf:getWindows()) do
+        idToWindow[window:id()] = window
+        assigned_name = idToName[window:id()]
+        application = window:application()
+        row = {
+            text = assigned_name or application:name(),
+            windowId = window:id(),
+            image = hs.image.imageFromAppBundle(application:bundleID())
+        }
+        table.insert(ret, row)
+    end
+    return ret
+end)
+hs.hotkey.bind('alt', 'tab', function() 
+    window_chooser:refreshChoicesCallback()
+    window_chooser:query(nil)
+    window_chooser:show() 
+end)
 
--- wf=hs.window.filter
--- wf_force = wf.new{overrides={forceRefreshOnSpaceChange=true}}
+hs.hotkey.bind(layout_hyper, "w", function()
+    window = hs.window.focusedWindow()
+    _, name = hs.dialog.textPrompt("Name this window:", "Enter the name for the focused window")
+    idToName[window:id()] = name
+end)

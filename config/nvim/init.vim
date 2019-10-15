@@ -169,6 +169,7 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'junegunn/vader.vim'
 
@@ -241,6 +242,9 @@ nnoremap <C-q> :Sayonara!<CR>
 
 " polyglot config
 let g:polyglot_disabled = ['csv']
+
+" markdown config
+let g:mkdp_auto_close = 0
 
 " ale config
 function! ReorderPythonImports(buffer)
