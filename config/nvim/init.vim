@@ -395,10 +395,10 @@ let g:coc_global_extensions = [
 let g:lc_languages = ["typescript", "python", "typescript.tsx"]
 function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
-        nnoremap <buffer> <silent> <C-]> :ALEGoToDefinition<CR>
-        nnoremap <buffer> <silent> <C-w><C-]> :split<CR>:ALEGoToDefinition<CR>
-        nnoremap <buffer> <silent> K :ALEHover<CR>
-        nnoremap <buffer> <silent> gr :ALEFindReferences<cr>
+        nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
+        nmap <buffer> <silent> gr <Plug>(coc-references)
+        nmap <buffer> <silent> <C-w><C-]> :vsplit<CR>:call CocAction('jumpDefinition')<CR>
+        nmap <buffer> <silent> K :call CocAction('doHover')<CR>
     endif
 endfunction
 autocmd FileType * call LC_maps()

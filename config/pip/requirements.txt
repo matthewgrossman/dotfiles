@@ -2,3 +2,4 @@ neovim
 pipenv
 python-language-server
 aactivator
+ghp-import
