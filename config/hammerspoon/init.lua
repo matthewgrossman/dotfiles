@@ -34,8 +34,9 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
-pl = require "pl.pretty"
-tb = require "pl.tablex"
+-- enable if debugging
+-- pl = require "pl.pretty"
+-- tb = require "pl.tablex"
 
 wf = hs.window.filter.new()
 wf:keepActive()
