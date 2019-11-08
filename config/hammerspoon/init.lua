@@ -71,6 +71,8 @@ end)
 
 hs.hotkey.bind(layout_hyper, "w", function()
     window = hs.window.focusedWindow()
+    hs.focus()
     _, name = hs.dialog.textPrompt("Name this window:", "Enter the name for the focused window")
     idToName[window:id()] = name
+    window:focus()
 end)
