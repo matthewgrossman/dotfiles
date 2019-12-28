@@ -292,7 +292,7 @@ autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 " fugitive config
 nmap <Leader>gg :Git<space>
-nmap <Leader>gc :Gdiff<cr>
+nmap <Leader>gd :Gdiff<cr>
 nmap <Leader>gs :Gstatus<cr>
 nmap <Leader>gb :Gblame<cr>
 nmap <Leader>ga :Gwrite<cr>
