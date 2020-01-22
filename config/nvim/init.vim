@@ -89,6 +89,7 @@ autocmd FileType xml let &formatprg='xmllint --format -'
 autocmd FileType python let &formatprg='black --quiet -'
 autocmd FileType crontab setlocal nobackup nowritebackup
 autocmd FileType vimwiki setlocal noexpandtab
+autocmd FileType fugitive* nmap <buffer> q gq
 
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
@@ -265,6 +266,7 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
+let g:ale_virtualtext_cursor = 1
 
 autocmd BufEnter __init__.py,manage.py let b:ale_fix_on_save = 0
 
