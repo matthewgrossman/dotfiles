@@ -38,6 +38,7 @@ brew 'shellcheck'
 brew 'luarocks'
 brew 'bat'
 brew 'rbenv'
+brew 'go'
 
 cask 'google-chrome'
 cask 'caffeine'
