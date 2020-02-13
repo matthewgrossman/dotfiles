@@ -29,7 +29,7 @@
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!hub pull-request --push --copy --browse --edit"
+    pr = "!hub pull-request --push --copy --browse --edit --draft"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
 [core]
     excludesfile = ~/.config/git/gitignore_global

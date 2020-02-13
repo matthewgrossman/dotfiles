@@ -84,6 +84,7 @@ set softtabstop=4
 
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
+autocmd BufNewFile,BufRead Tiltfile  set filetype=bzl
 autocmd FileType json let &formatprg='python3 -m json.tool'
 autocmd FileType xml let &formatprg='xmllint --format -'
 autocmd FileType python let &formatprg='black --quiet -'
@@ -419,6 +420,7 @@ nnoremap <leader>a :Ag <C-R><C-W><CR>
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
+command! -range SpongebobEscape :<line1>,<line2>normal qz~lq100@z
 
 function! GetBufferNames()
     let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
