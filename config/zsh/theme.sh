@@ -18,14 +18,19 @@ zc(){
 
 # return git branch, yellow bg if there are diffs, green bg if there aren't
 git_status() {
-    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [ "$branch" ]; then
-        local gstatus=$(git status --short --untracked-files=no)
-        [ -n "$gstatus" ] && local status_color='yellow' || local status_color='green'
-        zc $branch 'black' $status_color
+    local branch status_color
+
+    if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
+        if git status --short --untracked-files=no; then
+            status_color='yellow'
+        else
+            status_color='green'
+        fi
+        zc "$branch" 'black' "$status_color"
     fi
 }
 
+# return current k8s cluster:namespace
 kube_status() {
     local current_context jsonpath cluster_namespace
     if current_context=$(kubectl config current-context 2> /dev/null); then
