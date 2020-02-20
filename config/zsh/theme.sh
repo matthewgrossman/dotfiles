@@ -26,7 +26,15 @@ git_status() {
     fi
 }
 
+kube_status() {
+    local current_context jsonpath cluster_namespace formatted
+    current_context=$(kubectl config current-context)
+    jsonpath="{.contexts[?(@.name=='$current_context')].context['cluster', 'namespace']}"
+    cluster_namespace=$(kubectl config view --output jsonpath="$jsonpath" | awk '{print $1 ":" $2}')
+    zc "$cluster_namespace" 'black' 'magenta'
+}
+
 setopt prompt_subst
-local path_name=$(zc '%~' 'black' 'blue')
-local leading=$'\u00BB'
-PROMPT="${path_name}\$(git_status) ${leading} "
+path_name=$(zc '%~' 'black' 'blue')
+leading=$'\u00BB'
+export PROMPT="${path_name}\$(git_status)\$(kube_status) ${leading} "
