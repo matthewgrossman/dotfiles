@@ -5,6 +5,8 @@ HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
 export PATH="$HOME/bin:$PATH"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
+export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 HISTSIZE=10000000
 SAVEHIST=1000000
 setopt autocd extendedglob

@@ -21,7 +21,7 @@ git_status() {
     local branch status_color
 
     if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
-        if git status --short --untracked-files=no; then
+        if [[ $(git status --short --untracked-files=no) ]]; then
             status_color='yellow'
         else
             status_color='green'
