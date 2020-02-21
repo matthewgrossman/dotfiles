@@ -45,6 +45,22 @@ src() {
     fi
 }
 
+kc() {
+    local context
+    context=$(kubectl config get-contexts --output name | fzf)
+    if [[ -n "$context" ]]; then
+        kubectl config use-context "$context"
+    fi
+}
+
+kn() {
+    local namespace
+    namespace=$(kubectl get namespace | awk 'NR>1 {print $1}' | fzf)
+    if [[ -n "$namespace" ]]; then
+        kubectl config set-context --current --namespace="$namespace"
+    fi
+}
+
 # TODO mess w/ this more pls
 _fzf_complete_git() {
     local branches
