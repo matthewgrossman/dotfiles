@@ -39,6 +39,7 @@ brew 'luarocks'
 brew 'bat'
 brew 'rbenv'
 brew 'go'
+brew 'gron'
 
 cask 'google-chrome'
 cask 'caffeine'
