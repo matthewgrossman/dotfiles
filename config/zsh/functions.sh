@@ -55,7 +55,7 @@ kc() {
 
 kn() {
     local namespace
-    namespace=$(kubectl get namespace | awk 'NR>1 {print $1}' | fzf)
+    namespace=$(kubectl get namespace --no-headers | awk '{print $1}' | fzf)
     if [[ -n "$namespace" ]]; then
         kubectl config set-context --current --namespace="$namespace"
     fi
