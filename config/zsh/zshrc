@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+
+autoload -Uz compinit
+compinit
+
 export XDG_CONFIG_HOME="$HOME/.config"
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
@@ -32,10 +36,22 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 
 # lyft
-export PROJECT_ROOT="$HOME/src/"
+export PROJECT_ROOT="$HOME/src"
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
 fi
+
+# autocompletion
+KUBECTL_COMPLETION_PATH="$XDG_CONFIG_HOME/zsh/artifacts/kubectl_completion.sh"
+if [[ ! -f "$KUBECTL_COMPLETION_PATH" ]]; then
+    kubectl completion zsh >  "$KUBECTL_COMPLETION_PATH"
+fi
+source "$KUBECTL_COMPLETION_PATH"
+complete -F __start_kubectl k
+
+
+source <(kubectl completion zsh)
+complete -F __start_kubectl k
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
