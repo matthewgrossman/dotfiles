@@ -31,14 +31,14 @@ ab() {
 
 # cd to repo in src/
 src() {
-    local root_path repos repo
-    root_path="${PROJECT_ROOT:-$HOME/src/}"
-    repos=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d -exec basename {} +)
-    repo=$(fzf <<< "$repos")
-    if [[ -n "$repo" ]]
-    then
+    local root_path repo_paths repo_path
+    go_root_path="$GOPATH/src/github.com/lyft"
+    root_path="${PROJECT_ROOT:-$HOME/src}"
+    repo_paths=$(find "$root_path" "$go_root_path" -mindepth 1 -maxdepth 1 -type d)
+    repo_path=$(fzf <<< "$repo_paths")
+    if [[ -n "$repo_path" ]]; then
         deactivate 2>/dev/null  # deactivate python venv
-        cd "$root_path$repo" || return
+        cd "$repo_path" || return
 
         # shellcheck disable=SC1091
         source "venv/bin/activate" 2>/dev/null || true  # activate new python venv
