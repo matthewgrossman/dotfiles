@@ -119,7 +119,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " completion
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -235,7 +235,6 @@ vnoremap <C-l> <esc><C-w>l
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
-let g:sandwich#recipes += [{'buns': ['{% translatable "COCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTCONTEXTNTEXT" %}', '{% endtranslatable %}'], 'input': ['i']}]
 for recipe in g:sandwich#recipes
     let recipe.cursor = 'head'
 endfor
@@ -258,6 +257,7 @@ let g:ale_linters = {
 \   'python': ['flake8', 'mypy', 'pyls'],
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
+\   'go': ['gopls'],
 \}
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
@@ -394,9 +394,10 @@ let g:coc_global_extensions = [
     \  'coc-yaml',
     \  'coc-html',
     \  'coc-snippets',
+    \  'coc-go',
 \ ]
 
-let g:lc_languages = ["typescript", "python", "typescript.tsx"]
+let g:lc_languages = ["typescript", "python", "typescript.tsx", "go"]
 function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
         nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
