@@ -40,6 +40,7 @@ brew 'bat'
 brew 'rbenv'
 brew 'go'
 brew 'gron'
+brew 'watch'
 
 cask 'google-chrome'
 cask 'caffeine'

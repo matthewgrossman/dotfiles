@@ -1,3 +1,5 @@
+helpers = require("helpers")
+
 -- gotta go fast
 hs.window.animationDuration = 0
 
@@ -34,9 +36,24 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
--- enable if debugging
 -- pl = require "pl.pretty"
--- tb = require "pl.tablex"
+-- pl.dump(myTable)
+
+zowie_mapping = {
+    [hs.eventtap.event.types.leftMouseDown] = "LEFT",
+    [hs.eventtap.event.types.rightMouseDown] = "RIGHT"
+}
+-- mouse settings for the zowie
+zowie_events = hs.eventtap.new(helpers.getTableKeys(zowie_mapping), function(event)
+    if hs.eventtap.checkMouseButtons()[5] then
+        hs.eventtap.keyStroke({"fn", "ctrl"}, zowie_mapping[event:getType()])
+        return true
+    end
+    return false
+end)
+zowie_events:start()
+
+-- enable if debugging
 
 wf = hs.window.filter.new()
 wf:keepActive()
