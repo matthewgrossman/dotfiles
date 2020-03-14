@@ -76,6 +76,11 @@ set foldlevelstart=99
 set lazyredraw
 set cursorline
 
+" sane defaults for languages not covered by file plugins
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd BufNewFile,BufRead Tiltfile  set filetype=bzl
@@ -85,6 +90,8 @@ autocmd FileType python let &formatprg='black --quiet -'
 autocmd FileType crontab setlocal nobackup nowritebackup
 autocmd FileType vimwiki setlocal noexpandtab
 autocmd FileType fugitive* nmap <buffer> q gq
+autocmd FileType lua setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
+autocmd FileType go setlocal noexpandtab
 
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
