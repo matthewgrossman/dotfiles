@@ -76,12 +76,6 @@ set foldlevelstart=99
 set lazyredraw
 set cursorline
 
-" sane defaults for languages not covered by file plugins
-set expandtab
-set shiftround
-set shiftwidth=4
-set softtabstop=4
-
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd BufNewFile,BufRead Tiltfile  set filetype=bzl
@@ -262,6 +256,7 @@ let g:ale_linters = {
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
+\   'go': ['gofmt']
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
