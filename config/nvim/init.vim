@@ -252,6 +252,7 @@ let g:ale_linters = {
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
 \   'go': ['gopls'],
+\   'lua': ['luacheck']
 \}
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {

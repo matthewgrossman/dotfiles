@@ -36,6 +36,7 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
+-- enable if debugging
 -- pl = require "pl.pretty"
 -- pl.dump(myTable)
 
@@ -52,8 +53,6 @@ zowie_events = hs.eventtap.new(helpers.getTableKeys(zowie_mapping), function(eve
     return false
 end)
 zowie_events:start()
-
--- enable if debugging
 
 wf = hs.window.filter.new()
 wf:keepActive()
