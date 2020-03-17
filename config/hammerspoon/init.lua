@@ -11,14 +11,19 @@ layoutLeft33 = {x=0, y=0, w=.3333,h=1}
 layoutRight33 = {x=.6666, y=0, w=.3333,h=1}
 layoutRight66 = {x=.3333, y=0, w=.6666,h=1}
 layoutMiddle33 = {x=.3333, y=0, w=.3333, h=1}
+layoutUpperLeft = {x=0, y=0, w=0.5, h=0.5}
+layoutUpperRight = {x=0.5, y=0, w=0.5, h=0.5}
+layoutLowerRight = {x=0.5, y=0.5, w=0.5, h=0.5}
+layoutLowerLeft = {x=0, y=0.5, w=0.5, h=0.5}
+
 layout_mapping = {
     h = {layoutLeft33, hs.layout.left50, layoutLeft66},
     l = {layoutRight33, hs.layout.right50, layoutRight66},
     k = {layoutMiddle33, hs.layout.maximized},
-    m = {x=0.5, y=0.5, w=0.5, h=0.5},
-    n = {x=0, y=0.5, w=0.5, h=0.5},
-    o = {x=0.5, y=0, w=0.5, h=0.5},
-    u = {x=0, y=0, w=0.5, h=0.5}
+    m = layoutLowerRight,
+    n = layoutLowerLeft,
+    o = layoutUpperRight,
+    u = layoutUpperLeft
 }
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
