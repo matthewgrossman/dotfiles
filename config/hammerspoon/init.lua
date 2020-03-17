@@ -15,15 +15,18 @@ layout_mapping = {
 }
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
-        layout = layouts
-        if type(layouts) == "table" then
+        if layouts.x ~= nil then
+            -- if a singular rect is passed, directly apply layout
+            layout = layouts
+        else
+            -- otherwise, cycle through the layout sizes
             w = hs.window.focusedWindow()
             screen_frame = w:screen():frame()
             window_frame = w:frame()
             current_window_unit = window_frame:toUnitRect(screen_frame)
             unitRectIndex = 2
             for i, unitRect in ipairs(layouts) do
-                if helpers.approxEqualRects(current_window_unit, unitRect) then
+                if helpers.approxEqualTables(current_window_unit, unitRect) then
                     unitRectIndex = i + 1
                 end
             end
@@ -52,8 +55,8 @@ for key, direction in pairs(spaces_mapping) do
 end
 
 -- enable if debugging
--- pl = require "pl.pretty"
--- pl.dump(myTable)
+pl = require "pl.pretty"
+pl.dump(myTable)
 -- mouse settings for the zowie
 
 zowie_events = hs.eventtap.new({

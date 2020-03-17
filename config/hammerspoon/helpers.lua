@@ -8,9 +8,9 @@ M.getTableKeys = function(tab)
 end
 
 threshold = .01
-M.approxEqualRects = function(left, right)
+M.approxEqualTables = function(left, right)
     isApproxEqual = true
-    for _, key in ipairs({'x', 'y', 'w', 'h'}) do
+    for key, _ in pairs(left) do
         if math.abs(left[key] - right[key]) > threshold then
             isApproxEqual = false
         end
