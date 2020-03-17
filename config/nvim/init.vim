@@ -196,6 +196,7 @@ set inccommand=nosplit
 let $VISUAL = 'nvr'
 let $EDITOR = 'nvr'
 let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+let $KUBE_EDITOR = 'nvr -cc split --remote-wait'
 autocmd FileType gitcommit setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG

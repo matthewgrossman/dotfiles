@@ -5,16 +5,31 @@ hs.window.animationDuration = 0
 
 layout_hyper = {"cmd", "alt"}
 layout_mapping = {
-    h = hs.layout.left50,
-    l = hs.layout.right50,
+    h = {hs.layout.left30, hs.layout.left50, hs.layout.left70},
+    l = {hs.layout.right30, hs.layout.right50, hs.layout.right70},
     k = hs.layout.maximized,
     m = {x=0.5, y=0.5, w=0.5, h=0.5},
     n = {x=0, y=0.5, w=0.5, h=0.5},
     o = {x=0.5, y=0, w=0.5, h=0.5},
     u = {x=0, y=0, w=0.5, h=0.5}
 }
-for key, layout in pairs(layout_mapping) do
+for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
+        layout = layouts
+        if type(layouts) == "table" then
+            w = hs.window.focusedWindow()
+            screen_frame = w:screen():frame()
+            window_frame = w:frame()
+            current_window_unit = window_frame:toUnitRect(screen_frame)
+            unitRectIndex = 2
+            for i, unitRect in ipairs(layouts) do
+                if helpers.approxEqualRects(current_window_unit, unitRect) then
+                    unitRectIndex = i + 1
+                end
+            end
+            if unitRectIndex > #layouts then unitRectIndex = 1 end
+            layout = layouts[unitRectIndex]
+        end
         hs.window.focusedWindow():moveToUnit(layout)
     end)
 end
@@ -39,18 +54,35 @@ end
 -- enable if debugging
 -- pl = require "pl.pretty"
 -- pl.dump(myTable)
-
-zowie_mapping = {
-    [hs.eventtap.event.types.leftMouseDown] = "LEFT",
-    [hs.eventtap.event.types.rightMouseDown] = "RIGHT"
-}
 -- mouse settings for the zowie
-zowie_events = hs.eventtap.new(helpers.getTableKeys(zowie_mapping), function(event)
-    if hs.eventtap.checkMouseButtons()[5] then
-        hs.eventtap.keyStroke({"fn", "ctrl"}, zowie_mapping[event:getType()])
+
+zowie_events = hs.eventtap.new({
+    hs.eventtap.event.types.leftMouseUp,
+    hs.eventtap.event.types.rightMouseUp,
+}, function(event)
+    -- print(hs.eventtap.event.types[event:getType()])
+    pressedMouseButtons = hs.eventtap.checkMouseButtons()
+    if pressedMouseButtons[5] then
+        local direction
+        if event:getType() == hs.eventtap.event.types.leftMouseUp then
+            direction = "LEFT"
+        else 
+            direction = "RIGHT"
+        end
+        hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
         return true
+    elseif pressedMouseButtons[4] then
+        local direction
+        if event:getType() == hs.eventtap.event.types.leftMouseUp then
+            direction = "UP"
+        else 
+            direction = "DOWN"
+        end
+        hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
+        return true
+    else
+        return false
     end
-    return false
 end)
 zowie_events:start()
 
