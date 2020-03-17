@@ -8,7 +8,7 @@ M.getTableKeys = function(tab)
 end
 
 threshold = .01
-M.approxEqualTables = function(left, right)
+M.approxEqualRects = function(left, right)
     isApproxEqual = true
     for _, key in ipairs({'x', 'y', 'w', 'h'}) do
         if math.abs(left[key] - right[key]) > threshold then

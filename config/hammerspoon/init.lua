@@ -5,14 +5,16 @@ hs.window.animationDuration = 0
 
 layout_hyper = {"cmd", "alt"}
 
-layoutLeft65 = {x=0, y=0, w=.65,h=1}
-layoutLeft35 = {x=0, y=0, w=.35,h=1}
-layoutRight35 = {x=.65, y=0, w=.35,h=1}
-layoutRight65 = {x=.35, y=0, w=.65,h=1}
+
+layoutLeft66 = {x=0, y=0, w=.6666,h=1}
+layoutLeft33 = {x=0, y=0, w=.3333,h=1}
+layoutRight33 = {x=.6666, y=0, w=.3333,h=1}
+layoutRight66 = {x=.3333, y=0, w=.6666,h=1}
+layoutMiddle33 = {x=.3333, y=0, w=.3333, h=1}
 layout_mapping = {
-    h = {layoutLeft35, hs.layout.left50, layoutLeft65},
-    l = {layoutRight35, hs.layout.right50, layoutRight65},
-    k = hs.layout.maximized,
+    h = {layoutLeft33, hs.layout.left50, layoutLeft66},
+    l = {layoutRight33, hs.layout.right50, layoutRight66},
+    k = {layoutMiddle33, hs.layout.maximized},
     m = {x=0.5, y=0.5, w=0.5, h=0.5},
     n = {x=0, y=0.5, w=0.5, h=0.5},
     o = {x=0.5, y=0, w=0.5, h=0.5},
