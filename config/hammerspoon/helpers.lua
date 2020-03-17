@@ -10,7 +10,7 @@ end
 threshold = .01
 M.approxEqualTables = function(left, right)
     isApproxEqual = true
-    for key, _ in pairs(left) do
+    for _, key in ipairs({'x', 'y', 'w', 'h'}) do
         if math.abs(left[key] - right[key]) > threshold then
             isApproxEqual = false
         end

@@ -4,9 +4,14 @@ helpers = require("helpers")
 hs.window.animationDuration = 0
 
 layout_hyper = {"cmd", "alt"}
+
+layoutLeft65 = {x=0, y=0, w=.65,h=1}
+layoutLeft35 = {x=0, y=0, w=.35,h=1}
+layoutRight35 = {x=.65, y=0, w=.35,h=1}
+layoutRight65 = {x=.35, y=0, w=.65,h=1}
 layout_mapping = {
-    h = {hs.layout.left30, hs.layout.left50, hs.layout.left70},
-    l = {hs.layout.right30, hs.layout.right50, hs.layout.right70},
+    h = {layoutLeft35, hs.layout.left50, layoutLeft65},
+    l = {layoutRight35, hs.layout.right50, layoutRight65},
     k = hs.layout.maximized,
     m = {x=0.5, y=0.5, w=0.5, h=0.5},
     n = {x=0, y=0.5, w=0.5, h=0.5},
@@ -16,17 +21,17 @@ layout_mapping = {
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
         if layouts.x ~= nil then
-            -- if a singular rect is passed, directly apply layout
+            -- if single layout is passed (checked existence of 'x'), directly apply layout
             layout = layouts
         else
             -- otherwise, cycle through the layout sizes
             w = hs.window.focusedWindow()
-            screen_frame = w:screen():frame()
-            window_frame = w:frame()
-            current_window_unit = window_frame:toUnitRect(screen_frame)
+            screenFrame = w:screen():frame()
+            windowFrame = w:frame()
+            currentWindowUnit = windowFrame:toUnitRect(screenFrame)
             unitRectIndex = 2
             for i, unitRect in ipairs(layouts) do
-                if helpers.approxEqualTables(current_window_unit, unitRect) then
+                if helpers.approxEqualRects(currentWindowUnit, unitRect) then
                     unitRectIndex = i + 1
                 end
             end
