@@ -40,6 +40,7 @@ for key, layouts in pairs(layout_mapping) do
             for i, unitRect in ipairs(layouts) do
                 if helpers.approxEqualRects(currentWindowUnit, unitRect) then
                     unitRectIndex = i + 1
+                    break
                 end
             end
             if unitRectIndex > #layouts then unitRectIndex = 1 end
