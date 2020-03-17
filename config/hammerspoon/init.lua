@@ -5,7 +5,6 @@ hs.window.animationDuration = 0
 
 layout_hyper = {"cmd", "alt"}
 
-
 layoutLeft66 = {x=0, y=0, w=.6666,h=1}
 layoutLeft33 = {x=0, y=0, w=.3333,h=1}
 layoutRight33 = {x=.6666, y=0, w=.3333,h=1}
@@ -35,15 +34,16 @@ for key, layouts in pairs(layout_mapping) do
             w = hs.window.focusedWindow()
             screenFrame = w:screen():frame()
             windowFrame = w:frame()
-            currentWindowUnit = windowFrame:toUnitRect(screenFrame)
-            unitRectIndex = 2
+            currentUnitRect = windowFrame:toUnitRect(screenFrame)
+
+            unitRectIndex = 2 -- arbitrarily choose the 50% layout as default
             for i, unitRect in ipairs(layouts) do
-                if helpers.approxEqualRects(currentWindowUnit, unitRect) then
+                if helpers.approxEqualRects(currentUnitRect, unitRect) then
                     unitRectIndex = i + 1
                     break
                 end
             end
-            if unitRectIndex > #layouts then unitRectIndex = 1 end
+            if unitRectIndex > #layouts then unitRectIndex = 1 end -- wrap around
             layout = layouts[unitRectIndex]
         end
         hs.window.focusedWindow():moveToUnit(layout)
