@@ -186,9 +186,6 @@ set background=dark
 " cron config
 autocmd filetype crontab setlocal nobackup nowritebackup
 
-" json config
-autocmd FileType json setlocal foldmethod=syntax
-
 " NEOVIM SPECIFIC
 set inccommand=nosplit
 
