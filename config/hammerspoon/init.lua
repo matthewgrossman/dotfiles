@@ -68,8 +68,8 @@ for key, direction in pairs(spaces_mapping) do
 end
 
 -- enable if debugging
-pl = require "pl.pretty"
-pl.dump(myTable)
+-- pl = require "pl.pretty"
+-- pl.dump(myTable)
 -- mouse settings for the zowie
 
 zowie_events = hs.eventtap.new({
