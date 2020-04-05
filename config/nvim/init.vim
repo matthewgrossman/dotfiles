@@ -413,7 +413,7 @@ autocmd FileType * call LC_maps()
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
-abbreviate dbg import ipdb; ipdb.set_trace()
+abbreviate dbg import pdb; pdb.set_trace()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a :Ag <C-R><C-W><CR>

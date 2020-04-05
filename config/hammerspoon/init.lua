@@ -72,35 +72,35 @@ end
 -- pl.dump(myTable)
 -- mouse settings for the zowie
 
-zowie_events = hs.eventtap.new({
-    hs.eventtap.event.types.leftMouseUp,
-    hs.eventtap.event.types.rightMouseUp,
-}, function(event)
-    -- print(hs.eventtap.event.types[event:getType()])
-    pressedMouseButtons = hs.eventtap.checkMouseButtons()
-    if pressedMouseButtons[5] then
-        local direction
-        if event:getType() == hs.eventtap.event.types.leftMouseUp then
-            direction = "LEFT"
-        else 
-            direction = "RIGHT"
-        end
-        hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
-        return true
-    elseif pressedMouseButtons[4] then
-        local direction
-        if event:getType() == hs.eventtap.event.types.leftMouseUp then
-            direction = "UP"
-        else 
-            direction = "DOWN"
-        end
-        hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
-        return true
-    else
-        return false
-    end
-end)
-zowie_events:start()
+-- zowie_events = hs.eventtap.new({
+--     hs.eventtap.event.types.leftMouseUp,
+--     hs.eventtap.event.types.rightMouseUp,
+-- }, function(event)
+--     -- print(hs.eventtap.event.types[event:getType()])
+--     pressedMouseButtons = hs.eventtap.checkMouseButtons()
+--     if pressedMouseButtons[5] then
+--         local direction
+--         if event:getType() == hs.eventtap.event.types.leftMouseUp then
+--             direction = "LEFT"
+--         else 
+--             direction = "RIGHT"
+--         end
+--         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
+--         return true
+--     elseif pressedMouseButtons[4] then
+--         local direction
+--         if event:getType() == hs.eventtap.event.types.leftMouseUp then
+--             direction = "UP"
+--         else 
+--             direction = "DOWN"
+--         end
+--         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
+--         return true
+--     else
+--         return false
+--     end
+-- end)
+-- zowie_events:start()
 
 wf = hs.window.filter.new()
 wf:keepActive()

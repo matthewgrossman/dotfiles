@@ -41,6 +41,8 @@ brew 'rbenv'
 brew 'go'
 brew 'gron'
 brew 'watch'
+brew 'gnu-time'
+brew 'ffmpeg'
 
 cask 'google-chrome'
 cask 'caffeine'

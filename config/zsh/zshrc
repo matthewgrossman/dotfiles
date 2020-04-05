@@ -51,8 +51,8 @@ source "$KUBECTL_COMPLETION_PATH"
 complete -F __start_kubectl k
 
 
-source <(kubectl completion zsh)
-complete -F __start_kubectl k
+# source <(kubectl completion zsh)
+# complete -F __start_kubectl k
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
