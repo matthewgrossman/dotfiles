@@ -149,6 +149,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
 Plug 'mhinz/vim-signify'
@@ -199,7 +200,7 @@ autocmd FileType gitcommit setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
-nnoremap <C-w>t :tabnew <bar> :terminal<CR> <bar> :file term://
+nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
 autocmd BufEnter,BufWinEnter,WinEnter * if &buftype=='terminal' | startinsert | endif
 
 autocmd TermOpen * call InitTermBuffer()
@@ -417,7 +418,7 @@ autocmd FileType * call LC_maps()
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
-abbreviate dbg import pdb; pdb.set_trace()
+abbreviate dbg import ipdb; ipdb.set_trace()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a :Ag <C-R><C-W><CR>

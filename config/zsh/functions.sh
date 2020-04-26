@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# split single line into their own lines
+splitl () {
+    awk '{$1=$1}1' OFS='\n' "$@"
+}
+
 # open files
 fo() {
     local files
