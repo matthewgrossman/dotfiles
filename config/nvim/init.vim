@@ -250,7 +250,10 @@ let g:mkdp_auto_close = 0
 
 " ale config
 function! ReorderPythonImports(buffer)
-    return { 'command': 'reorder-python-imports --print-only %t'}
+    return { 'command': 'reorder-python-imports -'}
+endfunction
+function! AddTrailingComma(buffer)
+    return { 'command': 'add-trailing-comma --py36-plus -'}
 endfunction
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
@@ -262,7 +265,7 @@ let g:ale_linters = {
 \}
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
-\   'python': [function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
+\   'python': [function('AddTrailingComma'), function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
 \   'go': ['gofmt']
 \}
 let g:ale_fix_on_save = 1
