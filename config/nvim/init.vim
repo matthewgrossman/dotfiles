@@ -192,11 +192,9 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 set inccommand=nosplit
 
 " neovim remote
-let $VISUAL = 'nvr'
-let $EDITOR = 'nvr'
-let $GIT_EDITOR = 'nvr -cc split --remote-wait'
-let $KUBE_EDITOR = 'nvr -cc split --remote-wait'
-autocmd FileType gitcommit setlocal bufhidden=delete
+let $EDITOR = 'nvr -cc split --remote-wait'
+autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
+autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>

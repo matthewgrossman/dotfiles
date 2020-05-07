@@ -51,10 +51,16 @@ src() {
 }
 
 kc() {
-    local context
-    context=$(kubectl config get-contexts --output name | fzf)
-    if [[ -n "$context" ]]; then
-        kubectl config use-context "$context"
+    local out key cluster
+    out=$(kubectl config get-contexts --output name | fzf --expect=ctrl-t)
+    [[ -z "$out" ]] && return
+
+    key=$(sed -n 1p <<< "$out")
+    cluster=$(sed -n 2p <<< "$out")
+    if [[ "$key" == "ctrl-t" ]]; then
+        export KUBE_CLUSTER="$cluster"
+    else
+        kubectl config use-context "$cluster"
     fi
 }
 
