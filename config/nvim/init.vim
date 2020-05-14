@@ -193,6 +193,7 @@ set inccommand=nosplit
 
 " neovim remote
 let $EDITOR = 'nvr -cc split --remote-wait'
+let $VISUAL = 'nvr -cc split --remote-wait'
 autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
 autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 
@@ -211,8 +212,8 @@ function! InitTermBuffer()
     nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
-nnoremap <C-w>\| :vsplit <bar> terminal <CR>a
-nnoremap <C-w>- :split <bar> terminal <CR>a
+nnoremap <C-w>\| :vsplit <bar> terminal <CR>:startinsert<CR>
+nnoremap <C-w>- :split <bar> terminal <CR>:startinsert<CR>
 
 tnoremap <M-[> <Esc>
 tnoremap <C-h> <C-\><C-N><C-w>h
@@ -291,7 +292,7 @@ nmap ga <Plug>(EasyAlign)
 " ranger config
 function! Ranger()
     let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
-    execute 'terminal ranger'.args
+    execute 'terminal VISUAL="nvr" ranger'.args
     startinsert
 endfunction
 nnoremap - :call Ranger()<CR>
