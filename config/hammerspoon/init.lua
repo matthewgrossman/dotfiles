@@ -67,6 +67,22 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
+hs.hotkey.bind(spaces_hyper, 'm', function()
+    isMutedNewState = not hs.audiodevice.defaultInputDevice():muted()
+    for _, dev in ipairs(hs.audiodevice.allInputDevices()) do
+        dev:setMuted(isMutedNewState)
+    end
+
+    if isMutedNewState then
+        text="🔇🤫Muted🤫🔇"
+        color={red=1}
+    else
+        text="🔊🎙️Mic On🎙️🔊"
+        color={green=1}
+    end
+    hs.alert.show(text, {strokeColor={black=1}, fillColor=color}, 1)
+end)
+
 -- enable if debugging
 -- pl = require "pl.pretty"
 -- pl.dump(myTable)
