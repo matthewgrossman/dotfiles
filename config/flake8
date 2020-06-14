@@ -1,2 +1,3 @@
 [flake8]
 exclude = venv/
+ignore = E203, E501, W503

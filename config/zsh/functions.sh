@@ -71,3 +71,9 @@ kn() {
         kubectl config set-context --current --namespace="$namespace"
     fi
 }
+
+scratchvenv() {
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install black reorder-python-imports ipdb
+}
