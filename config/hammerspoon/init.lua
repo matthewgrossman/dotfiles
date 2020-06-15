@@ -67,21 +67,39 @@ for key, direction in pairs(spaces_mapping) do
     end)
 end
 
-hs.hotkey.bind(spaces_hyper, 'm', function()
+muteAttribs = {
+    [true]={
+        text="🔇Muted",
+        color={red=1}
+    },
+    [false]={
+        text="🔊Mic On",
+        color={green=1}
+    }
+}
+
+toggleMuteState = function()
+    -- toggle all devices' muted state
     isMutedNewState = not hs.audiodevice.defaultInputDevice():muted()
     for _, dev in ipairs(hs.audiodevice.allInputDevices()) do
         dev:setMuted(isMutedNewState)
     end
+    return isMutedNewState
+end
 
-    if isMutedNewState then
-        text="🔇🤫Muted🤫🔇"
-        color={red=1}
-    else
-        text="🔊🎙️Mic On🎙️🔊"
-        color={green=1}
-    end
-    hs.alert.show(text, {strokeColor={black=1}, fillColor=color}, 1)
-end)
+toggleMute = function()
+    -- toggle mute state and update UI elements
+    isMutedNewState = toggleMuteState()
+    attribs = muteAttribs[isMutedNewState]
+    menubar:setTitle(attribs['text'])
+    hs.alert.show(attribs['text'], {strokeColor={black=1}, fillColor=attribs['color']}, 1)
+end
+
+originalMutedState = hs.audiodevice.defaultInputDevice():muted()
+menubar = hs.menubar.new()
+    :setTitle(muteAttribs[originalMutedState]['text'])
+    :setClickCallback(toggleMute)
+hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
 -- enable if debugging
 -- pl = require "pl.pretty"
