@@ -91,13 +91,13 @@ toggleMute = function()
     -- toggle mute state and update UI elements
     isMutedNewState = toggleMuteState()
     attribs = muteAttribs[isMutedNewState]
-    menubar:setTitle(attribs['text'])
-    hs.alert.show(attribs['text'], {strokeColor={black=1}, fillColor=attribs['color']}, 1)
+    menubar:setTitle(attribs.text)
+    hs.alert.show(attribs.text, {strokeColor={black=1}, fillColor=attribs.color}, 1)
 end
 
 originalMutedState = hs.audiodevice.defaultInputDevice():muted()
 menubar = hs.menubar.new()
-    :setTitle(muteAttribs[originalMutedState]['text'])
+    :setTitle(muteAttribs[originalMutedState].text)
     :setClickCallback(toggleMute)
 hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
