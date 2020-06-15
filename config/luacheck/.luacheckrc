@@ -1,2 +1,2 @@
 allow_defined = true
-globals = {"hs"}
+globals = {"hs", '_'}

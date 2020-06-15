@@ -116,7 +116,7 @@ hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 --         local direction
 --         if event:getType() == hs.eventtap.event.types.leftMouseUp then
 --             direction = "LEFT"
---         else 
+--         else
 --             direction = "RIGHT"
 --         end
 --         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
@@ -125,7 +125,7 @@ hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 --         local direction
 --         if event:getType() == hs.eventtap.event.types.leftMouseUp then
 --             direction = "UP"
---         else 
+--         else
 --             direction = "DOWN"
 --         end
 --         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
@@ -162,10 +162,10 @@ window_chooser:choices(function()
     end
     return ret
 end)
-hs.hotkey.bind('alt', 'tab', function() 
+hs.hotkey.bind('alt', 'tab', function()
     window_chooser:refreshChoicesCallback()
     window_chooser:query(nil)
-    window_chooser:show() 
+    window_chooser:show()
 end)
 
 hs.hotkey.bind(layout_hyper, "w", function()
