@@ -51,7 +51,7 @@ for key, layouts in pairs(layout_mapping) do
 end
 
 hs.hotkey.bind(layout_hyper, 'j', function()
-    win = hs.window.focusedWindow()
+    local win = hs.window.focusedWindow()
     win:moveToScreen(win:screen():next())
 end)
 
@@ -73,14 +73,14 @@ muteAttribs = {
         color={red=1}
     },
     [false]={
-        text="🔊Mic On",
+        text="🎙️Mic On",
         color={green=1}
     }
 }
 
 toggleMuteState = function()
     -- toggle all devices' muted state
-    isMutedNewState = not hs.audiodevice.defaultInputDevice():muted()
+    local isMutedNewState = not hs.audiodevice.defaultInputDevice():muted()
     for _, dev in ipairs(hs.audiodevice.allInputDevices()) do
         dev:setMuted(isMutedNewState)
     end
@@ -89,8 +89,8 @@ end
 
 toggleMute = function()
     -- toggle mute state and update UI elements
-    isMutedNewState = toggleMuteState()
-    attribs = muteAttribs[isMutedNewState]
+    local isMutedNewState = toggleMuteState()
+    local attribs = muteAttribs[isMutedNewState]
     menubar:setTitle(attribs.text)
     hs.alert.show(attribs.text, {strokeColor={black=1}, fillColor=attribs.color}, 1)
 end
@@ -142,7 +142,7 @@ wf:keepActive()
 -- create a new chooser that'll focus on whichever the selected window
 window_chooser = hs.chooser.new(function(choice)
     if not choice then return end
-    win = idToWindow[choice.windowId]
+    local win = idToWindow[choice.windowId]
     win:focus()
 end)
 idToWindow = {}
@@ -151,9 +151,9 @@ window_chooser:choices(function()
     local ret = {}
     for _, window in pairs(wf:getWindows()) do
         idToWindow[window:id()] = window
-        assigned_name = idToName[window:id()]
-        application = window:application()
-        row = {
+        local assigned_name = idToName[window:id()]
+        local application = window:application()
+        local row = {
             text = assigned_name or application:name(),
             windowId = window:id(),
             image = hs.image.imageFromAppBundle(application:bundleID())
@@ -169,9 +169,9 @@ hs.hotkey.bind('alt', 'tab', function()
 end)
 
 hs.hotkey.bind(layout_hyper, "w", function()
-    window = hs.window.focusedWindow()
+    local window = hs.window.focusedWindow()
     hs.focus()
-    _, name = hs.dialog.textPrompt("Name this window:", "Enter the name for the focused window")
+    local _, name = hs.dialog.textPrompt("Name this window:", "Enter the name for the focused window")
     idToName[window:id()] = name
     window:focus()
 end)
