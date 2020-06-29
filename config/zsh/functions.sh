@@ -77,3 +77,16 @@ scratchvenv() {
     source venv/bin/activate
     pip install black reorder-python-imports ipdb
 }
+
+sync() {
+    local src src_trailing_slash dst
+    if [ "$#" -eq 1 ]; then
+        src='.'
+        dst="$1"
+    else
+        src="$1"
+        dst="$2"
+    fi
+    src_trailing_slash=$(sed 's|[^/]$|&/|' <<< "$src")
+    fswatch --exclude='.git/' -o "$src" | xargs -I{} rsync --archive --delete --progress --exclude='.git/' "$src_trailing_slash" "$dst"
+}
