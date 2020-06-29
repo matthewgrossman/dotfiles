@@ -79,6 +79,7 @@ scratchvenv() {
 }
 
 sync() {
+    # $> sync ~/my/local/dir user@remote:~/my/remote/dir
     local src src_trailing_slash dst
     if [ "$#" -eq 1 ]; then
         src='.'
@@ -88,5 +89,5 @@ sync() {
         dst="$2"
     fi
     src_trailing_slash=$(sed 's|[^/]$|&/|' <<< "$src")
-    fswatch --exclude='.git/' -o "$src" | xargs -I{} rsync --archive --delete --progress --exclude='.git/' "$src_trailing_slash" "$dst"
+    fswatch --exclude='.git/' -o "$src" | xargs -n1 -I{} rsync --archive --delete --progress --exclude='.git/' "$src_trailing_slash" "$dst"
 }
