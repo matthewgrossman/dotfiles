@@ -45,6 +45,7 @@ brew 'gnu-time'
 brew 'ffmpeg'
 brew 'pass'
 brew 'graphviz'
+brew 'llvm'
 
 cask 'google-chrome'
 cask 'caffeine'

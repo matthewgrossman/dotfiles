@@ -262,8 +262,11 @@ let g:ale_linters = {
 \   'go': ['gopls'],
 \   'lua': ['luacheck']
 \}
+
+" include pyls to leverage LSP; disable below to silence diagnostics
 let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
+\   '*': ['trim_whitespace'],
 \   'python': [function('AddTrailingComma'), function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
 \   'go': ['gofmt']
 \}
@@ -274,7 +277,7 @@ let g:ale_python_autopep8_options = '--max-line-length=10000'
 let g:ale_lua_luacheck_options = '--config '.$XDG_CONFIG_HOME.'/luacheck/.luacheckrc'
 let g:ale_virtualtext_cursor = 1
 
-autocmd BufEnter __init__.py,manage.py let b:ale_fix_on_save = 0
+autocmd BufEnter __init__.py,manage.py,venv/* let b:ale_fix_on_save = 0
 
 " gutentags config
 let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
