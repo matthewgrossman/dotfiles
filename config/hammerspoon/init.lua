@@ -59,6 +59,10 @@ hs.hotkey.bind(layout_hyper, 'j', function()
     win:moveToScreen(win:screen():next())
 end)
 
+hs.hotkey.bind("ctrl", "[", function()
+    hs.eventtap.keyStroke({}, "ESCAPE")
+end)
+
 spaces_hyper = {"ctrl", "shift"}
 spaces_mapping = {
     h = "LEFT",
