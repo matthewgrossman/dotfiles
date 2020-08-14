@@ -260,7 +260,8 @@ let g:ale_linters = {
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
 \   'go': ['gopls'],
-\   'lua': ['luacheck']
+\   'lua': ['luacheck'],
+\   'cpp': ['clangd'],
 \}
 
 " include pyls to leverage LSP; disable below to silence diagnostics
@@ -275,6 +276,7 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
 let g:ale_lua_luacheck_options = '--config '.$XDG_CONFIG_HOME.'/luacheck/.luacheckrc'
+let g:ale_cpp_clangd_options = '-x c++'
 let g:ale_virtualtext_cursor = 1
 
 autocmd BufEnter __init__.py,manage.py,venv/* let b:ale_fix_on_save = 0
@@ -405,7 +407,7 @@ let g:coc_global_extensions = [
     \  'coc-go',
 \ ]
 
-let g:lc_languages = ["typescript", "python", "typescript.tsx", "go"]
+let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp"]
 function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
         nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
