@@ -174,6 +174,7 @@ hs.hotkey.bind('alt', 'tab', function()
     window_chooser:refreshChoicesCallback()
     window_chooser:query(nil)
     window_chooser:show()
+    window_chooser:selectedRow(2) -- select previous window
 end)
 
 hs.hotkey.bind(layout_hyper, "w", function()
