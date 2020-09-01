@@ -11,6 +11,8 @@ export GOPATH=$HOME/go
 export GO111MODULE=on
 export PYTHONBREAKPOINT=ipdb.set_trace
 export PATH=$PATH:$GOPATH/bin
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
 kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
 export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
@@ -22,7 +24,7 @@ setopt CLOBBER
 bindkey -e
 
 #ruby things
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -43,18 +45,6 @@ export PROJECT_ROOT="$HOME/src"
 if [ -f ~/.lyftrc  ]; then
     source ~/.lyftrc
 fi
-
-# autocompletion
-KUBECTL_COMPLETION_PATH="$XDG_CONFIG_HOME/zsh/artifacts/kubectl_completion.sh"
-if [[ ! -f "$KUBECTL_COMPLETION_PATH" ]]; then
-    kubectl completion zsh >  "$KUBECTL_COMPLETION_PATH"
-fi
-source "$KUBECTL_COMPLETION_PATH"
-complete -F __start_kubectl k
-
-
-# source <(kubectl completion zsh)
-# complete -F __start_kubectl k
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh

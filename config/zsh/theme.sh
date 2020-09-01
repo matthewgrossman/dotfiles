@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 autoload -U colors && colors
 
@@ -43,4 +43,4 @@ kube_status() {
 setopt prompt_subst
 path_name=$(zc '%~' 'black' 'blue')
 leading=$'\u00BB'
-export PROMPT="${path_name}\$(git_status)\$(kube_status) ${leading} "
+export PROMPT="${path_name}\$(git_status) ${leading} "

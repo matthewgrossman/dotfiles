@@ -46,6 +46,7 @@ brew 'ffmpeg'
 brew 'pass'
 brew 'graphviz'
 brew 'llvm'
+brew 'wireguard-tools'
 
 cask 'google-chrome'
 cask 'caffeine'

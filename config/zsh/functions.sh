@@ -75,7 +75,11 @@ kn() {
 scratchvenv() {
     python3 -m venv venv
     source venv/bin/activate
-    pip install black reorder-python-imports ipdb
+    pip install black reorder-python-imports ipdb pynvim
+}
+
+_sync_once() {
+    rsync --archive --delete --progress --filter=":- .gitignore" --filter="- .git/" "$1" "$2"
 }
 
 sync() {
@@ -89,5 +93,8 @@ sync() {
         dst="$2"
     fi
     src_trailing_slash=$(sed 's|[^/]$|&/|' <<< "$src")
-    fswatch --exclude='.git/' -o "$src" | xargs -n1 -I{} rsync --archive --delete --progress --exclude='.git/' "$src_trailing_slash" "$dst"
+    _sync_once "$src_trailing_slash" "$dst"
+    fswatch --exclude='.git/' -o "$src" | while read -r; do
+        _sync_once "$src_trailing_slash" "$dst"
+    done
 }
