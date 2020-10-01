@@ -376,8 +376,8 @@ endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
 " let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
-let g:test#custom_transformations = {'service_venv': function({cmd -> cmd})}
-let g:test#transformation = 'service_venv'
+let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
+let g:test#transformation = 'python_module'
 let g:test#python#runner = 'pytest'
 
 " coc config
@@ -431,8 +431,12 @@ nnoremap <leader>a :Ag <C-R><C-W><CR>
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
-command! -range SpongebobEscape :<line1>,<line2>normal qz~lq100@z
+command! -range SpongebobEscape :<line1>,<line2>execute "normal qa~lq100@a"
+" command! -range SpongebobEscape :<line1>,<line2>normal C
 
+
+function! SpongebobEscapeFunc()
+endfunction
 function! GetBufferNames()
     let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
     let filtered_bufnrs = filter(copy(bufnrs), {i,b -> getbufvar(b, '&buftype') == ''})
