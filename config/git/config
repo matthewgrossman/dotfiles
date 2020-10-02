@@ -27,7 +27,7 @@
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
     # pr = "!hub pull-request --push --copy --browse --edit --draft"
-    pr = "!gh pr create --fill --draft --web"
+    pr = "!git po && open \"$(gh pr create --fill --draft 2>&1 | tail -1)\""
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
 [core]
     excludesfile = ~/.config/git/gitignore_global
