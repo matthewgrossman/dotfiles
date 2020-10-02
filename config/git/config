@@ -23,13 +23,11 @@
     mm = merge master
     giff = diff
 
-    ticket-prefix = "!git branch-name | perl -ne 's/(XD-\\d{4,}).*/\\1: / && print'"
-    pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
-    msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
     bc = "!git checkout master && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!hub pull-request --push --copy --browse --edit --draft"
+    # pr = "!hub pull-request --push --copy --browse --edit --draft"
+    pr = "!gh pr create --fill --draft --web"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
 [core]
     excludesfile = ~/.config/git/gitignore_global
