@@ -109,6 +109,26 @@ menubar = hs.menubar.new()
     :setClickCallback(toggleMute)
 hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
+toggleAppHidden = function(appName)
+    local app = hs.application.get(appName)
+    if app:isHidden() then
+        app:activate()
+    else
+        app:hide()
+    end
+end
+
+appHideMapping = {
+    Spotify="s",
+    KeePassXC="k",
+}
+
+app_hyper = {"cmd", "ctrl"}
+for app, key in pairs(appHideMapping) do
+    toggleCB = helpers.bind(toggleAppHidden, app)
+    hs.hotkey.bind(app_hyper, key, toggleCB)
+end
+
 -- enable if debugging
 -- pl = require "pl.pretty"
 -- pl.dump(myTable)
