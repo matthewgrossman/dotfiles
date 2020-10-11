@@ -1,4 +1,5 @@
 local M = {}
+
 M.getTableKeys = function(tab)
     local keyset = {}
     for k, _ in pairs(tab) do
@@ -20,8 +21,10 @@ end
 
 -- binds ALL args to f; making a proper bind() in lua seems to be a PITA
 M.bind = function(f, ...)
-    local bindargs = ...
-    return function() return f(bindargs) end
+    local bindargs = {...}
+    return function()
+        return f(table.unpack(bindargs))
+    end
 end
 
 return M
