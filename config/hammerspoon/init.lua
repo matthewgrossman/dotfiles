@@ -111,11 +111,7 @@ hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
 toggleAppHidden = function(appName)
     local app = hs.application.get(appName)
-    if app:isHidden() then
-        app:activate()
-    else
-        app:hide()
-    end
+    if app:isHidden() then app:activate() else app:hide() end
 end
 
 appHideMapping = {
