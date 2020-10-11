@@ -18,6 +18,7 @@ export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
 kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
 export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
+alias bazel=bazelisk
 HISTSIZE=10000000
 SAVEHIST=1000000
 setopt autocd extendedglob

@@ -457,7 +457,7 @@ function! GetBufferNames_sh()
 endfunction
 
 function! GetFZFCommand_sh()
-    let search_cmd = 'git ls-files'
+    let search_cmd = 'git ls-files --recurse-submodules'
     let buffer_names = GetBufferNames()
     if len(buffer_names)
         let filter_grep = 'grep -Ev "^'.join(buffer_names, '$|^').'$"'
