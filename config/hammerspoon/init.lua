@@ -69,9 +69,18 @@ spaces_mapping = {
     l = "RIGHT"
 }
 
+-- currently has bug that requires "fn" as additional modifier
+-- https://github.com/Hammerspoon/hammerspoon/issues/1946#issuecomment-449604954
+getSpacesEvents = function(direction)
+    return {
+        hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, true),
+        hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, false)
+    }
+end
+
 for key, direction in pairs(spaces_mapping) do
     hs.hotkey.bind(spaces_hyper, key, function()
-        hs.eventtap.keyStroke({"fn", "ctrl"}, direction)
+        helpers.postEvents(getSpacesEvents(direction))
     end)
 end
 
@@ -125,40 +134,21 @@ for app, key in pairs(appHideMapping) do
     hs.hotkey.bind(app_hyper, key, toggleCB)
 end
 
--- enable if debugging
--- pl = require "pl.pretty"
--- pl.dump(myTable)
--- mouse settings for the zowie
-
--- zowie_events = hs.eventtap.new({
---     hs.eventtap.event.types.leftMouseUp,
---     hs.eventtap.event.types.rightMouseUp,
--- }, function(event)
---     -- print(hs.eventtap.event.types[event:getType()])
---     pressedMouseButtons = hs.eventtap.checkMouseButtons()
---     if pressedMouseButtons[5] then
---         local direction
---         if event:getType() == hs.eventtap.event.types.leftMouseUp then
---             direction = "LEFT"
---         else
---             direction = "RIGHT"
---         end
---         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
---         return true
---     elseif pressedMouseButtons[4] then
---         local direction
---         if event:getType() == hs.eventtap.event.types.leftMouseUp then
---             direction = "UP"
---         else
---             direction = "DOWN"
---         end
---         hs.eventtap.keyStroke({"fn", "ctrl"}, direction, 0)
---         return true
---     else
---         return false
---     end
--- end)
--- zowie_events:start()
+zowie_events = hs.eventtap.new({
+    hs.eventtap.event.types.otherMouseUp,
+}, function(event)
+    local buttonNum = event:getProperty(
+        hs.eventtap.event.properties.mouseEventButtonNumber
+        )
+    if buttonNum == 4 then
+        return true, getSpacesEvents("RIGHT")
+    elseif buttonNum == 3 then
+        return true, getSpacesEvents("LEFT")
+    else
+        return false
+    end
+end)
+zowie_events:start()
 
 wf = hs.window.filter.new()
 wf:keepActive()

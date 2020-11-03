@@ -27,4 +27,11 @@ M.bind = function(f, ...)
     end
 end
 
+-- iterate over list of hs.eventtap.event and :post() each one
+M.postEvents = function(events)
+    for _, event in ipairs(events) do
+        event:post()
+    end
+end
+
 return M
