@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# put completions in .zfunc
+fpath+="$HOME/.zfunc"
 autoload -Uz compinit
 compinit
 
@@ -11,6 +13,7 @@ export GOPATH=$HOME/go
 export GO111MODULE=on
 export PYTHONBREAKPOINT=ipdb.set_trace
 export PATH=$PATH:$GOPATH/bin
+export PATH="$PATH:$HOME/.local/bin"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
@@ -58,3 +61,4 @@ source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
 alias runlyft="aws-okta exec zimride-developer -- runlyft"
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
+

@@ -126,6 +126,7 @@ end
 appHideMapping = {
     Spotify="s",
     KeePassXC="k",
+    ["YouTube Music"]="y",
 }
 
 app_hyper = {"cmd", "ctrl"}

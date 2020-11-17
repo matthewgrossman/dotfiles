@@ -114,6 +114,9 @@ nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <leader>l :redraw!<CR>
 
+" polyglot config
+let g:polyglot_disabled = ['csv']
+
 """ PLUGINS
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -241,11 +244,11 @@ endfor
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
 
-" polyglot config
-let g:polyglot_disabled = ['csv']
-
 " markdown config
 let g:mkdp_auto_close = 0
+
+" python config
+let g:python3_host_prog = $XDG_CONFIG_HOME.'/nvim_venv/bin/python'
 
 " ale config
 function! ReorderPythonImports(buffer)
@@ -422,7 +425,7 @@ autocmd FileType * call LC_maps()
 let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
-abbreviate dbg import ipdb; ipdb.set_trace()
+abbreviate dbg breakpoint()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a :Ag <C-R><C-W><CR>
