@@ -1,5 +1,3 @@
-neovim
 python-language-server
-aactivator
-ghp-import
 poetry
+neovim-remote

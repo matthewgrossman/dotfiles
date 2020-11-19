@@ -19,8 +19,8 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
 export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
-kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
-export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
+# kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
+# export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 alias bazel=bazelisk
 HISTSIZE=10000000
 SAVEHIST=1000000
@@ -55,9 +55,4 @@ fi
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
-. $XDG_CONFIG_HOME/zsh/lyft.sh
-# source '/Users/mgrossman/src/awsaccess/awsaccess2.sh' # awsaccess
-# source '/Users/mgrossman/src/awsaccess/oktaawsaccess.sh' # oktaawsaccess
-# export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
-

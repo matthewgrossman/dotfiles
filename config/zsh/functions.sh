@@ -37,9 +37,8 @@ ab() {
 # cd to repo in src/
 src() {
     local root_path repo_paths repo_path
-    go_root_path="$GOPATH/src/github.com/lyft"
     root_path="${PROJECT_ROOT:-$HOME/src}"
-    repo_paths=$(find "$root_path" "$go_root_path" -mindepth 1 -maxdepth 1 -type d)
+    repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     repo_path=$(fzf <<< "$repo_paths")
     if [[ -n "$repo_path" ]]; then
         deactivate 2>/dev/null  # deactivate python venv
