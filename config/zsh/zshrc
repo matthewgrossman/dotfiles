@@ -19,8 +19,8 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
 export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
-# kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
-# export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
+kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
+export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 alias bazel=bazelisk
 HISTSIZE=10000000
 SAVEHIST=1000000
@@ -32,8 +32,6 @@ bindkey -e
 #ruby things
 # eval "$(rbenv init -)"
 
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 TERM=xterm-256color
 if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
     export VISUAL="$(which nvim)"
@@ -56,3 +54,6 @@ fi
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
+
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
