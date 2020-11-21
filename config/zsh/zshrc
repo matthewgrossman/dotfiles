@@ -19,8 +19,6 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
 export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
-kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
-export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 alias bazel=bazelisk
 HISTSIZE=10000000
 SAVEHIST=1000000
@@ -43,6 +41,11 @@ export FZF_DEFAULT_OPTS="--ansi --no-height"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
+
+if [ -d "$HOME/.kube"  ]; then
+    kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
+    export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
+fi
 
 # lyft
 export PROJECT_ROOT="$HOME/src"

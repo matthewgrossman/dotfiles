@@ -248,7 +248,8 @@ nnoremap <C-q> :Sayonara!<CR>
 let g:mkdp_auto_close = 0
 
 " python config
-let g:python3_host_prog = $XDG_CONFIG_HOME.'/nvim_venv/bin/python'
+" use host python3
+let g:python3_host_prog = "python3"
 
 " ale config
 function! ReorderPythonImports(buffer)
