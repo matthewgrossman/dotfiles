@@ -5,7 +5,6 @@ xcode-select --install
 
 # install homebrew and all programs in mac/Brewfile
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew tap homebrew/bundle
 brew bundle
 rehash
 
@@ -20,5 +19,4 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 source ~/.zshrc
 
 # install non-brew deps
-pip install -r $HOME/.config/pip/requirements.txt
-sh /$HOME/.config/node/node.sh
+<$HOME/.config/pip/requirements.txt xargs -n1 pipx install
