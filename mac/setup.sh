@@ -19,4 +19,4 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 source ~/.zshrc
 
 # install non-brew deps
-<$HOME/.config/pip/requirements.txt xargs -n1 pipx install
+<"$XDG_CONFIG_HOME/pip/requirements.txt" xargs -n1 pipx install
