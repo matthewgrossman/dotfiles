@@ -249,7 +249,7 @@ let g:mkdp_auto_close = 0
 
 " python config
 " use host python3
-let g:python3_host_prog = "python3"
+let g:python3_host_prog = trim(system("which python3"))
 
 " ale config
 function! ReorderPythonImports(buffer)
