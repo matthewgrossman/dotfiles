@@ -71,6 +71,7 @@ brew 'graphviz'
 brew 'llvm'
 brew 'wireguard-tools'
 brew 'pipx'
+brew 'gh'
 brew 'zsh-syntax-highlighting'
 brew 'zsh-autosuggestions'
 
