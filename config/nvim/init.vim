@@ -123,7 +123,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 " completion
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete-lsp'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -235,6 +237,31 @@ vnoremap <C-j> <esc><C-w>j
 vnoremap <C-k> <esc><C-w>k
 vnoremap <C-l> <esc><C-w>l
 
+" deoplete
+let g:deoplete#enable_at_startup = 1
+
+" nvim-lsp things
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+let g:lc_languages = ["python", "typescript", 'cpp']
+function! LC_maps()
+    if index(g:lc_languages, &filetype) != -1
+        nnoremap <buffer> <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+        nnoremap <buffer> <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+        nnoremap <buffer> <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+    endif
+endfunction
+autocmd FileType * call LC_maps()
+lua require'lspconf'
+
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
 for recipe in g:sandwich#recipes
@@ -249,7 +276,7 @@ let g:mkdp_auto_close = 0
 
 " python config
 " use host python3
-let g:python3_host_prog = trim(system("which python3"))
+let g:python3_host_prog = "/usr/local/bin/python3"
 
 " ale config
 function! ReorderPythonImports(buffer)
@@ -386,41 +413,41 @@ let g:test#python#runner = 'pytest'
 
 " coc config
 " set completeopt=noinsert,menuone,noselect
-set shortmess+=c
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
+" set shortmess+=c
+" " use <tab> for trigger completion and navigate to the next complete item
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-let g:coc_global_extensions = [
-    \  'coc-tsserver',
-    \  'coc-json',
-    \  'coc-pyls',
-    \  'coc-yaml',
-    \  'coc-html',
-    \  'coc-snippets',
-    \  'coc-go',
-\ ]
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" let g:coc_global_extensions = [
+"     \  'coc-tsserver',
+"     \  'coc-json',
+"     \  'coc-pyls',
+"     \  'coc-yaml',
+"     \  'coc-html',
+"     \  'coc-snippets',
+"     \  'coc-go',
+" \ ]
 
-let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp"]
-function! LC_maps()
-    if index(g:lc_languages, &filetype) != -1
-        nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
-        nmap <buffer> <silent> gr <Plug>(coc-references)
-        nmap <buffer> <silent> <C-w><C-]> :vsplit<CR>:call CocAction('jumpDefinition')<CR>
-        nmap <buffer> <silent> K :call CocAction('doHover')<CR>
-    endif
-endfunction
-autocmd FileType * call LC_maps()
+" let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp"]
+" function! LC_maps()
+"     if index(g:lc_languages, &filetype) != -1
+"         nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
+"         nmap <buffer> <silent> gr <Plug>(coc-references)
+"         nmap <buffer> <silent> <C-w><C-]> :vsplit<CR>:call CocAction('jumpDefinition')<CR>
+"         nmap <buffer> <silent> K :call CocAction('doHover')<CR>
+"     endif
+" endfunction
+" autocmd FileType * call LC_maps()
 
 " python config
 let g:python_highlight_indent_errors = 0
