@@ -93,6 +93,15 @@ autocmd FileType fugitive* nmap <buffer> q gq
 autocmd FileType lua setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd FileType go setlocal noexpandtab
 
+" scratch buffer
+function! Scratch()
+    execute 'enew'
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+endfunction
+nnoremap ge :call Scratch()<CR>
+
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
 nnoremap [st :set nowinfixheight<CR>
@@ -249,7 +258,7 @@ let g:mkdp_auto_close = 0
 
 " python config
 " use host python3
-let g:python3_host_prog = trim(system("which python3"))
+let g:python3_host_prog = "/usr/local/bin/python3"
 
 " ale config
 function! ReorderPythonImports(buffer)
@@ -397,9 +406,12 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 let g:coc_global_extensions = [
     \  'coc-tsserver',

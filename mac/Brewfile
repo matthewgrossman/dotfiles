@@ -21,6 +21,7 @@ cask 'slack'
 cask 'spotify'
 cask 'synergy'
 cask 'visual-studio-code'
+cask 'vlc'
 cask 'vnc-viewer'
 cask 'zoom'
 
