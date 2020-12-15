@@ -83,6 +83,7 @@ set expandtab
 
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
+autocmd BufNewFile,BufRead tsconfig.json  set filetype=jsonc
 autocmd BufNewFile,BufRead Tiltfile  set filetype=bzl
 autocmd FileType json let &formatprg='python3 -m json.tool'
 autocmd FileType xml let &formatprg='xmllint --format -'
@@ -180,14 +181,13 @@ Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
 " other languages
 Plug 'sheerun/vim-polyglot'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
 Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'junegunn/vader.vim'
+Plug 'neoclide/jsonc.vim'
+
 
 call plug#end()
 
@@ -282,7 +282,8 @@ let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   '*': ['trim_whitespace'],
 \   'python': [function('AddTrailingComma'), function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
-\   'go': ['gofmt']
+\   'go': ['gofmt'],
+\   'typescript': ['ale-typescript-prettier'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
@@ -394,8 +395,8 @@ let g:test#transformation = 'python_module'
 let g:test#python#runner = 'pytest'
 
 " coc config
-" set completeopt=noinsert,menuone,noselect
 set shortmess+=c
+
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -428,8 +429,7 @@ function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
         nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
         nmap <buffer> <silent> gr <Plug>(coc-references)
-        nmap <buffer> <silent> <C-w><C-]> :vsplit<CR>:call CocAction('jumpDefinition')<CR>
-        nmap <buffer> <silent> K :call CocAction('doHover')<CR>
+        nmap <buffer> <silent> K :call CocActionAsync('doHover')<CR>
     endif
 endfunction
 autocmd FileType * call LC_maps()

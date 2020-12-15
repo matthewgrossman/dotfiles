@@ -123,10 +123,15 @@ toggleAppHidden = function(appName)
     if app:isHidden() then app:activate() else app:hide() end
 end
 
+hideApp = function(appName)
+    local app = hs.application.get(appName)
+    if not app:isHidden() then app:hide() end
+end
+
 appHideMapping = {
     Spotify="s",
     KeePassXC="k",
-    ["YouTube Music"]="y",
+    Todoist="t",
 }
 
 app_hyper = {"cmd", "ctrl"}
@@ -135,21 +140,28 @@ for app, key in pairs(appHideMapping) do
     hs.hotkey.bind(app_hyper, key, toggleCB)
 end
 
-zowie_events = hs.eventtap.new({
-    hs.eventtap.event.types.otherMouseUp,
-}, function(event)
-    local buttonNum = event:getProperty(
-        hs.eventtap.event.properties.mouseEventButtonNumber
-        )
-    if buttonNum == 4 then
-        return true, getSpacesEvents("RIGHT")
-    elseif buttonNum == 3 then
-        return true, getSpacesEvents("LEFT")
-    else
-        return false
+spacesWatcher = hs.spaces.watcher.new(function(spaceNo)
+    for appName in pairs(appHideMapping) do
+        hideApp(appName)
     end
 end)
-zowie_events:start()
+spacesWatcher:start()
+
+-- zowie_events = hs.eventtap.new({
+--     hs.eventtap.event.types.otherMouseUp,
+-- }, function(event)
+--     local buttonNum = event:getProperty(
+--         hs.eventtap.event.properties.mouseEventButtonNumber
+--         )
+--     if buttonNum == 4 then
+--         return true, getSpacesEvents("RIGHT")
+--     elseif buttonNum == 3 then
+--         return true, getSpacesEvents("LEFT")
+--     else
+--         return false
+--     end
+-- end)
+-- zowie_events:start()
 
 -- getMiddleClickEvents = function()
 --     curLoc = hs.mouse.getAbsolutePosition()
