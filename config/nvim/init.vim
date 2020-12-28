@@ -211,10 +211,6 @@ autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
 autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 
 " NEOVIM TERMINAL CONFIG
-tnoremap <esc> <C-\><C-n>
-nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
-autocmd BufEnter,BufWinEnter,WinEnter * if &buftype=='terminal' | startinsert | endif
-
 autocmd TermOpen * call InitTermBuffer()
 function! InitTermBuffer()
     setlocal nonumber
@@ -227,12 +223,29 @@ endfunction
 
 nnoremap <C-w>\| :vsplit <bar> terminal <CR>:startinsert<CR>
 nnoremap <C-w>- :split <bar> terminal <CR>:startinsert<CR>
+nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
 
+" Remember last mode in terminal buffer
+function! LeaveTermWhileInInsert(direction)
+    let b:last_mode = 'insert'
+    execute 'wincmd '.a:direction
+endfunction
+function! LeaveTermAndResetMode()
+    let b:last_mode = 'normal'
+endfunction
+function! EnterTermAndActivateLastMode()
+    if !exists('b:last_mode') || (exists('b:last_mode') && b:last_mode == 'insert')
+        startinsert
+    endif
+endfunction
+autocmd WinEnter term://* call EnterTermAndActivateLastMode()
+tnoremap <esc> <C-\><C-N>:call LeaveTermAndResetMode()<CR>
+
+tnoremap <C-h> <C-\><C-N>:call LeaveTermWhileInInsert('h')<CR>
+tnoremap <C-j> <C-\><C-N>:call LeaveTermWhileInInsert('j')<CR>
+tnoremap <C-k> <C-\><C-N>:call LeaveTermWhileInInsert('k')<CR>
+tnoremap <C-l> <C-\><C-N>:call LeaveTermWhileInInsert('l')<CR>
 tnoremap <M-[> <Esc>
-tnoremap <C-h> <C-\><C-N><C-w>h
-tnoremap <C-j> <C-\><C-N><C-w>j
-tnoremap <C-k> <C-\><C-N><C-w>k
-tnoremap <C-l> <C-\><C-N><C-w>l
 inoremap <C-h> <C-\><C-N><C-w>h
 inoremap <C-j> <C-\><C-N><C-w>j
 inoremap <C-k> <C-\><C-N><C-w>k
