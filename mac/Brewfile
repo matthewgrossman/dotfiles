@@ -23,6 +23,7 @@ cask 'synergy'
 cask 'visual-studio-code'
 cask 'vlc'
 cask 'vnc-viewer'
+cask 'wireshark'
 cask 'zoom'
 
 brew 'ag'

@@ -144,6 +144,8 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
 
 " usability
 Plug 'tpope/vim-repeat'
@@ -309,13 +311,14 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " ranger config
-function! Ranger()
-    let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
-    execute 'terminal VISUAL="nvr" ranger'.args
-    startinsert
-endfunction
-nnoremap - :call Ranger()<CR>
-autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
+nnoremap - :Ranger<CR>
+" function! Ranger()
+"     let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
+"     execute 'terminal VISUAL="nvr" ranger'.args
+"     startinsert
+" endfunction
+" nnoremap - :call Ranger()<CR>
+" autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 " fugitive config
 nmap <Leader>gg :Git<space>
