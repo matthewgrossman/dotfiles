@@ -213,6 +213,7 @@ autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 " NEOVIM TERMINAL CONFIG
 tnoremap <esc> <C-\><C-n>
 nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
+autocmd BufEnter,BufWinEnter,WinEnter * if &buftype=='terminal' | startinsert | endif
 
 autocmd TermOpen * call InitTermBuffer()
 function! InitTermBuffer()
