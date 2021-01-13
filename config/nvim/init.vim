@@ -127,6 +127,10 @@ nnoremap <silent> <leader>l :redraw!<CR>
 " polyglot config
 let g:polyglot_disabled = ['csv']
 
+" python config
+" use host python3
+let g:python3_host_prog = "/usr/local/bin/python3"
+
 """ PLUGINS
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -270,10 +274,6 @@ nnoremap <C-q> :Sayonara!<CR>
 
 " markdown config
 let g:mkdp_auto_close = 0
-
-" python config
-" use host python3
-let g:python3_host_prog = "/usr/local/bin/python3"
 
 " ale config
 function! ReorderPythonImports(buffer)
