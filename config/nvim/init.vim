@@ -306,7 +306,8 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_python_autopep8_options = '--max-line-length=10000'
 let g:ale_lua_luacheck_options = '--config '.$XDG_CONFIG_HOME.'/luacheck/.luacheckrc'
 let g:ale_cpp_clangd_options = '-x c++'
-let g:ale_virtualtext_cursor = 1
+" let g:ale_virtualtext_cursor = 1
+" let g:ale_hover_to_floating_preview = 1
 
 autocmd BufEnter __init__.py,manage.py,venv/* let b:ale_fix_on_save = 0
 
@@ -440,7 +441,7 @@ let g:coc_global_extensions = [
     \  'coc-go',
 \ ]
 
-let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp"]
+let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp", "javascript"]
 function! LC_maps()
     if index(g:lc_languages, &filetype) != -1
         nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
