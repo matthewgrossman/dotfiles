@@ -30,6 +30,9 @@ bindkey -e
 #ruby things
 # eval "$(rbenv init -)"
 
+# node things
+eval "$(fnm env)"
+
 TERM=xterm-256color
 if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
     export VISUAL="$(which nvim)"
