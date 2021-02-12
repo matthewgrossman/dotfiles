@@ -178,7 +178,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " productivity
-Plug 'vimwiki/vimwiki'
 Plug 'junegunn/goyo.vim'
 
 " python
@@ -314,11 +313,6 @@ autocmd BufEnter __init__.py,manage.py,venv/* let b:ale_fix_on_save = 0
 " gutentags config
 let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
 set nofsync
-
-" vimwiki config
-nmap <Leader>d <Plug>VimwikiMakeDiaryNote
-nmap <Leader>di <Plug>VimwikiDiaryIndex
-nmap <Leader>dig <Plug>VimwikiDiaryGenerateLinks
 
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)
