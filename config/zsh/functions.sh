@@ -97,3 +97,12 @@ sync() {
         _sync_once "$src_trailing_slash" "$dst"
     done
 }
+
+lkssh() {
+    local service sha pod pods
+    service="$1"
+    sha="${2:0:5}" # grab only first 5 characters of arg $2
+    pods=$(lyftkube -e staging -p "$service" get pods)
+    pod=$(awk -v sha="$sha" '$3==sha {print $2;exit}' <<< "$pods")
+    lyftkube ssh "$pod"
+}
