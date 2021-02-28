@@ -3,7 +3,7 @@ helpers = require("helpers")
 -- gotta go fast
 hs.window.animationDuration = 0
 
-layout_hyper = {"cmd", "alt"}
+layout_hyper = {"ctrl", "shift"}
 
 layoutLeft66 = {x=0, y=0, w=.6666,h=1}
 layoutLeft33 = {x=0, y=0, w=.3333,h=1}
@@ -18,6 +18,8 @@ layoutUpperRightSixth = {x=.6666, y=0, w=.3333, h=.5}
 layoutLowerRightSixth = {x=.6666, y=.5, w=.3333, h=.5}
 layoutLowerLeftSixth = {x=0, y=.5, w=.3333, h=.5}
 layoutUpperLeftSixth = {x=0, y=0, w=.3333, h=.5}
+layoutBottomHalf = {x=0, y=.5, w=1, h=.5}
+layoutTopHalf = {x=0, y=0, w=1, h=.5}
 
 layout_mapping = {
     h = {layoutLeft33, hs.layout.left50, layoutLeft66},
@@ -26,7 +28,8 @@ layout_mapping = {
     m = {layoutLowerRightSixth, layoutLowerRight},
     n = {layoutLowerLeftSixth, layoutLowerLeft},
     o = {layoutUpperRightSixth, layoutUpperRight},
-    u = {layoutUpperLeftSixth, layoutUpperLeft}
+    u = {layoutUpperLeftSixth, layoutUpperLeft},
+    i = {layoutBottomHalf, layoutTopHalf}
 }
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
@@ -63,7 +66,7 @@ hs.hotkey.bind("ctrl", "[", function()
     hs.eventtap.keyStroke({}, "ESCAPE")
 end)
 
-spaces_hyper = {"ctrl", "shift"}
+spaces_hyper = {"cmd", "alt"}
 spaces_mapping = {
     h = "LEFT",
     l = "RIGHT"
