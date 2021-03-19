@@ -9,7 +9,8 @@
     b = branch
     fm = pull
     co = checkout
-    dm = diff master
+    dm = "!git diff $(git default-branch)"
+    cm = "!git checkout $(git default-branch)"
     c = commit
     ca = commit --all
     a = add
@@ -20,15 +21,15 @@
     m = merge
     l = log
     ld = log --stat --patch --full-diff
-    mm = merge master
+    mm = "!git merge $(git default-branch)"
     giff = diff
 
     default-branch = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||'"
     ticket-prefix = "!git branch-name | perl -ne 's/(XD-\\d{4,}).*/\\1: / && print'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
-    pm = "!git checkout master && git pull && git checkout - && git merge master --no-edit"
-    bc = "!git checkout master && git pull && git checkout -b"
+    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
+    bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
     pr = "!git po && gh pr create --fill --web"
     clo = "!gh repo clone"
