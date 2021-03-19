@@ -3,7 +3,7 @@ helpers = require("helpers")
 -- gotta go fast
 hs.window.animationDuration = 0
 
-layout_hyper = {"ctrl", "shift"}
+layout_hyper = {"cmd", "alt"}
 
 layoutLeft66 = {x=0, y=0, w=.6666,h=1}
 layoutLeft33 = {x=0, y=0, w=.3333,h=1}
@@ -25,11 +25,11 @@ layout_mapping = {
     h = {layoutLeft33, hs.layout.left50, layoutLeft66},
     l = {layoutRight33, hs.layout.right50, layoutRight66},
     k = {layoutMiddle33, hs.layout.maximized},
+    j = {layoutBottomHalf, layoutTopHalf},
     m = {layoutLowerRightSixth, layoutLowerRight},
     n = {layoutLowerLeftSixth, layoutLowerLeft},
     o = {layoutUpperRightSixth, layoutUpperRight},
     u = {layoutUpperLeftSixth, layoutUpperLeft},
-    i = {layoutBottomHalf, layoutTopHalf}
 }
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
@@ -57,7 +57,7 @@ for key, layouts in pairs(layout_mapping) do
     end)
 end
 
-hs.hotkey.bind(layout_hyper, 'j', function()
+hs.hotkey.bind(layout_hyper, 'return', function()
     local win = hs.window.focusedWindow()
     win:moveToScreen(win:screen():next())
 end)
@@ -66,7 +66,7 @@ hs.hotkey.bind("ctrl", "[", function()
     hs.eventtap.keyStroke({}, "ESCAPE")
 end)
 
-spaces_hyper = {"cmd", "alt"}
+spaces_hyper = {"ctrl", "shift"}
 spaces_mapping = {
     h = "LEFT",
     l = "RIGHT"
