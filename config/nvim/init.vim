@@ -289,6 +289,7 @@ let g:ale_linters = {
 \   'go': ['gopls'],
 \   'lua': ['luacheck'],
 \   'cpp': ['clangd'],
+\   'terraform': ['']
 \}
 
 " include pyls to leverage LSP; disable below to silence diagnostics

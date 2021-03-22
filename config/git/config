@@ -37,4 +37,4 @@
 [core]
     excludesfile = ~/.config/git/gitignore_global
 [pull]
-	ff = only
+    rebase = false

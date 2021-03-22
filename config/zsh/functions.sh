@@ -36,7 +36,7 @@ ab() {
 
 # cd to repo in src/
 src() {
-    local root_path repo_paths repo_path
+    local root_path repo_paths repo_path venv_path
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     repo_path=$(fzf <<< "$repo_paths")
@@ -44,8 +44,11 @@ src() {
         deactivate 2>/dev/null  # deactivate python venv
         cd "$repo_path" || return
 
-        # shellcheck disable=SC1091
-        source "venv/bin/activate" 2>/dev/null || true  # activate new python venv
+        venv_path='venv'
+        [[ -d ".venv" ]] && venv_path='.venv'
+
+        # shellcheck disable=SC1090
+        source "$venv_path/bin/activate" 2>/dev/null || true  # activate new python venv
     fi
 }
 
