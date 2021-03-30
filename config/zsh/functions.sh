@@ -36,17 +36,22 @@ ab() {
 
 # cd to repo in src/
 src() {
-    local root_path repo_paths repo_path venv_path
+    local root_path repo_paths repo_path venv_path repo_basename
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     repo_path=$(fzf <<< "$repo_paths")
     if [[ -n "$repo_path" ]]; then
-        deactivate 2>/dev/null  # deactivate python venv
         cd "$repo_path" || return
 
-        venv_path='venv'
-        [[ -d ".venv" ]] && venv_path='.venv'
+        # set kitty's tab title
+        repo_basename=$(basename "$repo_path")
+        kitty @ set-tab-title "$repo_basename" 2>/dev/null
 
+        # overwrite the venv path if .venv is used, default in poetry
+        venv_path='venv'
+        [ -d ".venv" ] && venv_path='.venv'
+
+        deactivate 2>/dev/null  # deactivate python venv
         # shellcheck disable=SC1090
         source "$venv_path/bin/activate" 2>/dev/null || true  # activate new python venv
     fi
