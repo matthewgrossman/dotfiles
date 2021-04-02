@@ -25,7 +25,6 @@
     giff = diff
 
     default-branch = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||'"
-    ticket-prefix = "!git branch-name | perl -ne 's/(XD-\\d{4,}).*/\\1: / && print'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
