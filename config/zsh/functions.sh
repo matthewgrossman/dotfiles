@@ -107,10 +107,22 @@ sync() {
 }
 
 lkssh() {
+    # $> lkssh ufo 06a26
     local service sha pod pods
     service="$1"
     sha="${2:0:5}" # grab only first 5 characters of arg $2
     pods=$(lyftkube -e staging -p "$service" get pods)
     pod=$(awk -v sha="$sha" '$3==sha {print $2;exit}' <<< "$pods")
     lyftkube ssh "$pod"
+}
+
+deloffloaded() {
+    # $> deloffloaded ufo 8fad6
+    local service sha deployments
+    service="$1"
+    sha="${2:0:5}" # grab only first 5 characters of arg $2
+    deployments=$(lyftkube -e staging --cluster core-staging-1 kubectl -- -n "$service"-staging get deployments --selector='lyft.net/offloaded-facet=true')
+    deployment=$(awk -v sha="$sha" '$1 ~ sha {print $1;exit}' <<< "$deployments")
+    [ -z "$deployment" ] && echo "No deployment found for service {$service} and sha {$sha}" && return 1
+    lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
 }
