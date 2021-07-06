@@ -335,6 +335,7 @@ nmap <Leader>gd :Gdiff<cr>
 nmap <Leader>gs :Gstatus<cr>
 nmap <Leader>gb :Gblame<cr>
 nmap <Leader>ga :Gwrite<cr>
+nmap <Leader>gp :Git push<cr>
 nmap <Leader>gh V:Gbrowse<cr>
 vmap <Leader>gh :Gbrowse<cr>
 
@@ -402,9 +403,9 @@ endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
 " let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
-let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
-let g:test#transformation = 'python_module'
-let g:test#python#runner = 'pytest'
+" let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
+" let g:test#transformation = 'python_module'
+" let g:test#python#runner = 'pytest'
 
 " coc config
 set shortmess+=c
@@ -453,7 +454,7 @@ let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
-nnoremap <leader>a :Ag <C-R><C-W><CR>
+nnoremap <leader>a :Rg <C-R><C-W><CR>
 
 " commands
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
@@ -498,3 +499,4 @@ command! FZFBuffers call fzf#run(fzf#wrap({
             \'source': GetBufferNames_sh().GetFZFCommand_sh(),
             \'options': '--multi',
             \}))
+
