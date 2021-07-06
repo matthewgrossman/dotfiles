@@ -123,11 +123,13 @@ hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
 toggleAppHidden = function(appName)
     local app = hs.application.get(appName)
+    -- TODO: escape early if the app isn't launched, or open the app?
     if app:isHidden() then app:activate() else app:hide() end
 end
 
 hideApp = function(appName)
     local app = hs.application.get(appName)
+    if app == nil then return end
     if not app:isHidden() then app:hide() end
 end
 
