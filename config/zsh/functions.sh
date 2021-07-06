@@ -126,3 +126,12 @@ deloffloaded() {
     [ -z "$deployment" ] && echo "No deployment found for service {$service} and sha {$sha}" && return 1
     lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
 }
+
+deloff () {
+    local service deployment deployments
+    service="$1"
+    deployments=$(lyftkube -e staging --cluster core-staging-1 kubectl -- -n "$service"-staging get deployments --selector='lyft.net/offloaded-facet=true' | awk 'NR>1 {print $1}')
+    deployment=$(fzf --tac --no-sort <<< "$deployments")
+    [[ -z "$deployment" ]] && echo 'cancelling offloaded-facet deletion' && return
+    lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
+}

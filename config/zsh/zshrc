@@ -17,6 +17,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
+export PATH="/usr/local/opt/libxml2/bin:$PATH"
 export CLANG_FORMAT="clang-format"
 export WEECHAT_HOME="$XDG_CONFIG_HOME/weechat"
 alias bazel=bazelisk
@@ -63,3 +64,4 @@ PATH=$PATH:/Users/mgrossman/.lyftkube-bin
 
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source '/Users/mgrossman/.sh/custom/npm-logout.sh'
