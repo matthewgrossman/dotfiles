@@ -1,6 +1,7 @@
 cask 'google-backup-and-sync'
 
 cask 'alfred'
+cask 'android-file-transfer'
 cask 'android-platform-tools'
 cask 'balenaetcher'
 cask 'calibre'
