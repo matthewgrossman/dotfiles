@@ -346,7 +346,7 @@ let g:airline_highlighting_cache = 1
 let g:highlightedyank_highlight_duration = 150
 
 " fzf config
-nnoremap <c-p> :FZFBuffers<cr>
+nnoremap <c-p> :GFiles<cr>
 let g:fzf_layout = {'window': 'enew'}
 let g:fzf_action = {
     \ 'ctrl-q': 'wall | bdelete',
@@ -460,43 +460,3 @@ nnoremap <leader>a :Rg <C-R><C-W><CR>
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
-command! -range SpongebobEscape :<line1>,<line2>execute "normal qa~lq100@a"
-" command! -range SpongebobEscape :<line1>,<line2>normal C
-
-
-function! SpongebobEscapeFunc()
-endfunction
-function! GetBufferNames()
-    let bufnrs = map(filter(copy(getbufinfo()), {i,b -> b.listed && len(b.name)}), 'v:val.bufnr')
-    let filtered_bufnrs = filter(copy(bufnrs), {i,b -> getbufvar(b, '&buftype') == ''})
-    let full_paths = map(copy(filtered_bufnrs), 'bufname(v:val)')
-    return map(full_paths, {i,b -> fnamemodify(b, ':.')})
-endfunction
-
-function! GetBufferNames_sh()
-    let buffer_names = GetBufferNames()
-    if len(buffer_names)
-        let buffers_str = join(buffer_names, "\n")."\n"
-        let colors_str = '\e[34m%s\e[0m'
-        let command_str = 'printf "'.colors_str.'" "'.buffers_str.'"'
-        return 'bash -c '''.command_str.''';'
-    else
-        return ''
-    endif
-endfunction
-
-function! GetFZFCommand_sh()
-    let search_cmd = 'git ls-files --recurse-submodules'
-    let buffer_names = GetBufferNames()
-    if len(buffer_names)
-        let filter_grep = 'grep -Ev "^'.join(buffer_names, '$|^').'$"'
-        let search_cmd = search_cmd.' | '. filter_grep
-    endif
-    return search_cmd.';'
-endfunction
-
-command! FZFBuffers call fzf#run(fzf#wrap({
-            \'source': GetBufferNames_sh().GetFZFCommand_sh(),
-            \'options': '--multi',
-            \}))
-
