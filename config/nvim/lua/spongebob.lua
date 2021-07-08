@@ -1,0 +1,12 @@
+-- local spongebobCase = function(str)
+--     local ret = ""
+--     local isOdd = false
+--     for char in pairs(str) do
+--         if isOdd then
+--             ret += char.upper()
+--         else
+--             ret += char.lower()
+--         end
+--     end
+--     return ret
+-- end
