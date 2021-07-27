@@ -359,7 +359,7 @@ nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 let g:grepper = {
 \   'highlight': 1,
-\   'tools': ['rg']
+\   'tools': ['ag']
 \ }
 
 let g:html_indent_script1 = "inc"
