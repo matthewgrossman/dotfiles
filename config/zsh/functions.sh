@@ -135,3 +135,26 @@ deloff () {
     [[ -z "$deployment" ]] && echo 'cancelling offloaded-facet deletion' && return
     lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
 }
+
+ttabs () {
+    local tabs
+    kittyjson=$(kitty @ ls)
+    tabs=$(jq -r '.[0].tabs | .[] | "\(.title) \(.windows[0].cwd) already_open \(.id)"' <<< "$kittyjson")
+    echo "$tabs"
+}
+
+pjq () {
+    if [[ -z $1 ]] || [[ $1 == "-" ]]; then
+        input=$(mktemp)
+        trap 'rm -f $input' EXIT
+        cat /dev/stdin > "$input"
+    else
+        input=$1
+    fi
+
+    echo '' \
+        | fzf --phony \
+              --preview-window='up:90%' \
+              --print-query \
+              --preview "jq --color-output -r {q} $input"
+}
