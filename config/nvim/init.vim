@@ -142,8 +142,8 @@ Plug 'neovim/nvim-lspconfig'
 
 
 " file management
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
@@ -347,14 +347,9 @@ let g:airline_highlighting_cache = 1
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 150
 
-" fzf config
-nnoremap <c-p> :GFiles<cr>
-let g:fzf_layout = {'window': 'enew'}
-let g:fzf_action = {
-    \ 'ctrl-q': 'wall | bdelete',
-    \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
+" telescope config
+nnoremap <c-p> <cmd>Telescope git_files<cr>
+nnoremap <leader>a <cmd>Telescope grep_string<cr>
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)
@@ -417,8 +412,6 @@ let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
-
-nnoremap <leader>a :Rg <C-R><C-W><CR>
 
 " commands
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
