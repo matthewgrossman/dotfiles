@@ -2,3 +2,4 @@ python-language-server
 poetry
 neovim-remote
 ansible-base
+jedi-language-server

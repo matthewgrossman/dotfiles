@@ -137,7 +137,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 " completion
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'hrsh7th/nvim-compe'
+Plug 'neovim/nvim-lspconfig'
+
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -407,45 +409,7 @@ let g:test#strategy = 'clipboard'
 " let g:test#transformation = 'python_module'
 " let g:test#python#runner = 'pytest'
 
-" coc config
 set shortmess+=c
-
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-let g:coc_global_extensions = [
-    \  'coc-tsserver',
-    \  'coc-json',
-    \  'coc-pyls',
-    \  'coc-yaml',
-    \  'coc-html',
-    \  'coc-snippets',
-    \  'coc-go',
-\ ]
-
-let g:lc_languages = ["typescript", "python", "typescript.tsx", "go", "cpp", "javascript"]
-function! LC_maps()
-    if index(g:lc_languages, &filetype) != -1
-        nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
-        nmap <buffer> <silent> gr <Plug>(coc-references)
-        nmap <buffer> <silent> K :call CocActionAsync('doHover')<CR>
-    endif
-endfunction
-autocmd FileType * call LC_maps()
 
 " python config
 let g:python_highlight_indent_errors = 0
@@ -460,3 +424,5 @@ nnoremap <leader>a :Rg <C-R><C-W><CR>
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
+
+lua require('init')
