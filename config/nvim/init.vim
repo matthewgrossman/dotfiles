@@ -335,7 +335,7 @@ nnoremap - :Ranger<CR>
 nmap <Leader>gg :Git<space>
 nmap <Leader>gd :Gdiff<cr>
 nmap <Leader>gs :Gstatus<cr>
-nmap <Leader>gb :Gblame<cr>
+nmap <Leader>gb :Git blame<cr>
 nmap <Leader>ga :Gwrite<cr>
 nmap <Leader>gp :Git push<cr>
 nmap <Leader>gh V:Gbrowse<cr>
