@@ -2,8 +2,8 @@
 set hidden
 
 " move by screen-line instead of text-line
-nnoremap j gj
-nnoremap k gk
+noremap j gj
+noremap k gk
 
 " hop to the beginning and ends of line easily
 nnoremap H ^
@@ -361,7 +361,7 @@ nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 let g:grepper = {
 \   'highlight': 1,
-\   'tools': ['ag']
+\   'tools': ['rg']
 \ }
 
 let g:html_indent_script1 = "inc"
