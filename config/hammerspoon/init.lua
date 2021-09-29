@@ -66,6 +66,11 @@ hs.hotkey.bind("ctrl", "[", function()
     hs.eventtap.keyStroke({}, "ESCAPE")
 end)
 
+hs.hotkey.bind(layout_hyper, "r", function()
+    hs.reload()
+end)
+
+
 spaces_hyper = {"ctrl", "shift"}
 spaces_mapping = {
     h = "LEFT",
@@ -135,7 +140,7 @@ end
 
 appHideMapping = {
     Spotify="s",
-    KeePassXC="k",
+    KeeWeb="k",
     Todoist="t",
 }
 
@@ -206,26 +211,49 @@ window_chooser = hs.chooser.new(function(choice)
 end)
 idToWindow = {}
 idToName = {}
+choicesLength = 0
 window_chooser:choices(function()
     local ret = {}
+    local length = 0
     for _, window in pairs(wf:getWindows()) do
         idToWindow[window:id()] = window
         local assigned_name = idToName[window:id()]
-        local application = window:application()
         local row = {
-            text = assigned_name or application:name(),
+            text = assigned_name or window:title(),
             windowId = window:id(),
-            image = hs.image.imageFromAppBundle(application:bundleID())
+            image = hs.image.imageFromAppBundle(window:application():bundleID())
         }
         table.insert(ret, row)
+        length = length + 1
     end
+    choicesLength = length
     return ret
 end)
+
 hs.hotkey.bind('alt', 'tab', function()
-    window_chooser:refreshChoicesCallback()
-    window_chooser:query(nil)
-    window_chooser:show()
-    window_chooser:selectedRow(2) -- select previous window
+
+    -- if the chooser is already open, advance to next row
+    if window_chooser:isVisible() then
+        nextRow = window_chooser:selectedRow()+1
+        if nextRow > choicesLength then nextRow = 1 end
+        window_chooser:selectedRow(nextRow)
+    else
+        window_chooser:refreshChoicesCallback()
+        window_chooser:query(nil)
+        window_chooser:show()
+        window_chooser:selectedRow(2) -- select previous window
+    end
+end)
+
+hs.hotkey.bind({'shift', 'alt'}, 'tab', function()
+
+    -- if the chooser is already open, go up a row
+    if window_chooser:isVisible() then
+        prevRow = window_chooser:selectedRow()-1
+        if prevRow == 0 then prevRow = choicesLength end
+        window_chooser:selectedRow(prevRow)
+
+    end
 end)
 
 hs.hotkey.bind(layout_hyper, "w", function()

@@ -332,14 +332,14 @@ nnoremap - :Ranger<CR>
 " autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
 
 " fugitive config
-nmap <Leader>gg :Git<space>
-nmap <Leader>gd :Gdiff<cr>
-nmap <Leader>gs :Gstatus<cr>
-nmap <Leader>gb :Git blame<cr>
+nmap <Leader>gg :Git<cr>
+nmap <Leader>gdd :Gdiffsplit<cr>
+nmap <Leader>gdm :Gdiffsplit master<cr>
+nmap <Leader>gb :Git_blame<cr>
 nmap <Leader>ga :Gwrite<cr>
 nmap <Leader>gp :Git push<cr>
-nmap <Leader>gh V:Gbrowse<cr>
-vmap <Leader>gh :Gbrowse<cr>
+nmap <Leader>gh V:GBrowse<cr>
+vmap <Leader>gh :GBrowse<cr>
 
 " airline config
 let g:airline_highlighting_cache = 1
