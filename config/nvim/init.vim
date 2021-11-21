@@ -154,6 +154,8 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
 " usability
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
@@ -164,7 +166,7 @@ Plug 'kana/vim-textobj-indent'
 Plug 'peterrincker/vim-argumentative'
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-grepper'
-Plug 'romainl/vim-qf'
+" Plug 'romainl/vim-qf'
 Plug 'kana/vim-textobj-user'
 Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'junegunn/vim-easy-align'
@@ -285,10 +287,9 @@ function! AddTrailingComma(buffer)
 endfunction
 let g:ale_linters = {
 \   'typescript': ['tsserver'],
-\   'python': ['flake8', 'mypy', 'pyls'],
 \   'zsh': ['shellcheck'],
 \   'bash': ['shellcheck'],
-\   'go': ['gopls'],
+\   'go': [],
 \   'lua': ['luacheck'],
 \   'cpp': ['clangd'],
 \   'terraform': ['']
@@ -299,7 +300,7 @@ let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_fixers = {
 \   '*': ['trim_whitespace'],
 \   'python': [function('AddTrailingComma'), function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
-\   'go': ['gofmt'],
+\   'go': [],
 \   'typescript': ['tslint']
 \}
 let g:ale_fix_on_save = 1
@@ -335,7 +336,7 @@ nnoremap - :Ranger<CR>
 nmap <Leader>gg :Git<cr>
 nmap <Leader>gdd :Gdiffsplit<cr>
 nmap <Leader>gdm :Gdiffsplit master<cr>
-nmap <Leader>gb :Git_blame<cr>
+nmap <Leader>gb :Git blame<cr>
 nmap <Leader>ga :Gwrite<cr>
 nmap <Leader>gp :Git push<cr>
 nmap <Leader>gh V:GBrowse<cr>
@@ -349,7 +350,7 @@ let g:highlightedyank_highlight_duration = 150
 
 " fzf config
 nnoremap <c-p> :GFiles<cr>
-let g:fzf_layout = {'window': 'enew'}
+" let g:fzf_layout = {'window': 'enew'}
 let g:fzf_action = {
     \ 'ctrl-q': 'wall | bdelete',
     \ 'ctrl-t': 'tab split',

@@ -1,3 +1,4 @@
+brew 'mas'
 cask 'google-backup-and-sync'
 
 cask 'alfred'
@@ -35,6 +36,7 @@ brew 'bash'
 brew 'bat'
 brew 'cowsay'
 brew 'ctags'
+brew 'efm-langserver'
 brew 'ffmpeg'
 brew 'fnm'
 brew 'fortune'

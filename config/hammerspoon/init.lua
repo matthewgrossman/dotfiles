@@ -88,7 +88,8 @@ end
 
 for key, direction in pairs(spaces_mapping) do
     hs.hotkey.bind(spaces_hyper, key, function()
-        helpers.postEvents(getSpacesEvents(direction))
+        hs.even.keyStroke({"fn", "ctrl"}, direction)
+        -- helpers.postEvents(getSpacesEvents(direction))
     end)
 end
 
@@ -156,49 +157,6 @@ spacesWatcher = hs.spaces.watcher.new(function(spaceNo)
     end
 end)
 spacesWatcher:start()
-
--- zowie_events = hs.eventtap.new({
---     hs.eventtap.event.types.otherMouseUp,
--- }, function(event)
---     local buttonNum = event:getProperty(
---         hs.eventtap.event.properties.mouseEventButtonNumber
---         )
---     if buttonNum == 4 then
---         return true, getSpacesEvents("RIGHT")
---     elseif buttonNum == 3 then
---         return true, getSpacesEvents("LEFT")
---     else
---         return false
---     end
--- end)
--- zowie_events:start()
-
--- getMiddleClickEvents = function()
---     curLoc = hs.mouse.getAbsolutePosition()
---     return {
---         hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseDown, curLoc),
---         hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.otherMouseUp, curLoc),
---     }
--- end
-
--- evoluent_events = hs.eventtap.new({
---     hs.eventtap.event.types.otherMouseUp,
--- }, function(event)
---     local buttonNum = event:getProperty(
---         hs.eventtap.event.properties.mouseEventButtonNumber
---         )
---     if buttonNum == 3 then
---         return true, getSpacesEvents("RIGHT")
---     elseif buttonNum == 5 then
---         return true, getSpacesEvents("LEFT")
---     elseif buttonNum == 4 then
---         return true, getMiddleClickEvents()
---     else
---         return false
---     end
--- end)
--- evoluent_events:start()
-
 
 wf = hs.window.filter.new()
 wf:keepActive()
