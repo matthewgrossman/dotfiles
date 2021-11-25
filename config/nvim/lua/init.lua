@@ -73,7 +73,6 @@ nvim_lsp.clangd.setup {
 
 -- print(vim.inspect(vim.tbl_keys(efmlinters)))
 nvim_lsp.efm.setup {
-    -- cmd = {"efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "2"},
     init_options = {documentFormatting = true},
     on_attach = on_attach,
     filetypes = vim.tbl_keys(efmlinters),
