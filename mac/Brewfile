@@ -86,3 +86,6 @@ brew 'zsh-syntax-highlighting'
 
 tap 'homebrew/cask-drivers'
 cask 'uhk-agent'
+
+tap 'homebrew/cask-fonts'
+cask 'font-hack-nerd-font'
