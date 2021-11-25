@@ -154,8 +154,8 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
 " usability
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
@@ -175,7 +175,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
 Plug 'mhinz/vim-signify'
-Plug 'w0rp/ale', { 'on':  'ALEToggle' }
 Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
@@ -278,42 +277,6 @@ nnoremap <C-q> :Sayonara!<CR>
 " markdown config
 let g:mkdp_auto_close = 0
 
-" ale config
-function! ReorderPythonImports(buffer)
-    return { 'command': 'reorder-python-imports -'}
-endfunction
-function! AddTrailingComma(buffer)
-    return { 'command': 'add-trailing-comma --py36-plus -'}
-endfunction
-let g:ale_linters = {
-\   'typescript': ['tsserver'],
-\   'zsh': ['shellcheck'],
-\   'bash': ['shellcheck'],
-\   'go': [],
-\   'lua': ['luacheck'],
-\   'cpp': ['clangd'],
-\   'terraform': ['']
-\}
-
-" include pyls to leverage LSP; disable below to silence diagnostics
-let g:ale_linters_ignore = {'python': ['pyls']}
-let g:ale_fixers = {
-\   '*': ['trim_whitespace'],
-\   'python': [function('AddTrailingComma'), function('ReorderPythonImports'), 'isort', 'trim_whitespace', 'autopep8', 'black'],
-\   'go': [],
-\   'typescript': ['tslint']
-\}
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_python_autopep8_options = '--max-line-length=10000'
-let g:ale_lua_luacheck_options = '--config '.$XDG_CONFIG_HOME.'/luacheck/.luacheckrc'
-let g:ale_cpp_clangd_options = '-x c++'
-" let g:ale_virtualtext_cursor = 1
-" let g:ale_hover_to_floating_preview = 1
-
-autocmd BufEnter __init__.py,manage.py,venv/* let b:ale_fix_on_save = 0
-
 " gutentags config
 let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
 set nofsync
@@ -389,8 +352,6 @@ noremap <Leader>t :TagbarOpenAutoClose<CR>
 let g:tagbar_left = 1
 
 " vim-qf config
-nmap [l <Plug>(ale_previous_wrap)
-nmap ]l <Plug>(ale_next_wrap)
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
 
 " autopairs config
