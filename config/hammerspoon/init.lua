@@ -79,12 +79,12 @@ spaces_mapping = {
 
 -- currently has bug that requires "fn" as additional modifier
 -- https://github.com/Hammerspoon/hammerspoon/issues/1946#issuecomment-449604954
-getSpacesEvents = function(direction)
-    return {
-        hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, true),
-        hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, false)
-    }
-end
+-- getSpacesEvents = function(direction)
+--     return {
+--         hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, true),
+--         hs.eventtap.event.newKeyEvent({"fn", "ctrl"}, direction, false)
+--     }
+-- end
 
 for key, direction in pairs(spaces_mapping) do
     hs.hotkey.bind(spaces_hyper, key, function()
@@ -151,7 +151,7 @@ for app, key in pairs(appHideMapping) do
     hs.hotkey.bind(app_hyper, key, toggleCB)
 end
 
-spacesWatcher = hs.spaces.watcher.new(function(spaceNo)
+spacesWatcher = hs.spaces.watcher.new(function(_)
     for appName in pairs(appHideMapping) do
         hideApp(appName)
     end

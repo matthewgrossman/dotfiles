@@ -175,7 +175,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
 Plug 'mhinz/vim-signify'
-Plug 'w0rp/ale'
+Plug 'w0rp/ale', { 'on':  'ALEToggle' }
 Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'

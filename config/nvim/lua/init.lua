@@ -1,9 +1,12 @@
 require "spongebob"
 local nvim_lsp = require('lspconfig')
 
+-- import `efm` formatters
+local efmlinters = require('efmlinters')
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local on_attach = function(client, bufnr) -- luacheck: ignore
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
@@ -41,11 +44,14 @@ local on_attach = function(client, bufnr)
     -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     -- buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+    buf_set_keymap('n', 'gf', '<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>',
+                   opts)
+    -- vim.api
+    --     .nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]]
 
 end
 -- to debug do this:
--- vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("debug")
 -- :lua vim.cmd('e'..vim.lsp.get_log_path())
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -60,16 +66,18 @@ for _, lsp in ipairs(servers) do
     }
 end
 
+nvim_lsp.clangd.setup {
+    cmd = {"clangd", "--background-index", "-x", "c++"},
+    on_attach = on_attach
+}
+
+-- print(vim.inspect(vim.tbl_keys(efmlinters)))
 nvim_lsp.efm.setup {
+    -- cmd = {"efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "2"},
     init_options = {documentFormatting = true},
     on_attach = on_attach,
-    filetypes = {"lua"},
-    settings = {
-        rootMarkers = {".git/"},
-        languages = {
-            lua = {{formatCommand = "lua-format -i", formatStdin = true}}
-        }
-    }
+    filetypes = vim.tbl_keys(efmlinters),
+    settings = {rootMarkers = {".git/"}, languages = efmlinters}
 }
 
 -- -- temporarily disable publishDiagnostics until I've migrated over ALE
