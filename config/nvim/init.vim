@@ -134,11 +134,17 @@ let g:python3_host_prog = "/usr/local/bin/python3"
 """ PLUGINS
 call plug#begin('~/.local/share/nvim/plugged')
 
+" nvim shenanigans
+Plug 'nvim-lua/plenary.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'lewis6991/gitsigns.nvim'
+
 " completion
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
-Plug 'hrsh7th/nvim-compe'
 Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 
 
 " file management
@@ -154,9 +160,8 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
 " usability
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
+" Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-rsi'
@@ -175,7 +180,7 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
-Plug 'mhinz/vim-signify'
+" Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
@@ -313,7 +318,7 @@ let g:airline_highlighting_cache = 1
 let g:highlightedyank_highlight_duration = 150
 
 " fzf config
-nnoremap <c-p> :GFiles<cr>
+" nnoremap <c-p> :GFiles<cr>
 " let g:fzf_layout = {'window': 'enew'}
 let g:fzf_action = {
     \ 'ctrl-q': 'wall | bdelete',
@@ -331,22 +336,6 @@ let g:grepper = {
 
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
-
-" vim-signify config
-let g:signify_vcs_list = ['git']
-nnoremap [d :call SignifyToggleDiff('head')<CR>
-nnoremap ]d :call SignifyToggleDiff('master')<CR>
-function! SignifyToggleDiff(diff_commit)
-    if(a:diff_commit == 'master')
-        let g:signify_vcs_cmds = {
-        \ 'git': 'git diff master --no-color --no-ext-diff -U0 -- %f',
-        \ }
-    else
-        let g:signify_vcs_cmds = {
-        \ 'git': 'git diff --no-color --no-ext-diff -U0 -- %f',
-        \ }
-    endif
-endfunction
 
 " tagbar config
 noremap <Leader>t :TagbarOpenAutoClose<CR>
