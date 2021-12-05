@@ -31,7 +31,6 @@ cask 'wireshark'
 cask 'zoom'
 
 brew 'ag'
-brew 'asciinema'
 brew 'bash'
 brew 'bat'
 brew 'cowsay'
