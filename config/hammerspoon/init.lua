@@ -38,7 +38,7 @@ for key, layouts in pairs(layout_mapping) do
             layout = layouts
         else
             -- otherwise, cycle through the layout sizes
-            w = hs.window.focusedWindow()
+            local w = hs.window.focusedWindow()
             screenFrame = w:screen():frame()
             windowFrame = w:frame()
             currentUnitRect = windowFrame:toUnitRect(screenFrame)
@@ -129,8 +129,11 @@ hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
 
 toggleAppHidden = function(appName)
     local app = hs.application.get(appName)
-    -- TODO: escape early if the app isn't launched, or open the app?
-    if app:isHidden() then app:activate() else app:hide() end
+    if app == nil or app:isHidden() then
+        hs.application.open(appName)
+    else
+        app:hide()
+    end
 end
 
 hideApp = function(appName)
