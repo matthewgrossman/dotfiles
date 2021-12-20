@@ -1,2 +1,2 @@
 allow_defined = true
-globals = {"hs", '_'}
+globals = {"hs", '_', "vim"}

@@ -139,6 +139,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " completion
 Plug 'tpope/vim-commentary'

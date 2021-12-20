@@ -13,6 +13,7 @@ export GOPATH=$HOME/src
 export GO111MODULE='on'
 export PYTHONBREAKPOINT=ipdb.set_trace
 export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$HOME/.cargo/bin
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"

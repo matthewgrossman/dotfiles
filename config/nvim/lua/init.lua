@@ -1,8 +1,6 @@
 require "spongebob"
 local nvim_lsp = require('lspconfig')
 local map = vim.api.nvim_set_keymap
--- import `efm` formatters
-local efmlinters = require('efmlinters')
 
 require('gitsigns').setup()
 -- Use an on_attach function to only map the following keys
@@ -56,7 +54,7 @@ vim.lsp.set_log_level("debug")
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 
-local servers = {"pylsp", "tsserver", "gopls"}
+local servers = {"pylsp", "tsserver", "gopls", "rust_analyzer"}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         on_attach = on_attach,
@@ -72,14 +70,45 @@ end
 -- }
 
 -- print(vim.inspect(vim.tbl_keys(efmlinters)))
-nvim_lsp.efm.setup {
-    init_options = {documentFormatting = true},
-    on_attach = on_attach,
-    filetypes = vim.tbl_keys(efmlinters),
-    settings = {rootMarkers = {".git/"}, languages = efmlinters}
-}
+-- nvim_lsp.efm.setup {
+--     init_options = {documentFormatting = true},
+--     on_attach = on_attach,asdfasdf
+--     filetypes = vim.tbl_keys(efmlinters),
+--     settings = {rootMarkers = {".git/"}, languages = efmlinters}
+-- }
+require("null-ls").setup({
+        debug = true,
+    sources = {
+        require("null-ls").builtins.formatting.stylua,
+        require("null-ls").builtins.formatting.black,
+        require("null-ls").builtins.diagnostics.luacheck.with({
+                extra_args = {"--config", vim.fn.expand("$XDG_CONFIG_HOME/luacheck/.luacheckrc")
+            }}),
+        require("null-ls").builtins.diagnostics.mypy.with({
+                extra_args = {"--ignore-missing-imports"}
+            }),
+        require("null-ls").builtins.formatting.reorder_python_imports,
+        require("null-ls").builtins.diagnostics.shellcheck,
+        require("null-ls").builtins.formatting.trim_whitespace
+    },
+    on_attach=on_attach
+})
+
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Enable underline, use default values
+        underline = true,
+        -- Enable virtual text, override spacing to 4
+        virtual_text = {
+            spacing = 4,
+        },
+        -- Disable a feature
+        update_in_insert = false,
+    }
+    )
+
 
 -- compe
 vim.o.completeopt = "menuone,noselect"
