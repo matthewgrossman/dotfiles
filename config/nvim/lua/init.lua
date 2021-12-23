@@ -1,4 +1,4 @@
-require "spongebob"
+local M = {}
 local nvim_lsp = require('lspconfig')
 local map = vim.api.nvim_set_keymap
 
@@ -173,10 +173,17 @@ _G.s_tab_complete = function()
 end
 
 require("telescope").setup({defaults = {preview = false}})
+require('telescope').load_extension('fzf')
+M.project_files = function()
+    local ok = pcall(require"telescope.builtin".git_files, {show_untracked = false})
+    if not ok then require"telescope.builtin".find_files() end
+end
 map('n', '<C-p>',
-    "<Cmd>lua require'telescope.builtin'.git_files({show_untracked = false})<CR>",
+    "<Cmd>lua require('init').project_files()<CR>",
     {noremap = true})
 
 map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+return M

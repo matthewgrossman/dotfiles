@@ -34,6 +34,31 @@ nnoremap Q @q
 vnoremap Q :normal @q<CR>
 vnoremap . :normal .<CR>
 
+" copy things from vim-rsi
+inoremap        <C-A> <C-O>^
+cnoremap        <C-A> <Home>
+
+inoremap <expr> <C-B> getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
+cnoremap        <C-B> <Left>
+
+inoremap <expr> <C-D> col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
+cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+
+inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
+
+inoremap <expr> <C-F> col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
+cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
+
+
+noremap!        <M-b> <S-Left>
+noremap!        <M-f> <S-Right>
+noremap!        <M-d> <C-O>dw
+cnoremap        <M-d> <S-Right><C-W>
+noremap!        <M-n> <Down>
+noremap!        <M-p> <Up>
+noremap!        <M-BS> <C-W>
+noremap!        <M-C-h> <C-W>
+
 " add line text object
 xnoremap il g_o^
 onoremap il :normal vil<CR>
@@ -162,10 +187,11 @@ Plug 'rbgrouleff/bclose.vim'
 
 " usability
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-abolish'
 Plug 'machakann/vim-sandwich'
 Plug 'wellle/targets.vim'
@@ -377,5 +403,6 @@ nnoremap <leader>a :Rg <C-R><C-W><CR>
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
+command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
 lua require('init')
