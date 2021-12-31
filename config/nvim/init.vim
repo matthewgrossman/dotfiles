@@ -79,6 +79,7 @@ nnoremap N Nzz
 
 " line numbering
 set number
+set signcolumn=yes
 
 " link to system clipboard
 set clipboard=unnamed
@@ -167,16 +168,16 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " completion
-Plug 'tpope/vim-commentary'
-Plug 'jiangmiao/auto-pairs'
 Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'onsails/lspkind-nvim'
+Plug 'windwp/nvim-autopairs'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
@@ -191,6 +192,7 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
 " usability
+Plug 'tpope/vim-commentary'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Plug 'lukas-reineke/indent-blankline.nvim'
@@ -258,6 +260,7 @@ autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 autocmd TermOpen * call InitTermBuffer()
 function! InitTermBuffer()
     setlocal nonumber
+    setlocal signcolumn=no
     nnoremap <buffer> <C-c> :startinsert<CR>
     nnoremap <buffer> <C-b> :startinsert<CR>
     nnoremap <buffer> <C-e> :startinsert<CR><C-e>
@@ -376,8 +379,8 @@ let g:tagbar_left = 1
 " vim-qf config
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
 
-" autopairs config
-inoremap <silent> <C-Space> <esc>:call AutoPairsJump()<CR>a
+" " autopairs config
+" inoremap <silent> <C-Space> <esc>:call AutoPairsJump()<CR>a
 
 " vim-test config
 nmap <silent> <leader>r :TestNearest<CR>
