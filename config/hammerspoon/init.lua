@@ -105,11 +105,14 @@ muteAttribs = {
 }
 
 toggleMuteState = function()
-    -- toggle all devices' muted state
-    local isMutedNewState = not hs.audiodevice.defaultInputDevice():muted()
-    for _, dev in ipairs(hs.audiodevice.allInputDevices()) do
-        dev:setMuted(isMutedNewState)
-    end
+    -- toggle default devices' muted state
+
+    -- this used to toggle all devices to be safe, but there's a bug in monterey that 
+    -- mutes output whenever input is also muted.
+    -- https://github.com/Hammerspoon/hammerspoon/issues/2965
+    local device = hs.audiodevice.defaultInputDevice()
+    local isMutedNewState = not device:muted()
+    device:setMuted(isMutedNewState)
     return isMutedNewState
 end
 
