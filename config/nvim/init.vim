@@ -219,6 +219,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'psliwka/vim-smoothie'
 
 " productivity
 Plug 'junegunn/goyo.vim'

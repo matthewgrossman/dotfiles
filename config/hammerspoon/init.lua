@@ -71,11 +71,11 @@ hs.hotkey.bind(layout_hyper, "r", function()
 end)
 
 
-spaces_hyper = {"ctrl", "shift"}
-spaces_mapping = {
-    h = "LEFT",
-    l = "RIGHT"
-}
+-- spaces_hyper = {"ctrl", "shift"}
+-- spaces_mapping = {
+--     h = "LEFT",
+--     l = "RIGHT"
+-- }
 
 -- currently has bug that requires "fn" as additional modifier
 -- https://github.com/Hammerspoon/hammerspoon/issues/1946#issuecomment-449604954
@@ -86,12 +86,12 @@ spaces_mapping = {
 --     }
 -- end
 
-for key, direction in pairs(spaces_mapping) do
-    hs.hotkey.bind(spaces_hyper, key, function()
-        hs.even.keyStroke({"fn", "ctrl"}, direction)
-        -- helpers.postEvents(getSpacesEvents(direction))
-    end)
-end
+-- for key, direction in pairs(spaces_mapping) do
+--     hs.hotkey.bind(spaces_hyper, key, function()
+--         hs.even.keyStroke({"fn", "ctrl"}, direction)
+--         -- helpers.postEvents(getSpacesEvents(direction))
+--     end)
+-- end
 
 muteAttribs = {
     [true]={
@@ -128,7 +128,8 @@ originalMutedState = hs.audiodevice.defaultInputDevice():muted()
 menubar = hs.menubar.new()
     :setTitle(muteAttribs[originalMutedState].text)
     :setClickCallback(toggleMute)
-hs.hotkey.bind(spaces_hyper, 'm', toggleMute)
+app_hyper = {"cmd", "ctrl"}
+hs.hotkey.bind(app_hyper, 'm', toggleMute)
 
 toggleAppHidden = function(appName)
     local app = hs.application.get(appName)
@@ -145,17 +146,33 @@ hideApp = function(appName)
     if not app:isHidden() then app:hide() end
 end
 
+-- toggleWindowHidden = function(tabUrl)
+--     local chrome = hs.application("Google Chrome")
+--     local windows = chrome:allWindows()
+
+
+-- end
+
 appHideMapping = {
     Spotify="s",
     KeeWeb="k",
     Todoist="t",
+    ["Google Meet"]="h"
 }
 
-app_hyper = {"cmd", "ctrl"}
+-- tabHideMapping = {
+--     ["meet.google.com"]="m",
+-- }
+
 for app, key in pairs(appHideMapping) do
     toggleCB = helpers.bind(toggleAppHidden, app)
     hs.hotkey.bind(app_hyper, key, toggleCB)
 end
+
+-- for tabUrl, key in pairs(tabHideMapping) do
+--     toggleCB = helpers.bind(toggleWindowHidden, tabUrl)
+--     hs.hotkey.bind(app_hyper, key, toggleCB)
+-- end
 
 spacesWatcher = hs.spaces.watcher.new(function(_)
     for appName in pairs(appHideMapping) do
@@ -227,3 +244,10 @@ hs.hotkey.bind(layout_hyper, "w", function()
     idToName[window:id()] = name
     window:focus()
 end)
+
+
+-- toggleGMeetMute = function()
+--     app = hs.application.get("Google Meet")
+--     win = app:mainWindow()
+--     hs.eventtap.keyStroke({"cmd"},"d", nil, app)
+-- end

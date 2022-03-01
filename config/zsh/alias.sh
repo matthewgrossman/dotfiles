@@ -5,3 +5,4 @@ alias g="git"
 alias vi='nvim'
 alias vim='nvim'
 alias k='kubectl'
+alias icat="kitty +kitten icat"

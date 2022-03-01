@@ -22,7 +22,7 @@ cmp.setup({
 	},
 	snippet = {
 		expand = function(args)
-			require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
 		end,
 	},
 	mapping = {
@@ -34,27 +34,27 @@ cmp.setup({
 			i = cmp.mapping.abort(),
 			c = cmp.mapping.close(),
 		}),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<Tab>"] = cmp.mapping(function(fallback)
-		  if cmp.visible() then
-			cmp.select_next_item()
-		  elseif luasnip.expand_or_jumpable() then
-			luasnip.expand_or_jump()
-		  elseif has_words_before() then
-			cmp.complete()
-		  else
-			fallback()
-		  end
+			if cmp.visible() then
+				cmp.select_next_item()
+			elseif luasnip.expand_or_jumpable() then
+				luasnip.expand_or_jump()
+			elseif has_words_before() then
+				cmp.complete()
+			else
+				fallback()
+			end
 		end, { "i", "s" }),
 
 		["<S-Tab>"] = cmp.mapping(function(fallback)
-		  if cmp.visible() then
-			cmp.select_prev_item()
-		  elseif luasnip.jumpable(-1) then
-			luasnip.jump(-1)
-		  else
-			fallback()
-		  end
+			if cmp.visible() then
+				cmp.select_prev_item()
+			elseif luasnip.jumpable(-1) then
+				luasnip.jump(-1)
+			else
+				fallback()
+			end
 		end, { "i", "s" }),
 	},
 	sources = cmp.config.sources({
@@ -80,6 +80,11 @@ cmp.setup.cmdline(":", {
 		{ name = "cmdline" },
 	}),
 })
+
+-- automatically insert parens for methods/functions
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+
 -- }}}
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
@@ -186,7 +191,20 @@ for _, lsp in ipairs(servers) do
 end
 
 -- telescope {{{
-require("telescope").setup({ defaults = { preview = false } })
+local action_layout = require("telescope.actions.layout")
+require("telescope").setup({
+	defaults = {
+		layout_strategy = "flex",
+		mappings = {
+			n = {
+				["<C-f>"] = action_layout.toggle_preview,
+			},
+			i = {
+				["<C-f>"] = action_layout.toggle_preview,
+			},
+		},
+	},
+})
 require("telescope").load_extension("fzf")
 M.project_files = function()
 	local ok = pcall(require("telescope.builtin").git_files, { show_untracked = false })

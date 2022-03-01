@@ -51,6 +51,7 @@ brew 'graphviz'
 brew 'grip'
 brew 'gron'
 brew 'hub'
+brew 'imagemagick'
 brew 'jq'
 brew 'llvm'
 brew 'luarocks'
@@ -84,6 +85,8 @@ brew 'yarn'
 brew 'zsh'
 brew 'zsh-autosuggestions'
 brew 'zsh-syntax-highlighting'
+
+mas 'todoist', id: 585829637
 
 tap 'homebrew/cask-drivers'
 cask 'uhk-agent'
