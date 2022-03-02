@@ -1,6 +1,7 @@
 brew 'mas'
 cask 'google-backup-and-sync'
 
+cask 'keeweb'
 cask 'alfred'
 cask 'android-file-transfer'
 cask 'android-platform-tools'

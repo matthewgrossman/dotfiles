@@ -8,10 +8,6 @@ xcode-select --install
 brew bundle
 rehash
 
-# change shell to zsh
-which zsh | sudo tee -a /etc/shells
-chsh -s $(which zsh)
-
 # link hammerspoon data
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 

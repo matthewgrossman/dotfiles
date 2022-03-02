@@ -156,7 +156,7 @@ end
 appHideMapping = {
     Spotify="s",
     KeeWeb="k",
-    Todoist="t",
+    -- Todoist="t",
     ["Google Meet"]="h"
 }
 
