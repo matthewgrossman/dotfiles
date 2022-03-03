@@ -87,6 +87,7 @@ brew 'zsh-autosuggestions'
 brew 'zsh-syntax-highlighting'
 
 mas 'todoist', id: 585829637
+mas 'tailscale', id: 1475387142
 
 tap 'homebrew/cask-drivers'
 cask 'uhk-agent'
