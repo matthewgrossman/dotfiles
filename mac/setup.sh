@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# first run link.sh!
+
 # need xcode to do anything fun on macs
 xcode-select --install
 
 # install homebrew and all programs in mac/Brewfile
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew bundle
 rehash
 
