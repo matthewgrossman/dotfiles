@@ -217,9 +217,8 @@ Plug 'AndrewRadev/splitjoin.vim'
 " Plug 'mhinz/vim-signify'
 Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'psliwka/vim-smoothie'
+Plug 'nvim-lualine/lualine.nvim'
 
 " productivity
 Plug 'junegunn/goyo.vim'
@@ -348,7 +347,7 @@ nmap <Leader>gh V:GBrowse<cr>
 vmap <Leader>gh :GBrowse<cr>
 
 " airline config
-let g:airline_highlighting_cache = 1
+" let g:airline_highlighting_cache = 1
 
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 150

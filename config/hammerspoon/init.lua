@@ -154,19 +154,19 @@ end
 -- end
 
 appHideMapping = {
-    Spotify="s",
-    KeeWeb="k",
-    -- Todoist="t",
-    ["Google Meet"]="h"
+    Spotify={key="s", shouldMinimize=true},
+    KeeWeb={key="k", shouldMinimize=true},
+    Todoist={key="t", shouldMinimize=true},
+    ["Google Meet"]={key="h", shouldMinimize=false}
 }
 
 -- tabHideMapping = {
 --     ["meet.google.com"]="m",
 -- }
 
-for app, key in pairs(appHideMapping) do
+for app, attribs in pairs(appHideMapping) do
     toggleCB = helpers.bind(toggleAppHidden, app)
-    hs.hotkey.bind(app_hyper, key, toggleCB)
+    hs.hotkey.bind(app_hyper, attribs.key, toggleCB)
 end
 
 -- for tabUrl, key in pairs(tabHideMapping) do
@@ -175,8 +175,10 @@ end
 -- end
 
 spacesWatcher = hs.spaces.watcher.new(function(_)
-    for appName in pairs(appHideMapping) do
-        hideApp(appName)
+    for appName, attribs in pairs(appHideMapping) do
+        if attribs.shouldMinimize then
+            hideApp(appName)
+        end
     end
 end)
 spacesWatcher:start()

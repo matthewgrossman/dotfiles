@@ -4,6 +4,9 @@ local map = vim.api.nvim_set_keymap
 
 require("gitsigns").setup()
 require("nvim-autopairs").setup({})
+require('lualine').setup {
+  options = { theme  = 'auto' },
+}
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
