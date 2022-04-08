@@ -155,7 +155,7 @@ end
 
 appHideMapping = {
     Spotify={key="s", shouldMinimize=true},
-    KeeWeb={key="k", shouldMinimize=true},
+    KeePassXC={key="k", shouldMinimize=true},
     Todoist={key="t", shouldMinimize=true},
     ["Google Meet"]={key="h", shouldMinimize=false}
 }

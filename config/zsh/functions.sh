@@ -136,6 +136,14 @@ deloff () {
     lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
 }
 
+lclone () {
+    local service
+    service="$1"
+    cd "$HOME/src" || exit
+    gh repo clone "lyft/$service"
+    cd "$service" || exit
+}
+
 ttabs () {
     local tabs
     kittyjson=$(kitty @ ls)
