@@ -139,9 +139,9 @@ deloff () {
 lclone () {
     local service
     service="$1"
-    cd "$HOME/src" || exit
+    cd "$HOME/src" || return
     gh repo clone "lyft/$service"
-    cd "$service" || exit
+    cd "$service" || return
 }
 
 ttabs () {
