@@ -11,8 +11,8 @@
     co = checkout
     dm = "!git diff $(git default-branch)"
     cm = "!git checkout $(git default-branch)"
-    c = commit --signoff
-    ca = commit --all --signoff
+    c = commit
+    ca = commit --all
     a = add
     rv = revert
     rs = reset
