@@ -35,16 +35,32 @@ ab() {
 }
 
 # cd to repo in src/
-src() {
-    local root_path repo_paths repo_path venv_path repo_basename
+src () {
+    local root_path repo_paths repo_path venv_path repo_basename open_tabs existing_tab_index
+    open_tabs="$(kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id)"')"
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
-    repo_path=$(fzf <<< "$repo_paths")
+    out=$(fzf --expect=ctrl-t<<< "$repo_paths")
+    [[ -z "$out" ]] && return
+
+    key=$(sed -n 1p <<< "$out")
+    repo_path=$(sed -n 2p <<< "$out")
+
     if [[ -n "$repo_path" ]]; then
+
+        repo_basename=$(basename "$repo_path")
+
+        # if the chosen repo already has a tab and the user didn't explicitly
+        # ask for a new tab via "ctrl-t", switch to the existing tab
+        existing_tab_index=$(awk -v REPO="$repo_basename" '$0 ~ REPO { print $2 }' <<< "$open_tabs")
+        if [[ -n "$existing_tab_index" && "$key" != "ctrl-t" ]]; then
+            kitty @ focus-tab --match id:"$existing_tab_index"
+            return 
+        fi
+
         cd "$repo_path" || return
 
         # set kitty's tab title
-        repo_basename=$(basename "$repo_path")
         kitty @ set-tab-title "$repo_basename" 2>/dev/null
 
         # overwrite the venv path if .venv is used, default in poetry
