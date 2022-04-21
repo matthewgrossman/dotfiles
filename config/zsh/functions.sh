@@ -40,7 +40,7 @@ src () {
     open_tabs="$(kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id)"')"
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
-    out=$(fzf --expect=ctrl-t<<< "$repo_paths")
+    out=$(fzf --expect=ctrl-t <<< "$repo_paths")
     [[ -z "$out" ]] && return
 
     key=$(sed -n 1p <<< "$out")
@@ -55,7 +55,7 @@ src () {
         existing_tab_index=$(awk -v REPO="$repo_basename" '$0 ~ REPO { print $2 }' <<< "$open_tabs")
         if [[ -n "$existing_tab_index" && "$key" != "ctrl-t" ]]; then
             kitty @ focus-tab --match id:"$existing_tab_index"
-            return 
+            return
         fi
 
         cd "$repo_path" || return
