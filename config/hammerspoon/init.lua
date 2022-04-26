@@ -66,6 +66,10 @@ hs.hotkey.bind("ctrl", "[", function()
     hs.eventtap.keyStroke({}, "ESCAPE")
 end)
 
+-- hs.hotkey.bind("ctrl", "w", function()
+--     hs.eventtap.keyStroke({"cmd"}, "delete")
+-- end)
+
 hs.hotkey.bind(layout_hyper, "r", function()
     hs.reload()
 end)

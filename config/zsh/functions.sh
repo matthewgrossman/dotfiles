@@ -52,7 +52,7 @@ src () {
 
         # if the chosen repo already has a tab and the user didn't explicitly
         # ask for a new tab via "ctrl-t", switch to the existing tab
-        existing_tab_index=$(awk -v REPO="$repo_basename" '$0 ~ REPO { print $2 }' <<< "$open_tabs")
+        existing_tab_index=$(awk -v REPO="$repo_basename" '$1 == REPO { print $2 }' <<< "$open_tabs")
         if [[ -n "$existing_tab_index" && "$key" != "ctrl-t" ]]; then
             kitty @ focus-tab --match id:"$existing_tab_index"
             return
