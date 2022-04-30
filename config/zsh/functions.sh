@@ -36,8 +36,8 @@ ab() {
 
 # cd to repo in src/
 src () {
-    local root_path repo_paths repo_path venv_path repo_basename open_tabs existing_tab_index
-    open_tabs="$(kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id)"')"
+    local root_path repo_paths repo_path venv_path repo_basename open_tabs existing_tab_index current_tab
+    open_tabs="$(kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id) \(.is_focused)"')"
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     out=$(fzf --expect=ctrl-t <<< "$repo_paths")
@@ -54,7 +54,9 @@ src () {
         # ask for a new tab via "ctrl-t", switch to the existing tab
         existing_tab_index=$(awk -v REPO="$repo_basename" '$1 == REPO { print $2 }' <<< "$open_tabs")
         if [[ -n "$existing_tab_index" && "$key" != "ctrl-t" ]]; then
+            current_tab=$(awk -v REPO="$repo_basename" '$3 == "true" { print $2 }' <<< "$open_tabs")
             kitty @ focus-tab --match id:"$existing_tab_index"
+            kitty @ close-tab --match id:"$current_tab"
             return
         fi
 
