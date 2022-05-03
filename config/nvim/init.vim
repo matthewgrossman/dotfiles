@@ -251,8 +251,8 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 set inccommand=nosplit
 
 " neovim remote
-let $EDITOR = 'nvr -cc split --remote-wait'
-let $VISUAL = 'nvr -cc split --remote-wait'
+let $EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+let $VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
 autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 
@@ -405,7 +405,7 @@ let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
 nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
-nnoremap <leader>a :Rg <C-R><C-W><CR>
+nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
 
 " commands
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool

@@ -222,15 +222,19 @@ end
 
 -- telescope {{{
 local action_layout = require("telescope.actions.layout")
+local actions = require("telescope.actions")
 require("telescope").setup({
 	defaults = {
 		layout_strategy = "flex",
 		mappings = {
 			n = {
-				["<C-f>"] = action_layout.toggle_preview,
+				["<C-o>"] = action_layout.toggle_preview,
 			},
 			i = {
-				["<C-f>"] = action_layout.toggle_preview,
+				["<C-o>"] = action_layout.toggle_preview,
+			},
+			i = {
+				["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 			},
 		},
 	},
