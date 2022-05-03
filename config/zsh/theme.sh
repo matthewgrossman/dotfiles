@@ -7,7 +7,7 @@ reset_color="%{$bg[default]%}%{$fg[default]%}"
 
 # function to colorize text
 zc(){
-    # $ zc 'hello world' 'red' 'white'
+    # print -P $(zc 'hello world' 'red' 'white')
     local text=$1  # text to colorize
     local cfg=$2  # foreground color
     local cbg=$3  # background color
