@@ -219,6 +219,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'psliwka/vim-smoothie'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'folke/lsp-colors.nvim'
 
 " productivity
 Plug 'junegunn/goyo.vim'
