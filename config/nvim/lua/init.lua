@@ -1,6 +1,181 @@
 local M = {}
-local nvim_lsp = require("lspconfig")
 local map = vim.api.nvim_set_keymap
+
+-- bootstrap `packer.nvim`
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
+require('packer').startup(function()
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
+
+
+  use 'nvim-lua/plenary.nvim'
+  use 'kyazdani42/nvim-web-devicons'
+  use 'antoinemadec/FixCursorHold.nvim'
+  use 'lewis6991/gitsigns.nvim'
+  use 'jose-elias-alvarez/null-ls.nvim'
+
+  -- completion
+  use 'neovim/nvim-lspconfig'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'L3MON4D3/LuaSnip'
+  use 'onsails/lspkind-nvim'
+  use 'windwp/nvim-autopairs'
+
+  -- file management
+  -- use 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+  -- use 'junegunn/fzf.vim'
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
+  use 'tpope/vim-eunuch'
+  use 'ludovicchabant/vim-gutentags'
+  use 'majutsushi/tagbar'
+  use 'francoiscabrol/ranger.vim'
+
+  use 'mhinz/vim-sayonara'  -- TODO replace with mini.nvim
+
+  -- usability
+  use 'tpope/vim-commentary'
+  use 'nvim-telescope/telescope.nvim'
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  -- use 'lukas-reineke/indent-blankline.nvim'
+  use 'tpope/vim-repeat'
+  -- use 'tpope/vim-rsi'
+  use 'tpope/vim-unimpaired'
+  use 'tpope/vim-abolish'
+  use { 'echasnovski/mini.nvim', branch = 'stable' }
+
+  use 'machakann/vim-sandwich'  -- TODO replace with mini.nvim?
+  -- use {
+    -- 'machakann/vim-sandwich',
+    -- config = function()
+    --   -- Use vim surround-like keybindings
+    --   vim.cmd('runtime macros/sandwich/keymap/surround.vim')
+    -- end
+  -- }
+  use 'wellle/targets.vim'
+  use 'kana/vim-textobj-indent'
+  use 'peterrincker/vim-argumentative'
+  use 'vim-test/vim-test'
+  use 'mhinz/vim-grepper'
+  -- use 'romainl/vim-qf'
+  use 'kana/vim-textobj-user'
+  use 'stefandtw/quickfix-reflector.vim'
+  use 'junegunn/vim-easy-align'
+  use 'nelstrom/vim-visual-star-search'
+  use 'AndrewRadev/splitjoin.vim'
+
+  -- ui
+  -- use 'mhinz/vim-signify'
+  use 'chriskempson/base16-vim'
+  use 'machakann/vim-highlightedyank'
+  -- use 'psliwka/vim-smoothie'
+  use 'nvim-lualine/lualine.nvim'
+  use 'folke/lsp-colors.nvim'
+
+  -- productivity
+  use 'junegunn/goyo.vim'
+
+  -- python
+  use {
+    'vim-python/python-syntax',
+    ft = {'python'}
+  }
+
+  -- other languages
+  use 'sheerun/vim-polyglot'
+  use {'Glench/Vim-Jinja2-Syntax', ft = {"jinja.html"}}
+  use {'plasticboy/vim-markdown', ft= {"markdown"}}
+  use({
+      "iamcco/markdown-preview.nvim",
+      run = function() vim.fn["mkdp#util#install"]() end,
+  })
+  use {'rust-lang/rust.vim', ft= {"rust"}}
+  use 'junegunn/vader.vim'
+  use 'neoclide/jsonc.vim'
+
+--- copied in above
+
+  -- Simple plugins can be specified as strings
+  -- use '9mm/vim-closer'
+
+  -- Lazy loading:
+  -- Load on specific commands
+  -- use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
+
+  -- Load on an autocommand event
+  -- use {'andymass/vim-matchup', event = 'VimEnter'}
+
+  -- Load on a combination of conditions: specific filetypes or commands
+  -- Also run code after load (see the "config" key)
+  -- use {
+  --   'w0rp/ale',
+  --   ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
+  --   cmd = 'ALEEnable',
+  --   config = 'vim.cmd[[ALEEnable]]'
+  -- }
+
+  -- Plugins can have dependencies on other plugins
+  -- use {
+  --   'haorenW1025/completion-nvim',
+  --   opt = true,
+  --   requires = {{'hrsh7th/vim-vsnip', opt = true}, {'hrsh7th/vim-vsnip-integ', opt = true}}
+  -- }
+
+  -- Plugins can also depend on rocks from luarocks.org:
+  -- use {
+  --   'my/supercoolplugin',
+  --   rocks = {'lpeg', {'lua-cjson', version = '2.1.0'}}
+  -- }
+
+  -- You can specify rocks in isolation
+  -- use_rocks 'penlight'
+  -- use_rocks {'lua-resty-http', 'lpeg'}
+
+  -- Local plugins can be included
+  -- use '~/projects/personal/hover.nvim'
+
+  -- Plugins can have post-install/update hooks
+  -- use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
+
+  -- Post-install/update hook with neovim command
+  -- use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+
+  -- Post-install/update hook with call of vimscript function with argument
+  -- use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+
+  -- Use specific branch, dependency and run lua file after load
+  -- use {
+  --   'glepnir/galaxyline.nvim', branch = 'main', config = function() require'statusline' end,
+  --   requires = {'kyazdani42/nvim-web-devicons'}
+  -- }
+
+  -- Use dependency and run lua function after load
+  -- use {
+  --   'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' },
+  --   config = function() require('gitsigns').setup() end
+  -- }
+
+  -- You can specify multiple plugins in a single call
+  -- use {'tjdevries/colorbuddy.vim', {'nvim-treesitter/nvim-treesitter', opt = true}}
+
+  -- You can alias plugin names
+  -- use {'dracula/vim', as = 'dracula'}
+  if packer_bootstrap then
+    require('packer').sync()
+  end
+end)
+
+local nvim_lsp = require("lspconfig")
+require('mini.surround').setup()
 
 require('gitsigns').setup{
   on_attach = function(bufnr)
@@ -165,7 +340,7 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
 	-- buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>', opts)
 	-- buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>', opts)
 	-- buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>', opts)
-	-- buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+	buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
 	-- buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 	buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
 	-- buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', opts)
@@ -199,6 +374,7 @@ require("null-ls").setup({
 		}),
 		require("null-ls").builtins.formatting.reorder_python_imports,
 		require("null-ls").builtins.diagnostics.shellcheck,
+		require("null-ls").builtins.diagnostics.mypy,
 		require("null-ls").builtins.formatting.trim_whitespace,
 	},
 	on_attach = on_attach_null_ls,
@@ -245,6 +421,25 @@ M.project_files = function()
 		require("telescope.builtin").find_files()
 	end
 end
+
+-- TODO: implement own `src` kitty picker
+-- local telescope = require "telescope"
+-- local pickers = require "telescope.pickers"
+-- local finders = require "telescope.finders"
+-- local conf = require("telescope.config").values
+-- local utils = require "telescope.utils"
+-- local output = utils.get_os_command_output({ "kitty", "@", "ls" }, cwd)
+
+-- local colors = function(opts)
+-- 	local command = { "kitty", "@", "ls"}
+-- 	opts = opts or {}
+-- 	pickers.new(opts, {
+-- 			prompt_title = "~/src",
+-- 			finder = finders.new_oneshot_job ( command, opts ),
+-- 			sorter = conf.generic_sorter(opts),
+-- 		}):find()
+-- end
+-- colors()
 map("n", "<C-p>", "<Cmd>lua require('init').project_files()<CR>", { noremap = true })
 -- }}}
 

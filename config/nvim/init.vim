@@ -150,9 +150,6 @@ nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <silent> <leader>l :redraw!<CR>
 
-" polyglot config
-let g:polyglot_disabled = ['csv']
-
 " python config
 " use host python3
 let g:python3_host_prog = "/usr/local/bin/python3"
@@ -161,89 +158,83 @@ let g:python3_host_prog = "/usr/local/bin/python3"
 call plug#begin('~/.local/share/nvim/plugged')
 
 " nvim shenanigans
-Plug 'nvim-lua/plenary.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'kyazdani42/nvim-web-devicons'
+" Plug 'antoinemadec/FixCursorHold.nvim'
+" Plug 'lewis6991/gitsigns.nvim'
+" Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " completion
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'L3MON4D3/LuaSnip'
-Plug 'onsails/lspkind-nvim'
-Plug 'windwp/nvim-autopairs'
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'hrsh7th/cmp-path'
+" Plug 'hrsh7th/cmp-cmdline'
+" Plug 'saadparwaiz1/cmp_luasnip'
+" Plug 'L3MON4D3/LuaSnip'
+" Plug 'onsails/lspkind-nvim'
+" Plug 'windwp/nvim-autopairs'
 
 " file management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-eunuch'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
-Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
+" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-rhubarb'
+" Plug 'tpope/vim-eunuch'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'majutsushi/tagbar'
+" Plug 'francoiscabrol/ranger.vim'
 
 " usability
-Plug 'tpope/vim-commentary'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+" Plug 'tpope/vim-commentary'
+" Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-repeat'
 " Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-abolish'
-Plug 'machakann/vim-sandwich'
-Plug 'wellle/targets.vim'
-Plug 'kana/vim-textobj-indent'
-Plug 'peterrincker/vim-argumentative'
-Plug 'vim-test/vim-test'
-Plug 'mhinz/vim-grepper'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-abolish'
+" Plug 'machakann/vim-sandwich'
+" Plug 'wellle/targets.vim'
+" Plug 'kana/vim-textobj-indent'
+" Plug 'peterrincker/vim-argumentative'
+" Plug 'vim-test/vim-test'
+" Plug 'mhinz/vim-grepper'
 " Plug 'romainl/vim-qf'
-Plug 'kana/vim-textobj-user'
-Plug 'stefandtw/quickfix-reflector.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'nelstrom/vim-visual-star-search'
-Plug 'AndrewRadev/splitjoin.vim'
+" Plug 'kana/vim-textobj-user'
+" Plug 'stefandtw/quickfix-reflector.vim'
+" Plug 'junegunn/vim-easy-align'
+" Plug 'nelstrom/vim-visual-star-search'
+" Plug 'AndrewRadev/splitjoin.vim'
 
 " ui
 " Plug 'mhinz/vim-signify'
-Plug 'chriskempson/base16-vim'
-Plug 'machakann/vim-highlightedyank'
-Plug 'psliwka/vim-smoothie'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'folke/lsp-colors.nvim'
+" Plug 'chriskempson/base16-vim'
+" Plug 'machakann/vim-highlightedyank'
+" Plug 'psliwka/vim-smoothie'
+" Plug 'nvim-lualine/lualine.nvim'
+" Plug 'folke/lsp-colors.nvim'
 
 " productivity
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/goyo.vim'
 
 " python
-Plug 'vim-python/python-syntax', { 'for': 'python' }
-Plug 'bps/vim-textobj-python', { 'for': 'python' }
+" Plug 'vim-python/python-syntax', { 'for': 'python' }
+" Plug 'bps/vim-textobj-python', { 'for': 'python' }
 
 " other languages
-Plug 'sheerun/vim-polyglot'
-Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'junegunn/vader.vim'
-Plug 'neoclide/jsonc.vim'
+" Plug 'sheerun/vim-polyglot'
+" Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
+" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+" Plug 'junegunn/vader.vim'
+" Plug 'neoclide/jsonc.vim'
 
 
 call plug#end()
-
-" theming
-set termguicolors
-colorscheme base16-default-dark
-set background=dark
 
 " cron config
 autocmd filetype crontab setlocal nobackup nowritebackup
@@ -307,15 +298,6 @@ vnoremap <C-j> <esc><C-w>j
 vnoremap <C-k> <esc><C-w>k
 vnoremap <C-l> <esc><C-w>l
 
-" vim-sandwich
-runtime macros/sandwich/keymap/surround.vim
-for recipe in g:sandwich#recipes
-    let recipe.cursor = 'head'
-endfor
-
-" Sayonara config
-nnoremap <C-q> :Sayonara!<CR>
-
 " markdown config
 let g:mkdp_auto_close = 0
 
@@ -336,22 +318,8 @@ nnoremap - :Ranger<CR>
 " endfunction
 " nnoremap - :call Ranger()<CR>
 " autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
-
-" fugitive config
-nmap <Leader>gg :Git<cr>
-nmap <Leader>gdd :Gdiffsplit<cr>
-nmap <Leader>gdm :Gdiffsplit master<cr>
-nmap <Leader>gb :Git blame<cr>
-nmap <Leader>ga :Gwrite<cr>
-nmap <Leader>gp :Git push<cr>
-nmap <Leader>gh V:GBrowse<cr>
-vmap <Leader>gh :GBrowse<cr>
-
 " airline config
 " let g:airline_highlighting_cache = 1
-
-" highlightedyank config
-let g:highlightedyank_highlight_duration = 150
 
 " fzf config
 " nnoremap <c-p> :GFiles<cr>
@@ -362,40 +330,11 @@ let g:fzf_action = {
     \ 'ctrl-x': 'split',
     \ 'ctrl-v': 'vsplit' }
 
-" vim-grepper config
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
-let g:grepper = {
-\   'highlight': 1,
-\   'tools': ['rg']
-\ }
-
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
-" tagbar config
-noremap <Leader>t :TagbarOpenAutoClose<CR>
-let g:tagbar_left = 1
-
 " vim-qf config
 noremap <leader>q <Plug>(qf_qf_toggle_stay)
-
-" " autopairs config
-" inoremap <silent> <C-Space> <esc>:call AutoPairsJump()<CR>a
-
-" vim-test config
-nmap <silent> <leader>r :TestNearest<CR>
-nmap <silent> <leader>R :TestFile<CR>
-
-function! ClipboardStrategy(cmd)
-    let @+ = a:cmd
-endfunction
-let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
-let g:test#strategy = 'clipboard'
-" let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
-" let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
-" let g:test#transformation = 'python_module'
-" let g:test#python#runner = 'pytest'
 
 set shortmess+=c
 
@@ -414,4 +353,60 @@ command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
+" polyglot config
+let g:polyglot_disabled = ['csv']
+
 lua require('init')
+
+" theming
+set termguicolors
+colorscheme base16-default-dark
+set background=dark
+
+" vim-sandwich
+runtime macros/sandwich/keymap/surround.vim
+for recipe in g:sandwich#recipes
+    let recipe.cursor = 'head'
+endfor
+
+" vim-grepper config
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+let g:grepper = {
+\   'highlight': 1,
+\   'tools': ['rg']
+\ }
+
+" vim-test config
+nmap <silent> <leader>r :TestNearest<CR>
+nmap <silent> <leader>R :TestFile<CR>
+function! ClipboardStrategy(cmd)
+    let @+ = a:cmd
+endfunction
+let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
+let g:test#strategy = 'clipboard'
+" let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
+" let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
+" let g:test#transformation = 'python_module'
+" let g:test#python#runner = 'pytest'
+
+" highlightedyank config
+let g:highlightedyank_highlight_duration = 150
+
+" fugitive config
+nmap <Leader>gg :Git<cr>
+nmap <Leader>gdd :Gdiffsplit<cr>
+nmap <Leader>gdm :Gdiffsplit master<cr>
+nmap <Leader>gb :Git blame<cr>
+nmap <Leader>ga :Gwrite<cr>
+nmap <Leader>gp :Git push<cr>
+nmap <Leader>gh V:GBrowse<cr>
+vmap <Leader>gh :GBrowse<cr>
+
+
+" tagbar config
+noremap <Leader>t :TagbarOpenAutoClose<CR>
+let g:tagbar_left = 1
+
+" Sayonara config
+nnoremap <C-q> :Sayonara!<CR>
