@@ -38,7 +38,7 @@ eval "$(fnm env)"
 
 eval "$(direnv hook zsh)"
 
-TERM=xterm-256color
+# TERM=xterm-256color
 if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
     export VISUAL="$(which nvim)"
 fi

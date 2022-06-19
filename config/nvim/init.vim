@@ -267,7 +267,7 @@ lua require('init')
 " theming
 " set termguicolors
 " colorscheme material
-" set background=dark
+set background=dark
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim

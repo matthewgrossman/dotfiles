@@ -17,7 +17,6 @@ require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-
   use 'nvim-lua/plenary.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'antoinemadec/FixCursorHold.nvim'
@@ -85,17 +84,20 @@ require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
-  -- use 'RRethy/nvim-base16'
-  use 'chriskempson/base16-vim'
+  use 'RRethy/nvim-base16'
+  -- use 'chriskempson/base16-vim'
   use 'marko-cerovac/material.nvim'
   use 'machakann/vim-highlightedyank'
   -- use 'ful1e5/onedark.nvim'
-  use 'navarasu/onedark.nvim'
+  use {'matthewgrossman/onedark.nvim', branch = 'patch-1'}
+  use "daschw/leaf.nvim"
   use "EdenEast/nightfox.nvim"
+  use "sainnhe/sonokai"
   use {
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
   }
+  use 'psliwka/termcolors.nvim'
   use 'folke/lsp-colors.nvim'
 
   -- python
@@ -228,12 +230,23 @@ require'nvim-treesitter.configs'.setup {
 }
 
 require("nvim-autopairs").setup({})
--- require('onedark').setup({
---     style = 'warmer'
--- })
-require('lualine').setup()
+
 vim.cmd 'set termguicolors'
-vim.cmd 'colorscheme base16-default-dark'
+require('onedark').setup {
+  style = 'warm',
+  highlights = {
+    TelescopeBorder = {fg = "$grey"},
+    TelescopePromptBorder = {fg = "$grey"},
+    TelescopeResultsBorder = {fg = "$grey"},
+    TelescopePreviewBorder = {fg = "$grey"},
+  }
+}
+require('onedark').load()
+-- require('base16-colorscheme').with_config {
+--     telescope = false,
+-- }
+-- vim.cmd('colorscheme base16-default-dark')
+require('lualine').setup()
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
