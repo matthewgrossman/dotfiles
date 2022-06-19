@@ -139,14 +139,14 @@ require("gitsigns").setup({
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
-        local function map(mode, l, r, opts)
+        local function localmap(mode, l, r, opts)
             opts = opts or {}
             opts.buffer = bufnr
             vim.keymap.set(mode, l, r, opts)
         end
 
         -- Navigation
-        map("n", "]c", function()
+        localmap("n", "]c", function()
             if vim.wo.diff then
                 return "]c"
             end
@@ -156,7 +156,7 @@ require("gitsigns").setup({
             return "<Ignore>"
         end, { expr = true })
 
-        map("n", "[c", function()
+        localmap("n", "[c", function()
             if vim.wo.diff then
                 return "[c"
             end
@@ -167,7 +167,7 @@ require("gitsigns").setup({
         end, { expr = true })
 
         -- Text object
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        localmap({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })
 require("nvim-treesitter.configs").setup({
@@ -237,7 +237,7 @@ cmp.setup({
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
         ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-        ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ["<C-y>"] = cmp.config.disable,
         ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
@@ -317,8 +317,8 @@ local on_attach_null_ls = function(client, bufnr) -- luacheck: ignore
 
     buf_set_keymap("n", "gf", "<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>", opts)
 
-    buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-    buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+    buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+    buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
     buf_set_keymap("n", "<leader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
 end
 
@@ -414,8 +414,6 @@ require("telescope").setup({
             },
             i = {
                 ["<C-o>"] = action_layout.toggle_preview,
-            },
-            i = {
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
             },
         },
@@ -449,5 +447,4 @@ end
 -- colors()
 map("n", "<C-p>", "<Cmd>lua require('init').project_files()<CR>", { noremap = true })
 -- }}}
-
 return M
