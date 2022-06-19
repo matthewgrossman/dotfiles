@@ -1,13 +1,19 @@
 local M = {}
 local map = vim.api.nvim_set_keymap
 
+-- reload init.lua file
+luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
+map("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
+
 -- bootstrap `packer.nvim`
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
-require('packer').startup(function()
+
+-- start of plugins, maybe refactor into its own .lua someday
+require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
@@ -31,8 +37,8 @@ require('packer').startup(function()
   use 'windwp/nvim-autopairs'
 
   -- file management
-  -- use 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
-  -- use 'junegunn/fzf.vim'
+  use { 'junegunn/fzf', run = ":call fzf#install()" }
+  use 'junegunn/fzf.vim' 
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'tpope/vim-eunuch'
@@ -71,18 +77,26 @@ require('packer').startup(function()
   use 'stefandtw/quickfix-reflector.vim'
   use 'junegunn/vim-easy-align'
   use 'nelstrom/vim-visual-star-search'
+
   use 'AndrewRadev/splitjoin.vim'
 
   -- ui
-  -- use 'mhinz/vim-signify'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
+  -- use 'RRethy/nvim-base16'
   use 'chriskempson/base16-vim'
+  use 'marko-cerovac/material.nvim'
   use 'machakann/vim-highlightedyank'
-  -- use 'psliwka/vim-smoothie'
-  use 'nvim-lualine/lualine.nvim'
+  -- use 'ful1e5/onedark.nvim'
+  use 'navarasu/onedark.nvim'
+  use "EdenEast/nightfox.nvim"
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+  }
   use 'folke/lsp-colors.nvim'
-
-  -- productivity
-  use 'junegunn/goyo.vim'
 
   -- python
   use {
@@ -204,9 +218,22 @@ require('gitsigns').setup{
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
   }
+require'nvim-treesitter.configs'.setup {
+  -- Modules and its options go here
+  ensure_installed = { "python", "lua", "typescript", "yaml", "cpp", "go", "hcl", "html", "markdown", "tsx", "vim", "regex", "json", "json5" },
+  indent = { enable = true },
+  highlight = { enable = true },
+  incremental_selection = { enable = true },
+  textobjects = { enable = true },
+}
 
 require("nvim-autopairs").setup({})
+-- require('onedark').setup({
+--     style = 'warmer'
+-- })
 require('lualine').setup()
+vim.cmd 'set termguicolors'
+vim.cmd 'colorscheme base16-default-dark'
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"

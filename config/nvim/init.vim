@@ -154,88 +154,6 @@ nnoremap <silent> <leader>l :redraw!<CR>
 " use host python3
 let g:python3_host_prog = "/usr/local/bin/python3"
 
-""" PLUGINS
-call plug#begin('~/.local/share/nvim/plugged')
-
-" nvim shenanigans
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'kyazdani42/nvim-web-devicons'
-" Plug 'antoinemadec/FixCursorHold.nvim'
-" Plug 'lewis6991/gitsigns.nvim'
-" Plug 'jose-elias-alvarez/null-ls.nvim'
-
-" completion
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'hrsh7th/nvim-cmp'
-" Plug 'hrsh7th/cmp-nvim-lsp'
-" Plug 'hrsh7th/cmp-buffer'
-" Plug 'hrsh7th/cmp-path'
-" Plug 'hrsh7th/cmp-cmdline'
-" Plug 'saadparwaiz1/cmp_luasnip'
-" Plug 'L3MON4D3/LuaSnip'
-" Plug 'onsails/lspkind-nvim'
-" Plug 'windwp/nvim-autopairs'
-
-" file management
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
-Plug 'junegunn/fzf.vim'
-" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-" Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-rhubarb'
-" Plug 'tpope/vim-eunuch'
-" Plug 'ludovicchabant/vim-gutentags'
-" Plug 'majutsushi/tagbar'
-" Plug 'francoiscabrol/ranger.vim'
-
-" usability
-" Plug 'tpope/vim-commentary'
-" Plug 'nvim-telescope/telescope.nvim'
-" Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-" Plug 'lukas-reineke/indent-blankline.nvim'
-" Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-rsi'
-" Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-abolish'
-" Plug 'machakann/vim-sandwich'
-" Plug 'wellle/targets.vim'
-" Plug 'kana/vim-textobj-indent'
-" Plug 'peterrincker/vim-argumentative'
-" Plug 'vim-test/vim-test'
-" Plug 'mhinz/vim-grepper'
-" Plug 'romainl/vim-qf'
-" Plug 'kana/vim-textobj-user'
-" Plug 'stefandtw/quickfix-reflector.vim'
-" Plug 'junegunn/vim-easy-align'
-" Plug 'nelstrom/vim-visual-star-search'
-" Plug 'AndrewRadev/splitjoin.vim'
-
-" ui
-" Plug 'mhinz/vim-signify'
-" Plug 'chriskempson/base16-vim'
-" Plug 'machakann/vim-highlightedyank'
-" Plug 'psliwka/vim-smoothie'
-" Plug 'nvim-lualine/lualine.nvim'
-" Plug 'folke/lsp-colors.nvim'
-
-" productivity
-" Plug 'junegunn/goyo.vim'
-
-" python
-" Plug 'vim-python/python-syntax', { 'for': 'python' }
-" Plug 'bps/vim-textobj-python', { 'for': 'python' }
-
-" other languages
-" Plug 'sheerun/vim-polyglot'
-" Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja.html' }
-" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-" Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-" Plug 'junegunn/vader.vim'
-" Plug 'neoclide/jsonc.vim'
-
-
-call plug#end()
-
 " cron config
 autocmd filetype crontab setlocal nobackup nowritebackup
 
@@ -321,15 +239,6 @@ nnoremap - :Ranger<CR>
 " airline config
 " let g:airline_highlighting_cache = 1
 
-" fzf config
-" nnoremap <c-p> :GFiles<cr>
-" let g:fzf_layout = {'window': 'enew'}
-let g:fzf_action = {
-    \ 'ctrl-q': 'wall | bdelete',
-    \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
-
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
@@ -353,15 +262,12 @@ command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
-" polyglot config
-let g:polyglot_disabled = ['csv']
-
 lua require('init')
 
 " theming
-set termguicolors
-colorscheme base16-default-dark
-set background=dark
+" set termguicolors
+" colorscheme material
+" set background=dark
 
 " vim-sandwich
 runtime macros/sandwich/keymap/surround.vim
@@ -410,3 +316,13 @@ let g:tagbar_left = 1
 
 " Sayonara config
 nnoremap <C-q> :Sayonara!<CR>
+
+" fzf config
+" nnoremap <c-p> :GFiles<cr>
+" let g:fzf_layout = {'window': 'enew'}
+let g:fzf_action = {
+    \ 'ctrl-q': 'wall | bdelete',
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
