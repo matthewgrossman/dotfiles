@@ -20,6 +20,8 @@ source ~/.zshrc
 # install non-brew deps
 <"$XDG_CONFIG_HOME/pip/requirements.txt" xargs -n1 pipx install
 <"$XDG_CONFIG_HOME/npm/packages.txt" xargs -n1 npm -g install
+<"$XDG_CONFIG_HOME/cargo/cargo.txt" xargs -n1 cargo install
+<"$XDG_CONFIG_HOME/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # random mac settings {{{
 
