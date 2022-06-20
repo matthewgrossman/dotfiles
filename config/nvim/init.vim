@@ -107,6 +107,11 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" don't error out when quitting w/ an open terminal
+" https://github.com/neovim/neovim/issues/14061
+command Z w | qa
+cabbrev wqa Z
+
 " filetype autocmds
 autocmd BufNewFile,BufRead *.sls  set syntax=yaml
 autocmd BufNewFile,BufRead tsconfig.json  set filetype=jsonc
