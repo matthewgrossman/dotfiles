@@ -134,7 +134,16 @@ require("packer").startup(function(use)
 end)
 
 local nvim_lsp = require("lspconfig")
--- vim.cmd('colorscheme base16-default-dark')
+require('nightfox').setup({
+  options = {
+    styles = {
+      comments = "italic",
+      keywords = "bold",
+      types = "italic,bold",
+    }
+  }
+})
+vim.cmd('colorscheme nightfox')
 -- vim.pretty_print(require("base16-colorscheme"))
 
 require("gitsigns").setup({
@@ -208,7 +217,7 @@ require("onedark").setup({
         TelescopePreviewBorder = { fg = "$grey" },
     },
 })
-require("onedark").load()
+-- require("onedark").load()
 -- require('base16-colorscheme').setup()
 -- require('base16-colorscheme').with_config {
 --     telescope = false,
@@ -272,8 +281,8 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "luasnip" },
     }, {
-        { name = "buffer" },
-    }),
+            { name = "buffer" },
+        }),
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
@@ -290,8 +299,8 @@ cmp.setup.cmdline(":", {
     sources = cmp.config.sources({
         { name = "path" },
     }, {
-        { name = "cmdline" },
-    }),
+            { name = "cmdline" },
+        }),
 })
 -- automatically insert parens for methods/functions
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")

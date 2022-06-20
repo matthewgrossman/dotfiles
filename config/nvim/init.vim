@@ -146,7 +146,7 @@ set pumheight=30
 
 " reload external changes
 set autoread
-au FocusGained,BufEnter * checktime
+autocmd! FocusGained,BufEnter * if mode() != 'c' | checktime | endif
 
 " Leader commands
 map <SPACE> <leader>
