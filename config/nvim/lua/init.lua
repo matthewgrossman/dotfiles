@@ -2,12 +2,13 @@ local M = {}
 local map = vim.api.nvim_set_keymap
 
 -- reload init.lua file
-luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
+local luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
 map("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
 
 -- bootstrap `packer.nvim`
 local fn = vim.fn
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local packer_bootstrap = false
 if fn.empty(fn.glob(install_path)) > 0 then
     packer_bootstrap = fn.system({
         "git",
@@ -133,7 +134,8 @@ require("packer").startup(function(use)
 end)
 
 local nvim_lsp = require("lspconfig")
-require("mini.surround").setup()
+-- vim.cmd('colorscheme base16-default-dark')
+-- vim.pretty_print(require("base16-colorscheme"))
 
 require("gitsigns").setup({
     on_attach = function(bufnr)
@@ -207,11 +209,12 @@ require("onedark").setup({
     },
 })
 require("onedark").load()
+-- require('base16-colorscheme').setup()
 -- require('base16-colorscheme').with_config {
 --     telescope = false,
 -- }
 -- vim.cmd('colorscheme base16-default-dark')
-require("lualine").setup()
+require("lualine").setup{}
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
@@ -236,7 +239,7 @@ cmp.setup({
     mapping = {
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete{}, { "i", "c" }),
         ["<C-y>"] = cmp.config.disable,
         ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
@@ -309,7 +312,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 })
 
 -- keybinds for formatting/diagnostics
-local on_attach_null_ls = function(client, bufnr) -- luacheck: ignore
+local on_attach_null_ls = function(_, bufnr) -- luacheck: ignore
     local opts = { noremap = true, silent = true }
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -401,6 +404,31 @@ for _, lsp in ipairs(servers) do
         },
     })
 end
+nvim_lsp.sumneko_lua.setup({
+    on_attach = on_attach,
+    flags = { debounce_text_changes = 250 },
+    capabilities = capabilities,
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+})
 
 -- telescope {{{
 local action_layout = require("telescope.actions.layout")
