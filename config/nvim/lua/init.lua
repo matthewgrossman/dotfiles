@@ -134,17 +134,21 @@ require("packer").startup(function(use)
 end)
 
 local nvim_lsp = require("lspconfig")
-require('nightfox').setup({
-  options = {
-    styles = {
-      comments = "italic",
-      keywords = "bold",
-      types = "italic,bold",
-    }
-  }
+require("nightfox").setup({
+    options = {
+        dim_inactive = true,
+        styles = {
+            comments = "italic",
+            keywords = "bold",
+            types = "italic,bold",
+        },
+        inverse = {
+            search = true,
+        },
+    },
 })
-vim.cmd('colorscheme nightfox')
--- vim.pretty_print(require("base16-colorscheme"))
+vim.cmd("colorscheme nightfox")
+-- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 require("gitsigns").setup({
     on_attach = function(bufnr)
@@ -199,7 +203,7 @@ require("nvim-treesitter.configs").setup({
         "json",
         "json5",
     },
-    indent = { enable = true },
+    -- indent = { enable = true },
     highlight = { enable = true },
     incremental_selection = { enable = true },
     textobjects = { enable = true },
@@ -223,7 +227,7 @@ require("onedark").setup({
 --     telescope = false,
 -- }
 -- vim.cmd('colorscheme base16-default-dark')
-require("lualine").setup{}
+require("lualine").setup({})
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
@@ -248,7 +252,7 @@ cmp.setup({
     mapping = {
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete{}, { "i", "c" }),
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete({}), { "i", "c" }),
         ["<C-y>"] = cmp.config.disable,
         ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
@@ -281,8 +285,8 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "luasnip" },
     }, {
-            { name = "buffer" },
-        }),
+        { name = "buffer" },
+    }),
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
@@ -299,8 +303,8 @@ cmp.setup.cmdline(":", {
     sources = cmp.config.sources({
         { name = "path" },
     }, {
-            { name = "cmdline" },
-        }),
+        { name = "cmdline" },
+    }),
 })
 -- automatically insert parens for methods/functions
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
@@ -338,6 +342,7 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
+
     local function buf_set_option(...)
         vim.api.nvim_buf_set_option(bufnr, ...)
     end
