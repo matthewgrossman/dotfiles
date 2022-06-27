@@ -463,7 +463,7 @@ require("telescope").setup({
     },
 })
 require("telescope").load_extension("fzf")
-map("n", "<C-p>", "<Cmd>lua require('telescope').project_files()<CR>", { noremap = true })
-map("n", "<leader>p", "<Cmd>lua require('telescope').src_dir()<CR>", { noremap = true })
+map("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
+map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
 -- }}}
 return M
