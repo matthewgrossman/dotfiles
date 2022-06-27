@@ -469,24 +469,77 @@ M.project_files = function()
     end
 end
 
--- TODO: implement own `src` kitty picker
--- local telescope = require "telescope"
--- local pickers = require "telescope.pickers"
--- local finders = require "telescope.finders"
--- local conf = require("telescope.config").values
--- local utils = require "telescope.utils"
--- local output = utils.get_os_command_output({ "kitty", "@", "ls" }, cwd)
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
+local utils = require("telescope.utils")
 
--- local colors = function(opts)
--- 	local command = { "kitty", "@", "ls"}
--- 	opts = opts or {}
--- 	pickers.new(opts, {
--- 			prompt_title = "~/src",
--- 			finder = finders.new_oneshot_job ( command, opts ),
--- 			sorter = conf.generic_sorter(opts),
--- 		}):find()
--- end
--- colors()
+local get_kitty_tabs = function()
+    local cmd =
+    [[kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id) \(.is_focused)"']]
+    local output = utils.get_os_command_output({ "bash", "-c", cmd })
+    local tabs = {}
+    for _, line in pairs(output) do
+        local linesplit = vim.split(line, " ")
+        local dir = vim.env.HOME .. "/src/" .. linesplit[1]
+        tabs[dir] = {
+            title = linesplit[1],
+            id = linesplit[2],
+            is_focused = linesplit[3],
+        }
+    end
+    return tabs
+end
+
+M.src_dir = function(opts)
+    local src_directories = utils.get_os_command_output({
+        "find",
+        vim.env.HOME .. "/src",
+        "-mindepth",
+        "1",
+        "-maxdepth",
+        "1",
+        "-type",
+        "d",
+    })
+    opts = opts or {}
+    local kitty_tabs = get_kitty_tabs()
+    local action_state = require("telescope.actions.state")
+    pickers.new(opts, {
+        prompt_title = "~/src",
+        finder = finders.new_table({
+            results = src_directories,
+        }),
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                local path_tail = utils.path_tail(selection[1])
+                local kitty_tab = kitty_tabs[ selection[1] ]
+
+                if kitty_tab ~= nil then
+                    -- if project is already open, switch to the tab
+                    utils.get_os_command_output({ "kitty", "@", "focus-tab", "--match", "id:" .. kitty_tab.id })
+                else
+                    -- otherwise, open a new window in that project
+                    utils.get_os_command_output({
+                        "kitty",
+                        "@",
+                        "new-window",
+                        "--new-tab",
+                        "--cwd",
+                        selection[1],
+                        "--tab-title",
+                        path_tail,
+                    })
+                end
+            end)
+            return true
+        end,
+    }):find()
+end
 map("n", "<C-p>", "<Cmd>lua require('init').project_files()<CR>", { noremap = true })
+map("n", "<leader>p", "<Cmd>lua require('init').src_dir()<CR>", { noremap = true })
 -- }}}
 return M

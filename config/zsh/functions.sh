@@ -159,6 +159,7 @@ lclone () {
     service="$1"
     cd "$HOME/src" || return
     gh repo clone "lyft/$service"
+    direnv allow "$service"
     cd "$service" || return
 }
 
