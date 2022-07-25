@@ -34,9 +34,13 @@ bindkey -e
 # eval "$(rbenv init -)"
 
 # node things
-eval "$(fnm env)"
+if command -v fnm > /dev/null; then
+    eval "$(fnm env)"
+fi
 
-eval "$(direnv hook zsh)"
+if command -v direnv > /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
 
 # TERM=xterm-256color
 if [ -z "$NVIM_LISTEN_ADDRESS" ]; then
@@ -66,5 +70,15 @@ fi
 . $XDG_CONFIG_HOME/zsh/functions.sh
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
 
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if [[ "$(uname)" == "Linux" ]]; then
+    # linux via `apt`
+    PREFIX="/usr"
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+    source /usr/share/doc/fzf/examples/completion.zsh
+else
+    # macs
+    PREFIX="$(brew --prefix)"
+fi
+source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
