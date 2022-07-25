@@ -68,6 +68,9 @@ onoremap al :normal val<CR>
 " make line-global replacements the default
 set gdefault
 
+" enforce we are doing mac/linux files
+set fileformat=unix
+
 " highlight pasted text
 nnoremap gp `[v`]
 
