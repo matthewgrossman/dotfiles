@@ -4,6 +4,7 @@ local map = vim.api.nvim_set_keymap
 -- reload init.lua file
 local luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
 map("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
+map("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
 
 -- bootstrap `packer.nvim`
 local fn = vim.fn
@@ -88,6 +89,7 @@ require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
 
     -- ui
+    use("rcarriga/nvim-notify")
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
@@ -142,9 +144,9 @@ require("nightfox").setup({
             keywords = "bold",
             types = "italic,bold",
         },
-        inverse = {
-            search = true,
-        },
+        -- inverse = {
+        --     search = true,
+        -- },
     },
 })
 vim.cmd("colorscheme nightfox")
@@ -204,9 +206,9 @@ require("nvim-treesitter.configs").setup({
         "json5",
     },
     -- indent = { enable = true },
-    highlight = { enable = true },
-    incremental_selection = { enable = true },
-    textobjects = { enable = true },
+    -- highlight = { enable = true },
+    -- incremental_selection = { enable = true },
+    -- textobjects = { enable = true },
 })
 
 require("nvim-autopairs").setup({})
