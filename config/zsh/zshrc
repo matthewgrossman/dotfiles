@@ -76,6 +76,7 @@ if [[ "$(uname)" == "Linux" ]]; then
     PREFIX="/usr"
     source /usr/share/doc/fzf/examples/key-bindings.zsh
     source /usr/share/doc/fzf/examples/completion.zsh
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
     # macs
     PREFIX="$(brew --prefix)"
