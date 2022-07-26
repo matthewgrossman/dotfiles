@@ -31,3 +31,5 @@ sudo apt install neovim
 # somethings easier via brew
 brew install luarocks
 brew install lua-language-server
+
+powershell.exe /c winget.exe install -e --id Microsoft.VisualStudioCode
