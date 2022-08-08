@@ -33,3 +33,5 @@ brew install luarocks
 brew install lua-language-server
 
 powershell.exe /c winget.exe install -e --id Microsoft.VisualStudioCode
+# scoop install win32yank
+# install powertoys, disable the double-tap control thing
