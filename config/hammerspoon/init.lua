@@ -1,51 +1,52 @@
-helpers = require("helpers")
+Helpers = require("helpers")
 
 -- gotta go fast
 hs.window.animationDuration = 0
 
-layout_hyper = { "cmd", "alt" }
+LayoutHyper = { "cmd", "alt" }
 
-layoutLeft66 = { x = 0, y = 0, w = 0.6666, h = 1 }
-layoutLeft33 = { x = 0, y = 0, w = 0.3333, h = 1 }
-layoutRight33 = { x = 0.6666, y = 0, w = 0.3333, h = 1 }
-layoutRight66 = { x = 0.3333, y = 0, w = 0.6666, h = 1 }
-layoutMiddle33 = { x = 0.3333, y = 0, w = 0.3333, h = 1 }
-layoutUpperLeft = { x = 0, y = 0, w = 0.5, h = 0.5 }
-layoutUpperRight = { x = 0.5, y = 0, w = 0.5, h = 0.5 }
-layoutLowerRight = { x = 0.5, y = 0.5, w = 0.5, h = 0.5 }
-layoutLowerLeft = { x = 0, y = 0.5, w = 0.5, h = 0.5 }
-layoutUpperRightSixth = { x = 0.6666, y = 0, w = 0.3333, h = 0.5 }
-layoutLowerRightSixth = { x = 0.6666, y = 0.5, w = 0.3333, h = 0.5 }
-layoutLowerLeftSixth = { x = 0, y = 0.5, w = 0.3333, h = 0.5 }
-layoutUpperLeftSixth = { x = 0, y = 0, w = 0.3333, h = 0.5 }
-layoutBottomHalf = { x = 0, y = 0.5, w = 1, h = 0.5 }
-layoutTopHalf = { x = 0, y = 0, w = 1, h = 0.5 }
+LayoutLeft66 = { x = 0, y = 0, w = 0.6666, h = 1 }
+LayoutLeft33 = { x = 0, y = 0, w = 0.3333, h = 1 }
+LayoutRight33 = { x = 0.6666, y = 0, w = 0.3333, h = 1 }
+LayoutRight66 = { x = 0.3333, y = 0, w = 0.6666, h = 1 }
+LayoutMiddle33 = { x = 0.3333, y = 0, w = 0.3333, h = 1 }
+LayoutUpperLeft = { x = 0, y = 0, w = 0.5, h = 0.5 }
+LayoutUpperRight = { x = 0.5, y = 0, w = 0.5, h = 0.5 }
+LayoutLowerRight = { x = 0.5, y = 0.5, w = 0.5, h = 0.5 }
+LayoutLowerLeft = { x = 0, y = 0.5, w = 0.5, h = 0.5 }
+LayoutUpperRightSixth = { x = 0.6666, y = 0, w = 0.3333, h = 0.5 }
+LayoutLowerRightSixth = { x = 0.6666, y = 0.5, w = 0.3333, h = 0.5 }
+LayoutLowerLeftSixth = { x = 0, y = 0.5, w = 0.3333, h = 0.5 }
+LayoutUpperLeftSixth = { x = 0, y = 0, w = 0.3333, h = 0.5 }
+LayoutBottomHalf = { x = 0, y = 0.5, w = 1, h = 0.5 }
+LayoutTopHalf = { x = 0, y = 0, w = 1, h = 0.5 }
 
-layout_mapping = {
-    h = { layoutLeft33, hs.layout.left50, layoutLeft66 },
-    l = { layoutRight33, hs.layout.right50, layoutRight66 },
-    k = { layoutMiddle33, hs.layout.maximized },
-    j = { layoutBottomHalf, layoutTopHalf },
-    m = { layoutLowerRightSixth, layoutLowerRight },
-    n = { layoutLowerLeftSixth, layoutLowerLeft },
-    o = { layoutUpperRightSixth, layoutUpperRight },
-    u = { layoutUpperLeftSixth, layoutUpperLeft },
+LayoutMapping = {
+    h = { LayoutLeft33, hs.layout.left50, LayoutLeft66 },
+    l = { LayoutRight33, hs.layout.right50, LayoutRight66 },
+    k = { LayoutMiddle33, hs.layout.maximized },
+    j = { LayoutBottomHalf, LayoutTopHalf },
+    m = { LayoutLowerRightSixth, LayoutLowerRight },
+    n = { LayoutLowerLeftSixth, LayoutLowerLeft },
+    o = { LayoutUpperRightSixth, LayoutUpperRight },
+    u = { LayoutUpperLeftSixth, LayoutUpperLeft },
 }
-for key, layouts in pairs(layout_mapping) do
-    hs.hotkey.bind(layout_hyper, key, function()
+for key, layouts in pairs(LayoutMapping) do
+    hs.hotkey.bind(LayoutHyper, key, function()
+        local layout
         if layouts.x ~= nil then
             -- if single layout is passed (checked existence of 'x'), directly apply layout
             layout = layouts
         else
             -- otherwise, cycle through the layout sizes
             local w = hs.window.focusedWindow()
-            screenFrame = w:screen():frame()
-            windowFrame = w:frame()
-            currentUnitRect = windowFrame:toUnitRect(screenFrame)
+            local screenFrame = w:screen():frame()
+            local windowFrame = w:frame()
+            local currentUnitRect = windowFrame:toUnitRect(screenFrame)
 
-            unitRectIndex = 2 -- arbitrarily choose the 50% layout as default
+            local unitRectIndex = 2 -- arbitrarily choose the 50% layout as default
             for i, unitRect in ipairs(layouts) do
-                if helpers.approxEqualRects(currentUnitRect, unitRect) then
+                if Helpers.approxEqualRects(currentUnitRect, unitRect) then
                     unitRectIndex = i + 1
                     break
                 end
@@ -59,7 +60,7 @@ for key, layouts in pairs(layout_mapping) do
     end)
 end
 
-hs.hotkey.bind(layout_hyper, "return", function()
+hs.hotkey.bind(LayoutHyper, "return", function()
     local win = hs.window.focusedWindow()
     win:moveToScreen(win:screen():next())
 end)
@@ -72,7 +73,7 @@ end)
 --     hs.eventtap.keyStroke({"cmd"}, "delete")
 -- end)
 
-hs.hotkey.bind(layout_hyper, "r", function()
+hs.hotkey.bind(LayoutHyper, "r", function()
     hs.reload()
 end)
 
@@ -94,11 +95,11 @@ end)
 -- for key, direction in pairs(spaces_mapping) do
 --     hs.hotkey.bind(spaces_hyper, key, function()
 --         hs.even.keyStroke({"fn", "ctrl"}, direction)
---         -- helpers.postEvents(getSpacesEvents(direction))
+--         -- Helpers.postEvents(getSpacesEvents(direction))
 --     end)
 -- end
 
-muteAttribs = {
+MuteAttribs = {
     [true] = {
         text = "🔇Muted",
         color = { red = 1 },
@@ -109,7 +110,7 @@ muteAttribs = {
     },
 }
 
-toggleMuteState = function()
+ToggleMuteState = function()
     -- toggle default devices' muted state
 
     -- this used to toggle all devices to be safe, but there's a bug in monterey that
@@ -121,20 +122,20 @@ toggleMuteState = function()
     return isMutedNewState
 end
 
-toggleMute = function()
+ToggleMute = function()
     -- toggle mute state and update UI elements
-    local isMutedNewState = toggleMuteState()
-    local attribs = muteAttribs[isMutedNewState]
-    menubar:setTitle(attribs.text)
+    local isMutedNewState = ToggleMuteState()
+    local attribs = MuteAttribs[isMutedNewState]
+    Menubar:setTitle(attribs.text)
     hs.alert.show(attribs.text, { strokeColor = { black = 1 }, fillColor = attribs.color }, 1)
 end
 
-originalMutedState = hs.audiodevice.defaultInputDevice():muted()
-menubar = hs.menubar.new():setTitle(muteAttribs[originalMutedState].text):setClickCallback(toggleMute)
-app_hyper = { "cmd", "ctrl" }
-hs.hotkey.bind(app_hyper, "m", toggleMute)
+OriginalMutedState = hs.audiodevice.defaultInputDevice():muted()
+Menubar = hs.menubar.new():setTitle(MuteAttribs[OriginalMutedState].text):setClickCallback(ToggleMute)
+AppHyper = { "cmd", "ctrl" }
+hs.hotkey.bind(AppHyper, "m", ToggleMute)
 
-toggleAppHidden = function(appName)
+ToggleAppHidden = function(appName)
     local app = hs.application.get(appName)
     if app == nil or app:isHidden() then
         hs.application.open(appName)
@@ -143,7 +144,7 @@ toggleAppHidden = function(appName)
     end
 end
 
-hideApp = function(appName)
+HideApp = function(appName)
     local app = hs.application.get(appName)
     if app == nil then
         return
@@ -159,7 +160,7 @@ end
 
 -- end
 
-appHideMapping = {
+AppHideMapping = {
     Spotify = { key = "s", shouldMinimize = true },
     KeePassXC = { key = "k", shouldMinimize = true },
     Todoist = { key = "t", shouldMinimize = true },
@@ -170,45 +171,45 @@ appHideMapping = {
 --     ["meet.google.com"]="m",
 -- }
 
-for app, attribs in pairs(appHideMapping) do
-    toggleCB = helpers.bind(toggleAppHidden, app)
-    hs.hotkey.bind(app_hyper, attribs.key, toggleCB)
+for app, attribs in pairs(AppHideMapping) do
+    local toggleCB = Helpers.bind(ToggleAppHidden, app)
+    hs.hotkey.bind(AppHyper, attribs.key, toggleCB)
 end
 
 -- for tabUrl, key in pairs(tabHideMapping) do
---     toggleCB = helpers.bind(toggleWindowHidden, tabUrl)
---     hs.hotkey.bind(app_hyper, key, toggleCB)
+--     toggleCB = Helpers.bind(toggleWindowHidden, tabUrl)
+--     hs.hotkey.bind(AppHyper, key, toggleCB)
 -- end
 
-spacesWatcher = hs.spaces.watcher.new(function(_)
-    for appName, attribs in pairs(appHideMapping) do
+SpacesWatcher = hs.spaces.watcher.new(function(_)
+    for appName, attribs in pairs(AppHideMapping) do
         if attribs.shouldMinimize then
-            hideApp(appName)
+            HideApp(appName)
         end
     end
 end)
-spacesWatcher:start()
+SpacesWatcher:start()
 
-wf = hs.window.filter.new()
-wf:keepActive()
+WF = hs.window.filter.new()
+WF:keepActive()
 
 -- create a new chooser that'll focus on whichever the selected window
-window_chooser = hs.chooser.new(function(choice)
+WindowChooser = hs.chooser.new(function(choice)
     if not choice then
         return
     end
-    local win = idToWindow[choice.windowId]
+    local win = IdToWindow[choice.windowId]
     win:focus()
 end)
-idToWindow = {}
-idToName = {}
-choicesLength = 0
-window_chooser:choices(function()
+IdToWindow = {}
+IdToName = {}
+ChoicesLength = 0
+WindowChooser:choices(function()
     local ret = {}
     local length = 0
-    for _, window in pairs(wf:getWindows()) do
-        idToWindow[window:id()] = window
-        local assigned_name = idToName[window:id()]
+    for _, window in pairs(WF:getWindows()) do
+        IdToWindow[window:id()] = window
+        local assigned_name = IdToName[window:id()]
         local row = {
             text = assigned_name or window:title(),
             windowId = window:id(),
@@ -217,42 +218,42 @@ window_chooser:choices(function()
         table.insert(ret, row)
         length = length + 1
     end
-    choicesLength = length
+    ChoicesLength = length
     return ret
 end)
 
 hs.hotkey.bind("alt", "tab", function()
     -- if the chooser is already open, advance to next row
-    if window_chooser:isVisible() then
-        nextRow = window_chooser:selectedRow() + 1
-        if nextRow > choicesLength then
+    if WindowChooser:isVisible() then
+        local nextRow = WindowChooser:selectedRow() + 1
+        if nextRow > ChoicesLength then
             nextRow = 1
         end
-        window_chooser:selectedRow(nextRow)
+        WindowChooser:selectedRow(nextRow)
     else
-        window_chooser:refreshChoicesCallback()
-        window_chooser:query(nil)
-        window_chooser:show()
-        window_chooser:selectedRow(2) -- select previous window
+        WindowChooser:refreshChoicesCallback()
+        WindowChooser:query(nil)
+        WindowChooser:show()
+        WindowChooser:selectedRow(2) -- select previous window
     end
 end)
 
 hs.hotkey.bind({ "shift", "alt" }, "tab", function()
     -- if the chooser is already open, go up a row
-    if window_chooser:isVisible() then
-        prevRow = window_chooser:selectedRow() - 1
+    if WindowChooser:isVisible() then
+        local prevRow = WindowChooser:selectedRow() - 1
         if prevRow == 0 then
-            prevRow = choicesLength
+            prevRow = ChoicesLength
         end
-        window_chooser:selectedRow(prevRow)
+        WindowChooser:selectedRow(prevRow)
     end
 end)
 
-hs.hotkey.bind(layout_hyper, "w", function()
+hs.hotkey.bind(LayoutHyper, "w", function()
     local window = hs.window.focusedWindow()
     hs.focus()
     local _, name = hs.dialog.textPrompt("Name this window:", "Enter the name for the focused window")
-    idToName[window:id()] = name
+    IdToName[window:id()] = name
     window:focus()
 end)
 
@@ -262,12 +263,12 @@ end)
 -- I did this to keep the arguments on the same line as the program we're launching,
 -- a purely aesthetic move
 
--- disable bluetooth and store the currently connected devices in `connectedDevices`
+-- disable bluetooth and store the currently connected devices in `ConnectedDevices`
 local disableBluetooth = function()
     hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--connected", "--format", "json" })
         :setCallback(function(_, stdOut, _)
-            connectedDevices = hs.json.decode(stdOut)
-            for _, device in ipairs(connectedDevices) do
+            ConnectedDevices = hs.json.decode(stdOut)
+            for _, device in ipairs(ConnectedDevices) do
                 print("Remembering connected device: " .. device["name"] .. ", " .. device["address"])
             end
 
@@ -280,11 +281,11 @@ local disableBluetooth = function()
         :start()
 end
 
--- reenable bluetooth and connect to devices in `connectedDevices`
+-- reenable bluetooth and connect to devices in `ConnectedDevices`
 local enableBluetooth = function()
     hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--power", "1" })
         :setCallback(function()
-            for _, device in ipairs(connectedDevices) do
+            for _, device in ipairs(ConnectedDevices) do
                 print("Connecting to device: " .. device["name"] .. ", " .. device["address"] .. "...")
                 hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--connect", device["address"] })
                     :setCallback(function()
@@ -296,8 +297,8 @@ local enableBluetooth = function()
         :start()
 end
 
-connectedDevices = {}
-lockWatcher = hs.caffeinate.watcher.new(function(event)
+ConnectedDevices = {}
+LockWatcher = hs.caffeinate.watcher.new(function(event)
     if event == hs.caffeinate.watcher.screensDidLock then
         disableBluetooth()
     end
@@ -305,7 +306,7 @@ lockWatcher = hs.caffeinate.watcher.new(function(event)
         enableBluetooth()
     end
 end)
-lockWatcher:start()
+LockWatcher:start()
 
 -- toggleGMeetMute = function()
 --     app = hs.application.get("Google Meet")
