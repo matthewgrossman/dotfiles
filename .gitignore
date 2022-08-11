@@ -6,3 +6,7 @@ vim/bundle/*
 vim/.netrwhist
 tags
 config/base16-shell/
+
+# vendor in `SpoonInstall`, and but then let it manage all other spoons
+config/hammerspoon/Spoons/*
+!config/hammerspoon/Spoons/SpoonInstall.spoon/

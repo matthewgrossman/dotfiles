@@ -376,7 +376,8 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
 end
 
 -- to debug do this:
-vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level("debug")
+
 -- :lua vim.cmd('e'..vim.lsp.get_log_path())
 
 -- TODO get clangd working w/ envoy
@@ -419,6 +420,8 @@ for _, lsp in ipairs(servers) do
         },
     })
 end
+
+local hammerspoon = string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME)
 nvim_lsp.sumneko_lua.setup({
     on_attach = on_attach,
     flags = { debounce_text_changes = 250 },
@@ -430,12 +433,12 @@ nvim_lsp.sumneko_lua.setup({
                 version = "LuaJIT",
             },
             diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { "vim", "hs" },
+                -- Get the language server to recognize the globals
+                globals = { "vim", "hs", "spoon"},
             },
             workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
+                -- Make the server aware of runtime files
+                library = {vim.api.nvim_get_runtime_file("", true), hammerspoon},
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
