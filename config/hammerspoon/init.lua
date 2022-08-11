@@ -111,7 +111,7 @@ muteAttribs = {
 toggleMuteState = function()
     -- toggle default devices' muted state
 
-    -- this used to toggle all devices to be safe, but there's a bug in monterey that 
+    -- this used to toggle all devices to be safe, but there's a bug in monterey that
     -- mutes output whenever input is also muted.
     -- https://github.com/Hammerspoon/hammerspoon/issues/2965
     local device = hs.audiodevice.defaultInputDevice()
@@ -251,6 +251,57 @@ hs.hotkey.bind(layout_hyper, "w", function()
     window:focus()
 end)
 
+-- note to self on hs.task.new()
+-- you *can* pass the callbackFn as the 2nd arg, but we use nil there and then
+-- call `setCallback` before starting the task.
+-- I did this to keep the arguments on the same line as the program we're launching,
+-- a purely aesthetic move
+
+-- disable bluetooth and store the currently connected devices in `connectedDevices`
+local disableBluetooth = function()
+    hs.task.new( "/opt/homebrew/bin/blueutil", nil, {"--connected", "--format", "json"}):setCallback(
+        function (_, stdOut, _)
+            connectedDevices = hs.json.decode(stdOut)
+            for _, device in ipairs(connectedDevices) do
+                print("Remembering connected device: "..device["name"]..", "..device["address"])
+            end
+
+            hs.task.new("/opt/homebrew/bin/blueutil", nil, {"--power", "0"}):setCallback(
+                function ()
+                    print("Disabled bluetooth")
+                end):start()
+
+    end):start()
+end
+
+-- reenable bluetooth and connect to devices in `connectedDevices`
+local enableBluetooth = function()
+    hs.task.new( "/opt/homebrew/bin/blueutil", nil, {"--power", "1"}):setCallback(
+        function ()
+            for _, device in ipairs(connectedDevices) do
+                print("Connecting to device: "..device["name"]..", "..device["address"].."...")
+                hs.task.new("/opt/homebrew/bin/blueutil", nil, {"--connect", device["address"]}):setCallback(
+                    function()
+                        print("Connected to device: "..device["name"]..", "..device["address"].."!")
+                    end
+                ):start()
+            end
+        end
+        ):start()
+
+end
+
+connectedDevices = {}
+lockWatcher  = hs.caffeinate.watcher.new(function(event)
+    if event == hs.caffeinate.watcher.screensDidLock then
+        disableBluetooth()
+    end
+    if event == hs.caffeinate.watcher.screensDidUnlock then
+        enableBluetooth()
+    end
+
+end)
+lockWatcher:start()
 
 -- toggleGMeetMute = function()
 --     app = hs.application.get("Google Meet")

@@ -400,7 +400,6 @@ require("null-ls").setup({
         }),
         require("null-ls").builtins.formatting.reorder_python_imports,
         require("null-ls").builtins.diagnostics.shellcheck,
-        require("null-ls").builtins.diagnostics.mypy,
         require("null-ls").builtins.formatting.trim_whitespace,
     },
     on_attach = on_attach_null_ls,

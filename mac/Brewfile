@@ -54,6 +54,7 @@ cask 'wireshark'
 cask 'zoom'
 
 brew 'bat'
+brew 'blueutil'
 brew 'cowsay'
 brew 'ctags'
 brew 'fd'
