@@ -128,15 +128,6 @@ autocmd FileType fugitive* nmap <buffer> q gq
 autocmd FileType lua setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd FileType go setlocal noexpandtab
 
-" scratch buffer
-function! Scratch()
-    execute 'enew'
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal noswapfile
-endfunction
-nnoremap ge :call Scratch()<CR>
-
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
 nnoremap [st :set nowinfixheight<CR>

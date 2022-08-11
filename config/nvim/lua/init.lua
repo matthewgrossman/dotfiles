@@ -470,4 +470,21 @@ require("telescope").load_extension("fzf")
 map("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
 map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
 -- }}}
+
+-- user commands {{{
+local createScratch = function()
+    vim.cmd('split')
+    local win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_win_set_buf(win, buf)
+    return buf
+end
+local createMessages = function()
+    createScratch()
+    vim.cmd("put = execute('messages')")
+
+end
+vim.api.nvim_create_user_command('Scratch', createScratch, {})
+vim.api.nvim_create_user_command('Messages', createMessages, {})
+-- }}}
 return M
