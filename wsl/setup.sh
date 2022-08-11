@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # install linuxbrew, https://brew.sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -32,3 +31,7 @@ sudo apt install neovim
 # somethings easier via brew
 brew install luarocks
 brew install lua-language-server
+
+powershell.exe /c winget.exe install -e --id Microsoft.VisualStudioCode
+# scoop install win32yank
+# install powertoys, disable the double-tap control thing

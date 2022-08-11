@@ -1,4 +1,4 @@
-python-language-server[all]
+python-lsp-server[all]
 poetry
 neovim-remote
 ansible-base
