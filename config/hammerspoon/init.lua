@@ -3,33 +3,33 @@ helpers = require("helpers")
 -- gotta go fast
 hs.window.animationDuration = 0
 
-layout_hyper = {"cmd", "alt"}
+layout_hyper = { "cmd", "alt" }
 
-layoutLeft66 = {x=0, y=0, w=.6666,h=1}
-layoutLeft33 = {x=0, y=0, w=.3333,h=1}
-layoutRight33 = {x=.6666, y=0, w=.3333,h=1}
-layoutRight66 = {x=.3333, y=0, w=.6666,h=1}
-layoutMiddle33 = {x=.3333, y=0, w=.3333, h=1}
-layoutUpperLeft = {x=0, y=0, w=0.5, h=0.5}
-layoutUpperRight = {x=0.5, y=0, w=0.5, h=0.5}
-layoutLowerRight = {x=0.5, y=0.5, w=0.5, h=0.5}
-layoutLowerLeft = {x=0, y=0.5, w=0.5, h=0.5}
-layoutUpperRightSixth = {x=.6666, y=0, w=.3333, h=.5}
-layoutLowerRightSixth = {x=.6666, y=.5, w=.3333, h=.5}
-layoutLowerLeftSixth = {x=0, y=.5, w=.3333, h=.5}
-layoutUpperLeftSixth = {x=0, y=0, w=.3333, h=.5}
-layoutBottomHalf = {x=0, y=.5, w=1, h=.5}
-layoutTopHalf = {x=0, y=0, w=1, h=.5}
+layoutLeft66 = { x = 0, y = 0, w = 0.6666, h = 1 }
+layoutLeft33 = { x = 0, y = 0, w = 0.3333, h = 1 }
+layoutRight33 = { x = 0.6666, y = 0, w = 0.3333, h = 1 }
+layoutRight66 = { x = 0.3333, y = 0, w = 0.6666, h = 1 }
+layoutMiddle33 = { x = 0.3333, y = 0, w = 0.3333, h = 1 }
+layoutUpperLeft = { x = 0, y = 0, w = 0.5, h = 0.5 }
+layoutUpperRight = { x = 0.5, y = 0, w = 0.5, h = 0.5 }
+layoutLowerRight = { x = 0.5, y = 0.5, w = 0.5, h = 0.5 }
+layoutLowerLeft = { x = 0, y = 0.5, w = 0.5, h = 0.5 }
+layoutUpperRightSixth = { x = 0.6666, y = 0, w = 0.3333, h = 0.5 }
+layoutLowerRightSixth = { x = 0.6666, y = 0.5, w = 0.3333, h = 0.5 }
+layoutLowerLeftSixth = { x = 0, y = 0.5, w = 0.3333, h = 0.5 }
+layoutUpperLeftSixth = { x = 0, y = 0, w = 0.3333, h = 0.5 }
+layoutBottomHalf = { x = 0, y = 0.5, w = 1, h = 0.5 }
+layoutTopHalf = { x = 0, y = 0, w = 1, h = 0.5 }
 
 layout_mapping = {
-    h = {layoutLeft33, hs.layout.left50, layoutLeft66},
-    l = {layoutRight33, hs.layout.right50, layoutRight66},
-    k = {layoutMiddle33, hs.layout.maximized},
-    j = {layoutBottomHalf, layoutTopHalf},
-    m = {layoutLowerRightSixth, layoutLowerRight},
-    n = {layoutLowerLeftSixth, layoutLowerLeft},
-    o = {layoutUpperRightSixth, layoutUpperRight},
-    u = {layoutUpperLeftSixth, layoutUpperLeft},
+    h = { layoutLeft33, hs.layout.left50, layoutLeft66 },
+    l = { layoutRight33, hs.layout.right50, layoutRight66 },
+    k = { layoutMiddle33, hs.layout.maximized },
+    j = { layoutBottomHalf, layoutTopHalf },
+    m = { layoutLowerRightSixth, layoutLowerRight },
+    n = { layoutLowerLeftSixth, layoutLowerLeft },
+    o = { layoutUpperRightSixth, layoutUpperRight },
+    u = { layoutUpperLeftSixth, layoutUpperLeft },
 }
 for key, layouts in pairs(layout_mapping) do
     hs.hotkey.bind(layout_hyper, key, function()
@@ -50,14 +50,16 @@ for key, layouts in pairs(layout_mapping) do
                     break
                 end
             end
-            if unitRectIndex > #layouts then unitRectIndex = 1 end -- wrap around
+            if unitRectIndex > #layouts then
+                unitRectIndex = 1
+            end -- wrap around
             layout = layouts[unitRectIndex]
         end
         hs.window.focusedWindow():moveToUnit(layout)
     end)
 end
 
-hs.hotkey.bind(layout_hyper, 'return', function()
+hs.hotkey.bind(layout_hyper, "return", function()
     local win = hs.window.focusedWindow()
     win:moveToScreen(win:screen():next())
 end)
@@ -73,7 +75,6 @@ end)
 hs.hotkey.bind(layout_hyper, "r", function()
     hs.reload()
 end)
-
 
 -- spaces_hyper = {"ctrl", "shift"}
 -- spaces_mapping = {
@@ -98,14 +99,14 @@ end)
 -- end
 
 muteAttribs = {
-    [true]={
-        text="🔇Muted",
-        color={red=1}
+    [true] = {
+        text = "🔇Muted",
+        color = { red = 1 },
     },
-    [false]={
-        text="🎙️Mic On",
-        color={green=1}
-    }
+    [false] = {
+        text = "🎙️Mic On",
+        color = { green = 1 },
+    },
 }
 
 toggleMuteState = function()
@@ -125,15 +126,13 @@ toggleMute = function()
     local isMutedNewState = toggleMuteState()
     local attribs = muteAttribs[isMutedNewState]
     menubar:setTitle(attribs.text)
-    hs.alert.show(attribs.text, {strokeColor={black=1}, fillColor=attribs.color}, 1)
+    hs.alert.show(attribs.text, { strokeColor = { black = 1 }, fillColor = attribs.color }, 1)
 end
 
 originalMutedState = hs.audiodevice.defaultInputDevice():muted()
-menubar = hs.menubar.new()
-    :setTitle(muteAttribs[originalMutedState].text)
-    :setClickCallback(toggleMute)
-app_hyper = {"cmd", "ctrl"}
-hs.hotkey.bind(app_hyper, 'm', toggleMute)
+menubar = hs.menubar.new():setTitle(muteAttribs[originalMutedState].text):setClickCallback(toggleMute)
+app_hyper = { "cmd", "ctrl" }
+hs.hotkey.bind(app_hyper, "m", toggleMute)
 
 toggleAppHidden = function(appName)
     local app = hs.application.get(appName)
@@ -146,22 +145,25 @@ end
 
 hideApp = function(appName)
     local app = hs.application.get(appName)
-    if app == nil then return end
-    if not app:isHidden() then app:hide() end
+    if app == nil then
+        return
+    end
+    if not app:isHidden() then
+        app:hide()
+    end
 end
 
 -- toggleWindowHidden = function(tabUrl)
 --     local chrome = hs.application("Google Chrome")
 --     local windows = chrome:allWindows()
 
-
 -- end
 
 appHideMapping = {
-    Spotify={key="s", shouldMinimize=true},
-    KeePassXC={key="k", shouldMinimize=true},
-    Todoist={key="t", shouldMinimize=true},
-    ["Google Meet"]={key="h", shouldMinimize=false}
+    Spotify = { key = "s", shouldMinimize = true },
+    KeePassXC = { key = "k", shouldMinimize = true },
+    Todoist = { key = "t", shouldMinimize = true },
+    ["Google Meet"] = { key = "h", shouldMinimize = false },
 }
 
 -- tabHideMapping = {
@@ -192,7 +194,9 @@ wf:keepActive()
 
 -- create a new chooser that'll focus on whichever the selected window
 window_chooser = hs.chooser.new(function(choice)
-    if not choice then return end
+    if not choice then
+        return
+    end
     local win = idToWindow[choice.windowId]
     win:focus()
 end)
@@ -208,7 +212,7 @@ window_chooser:choices(function()
         local row = {
             text = assigned_name or window:title(),
             windowId = window:id(),
-            image = hs.image.imageFromAppBundle(window:application():bundleID())
+            image = hs.image.imageFromAppBundle(window:application():bundleID()),
         }
         table.insert(ret, row)
         length = length + 1
@@ -217,12 +221,13 @@ window_chooser:choices(function()
     return ret
 end)
 
-hs.hotkey.bind('alt', 'tab', function()
-
+hs.hotkey.bind("alt", "tab", function()
     -- if the chooser is already open, advance to next row
     if window_chooser:isVisible() then
-        nextRow = window_chooser:selectedRow()+1
-        if nextRow > choicesLength then nextRow = 1 end
+        nextRow = window_chooser:selectedRow() + 1
+        if nextRow > choicesLength then
+            nextRow = 1
+        end
         window_chooser:selectedRow(nextRow)
     else
         window_chooser:refreshChoicesCallback()
@@ -232,14 +237,14 @@ hs.hotkey.bind('alt', 'tab', function()
     end
 end)
 
-hs.hotkey.bind({'shift', 'alt'}, 'tab', function()
-
+hs.hotkey.bind({ "shift", "alt" }, "tab", function()
     -- if the chooser is already open, go up a row
     if window_chooser:isVisible() then
-        prevRow = window_chooser:selectedRow()-1
-        if prevRow == 0 then prevRow = choicesLength end
+        prevRow = window_chooser:selectedRow() - 1
+        if prevRow == 0 then
+            prevRow = choicesLength
+        end
         window_chooser:selectedRow(prevRow)
-
     end
 end)
 
@@ -259,47 +264,46 @@ end)
 
 -- disable bluetooth and store the currently connected devices in `connectedDevices`
 local disableBluetooth = function()
-    hs.task.new( "/opt/homebrew/bin/blueutil", nil, {"--connected", "--format", "json"}):setCallback(
-        function (_, stdOut, _)
+    hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--connected", "--format", "json" })
+        :setCallback(function(_, stdOut, _)
             connectedDevices = hs.json.decode(stdOut)
             for _, device in ipairs(connectedDevices) do
-                print("Remembering connected device: "..device["name"]..", "..device["address"])
+                print("Remembering connected device: " .. device["name"] .. ", " .. device["address"])
             end
 
-            hs.task.new("/opt/homebrew/bin/blueutil", nil, {"--power", "0"}):setCallback(
-                function ()
+            hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--power", "0" })
+                :setCallback(function()
                     print("Disabled bluetooth")
-                end):start()
-
-    end):start()
+                end)
+                :start()
+        end)
+        :start()
 end
 
 -- reenable bluetooth and connect to devices in `connectedDevices`
 local enableBluetooth = function()
-    hs.task.new( "/opt/homebrew/bin/blueutil", nil, {"--power", "1"}):setCallback(
-        function ()
+    hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--power", "1" })
+        :setCallback(function()
             for _, device in ipairs(connectedDevices) do
-                print("Connecting to device: "..device["name"]..", "..device["address"].."...")
-                hs.task.new("/opt/homebrew/bin/blueutil", nil, {"--connect", device["address"]}):setCallback(
-                    function()
-                        print("Connected to device: "..device["name"]..", "..device["address"].."!")
-                    end
-                ):start()
+                print("Connecting to device: " .. device["name"] .. ", " .. device["address"] .. "...")
+                hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--connect", device["address"] })
+                    :setCallback(function()
+                        print("Connected to device: " .. device["name"] .. ", " .. device["address"] .. "!")
+                    end)
+                    :start()
             end
-        end
-        ):start()
-
+        end)
+        :start()
 end
 
 connectedDevices = {}
-lockWatcher  = hs.caffeinate.watcher.new(function(event)
+lockWatcher = hs.caffeinate.watcher.new(function(event)
     if event == hs.caffeinate.watcher.screensDidLock then
         disableBluetooth()
     end
     if event == hs.caffeinate.watcher.screensDidUnlock then
         enableBluetooth()
     end
-
 end)
 lockWatcher:start()
 
