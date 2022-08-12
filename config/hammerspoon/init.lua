@@ -290,8 +290,12 @@ local enableBluetooth = function()
             for _, device in ipairs(ConnectedDevices) do
                 print("Connecting to device: " .. device["name"] .. ", " .. device["address"] .. "...")
                 hs.task.new("/opt/homebrew/bin/blueutil", nil, { "--connect", device["address"] })
-                    :setCallback(function()
-                        print("Connected to device: " .. device["name"] .. ", " .. device["address"] .. "!")
+                    :setCallback(function(exitCode, _, _)
+                        if exitCode == 1 then
+                            print("Failed to connect to device: " .. device["name"] .. ", " .. device["address"] .. "!")
+                        else
+                            print("Connected to device: " .. device["name"] .. ", " .. device["address"] .. "!")
+                        end
                     end)
                     :start()
             end
