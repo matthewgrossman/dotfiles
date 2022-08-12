@@ -1,9 +1,15 @@
 #!/usr/bin/env zsh
 
+# uncomment this and `zprof` at the bottom to profile zsh startup
+# zmodload zsh/zprof
+
 # put completions in .zfunc
 fpath+="$HOME/.zfunc"
 autoload -Uz compinit
-compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
@@ -85,3 +91,5 @@ else
 fi
 source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# zprof
