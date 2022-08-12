@@ -472,19 +472,19 @@ map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { no
 -- }}}
 
 -- user commands {{{
-local createScratch = function()
+local cScratch = function()
     vim.cmd('split')
     local win = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_win_set_buf(win, buf)
     return buf
 end
-local createMessages = function()
-    createScratch()
+local cMessages = function()
+    cScratch()
     vim.cmd("put = execute('messages')")
 
 end
-vim.api.nvim_create_user_command('Scratch', createScratch, {})
-vim.api.nvim_create_user_command('Messages', createMessages, {})
+vim.api.nvim_create_user_command('Scratch', cScratch, {})
+vim.api.nvim_create_user_command('Messages', cMessages, {})
 -- }}}
 return M
