@@ -33,5 +33,9 @@ brew install luarocks
 brew install lua-language-server
 
 powershell.exe /c winget.exe install -e --id Microsoft.VisualStudioCode
-# scoop install win32yank
+
+# overwrite wsl.conf ? commented out because might cause problems
+# sudo ln -sf "$HOME/dotfiles/wsl/wsl.conf" /etc/wsl.conf
+
+scoop install win32yank
 # install powertoys, disable the double-tap control thing
