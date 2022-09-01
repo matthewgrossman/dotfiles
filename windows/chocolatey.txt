@@ -1,0 +1,2 @@
+choco install razer-synapse-3
+choco install 7zip
