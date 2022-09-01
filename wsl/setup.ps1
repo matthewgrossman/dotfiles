@@ -1,1 +1,1 @@
-winget import winget.json
+winget import .\winget.json
