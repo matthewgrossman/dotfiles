@@ -10,9 +10,6 @@
 					"PackageIdentifier" : "OpenWhisperSystems.Signal"
 				},
 				{
-					"PackageIdentifier" : "Canonical.Ubuntu.2204"
-				},
-				{
 					"PackageIdentifier" : "Discord.Discord"
 				},
 				{
