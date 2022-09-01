@@ -314,6 +314,32 @@ LockWatcher = hs.caffeinate.watcher.new(function(event)
 end)
 LockWatcher:start()
 
+function MenubarWrapper(cmd)
+    local menubar = hs.menubar.new(false)
+
+    function refresh()
+        local output, status, _type, rc = hs.execute(cmd)
+        print("hello world")
+        menubar:setTitle(output)
+        menubar:returnToMenuBar()
+    end
+
+    hs.timer.doEvery(1, refresh)
+    return menubar
+end
+
+-- HBar, meant to create a nice wrapper around hs.menubar
+HBar = {}
+function HBar:new(c)
+  c = c or {}
+  self.__index = self
+  return setmetatable(c, self)
+end
+
+function HBar:start()
+    self.timer = hs.timer.doEvery(1, self.refresh)
+end
+
 -- toggleGMeetMute = function()
 --     app = hs.application.get("Google Meet")
 --     win = app:mainWindow()
