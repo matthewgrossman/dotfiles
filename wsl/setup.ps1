@@ -1,0 +1,1 @@
+winget import winget.json
