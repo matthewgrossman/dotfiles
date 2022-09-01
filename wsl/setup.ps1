@@ -1,1 +1,0 @@
-winget import .\winget.json
