@@ -1,9 +1,12 @@
-winget import $PSScriptRoot\winget.json
+Start-Process powershell -Verb runAs -ArgumentList "-file $PSScriptRoot\setup_admin.ps1"
 
-# install chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
+# install scoop {{{
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
+irm get.scoop.sh | iex
 
-choco install -y razer-synapse-3
-choco install -y 7zip
+scoop bucket add nerd-fonts
+scoop update
 
-wsl --install --distribution Ubuntu
+scoop install win32yank
+scoop install CascadiaCode-NF
+# }}}
