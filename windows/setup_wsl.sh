@@ -7,7 +7,6 @@ sudo apt install -y \
     zsh-autosuggestions \
     zsh-syntax-highlighting \
     fzf \
-    pipx \
     universal-ctags \
     ranger \
     ripgrep \
@@ -18,6 +17,8 @@ sudo apt install -y \
     g++ \
     make \
     universal-ctags \
+    python3-venv \
+    python3-pip \
     neovim
 
 chsh --shell /usr/bin/zsh
@@ -28,6 +29,11 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install luarocks
 brew install lua-language-server
 <"$HOME/.config/luarocks/luarocks.txt" xargs -n1 luarocks install
+
+# pipx
+python3 -m pip install --user pipx
+pipx ensurepath
+pipx install neovim-remote
 
 # overwrite wsl.conf ? commented out because might cause problems
 # sudo ln -sf "$HOME/dotfiles/wsl/wsl.conf" /etc/wsl.conf
