@@ -52,6 +52,9 @@
 					"PackageIdentifier" : "Google.Chrome"
 				},
 				{
+					"PackageIdentifier" : "Microsoft.PowerToys"
+				},
+				{
 					"PackageIdentifier" : "Google.Drive"
 				},
 				{
@@ -74,9 +77,6 @@
 				},
 				{
 					"PackageIdentifier" : "Mozilla.Firefox"
-				},
-				{
-					"PackageIdentifier" : "Lexikos.AutoHotKey"
 				}
 			],
 			"SourceDetails" : 
