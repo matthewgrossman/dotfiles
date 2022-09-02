@@ -74,6 +74,9 @@
 				},
 				{
 					"PackageIdentifier" : "Mozilla.Firefox"
+				},
+				{
+					"PackageIdentifier" : "Lexikos.AutoHotKey"
 				}
 			],
 			"SourceDetails" : 

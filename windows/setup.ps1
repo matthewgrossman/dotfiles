@@ -7,6 +7,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a 
 irm get.scoop.sh | iex
 
 scoop bucket add nerd-fonts
+scoop bucket add extras
 scoop update
 
 scoop install win32yank
