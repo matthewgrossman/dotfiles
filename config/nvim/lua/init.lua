@@ -9,9 +9,8 @@ map("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
 -- bootstrap `packer.nvim`
 local fn = vim.fn
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-local packer_bootstrap = false
 if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({
+    PackerBootstrap = fn.system({
         "git",
         "clone",
         "--depth",
@@ -19,6 +18,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
         "https://github.com/wbthomason/packer.nvim",
         install_path,
     })
+    vim.cmd([[packadd packer.nvim]])
 end
 
 -- start of plugins, maybe refactor into its own .lua someday
@@ -130,7 +130,7 @@ require("packer").startup(function(use)
     use("junegunn/vader.vim")
     use("neoclide/jsonc.vim")
 
-    if packer_bootstrap then
+    if PackerBootstrap then
         require("packer").sync()
     end
 end)
@@ -434,11 +434,11 @@ nvim_lsp.sumneko_lua.setup({
             },
             diagnostics = {
                 -- Get the language server to recognize the globals
-                globals = { "vim", "hs", "spoon"},
+                globals = { "vim", "hs", "spoon" },
             },
             workspace = {
                 -- Make the server aware of runtime files
-                library = {vim.api.nvim_get_runtime_file("", true), hammerspoon},
+                library = { vim.api.nvim_get_runtime_file("", true), hammerspoon },
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
@@ -473,7 +473,7 @@ map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { no
 
 -- user commands {{{
 local cScratch = function()
-    vim.cmd('split')
+    vim.cmd("split")
     local win = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_win_set_buf(win, buf)
@@ -482,9 +482,8 @@ end
 local cMessages = function()
     cScratch()
     vim.cmd("put = execute('messages')")
-
 end
-vim.api.nvim_create_user_command('Scratch', cScratch, {})
-vim.api.nvim_create_user_command('Messages', cMessages, {})
+vim.api.nvim_create_user_command("Scratch", cScratch, {})
+vim.api.nvim_create_user_command("Messages", cMessages, {})
 -- }}}
 return M
