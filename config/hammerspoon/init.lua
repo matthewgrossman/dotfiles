@@ -137,6 +137,10 @@ Menubar = hs.menubar.new():setTitle(MuteAttribs[OriginalMutedState].text):setCli
 AppHyper = { "cmd", "ctrl" }
 hs.hotkey.bind(AppHyper, "m", ToggleMute)
 
+ApplicationIsOnMainScreen = function(app)
+    return app:mainWindow():screen() == hs.screen:primaryScreen()
+end
+
 ToggleAppHidden = function(appName)
     local app = hs.application.get(appName)
     if app == nil or app:isHidden() then
@@ -151,7 +155,7 @@ HideApp = function(appName)
     if app == nil then
         return
     end
-    if not app:isHidden() then
+    if not app:isHidden() and ApplicationIsOnMainScreen(app) then
         app:hide()
     end
 end
