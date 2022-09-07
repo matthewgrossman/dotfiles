@@ -7,19 +7,18 @@ map("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
 map("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
 
 -- bootstrap `packer.nvim`
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    PackerBootstrap = fn.system({
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
-    })
-    vim.cmd([[packadd packer.nvim]])
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
+
+local packer_bootstrap = ensure_packer()
 
 -- start of plugins, maybe refactor into its own .lua someday
 require("packer").startup(function(use)
@@ -130,10 +129,14 @@ require("packer").startup(function(use)
     use("junegunn/vader.vim")
     use("neoclide/jsonc.vim")
 
-    if PackerBootstrap then
+    if packer_bootstrap then
         require("packer").sync()
     end
 end)
+
+if packer_bootstrap then
+    return
+end
 
 local nvim_lsp = require("lspconfig")
 require("nightfox").setup({
