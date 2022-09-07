@@ -143,7 +143,6 @@ set autoread
 autocmd! FocusGained,BufEnter * if mode() != 'c' | checktime | endif
 
 " Leader commands
-map <SPACE> <leader>
 nnoremap <silent> <Leader><SPACE> :nohlsearch<CR>
 nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
 nnoremap <leader>sv :source $MYVIMRC<CR>
@@ -251,7 +250,6 @@ let g:python_highlight_indent_errors = 0
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
-nmap <silent> <leader>p ^f(a<CR><ESC>gE%i<CR><ESC>=i(
 
 nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
 

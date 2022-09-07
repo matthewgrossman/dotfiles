@@ -1,5 +1,6 @@
 local M = {}
 local map = vim.api.nvim_set_keymap
+vim.g.mapleader = " "
 
 -- reload init.lua file
 local luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
@@ -75,12 +76,10 @@ require("packer").startup(function(use)
     -- end
     -- }
     use("wellle/targets.vim")
-    use("kana/vim-textobj-indent")
     use("peterrincker/vim-argumentative")
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
     -- use 'romainl/vim-qf'
-    use("kana/vim-textobj-user")
     use("stefandtw/quickfix-reflector.vim")
     use("junegunn/vim-easy-align")
     use("nelstrom/vim-visual-star-search")
@@ -135,6 +134,7 @@ require("packer").startup(function(use)
 end)
 
 if packer_bootstrap then
+    print("Packer needed boostrap; rerun neovim after sync finishes")
     return
 end
 
