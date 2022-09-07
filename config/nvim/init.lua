@@ -489,4 +489,7 @@ end
 vim.api.nvim_create_user_command("Scratch", cScratch, {})
 vim.api.nvim_create_user_command("Messages", cMessages, {})
 -- }}}
+
+vim.cmd('runtime vimscript/init.vim')
+
 return M

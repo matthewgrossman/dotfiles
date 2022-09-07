@@ -261,8 +261,6 @@ command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
-lua require('init')
-
 " theming
 " set termguicolors
 " colorscheme material
