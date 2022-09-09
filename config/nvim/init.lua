@@ -60,6 +60,7 @@ require("packer").startup(function(use)
     use("tpope/vim-commentary")
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+    use { "nvim-telescope/telescope-file-browser.nvim" }
     -- use 'lukas-reineke/indent-blankline.nvim'
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
@@ -104,6 +105,12 @@ require("packer").startup(function(use)
     use({
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
+    })
+    use ({
+        'kevinhwang91/rnvimr',
+        requires = {
+            'kyazdani42/nvim-web-devicons',
+        },
     })
     use("psliwka/termcolors.nvim")
     use("folke/lsp-colors.nvim")
@@ -437,7 +444,7 @@ nvim_lsp.sumneko_lua.setup({
             },
             diagnostics = {
                 -- Get the language server to recognize the globals
-                globals = { "vim", "hs", "spoon" },
+                globals = { "vim", "hs", "spoon"},
             },
             workspace = {
                 -- Make the server aware of runtime files
