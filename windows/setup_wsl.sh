@@ -34,6 +34,7 @@ brew install lua-language-server
 python3 -m pip install --user pipx
 pipx ensurepath
 pipx install neovim-remote
+pipx install ansible-base
 
 # overwrite wsl.conf ? commented out because might cause problems
 # sudo ln -sf "$HOME/dotfiles/wsl/wsl.conf" /etc/wsl.conf
