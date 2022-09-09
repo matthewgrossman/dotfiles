@@ -226,7 +226,9 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " ranger config
-nnoremap - :Ranger<CR>
+nnoremap - :RnvimrToggle<CR>
+let g:rnvimr_enable_picker = 1
+let g:rnvimr_enable_ex = 1
 " function! Ranger()
 "     let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
 "     execute 'terminal VISUAL="nvr" ranger'.args

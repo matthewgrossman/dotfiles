@@ -32,6 +32,7 @@ brew install lua-language-server
 
 # pipx
 python3 -m pip install --user pipx
+python3 -m pip install --user pynvim
 pipx ensurepath
 pipx install neovim-remote
 
