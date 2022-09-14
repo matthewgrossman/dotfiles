@@ -19,6 +19,9 @@ sudo apt install -y \
     universal-ctags \
     python3-venv \
     python3-pip \
+    golang-go \
+    fswatch \
+    net-tools \
     neovim
 
 chsh --shell /usr/bin/zsh
