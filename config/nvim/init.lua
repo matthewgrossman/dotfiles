@@ -505,4 +505,8 @@ vim.api.nvim_create_user_command("Messages", cMessages, {})
 
 vim.cmd('runtime vimscript/init.vim')
 
+if (vim.env.WSL_DISTRO_NAME) then
+    vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
+end
+
 return M

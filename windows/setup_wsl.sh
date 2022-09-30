@@ -19,6 +19,9 @@ sudo apt install -y \
     universal-ctags \
     python3-venv \
     python3-pip \
+    golang-go \
+    fswatch \
+    net-tools \
     neovim
 
 chsh --shell /usr/bin/zsh
@@ -35,6 +38,7 @@ python3 -m pip install --user pipx
 python3 -m pip install --user pynvim
 pipx ensurepath
 pipx install neovim-remote
+pipx install ansible-base
 
 # overwrite wsl.conf ? commented out because might cause problems
 # sudo ln -sf "$HOME/dotfiles/wsl/wsl.conf" /etc/wsl.conf

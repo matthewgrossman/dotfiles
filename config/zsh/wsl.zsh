@@ -1,6 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 alias shutdown='wsl.exe --terminate $WSL_DISTRO_NAME'
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
+export BROWSER='explorer.exe'
 
 # RUNNING=$(ps aux | grep tailscaled | grep -v grep)
 # echo "ableh!"
