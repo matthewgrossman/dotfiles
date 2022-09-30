@@ -475,8 +475,14 @@ require("telescope").setup({
             },
         },
     },
+    extensions= {
+        file_browser = {
+            theme = "ivy",
+        }
+    }
 })
 require("telescope").load_extension("fzf")
+require("telescope").load_extension "file_browser"
 map("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
 map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
 -- }}}

@@ -253,7 +253,8 @@ let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
 
-nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
+" nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>a :Telescope grep_string search=<CR>
 
 " commands
 command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
