@@ -477,6 +477,7 @@ require("telescope").setup({
     },
     extensions= {
         file_browser = {
+            initial_mode = 'normal',
             theme = "ivy",
         }
     }

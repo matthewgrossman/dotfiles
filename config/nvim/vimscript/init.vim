@@ -179,6 +179,9 @@ endfunction
 nnoremap <C-w>\| :vsplit <bar> terminal <CR>:startinsert<CR>
 nnoremap <C-w>- :split <bar> terminal <CR>:startinsert<CR>
 nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
+vnoremap <C-w>\| <esc>:vsplit <bar> terminal <CR>:startinsert<CR>
+vnoremap <C-w>- <esc>:split <bar> terminal <CR>:startinsert<CR>
+vnoremap <C-w>t <esc>:tabnew <bar> :terminal<CR>a
 
 " Remember last mode in terminal buffer
 function! LeaveTermWhileInInsert(direction)
@@ -226,7 +229,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " ranger config
-nnoremap - :RnvimrToggle<CR>
+" nnoremap - :RnvimrToggle<CR>
+nnoremap - :Telescope file_browser path=%:p:h<CR>
 let g:rnvimr_enable_picker = 1
 let g:rnvimr_enable_ex = 1
 " function! Ranger()
