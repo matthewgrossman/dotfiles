@@ -228,18 +228,9 @@ set nofsync
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" ranger config
-" nnoremap - :RnvimrToggle<CR>
+" file_browser config
 nnoremap - :Telescope file_browser path=%:p:h<CR>
-let g:rnvimr_enable_picker = 1
-let g:rnvimr_enable_ex = 1
-" function! Ranger()
-"     let args = &buftype == 'terminal' ? '' : ' --selectfile='.expand('%')
-"     execute 'terminal VISUAL="nvr" ranger'.args
-"     startinsert
-" endfunction
-" nnoremap - :call Ranger()<CR>
-" autocmd TermClose term://.//*:ranger* bprevious | bwipeout! #
+
 " airline config
 " let g:airline_highlighting_cache = 1
 
@@ -270,12 +261,6 @@ command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(
 " set termguicolors
 " colorscheme material
 set background=dark
-
-" vim-sandwich
-runtime macros/sandwich/keymap/surround.vim
-for recipe in g:sandwich#recipes
-    let recipe.cursor = 'head'
-endfor
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)

@@ -52,7 +52,6 @@ require("packer").startup(function(use)
     use("tpope/vim-eunuch")
     use("ludovicchabant/vim-gutentags")
     use("majutsushi/tagbar")
-    use("francoiscabrol/ranger.vim")
 
     use("mhinz/vim-sayonara") -- TODO replace with mini.nvim
 
@@ -65,7 +64,6 @@ require("packer").startup(function(use)
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
-    use("tpope/vim-abolish")
     use({ "echasnovski/mini.nvim", branch = "stable" })
 
     use("machakann/vim-sandwich") -- TODO replace with mini.nvim?
@@ -462,6 +460,7 @@ nvim_lsp.sumneko_lua.setup({
 -- individual pickers are in telescope.lua
 local action_layout = require("telescope.actions.layout")
 local actions = require("telescope.actions")
+local fb_actions = require "telescope".extensions.file_browser.actions
 require("telescope").setup({
     defaults = {
         layout_strategy = "flex",
@@ -479,6 +478,11 @@ require("telescope").setup({
         file_browser = {
             initial_mode = 'normal',
             theme = "ivy",
+            mappings = {
+                ["n"] = {
+                    ["-"] = fb_actions.goto_parent_dir,
+                }
+            }
         }
     }
 })
