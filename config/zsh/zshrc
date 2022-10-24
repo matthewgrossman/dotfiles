@@ -43,9 +43,9 @@ if command -v fnm > /dev/null; then
     eval "$(fnm env)"
 fi
 
-if command -v direnv > /dev/null; then
-    eval "$(direnv hook zsh)"
-fi
+# if command -v direnv > /dev/null; then
+#     eval "$(direnv hook zsh)"
+# fi
 
 # TERM=xterm-256color
 if [ -z "$NVIM" ]; then
