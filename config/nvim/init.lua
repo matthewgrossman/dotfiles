@@ -1,11 +1,10 @@
 local M = {}
-local map = vim.api.nvim_set_keymap
 vim.g.mapleader = " "
 
 -- reload init.lua file
-local luafileCmd = string.format(":luafile %s/nvim/lua/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
-map("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
-map("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
+local luafileCmd = string.format(":luafile %s/nvim/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
+vim.keymap.set("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
+vim.keymap.set("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
 
 -- bootstrap `packer.nvim`
 local ensure_packer = function()
@@ -29,8 +28,8 @@ require("packer").startup(function(use)
     use("nvim-lua/plenary.nvim")
     use("kyazdani42/nvim-web-devicons")
     use("antoinemadec/FixCursorHold.nvim")
-    use("lewis6991/gitsigns.nvim")
     use("jose-elias-alvarez/null-ls.nvim")
+    use("lewis6991/gitsigns.nvim")
 
     -- completion
     use("neovim/nvim-lspconfig")
@@ -334,63 +333,45 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 
 -- keybinds for formatting/diagnostics
 local on_attach_null_ls = function(_, bufnr) -- luacheck: ignore
-    local opts = { noremap = true, silent = true }
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set("n", "gf", function()
+        vim.lsp.buf.format({ async = true })
+    end, bufopts)
 
-    buf_set_keymap("n", "gf", "<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>", opts)
-
-    buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-    buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-    buf_set_keymap("n", "<leader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
+    vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
 end
 
 local on_attach = function(client, bufnr) -- luacheck: ignore
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
-    end
-
-    -- enable completion triggered by <c-x><c-o>
-    buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-
-    -- mappings.
-    local opts = { noremap = true, silent = true }
-
+    -- new below
     -- see `:help vim.lsp.*` for documentation on any of the below functions
-    -- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-    buf_set_keymap("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-    buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-    -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-    -- buf_set_keymap('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    -- buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>', opts)
-    -- buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>', opts)
-    -- buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>', opts)
-    buf_set_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-    -- buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-    buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-    -- buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', opts)
-    -- buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
-
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, bufopts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
     on_attach_null_ls(client, bufnr)
+    -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+    -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+    -- vim.keymap.set('n', '<space>wl', function()
+    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    -- end, bufopts)
+    -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+    -- vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
     -- vim.api
     --     .nvim_command [[autocmd bufwritepre <buffer> lua vim.lsp.buf.formatting()]]
 end
 
--- to debug do this:
+-- DEBUGGING LSP
 -- vim.lsp.set_log_level("debug")
-
 -- :lua vim.cmd('e'..vim.lsp.get_log_path())
-
--- TODO get clangd working w/ envoy
--- nvim_lsp.clangd.setup {
---     cmd = {"clangd", "--background-index"},
---     on_attach = on_attach
--- }
 
 require("null-ls").setup({
     debug = true,
@@ -411,26 +392,34 @@ require("null-ls").setup({
     },
     on_attach = on_attach_null_ls,
 })
+
 -- Setup lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local servers = { "pylsp", "tsserver", "gopls", "rust_analyzer" }
-for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup({
-        on_attach = on_attach,
-        flags = { debounce_text_changes = 250 },
-        capabilities = capabilities,
-        settings = {
-            pylsp = {
-                configurationSources = { "flake8" },
-            },
+
+require('lspconfig')['tsserver'].setup{
+    on_attach = on_attach,
+}
+
+require('lspconfig')['gopls'].setup{
+    on_attach = on_attach,
+}
+
+require('lspconfig')['rust_analyzer'].setup{
+    on_attach = on_attach,
+}
+
+require('lspconfig')['pylsp'].setup{
+    on_attach = on_attach,
+    settings = {
+        pylsp = {
+            configurationSources = { "flake8" },
         },
-    })
-end
+    },
+}
 
 local hammerspoon = string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME)
 nvim_lsp.sumneko_lua.setup({
     on_attach = on_attach,
-    flags = { debounce_text_changes = 250 },
     capabilities = capabilities,
     settings = {
         Lua = {
@@ -490,8 +479,8 @@ require("telescope").setup({
 })
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
-map("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
-map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
+vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
 -- }}}
 
 -- user commands {{{
