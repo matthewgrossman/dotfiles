@@ -59,6 +59,7 @@ require("packer").startup(function(use)
     use("tpope/vim-commentary")
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+    -- use { "~/src/telescope-file-browser.nvim" }
     use { "nvim-telescope/telescope-file-browser.nvim" }
     -- use 'lukas-reineke/indent-blankline.nvim'
     use("tpope/vim-repeat")
@@ -112,6 +113,7 @@ require("packer").startup(function(use)
     })
     use("psliwka/termcolors.nvim")
     use("folke/lsp-colors.nvim")
+    use("lewis6991/impatient.nvim")
 
     -- python
     use({
@@ -414,7 +416,7 @@ require("null-ls").setup({
     on_attach = on_attach_null_ls,
 })
 -- Setup lspconfig.
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local servers = { "pylsp", "tsserver", "gopls", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup({
@@ -478,9 +480,13 @@ require("telescope").setup({
         file_browser = {
             initial_mode = 'normal',
             theme = "ivy",
+            hidden = true,
+            hide_parent_dir = true,
             mappings = {
                 ["n"] = {
-                    ["-"] = fb_actions.goto_parent_dir,
+                    ["h"] = fb_actions.goto_parent_dir,
+                    ["l"] = actions.select_default,
+                    ["q"] = actions.close,
                 }
             }
         }
