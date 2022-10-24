@@ -163,35 +163,27 @@ require("gitsigns").setup({
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
-        local function localmap(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
         end
 
         -- Navigation
-        localmap("n", "]c", function()
-            if vim.wo.diff then
-                return "]c"
-            end
-            vim.schedule(function()
-                gs.next_hunk({ wrap = false })
-            end)
-            return "<Ignore>"
-        end, { expr = true })
+        map('n', ']c', function()
+          if vim.wo.diff then return ']c' end
+          vim.schedule(function() gs.next_hunk() end)
+          return '<Ignore>'
+        end, {expr=true})
 
-        localmap("n", "[c", function()
-            if vim.wo.diff then
-                return "[c"
-            end
-            vim.schedule(function()
-                gs.prev_hunk({ wrap = false })
-            end)
-            return "<Ignore>"
-        end, { expr = true })
+        map('n', '[c', function()
+          if vim.wo.diff then return '[c' end
+          vim.schedule(function() gs.prev_hunk() end)
+          return '<Ignore>'
+        end, {expr=true})
 
         -- Text object
-        localmap({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
     end,
 })
 require("nvim-treesitter.configs").setup({
@@ -504,6 +496,7 @@ if vim.env.WSL_DISTRO_NAME then
 end
 
 -- user keymaps {{{
+require('mini.cursorword').setup()
 require('mini.bufremove').setup()
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>", { noremap = true })
 -- }}}
