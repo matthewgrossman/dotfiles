@@ -301,9 +301,6 @@ vmap <Leader>gh :GBrowse<cr>
 noremap <Leader>t :TagbarOpenAutoClose<CR>
 let g:tagbar_left = 1
 
-" Sayonara config
-nnoremap <C-q> :Sayonara!<CR>
-
 " fzf config
 " nnoremap <c-p> :GFiles<cr>
 " let g:fzf_layout = {'window': 'enew'}

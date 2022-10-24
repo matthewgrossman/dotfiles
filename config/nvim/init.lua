@@ -52,8 +52,6 @@ require("packer").startup(function(use)
     use("ludovicchabant/vim-gutentags")
     use("majutsushi/tagbar")
 
-    use("mhinz/vim-sayonara") -- TODO replace with mini.nvim
-
     -- usability
     use("tpope/vim-commentary")
     use("nvim-telescope/telescope.nvim")
@@ -504,5 +502,10 @@ vim.cmd("runtime vimscript/init.vim")
 if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
+
+-- user keymaps {{{
+require('mini.bufremove').setup()
+vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>", { noremap = true })
+-- }}}
 
 return M
