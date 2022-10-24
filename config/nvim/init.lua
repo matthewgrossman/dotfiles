@@ -9,14 +9,14 @@ map("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
 
 -- bootstrap `packer.nvim`
 local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+    local fn = vim.fn
+    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+    if fn.empty(fn.glob(install_path)) > 0 then
+        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+        vim.cmd([[packadd packer.nvim]])
+        return true
+    end
+    return false
 end
 
 local packer_bootstrap = ensure_packer()
@@ -60,7 +60,7 @@ require("packer").startup(function(use)
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     -- use { "~/src/telescope-file-browser.nvim" }
-    use { "nvim-telescope/telescope-file-browser.nvim" }
+    use({ "nvim-telescope/telescope-file-browser.nvim" })
     -- use 'lukas-reineke/indent-blankline.nvim'
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
@@ -105,10 +105,10 @@ require("packer").startup(function(use)
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
-    use ({
-        'kevinhwang91/rnvimr',
+    use({
+        "kevinhwang91/rnvimr",
         requires = {
-            'kyazdani42/nvim-web-devicons',
+            "kyazdani42/nvim-web-devicons",
         },
     })
     use("psliwka/termcolors.nvim")
@@ -262,14 +262,10 @@ cmp.setup({
         end,
     },
     mapping = {
-        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete({}), { "i", "c" }),
-        ["<C-y>"] = cmp.config.disable,
-        ["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({ select = false }),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -444,7 +440,7 @@ nvim_lsp.sumneko_lua.setup({
             },
             diagnostics = {
                 -- Get the language server to recognize the globals
-                globals = { "vim", "hs", "spoon"},
+                globals = { "vim", "hs", "spoon" },
             },
             workspace = {
                 -- Make the server aware of runtime files
@@ -462,7 +458,7 @@ nvim_lsp.sumneko_lua.setup({
 -- individual pickers are in telescope.lua
 local action_layout = require("telescope.actions.layout")
 local actions = require("telescope.actions")
-local fb_actions = require "telescope".extensions.file_browser.actions
+local fb_actions = require("telescope").extensions.file_browser.actions
 require("telescope").setup({
     defaults = {
         layout_strategy = "flex",
@@ -476,9 +472,9 @@ require("telescope").setup({
             },
         },
     },
-    extensions= {
+    extensions = {
         file_browser = {
-            initial_mode = 'normal',
+            initial_mode = "normal",
             theme = "ivy",
             hidden = true,
             hide_parent_dir = true,
@@ -487,13 +483,13 @@ require("telescope").setup({
                     ["h"] = fb_actions.goto_parent_dir,
                     ["l"] = actions.select_default,
                     ["q"] = actions.close,
-                }
-            }
-        }
-    }
+                },
+            },
+        },
+    },
 })
 require("telescope").load_extension("fzf")
-require("telescope").load_extension "file_browser"
+require("telescope").load_extension("file_browser")
 map("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
 map("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
 -- }}}
@@ -514,9 +510,9 @@ vim.api.nvim_create_user_command("Scratch", cScratch, {})
 vim.api.nvim_create_user_command("Messages", cMessages, {})
 -- }}}
 
-vim.cmd('runtime vimscript/init.vim')
+vim.cmd("runtime vimscript/init.vim")
 
-if (vim.env.WSL_DISTRO_NAME) then
+if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
 
