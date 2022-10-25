@@ -43,6 +43,7 @@ require("packer").startup(function(use)
     -- completion
     use("williamboman/mason.nvim")
     use("williamboman/mason-lspconfig.nvim")
+    use("jayp0521/mason-null-ls.nvim")
 
     use("neovim/nvim-lspconfig")
     -- use("SmiteshP/nvim-navic")
@@ -473,6 +474,14 @@ require("null-ls").setup({
     on_attach = on_attach_null_ls,
 })
 
+require("mason-null-ls").setup({
+    ensure_installed = {
+        "stylua",
+        "black",
+        "reorder_python_imports",
+        "mypy",
+    },
+})
 -- Setup lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
