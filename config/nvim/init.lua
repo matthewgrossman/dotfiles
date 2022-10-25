@@ -8,6 +8,9 @@ vim.g.loaded_matchparen = 1
 local luafileCmd = string.format(":luafile %s/nvim/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
 vim.keymap.set("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
 vim.keymap.set("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
+vim.keymap.set("n", "<TAB>", "gt", { noremap = true })
+vim.keymap.set("n", "<S-TAB>", "gT", { noremap = true })
+vim.keymap.set("n", "<C-I>", "<C-I>", { noremap = true })
 
 -- bootstrap `packer.nvim`
 local ensure_packer = function()
@@ -39,6 +42,7 @@ require("packer").startup(function(use)
     use("williamboman/mason-lspconfig.nvim")
 
     use("neovim/nvim-lspconfig")
+    -- use("SmiteshP/nvim-navic")
     use("hrsh7th/nvim-cmp")
     use("hrsh7th/cmp-nvim-lsp")
     use("hrsh7th/cmp-buffer")
@@ -64,7 +68,7 @@ require("packer").startup(function(use)
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     -- use { "~/src/telescope-file-browser.nvim" }
     use({ "nvim-telescope/telescope-file-browser.nvim" })
-    -- use 'lukas-reineke/indent-blankline.nvim'
+    use 'lukas-reineke/indent-blankline.nvim'
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
@@ -91,7 +95,6 @@ require("packer").startup(function(use)
     -- use 'chriskempson/base16-vim'
     use("marko-cerovac/material.nvim")
     use("machakann/vim-highlightedyank")
-    -- use 'ful1e5/onedark.nvim'
     use("navarasu/onedark.nvim")
     use("daschw/leaf.nvim")
     use("EdenEast/nightfox.nvim")
@@ -159,7 +162,7 @@ require("nightfox").setup({
         -- },
     },
 })
-vim.cmd("colorscheme nightfox")
+-- vim.cmd("colorscheme nightfox")
 -- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 require("gitsigns").setup({
@@ -225,7 +228,8 @@ require("nvim-autopairs").setup()
 
 vim.cmd("set termguicolors")
 require("onedark").setup({
-    style = "warm",
+    style = "dark",
+    toggle_style_key = "<leader>to",
     highlights = {
         TelescopeBorder = { fg = "$grey" },
         TelescopePromptBorder = { fg = "$grey" },
@@ -233,13 +237,20 @@ require("onedark").setup({
         TelescopePreviewBorder = { fg = "$grey" },
     },
 })
--- require("onedark").load()
+require("onedark").load()
 -- require('base16-colorscheme').setup()
 -- require('base16-colorscheme').with_config {
 --     telescope = false,
 -- }
 -- vim.cmd('colorscheme base16-default-dark')
-require("lualine").setup({})
+
+-- status and window bars
+vim.opt.laststatus = 3
+require("lualine").setup({
+    options = {
+        theme = "onedark",
+    },
+})
 
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
@@ -297,23 +308,30 @@ cmp.setup({
     }),
 })
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ "/", "?" }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
         { name = "buffer" },
     },
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- -- Use cmdline & path source for ':'
+local cmdline_mapping = cmp.mapping.preset.cmdline()
+local fb = function(fallback)
+    fallback()
+end
+cmdline_mapping["<C-P>"] = fb
+cmdline_mapping["<C-N>"] = fb
 cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
+    mapping = cmdline_mapping,
     sources = cmp.config.sources({
         { name = "path" },
     }, {
         { name = "cmdline" },
     }),
 })
+
 -- automatically insert parens for methods/functions
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
@@ -357,6 +375,9 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
     vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
     on_attach_null_ls(client, bufnr)
+    -- if client.server_capabilities.documentSymbolProvider then
+    --     require("nvim-navic").attach(client, bufnr)
+    -- end
     -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
@@ -506,8 +527,6 @@ if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
 
-vim.g.laststatus = 3
-
 require("matchparen").setup()
 
 -- user keymaps {{{
@@ -521,8 +540,9 @@ require("mini.ai").setup({
 })
 require("mini.surround").setup()
 require("mini.cursorword").setup()
+vim.cmd("hi! link MiniCursorword Visual")
+vim.cmd("hi! MiniCursorwordCurrent gui=nocombine guifg=NONE guibg=NONE")
 require("mini.bufremove").setup()
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>", { noremap = true })
 -- }}}
-
 return M

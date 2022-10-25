@@ -296,6 +296,8 @@ nmap <Leader>gp :Git push<cr>
 nmap <Leader>gh V:GBrowse<cr>
 vmap <Leader>gh :GBrowse<cr>
 
+" winbar config
+au VimEnter,BufWinEnter * if &buftype == "" | setlocal winbar=%f | endif
 
 " tagbar config
 noremap <Leader>t :TagbarOpenAutoClose<CR>
