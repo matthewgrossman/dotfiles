@@ -1,6 +1,9 @@
 local M = {}
 vim.g.mapleader = " "
 
+-- disable matchparen before any config
+vim.g.loaded_matchparen = 1
+
 -- reload init.lua file
 local luafileCmd = string.format(":luafile %s/nvim/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
 vim.keymap.set("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
@@ -32,6 +35,9 @@ require("packer").startup(function(use)
     use("lewis6991/gitsigns.nvim")
 
     -- completion
+    use("williamboman/mason.nvim")
+    use("williamboman/mason-lspconfig.nvim")
+
     use("neovim/nvim-lspconfig")
     use("hrsh7th/nvim-cmp")
     use("hrsh7th/cmp-nvim-lsp")
@@ -64,15 +70,6 @@ require("packer").startup(function(use)
     use("tpope/vim-unimpaired")
     use({ "echasnovski/mini.nvim", branch = "stable" })
 
-    use("machakann/vim-sandwich") -- TODO replace with mini.nvim?
-    -- use {
-    -- 'machakann/vim-sandwich',
-    -- config = function()
-    --   -- Use vim surround-like keybindings
-    --   vim.cmd('runtime macros/sandwich/keymap/surround.vim')
-    -- end
-    -- }
-    use("wellle/targets.vim")
     use("peterrincker/vim-argumentative")
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
@@ -89,6 +86,7 @@ require("packer").startup(function(use)
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
     })
+    use("nvim-treesitter/nvim-treesitter-textobjects")
     use("RRethy/nvim-base16")
     -- use 'chriskempson/base16-vim'
     use("marko-cerovac/material.nvim")
@@ -102,15 +100,10 @@ require("packer").startup(function(use)
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
-    use({
-        "kevinhwang91/rnvimr",
-        requires = {
-            "kyazdani42/nvim-web-devicons",
-        },
-    })
     use("psliwka/termcolors.nvim")
     use("folke/lsp-colors.nvim")
     use("lewis6991/impatient.nvim")
+    use("monkoose/matchparen.nvim")
 
     -- python
     use({
@@ -129,7 +122,6 @@ require("packer").startup(function(use)
         end,
     })
     use({ "rust-lang/rust.vim", ft = { "rust" } })
-    use("junegunn/vader.vim")
     use("neoclide/jsonc.vim")
 
     if packer_bootstrap then
@@ -141,6 +133,17 @@ if packer_bootstrap then
     print("Packer needed boostrap; rerun neovim after sync finishes")
     return
 end
+
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "tsserver",
+        "gopls",
+        "rust_analyzer",
+        "pylsp",
+        "sumneko_lua",
+    },
+})
 
 local nvim_lsp = require("lspconfig")
 require("nightfox").setup({
@@ -164,26 +167,34 @@ require("gitsigns").setup({
         local gs = package.loaded.gitsigns
 
         local function map(mode, l, r, opts)
-          opts = opts or {}
-          opts.buffer = bufnr
-          vim.keymap.set(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
         end
 
         -- Navigation
-        map('n', ']c', function()
-          if vim.wo.diff then return ']c' end
-          vim.schedule(function() gs.next_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
+        map("n", "]c", function()
+            if vim.wo.diff then
+                return "]c"
+            end
+            vim.schedule(function()
+                gs.next_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
 
-        map('n', '[c', function()
-          if vim.wo.diff then return '[c' end
-          vim.schedule(function() gs.prev_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
+        map("n", "[c", function()
+            if vim.wo.diff then
+                return "[c"
+            end
+            vim.schedule(function()
+                gs.prev_hunk()
+            end)
+            return "<Ignore>"
+        end, { expr = true })
 
         -- Text object
-        map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })
 require("nvim-treesitter.configs").setup({
@@ -210,7 +221,7 @@ require("nvim-treesitter.configs").setup({
     -- textobjects = { enable = true },
 })
 
-require("nvim-autopairs").setup({})
+require("nvim-autopairs").setup()
 
 vim.cmd("set termguicolors")
 require("onedark").setup({
@@ -305,7 +316,7 @@ cmp.setup.cmdline(":", {
 })
 -- automatically insert parens for methods/functions
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 -- }}}
 
@@ -386,26 +397,26 @@ require("null-ls").setup({
 -- Setup lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-require('lspconfig')['tsserver'].setup{
+nvim_lsp["tsserver"].setup({
     on_attach = on_attach,
-}
+})
 
-require('lspconfig')['gopls'].setup{
+nvim_lsp["gopls"].setup({
     on_attach = on_attach,
-}
+})
 
-require('lspconfig')['rust_analyzer'].setup{
+nvim_lsp["rust_analyzer"].setup({
     on_attach = on_attach,
-}
+})
 
-require('lspconfig')['pylsp'].setup{
+nvim_lsp["pylsp"].setup({
     on_attach = on_attach,
     settings = {
         pylsp = {
             configurationSources = { "flake8" },
         },
     },
-}
+})
 
 local hammerspoon = string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME)
 nvim_lsp.sumneko_lua.setup({
@@ -495,9 +506,22 @@ if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
 
+vim.g.laststatus = 3
+
+require("matchparen").setup()
+
 -- user keymaps {{{
-require('mini.cursorword').setup()
-require('mini.bufremove').setup()
+require("mini.ai").setup({
+    mappings = {
+        around_next = "",
+        inside_next = "",
+        around_last = "",
+        inside_last = "",
+    },
+})
+require("mini.surround").setup()
+require("mini.cursorword").setup()
+require("mini.bufremove").setup()
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>", { noremap = true })
 -- }}}
 
