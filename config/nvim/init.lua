@@ -1,6 +1,9 @@
 local M = {}
 vim.g.mapleader = " "
 
+-- basic settings
+vim.o.undofile = true
+
 -- disable matchparen before any config
 vim.g.loaded_matchparen = 1
 
