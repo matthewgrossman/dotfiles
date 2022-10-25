@@ -32,6 +32,7 @@ brew install lua-language-server
 brew install neovim
 brew install node
 brew install go
+brew install gh
 <"$HOME/.config/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # pipx

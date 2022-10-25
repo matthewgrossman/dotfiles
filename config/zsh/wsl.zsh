@@ -3,7 +3,7 @@
 alias shutdown='wsl.exe --terminate $WSL_DISTRO_NAME'
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
-export BROWSER='explorer.exe'
+export BROWSER='cmd.exe /c start ""'
 
 # RUNNING=$(ps aux | grep tailscaled | grep -v grep)
 # echo "ableh!"
