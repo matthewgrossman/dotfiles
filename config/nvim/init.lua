@@ -68,13 +68,12 @@ require("packer").startup(function(use)
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     -- use { "~/src/telescope-file-browser.nvim" }
     use({ "nvim-telescope/telescope-file-browser.nvim" })
-    use 'lukas-reineke/indent-blankline.nvim'
+    use("lukas-reineke/indent-blankline.nvim")
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use({ "echasnovski/mini.nvim", branch = "stable" })
 
-    use("peterrincker/vim-argumentative")
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
     -- use 'romainl/vim-qf'
@@ -90,7 +89,7 @@ require("packer").startup(function(use)
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
     })
-    use("nvim-treesitter/nvim-treesitter-textobjects")
+    use({ "nvim-treesitter/nvim-treesitter-textobjects", after = { "nvim-treesitter" } })
     use("RRethy/nvim-base16")
     -- use 'chriskempson/base16-vim'
     use("marko-cerovac/material.nvim")
@@ -200,8 +199,11 @@ require("gitsigns").setup({
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })
-require("nvim-treesitter.configs").setup({
-    -- Modules and its options go here
+
+-- [[ Configure Treesitter ]]
+-- See `:help nvim-treesitter`
+require('nvim-treesitter.configs').setup {
+  -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
         "python",
         "lua",
@@ -218,11 +220,64 @@ require("nvim-treesitter.configs").setup({
         "json",
         "json5",
     },
-    -- indent = { enable = true },
-    -- highlight = { enable = true },
-    -- incremental_selection = { enable = true },
-    -- textobjects = { enable = true },
-})
+
+  highlight = { enable = true },
+  indent = { enable = true },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = '<c-space>',
+      node_incremental = '<c-space>',
+      -- TODO: I'm not sure for this one.
+      scope_incremental = '<c-s>',
+      node_decremental = '<c-backspace>',
+    },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        [']a'] = '@parameter.inner',
+        [']f'] = '@function.outer',
+        [']]'] = '@class.outer',
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer',
+        [']['] = '@class.outer',
+      },
+      goto_previous_start = {
+        ['[a'] = '@parameter.inner',
+        ['[f'] = '@function.outer',
+        ['[['] = '@class.outer',
+      },
+      goto_previous_end = {
+        ['[M'] = '@function.outer',
+        ['[]'] = '@class.outer',
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ['>,'] = '@parameter.inner',
+      },
+      swap_previous = {
+        ['<,'] = '@parameter.inner',
+      },
+    },
+  },
+}
 
 require("nvim-autopairs").setup()
 
