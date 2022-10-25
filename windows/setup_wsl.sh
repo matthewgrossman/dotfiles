@@ -19,10 +19,8 @@ sudo apt install -y \
     universal-ctags \
     python3-venv \
     python3-pip \
-    golang-go \
     fswatch \
     net-tools \
-    neovim
 
 chsh --shell /usr/bin/zsh
 
@@ -31,6 +29,9 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install luarocks
 brew install lua-language-server
+brew install neovim
+brew install node
+brew install go
 <"$HOME/.config/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # pipx

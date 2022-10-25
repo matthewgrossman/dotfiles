@@ -286,7 +286,7 @@ require("nvim-autopairs").setup()
 
 vim.cmd("set termguicolors")
 require("onedark").setup({
-    style = "dark",
+    style = "darker",
     toggle_style_key = "<leader>to",
     highlights = {
         TelescopeBorder = { fg = "$grey" },
