@@ -176,11 +176,11 @@ function! InitTermBuffer()
     nnoremap <buffer> q :startinsert<CR>q
 endfunction
 
-nnoremap <C-w>\| :vsplit <bar> terminal <CR>:startinsert<CR>
-nnoremap <C-w>- :split <bar> terminal <CR>:startinsert<CR>
+nnoremap <C-w>\| :vsplit term://$SHELL <CR>:startinsert<CR>
+nnoremap <C-w>- :split term://$SHELL <CR>:startinsert<CR>
 nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
-vnoremap <C-w>\| <esc>:vsplit <bar> terminal <CR>:startinsert<CR>
-vnoremap <C-w>- <esc>:split <bar> terminal <CR>:startinsert<CR>
+vnoremap <C-w>\| <esc>:vsplit term://$SHELL <CR>:startinsert<CR>
+vnoremap <C-w>- <esc>:split term://$SHELL <CR>:startinsert<CR>
 vnoremap <C-w>t <esc>:tabnew <bar> :terminal<CR>a
 
 " Remember last mode in terminal buffer
