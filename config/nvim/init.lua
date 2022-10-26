@@ -3,17 +3,18 @@ vim.g.mapleader = " "
 
 -- basic settings
 vim.o.undofile = true
+vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true})
 
 -- disable matchparen before any config
 vim.g.loaded_matchparen = 1
 
 -- reload init.lua file
 local luafileCmd = string.format(":luafile %s/nvim/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
-vim.keymap.set("n", "<leader>sl", luafileCmd, { noremap = true }) -- <leader> Source Lua
-vim.keymap.set("n", "<leader>ll", ":luafile %<CR>", { noremap = true }) -- <leader> Lua Lua
-vim.keymap.set("n", "<TAB>", "gt", { noremap = true })
-vim.keymap.set("n", "<S-TAB>", "gT", { noremap = true })
-vim.keymap.set("n", "<C-I>", "<C-I>", { noremap = true })
+vim.keymap.set("n", "<leader>sl", luafileCmd) -- <leader> Source Lua
+vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
+vim.keymap.set("n", "<TAB>", "gt")
+vim.keymap.set("n", "<S-TAB>", "gT")
+vim.keymap.set("n", "<C-I>", "<C-I>")
 
 -- bootstrap `packer.nvim`
 local ensure_packer = function()
@@ -247,6 +248,8 @@ require("nvim-treesitter.configs").setup({
                 ["if"] = "@function.inner",
                 ["ac"] = "@class.outer",
                 ["ic"] = "@class.inner",
+                ["aa"] = "@parameter.outer",
+                ["ia"] = "@parameter.inner",
             },
         },
         move = {
@@ -568,8 +571,8 @@ require("telescope").setup({
 })
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
-vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>", { noremap = true })
+vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
+vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
 -- }}}
 
 -- user commands {{{
@@ -607,9 +610,7 @@ require("mini.ai").setup({
 })
 require("mini.surround").setup()
 require("mini.cursorword").setup()
-vim.cmd("hi! link MiniCursorword Visual")
-vim.cmd("hi! MiniCursorwordCurrent gui=nocombine guifg=NONE guibg=NONE")
 require("mini.bufremove").setup()
-vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>", { noremap = true })
+vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
 -- }}}
 return M
