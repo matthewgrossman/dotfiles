@@ -227,7 +227,7 @@ require("nvim-treesitter.configs").setup({
     },
 
     highlight = { enable = true },
-    indent = { enable = true },
+    -- indent = { enable = true },
     incremental_selection = {
         enable = true,
         keymaps = {
@@ -477,14 +477,14 @@ require("null-ls").setup({
     on_attach = on_attach_null_ls,
 })
 
-require("mason-null-ls").setup({
-    ensure_installed = {
-        "stylua",
-        "black",
-        "reorder_python_imports",
-        "mypy",
-    },
-})
+-- require("mason-null-ls").setup({
+--     ensure_installed = {
+--         "stylua",
+--         "black",
+--         "reorder_python_imports",
+--         "mypy",
+--     },
+-- })
 -- Setup lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 

@@ -1,5 +1,7 @@
 local wezterm = require("wezterm")
 
 return {
-    color_scheme = 'Batman'
+    font = wezterm.font("Fira Code"),
+    color_scheme = "OneDark (base16)",
+    enable_kitty_keyboard = true,
 }
