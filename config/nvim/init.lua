@@ -78,6 +78,7 @@ require("packer").startup(function(use)
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use({ "echasnovski/mini.nvim", branch = "stable" })
+    use("kylechui/nvim-surround")
 
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
@@ -598,6 +599,7 @@ if vim.env.WSL_DISTRO_NAME then
 end
 
 require("matchparen").setup()
+require("nvim-surround").setup()
 
 -- user keymaps {{{
 require("mini.ai").setup({
@@ -608,7 +610,6 @@ require("mini.ai").setup({
         inside_last = "",
     },
 })
-require("mini.surround").setup()
 require("mini.cursorword").setup()
 require("mini.bufremove").setup()
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
