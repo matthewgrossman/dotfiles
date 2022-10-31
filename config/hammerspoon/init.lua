@@ -318,24 +318,30 @@ LockWatcher = hs.caffeinate.watcher.new(function(event)
 end)
 LockWatcher:start()
 
-HRWindow = nil
-URLTitleSubstring = "Essentials H2"
-for _, window in pairs(WF:getWindows()) do
-    if string.find(window:title(), URLTitleSubstring) then
-        HRWindow = window
+-- HRWindow shenanigans {{{
+-- luacheck:ignore 
+HRWindowThings = function ()
+    HRWindow = nil
+    URLTitleSubstring = "Essentials H2"
+    for _, window in pairs(WF:getWindows()) do
+        if string.find(window:title(), URLTitleSubstring) then
+            HRWindow = window
+        end
     end
+    HRApplication = HRWindow:application()
+
+
+    -- use this keybind because I have a mousebutton bound to it
+    hs.hotkey.bind({ "cmd", "ctrl" }, "m", function()
+        local oldWindow = hs.window.focusedWindow()
+        HRWindow:focus()
+        hs.eventtap.keyStroke({"ctrl", "alt"}, ".", 200, HRApplication) -- next
+        hs.eventtap.keyStroke({"ctrl", "alt"}, "s", 200, HRApplication) -- submit
+        oldWindow:focus()
+    end)
 end
-HRApplication = HRWindow:application()
-
-
--- use this keybind because I have a mousebutton bound to it
-hs.hotkey.bind({ "cmd", "ctrl" }, "m", function()
-    local oldWindow = hs.window.focusedWindow()
-    HRWindow:focus()
-    hs.eventtap.keyStroke({"ctrl", "alt"}, ".", 200, HRApplication) -- next
-    hs.eventtap.keyStroke({"ctrl", "alt"}, "s", 200, HRApplication) -- submit
-    oldWindow:focus()
-end)
+-- HRWindowThings()
+--- }}}
 
 -- HBar = require "hbar"
 
