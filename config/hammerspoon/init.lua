@@ -119,6 +119,10 @@ ToggleMuteState = function()
     -- mutes output whenever input is also muted.
     -- https://github.com/Hammerspoon/hammerspoon/issues/2965
     local device = hs.audiodevice.defaultInputDevice()
+    if device == nil then
+        hs.alert.show("no default audio input device")
+        return
+    end
     local isMutedNewState = not device:muted()
     device:setMuted(isMutedNewState)
     return isMutedNewState
@@ -197,7 +201,6 @@ end)
 SpacesWatcher:start()
 
 WF = hs.window.filter.new()
-WF:keepActive()
 
 -- create a new chooser that'll focus on whichever the selected window
 WindowChooser = hs.chooser.new(function(choice)
