@@ -95,7 +95,6 @@ require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
 
     -- ui
-    use("levouh/tint.nvim")
     use("rcarriga/nvim-notify")
     use({
         "nvim-treesitter/nvim-treesitter",
@@ -148,16 +147,16 @@ if packer_bootstrap then
     return
 end
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-    ensure_installed = {
-        "tsserver",
-        "gopls",
-        "rust_analyzer",
-        "pylsp",
-        "sumneko_lua",
-    },
-})
+-- require("mason").setup()
+-- require("mason-lspconfig").setup({
+--     ensure_installed = {
+--         "tsserver",
+--         "gopls",
+--         "rust_analyzer",
+--         "pylsp",
+--         "sumneko_lua",
+--     },
+-- })
 
 local nvim_lsp = require("lspconfig")
 require("nightfox").setup({
@@ -173,7 +172,7 @@ require("nightfox").setup({
         -- },
     },
 })
--- vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme nightfox")
 -- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 require("gitsigns").setup({
@@ -294,7 +293,6 @@ require("nvim-treesitter.configs").setup({
 })
 
 require("nvim-autopairs").setup()
-require("tint").setup()
 vim.cmd("set termguicolors")
 require("onedark").setup({
     style = "darker",
@@ -306,7 +304,7 @@ require("onedark").setup({
         TelescopePreviewBorder = { fg = "$grey" },
     },
 })
-require("onedark").load()
+-- require("onedark").load()
 -- require('base16-colorscheme').setup()
 -- require('base16-colorscheme').with_config {
 --     telescope = false,
@@ -324,6 +322,7 @@ require("lualine").setup({
 -- nvim-cmp {{{
 vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require("cmp")
+---@cast cmp -?
 local lspkind = require("lspkind")
 
 local has_words_before = function()
@@ -332,7 +331,6 @@ local has_words_before = function()
 end
 
 local luasnip = require("luasnip")
----@cast cmp -?
 cmp.setup({
     formatting = {
         format = lspkind.cmp_format(),
@@ -517,7 +515,8 @@ nvim_lsp["pylsp"].setup({
     },
 })
 
-local hammerspoon = string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME)
+local libraries = vim.api.nvim_get_runtime_file("", true)
+table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
 nvim_lsp.sumneko_lua.setup({
     on_attach = on_attach,
     capabilities = capabilities,
@@ -532,8 +531,8 @@ nvim_lsp.sumneko_lua.setup({
                 globals = { "vim", "hs", "spoon" },
             },
             workspace = {
-                -- Make the server aware of runtime files
-                library = { vim.api.nvim_get_runtime_file("", true), hammerspoon },
+                -- Make the server aware of Neovim runtime files
+                library = libraries,
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
@@ -544,7 +543,7 @@ nvim_lsp.sumneko_lua.setup({
 })
 
 -- telescope {{{
--- individual pickers are in telescope.lua
+-- indiviual pickers are in telescope.lua
 local action_layout = require("telescope.actions.layout")
 local actions = require("telescope.actions")
 local fb_actions = require("telescope").extensions.file_browser.actions
@@ -608,7 +607,7 @@ if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
 
-require("matchparen").setup()
+require("matchparen").setup({})
 
 -- user keymaps {{{
 require("mini.ai").setup({
@@ -619,9 +618,9 @@ require("mini.ai").setup({
         inside_last = "",
     },
 })
-require("mini.surround").setup()
-require("mini.cursorword").setup()
-require("mini.bufremove").setup()
+require("mini.surround").setup({})
+require("mini.cursorword").setup({})
+require("mini.bufremove").setup({})
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
 -- }}}
-return M
+eturn M
