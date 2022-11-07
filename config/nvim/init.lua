@@ -95,6 +95,7 @@ require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
 
     -- ui
+    use("levouh/tint.nvim")
     use("rcarriga/nvim-notify")
     use({
         "nvim-treesitter/nvim-treesitter",
@@ -293,7 +294,7 @@ require("nvim-treesitter.configs").setup({
 })
 
 require("nvim-autopairs").setup()
-
+require("tint").setup()
 vim.cmd("set termguicolors")
 require("onedark").setup({
     style = "darker",
