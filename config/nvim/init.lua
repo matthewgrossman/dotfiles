@@ -566,11 +566,14 @@ require("telescope").setup({
             theme = "ivy",
             hidden = true,
             hide_parent_dir = true,
+            scroll_strategy = "limit",
             mappings = {
                 ["n"] = {
                     ["h"] = fb_actions.goto_parent_dir,
                     ["l"] = actions.select_default,
                     ["q"] = actions.close,
+                    ["<C-D>"] = actions.results_scrolling_down,
+                    ["<C-U>"] = actions.results_scrolling_up,
                 },
             },
         },
