@@ -3,7 +3,13 @@ vim.g.mapleader = " "
 
 -- basic settings
 vim.o.undofile = true
-vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true})
+vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
+
+-- for the life of me, I can't help but hit <C-c> when cancelling
+-- a vim.ui.input, which breaks things in a few plugins I have.
+-- this is a fine workaround until https://github.com/neovim/neovim/issues/18144
+-- https://vim.fandom.com/wiki/Avoid_the_escape_key
+vim.keymap.set("c", "<C-c>", "<C-c>", { remap = true, silent = true })
 
 -- disable matchparen before any config
 vim.g.loaded_matchparen = 1
