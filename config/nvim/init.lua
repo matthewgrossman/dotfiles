@@ -332,6 +332,7 @@ local has_words_before = function()
 end
 
 local luasnip = require("luasnip")
+---@cast cmp -?
 cmp.setup({
     formatting = {
         format = lspkind.cmp_format(),
