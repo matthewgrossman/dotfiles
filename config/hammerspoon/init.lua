@@ -141,6 +141,13 @@ Menubar = hs.menubar.new():setTitle(MuteAttribs[OriginalMutedState].text):setCli
 AppHyper = { "cmd", "ctrl" }
 hs.hotkey.bind(AppHyper, "m", ToggleMute)
 
+-- create a keybind for play/pause on spotify, so we can map our mouse to it
+-- the mouse currently has an issue using the system-native play/pause
+hs.hotkey.bind(AppHyper, "0", function ()
+    hs.spotify.playpause()
+end)
+
+
 ApplicationIsOnMainScreen = function(app)
     return app:mainWindow():screen() == hs.screen:primaryScreen()
 end
