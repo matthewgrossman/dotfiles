@@ -77,8 +77,8 @@ require("packer").startup(function(use)
     use("tpope/vim-commentary")
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-    -- use { "~/src/telescope-file-browser.nvim" }
-    use({ "nvim-telescope/telescope-file-browser.nvim" })
+    use({ "~/src/telescope-file-browser.nvim" })
+    -- use({ "nvim-telescope/telescope-file-browser.nvim" })
     use("lukas-reineke/indent-blankline.nvim")
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
@@ -623,4 +623,4 @@ require("mini.cursorword").setup({})
 require("mini.bufremove").setup({})
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
 -- }}}
-eturn M
+return M
