@@ -1,0 +1,7 @@
+# show dotfiles, which is useful for .env files
+--hidden
+
+# exclude searches within .git directories
+--glob=!.git/*
+
+--smart-case
