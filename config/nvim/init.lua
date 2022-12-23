@@ -23,19 +23,14 @@ vim.keymap.set("n", "<TAB>", "gt")
 vim.keymap.set("n", "<S-TAB>", "gT")
 vim.keymap.set("n", "<C-I>", "<C-I>")
 
--- bootstrap `packer.nvim`
-local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-        vim.cmd([[packadd packer.nvim]])
-        return true
-    end
-    return false
+-- Install packer
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+local is_bootstrap = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  is_bootstrap = true
+  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
+  vim.cmd [[packadd packer.nvim]]
 end
-
-local packer_bootstrap = ensure_packer()
 
 -- start of plugins, maybe refactor into its own .lua someday
 require("packer").startup(function(use)
@@ -138,15 +133,27 @@ require("packer").startup(function(use)
     use({ "rust-lang/rust.vim", ft = { "rust" } })
     use("neoclide/jsonc.vim")
 
-    if packer_bootstrap then
+    if is_bootstrap then
         require("packer").sync()
     end
 end)
 
-if packer_bootstrap then
-    print("Packer needed boostrap; rerun neovim after sync finishes")
-    return
+if is_bootstrap then
+  print '=================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '       then restart nvim'
+  print '=================================='
+  return
 end
+
+-- Automatically source and re-compile packer whenever you save this init.lua
+local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  command = 'source <afile> | PackerCompile',
+  group = packer_group,
+  pattern = vim.fn.expand '$MYVIMRC',
+})
 
 -- require("mason").setup()
 -- require("mason-lspconfig").setup({
