@@ -21,6 +21,10 @@ sudo apt install -y \
     python3-pip \
     fswatch \
     net-tools \
+    neovim-remote \
+    ansible \
+    poetry \
+    reorder-python-imports \
 
 chsh --shell /usr/bin/zsh
 
@@ -35,12 +39,8 @@ brew install go
 brew install gh
 <"$HOME/.config/luarocks/luarocks.txt" xargs -n1 luarocks install
 
-# pipx
-python3 -m pip install --user pipx
+# python
 python3 -m pip install --user pynvim
-pipx ensurepath
-pipx install neovim-remote
-pipx install ansible-base
 
 # overwrite wsl.conf ? commented out because might cause problems
 # sudo ln -sf "$HOME/dotfiles/wsl/wsl.conf" /etc/wsl.conf

@@ -4,6 +4,7 @@ vim.g.mapleader = " "
 -- basic settings
 vim.o.undofile = true
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
+vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
 -- for the life of me, I can't help but hit <C-c> when cancelling
 -- a vim.ui.input, which breaks things in a few plugins I have.
