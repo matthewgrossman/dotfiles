@@ -1,35 +1,15 @@
 local M = {}
-vim.g.mapleader = " "
-
--- basic settings
-vim.o.undofile = true
-vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
-vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
-
--- for the life of me, I can't help but hit <C-c> when cancelling
--- a vim.ui.input, which breaks things in a few plugins I have.
--- this is a fine workaround until https://github.com/neovim/neovim/issues/18144
--- https://vim.fandom.com/wiki/Avoid_the_escape_key
-vim.keymap.set("c", "<C-c>", "<C-c>", { remap = true, silent = true })
 
 -- disable matchparen before any config
 vim.g.loaded_matchparen = 1
 
--- reload init.lua file
-local luafileCmd = string.format(":luafile %s/nvim/init.lua<CR>", vim.env.XDG_CONFIG_HOME)
-vim.keymap.set("n", "<leader>sl", luafileCmd) -- <leader> Source Lua
-vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
-vim.keymap.set("n", "<TAB>", "gt")
-vim.keymap.set("n", "<S-TAB>", "gT")
-vim.keymap.set("n", "<C-I>", "<C-I>")
-
 -- Install packer
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  is_bootstrap = true
-  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
-  vim.cmd [[packadd packer.nvim]]
+    is_bootstrap = true
+    vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+    vim.cmd([[packadd packer.nvim]])
 end
 
 -- start of plugins, maybe refactor into its own .lua someday
@@ -100,7 +80,6 @@ require("packer").startup(function(use)
     use("RRethy/nvim-base16")
     -- use 'chriskempson/base16-vim'
     use("marko-cerovac/material.nvim")
-    use("machakann/vim-highlightedyank")
     use("navarasu/onedark.nvim")
     use("daschw/leaf.nvim")
     use("EdenEast/nightfox.nvim")
@@ -139,20 +118,89 @@ require("packer").startup(function(use)
 end)
 
 if is_bootstrap then
-  print '=================================='
-  print '    Plugins are being installed'
-  print '    Wait until Packer completes,'
-  print '       then restart nvim'
-  print '=================================='
-  return
+    print("==================================")
+    print("    Plugins are being installed")
+    print("    Wait until Packer completes,")
+    print("       then restart nvim")
+    print("==================================")
+    return
 end
 
--- Automatically source and re-compile packer whenever you save this init.lua
-local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-  command = 'source <afile> | PackerCompile',
-  group = packer_group,
-  pattern = vim.fn.expand '$MYVIMRC',
+-- [[ Setting options ]]
+-- See `:help vim.o`
+
+-- Enable mouse mode
+vim.o.mouse = "a"
+
+-- Make line numbers default
+vim.wo.number = true
+
+-- Enable break indent
+vim.o.breakindent = true
+
+-- Save undo history
+vim.o.undofile = true
+
+-- Case insensitive searching UNLESS /C or capital in search
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+-- Decrease update time
+vim.o.updatetime = 250
+vim.wo.signcolumn = "yes"
+
+-- Set colorscheme
+vim.o.termguicolors = true
+vim.cmd([[colorscheme nightfox]])
+
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = "menu,menuone,noselect"
+
+-- [[ Basic Keymaps ]]
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Keymaps for better default experience
+-- See `:help vim.keymap.set()`
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+
+-- Remap for dealing with word wrap
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- Remap tab/s-tab to change... tabs
+vim.keymap.set("n", "<TAB>", "gt")
+vim.keymap.set("n", "<S-TAB>", "gT")
+vim.keymap.set("n", "<C-I>", "<C-I>")
+
+-- clear highlighting
+vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
+vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
+
+-- reload init.lua file
+local vimrcPath = vim.fn.expand("$MYVIMRC")
+local sourceVimrcCmd = string.format("source %s | PackerCompile", vimrcPath)
+vim.keymap.set("n", "<leader>sl", sourceVimrcCmd) -- <leader> Source Lua
+vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
+
+-- for the life of me, I can't help but hit <C-c> when cancelling
+-- a vim.ui.input, which breaks things in a few plugins I have.
+-- this is a fine workaround until https://github.com/neovim/neovim/issues/18144
+-- https://vim.fandom.com/wiki/Avoid_the_escape_key
+vim.keymap.set("c", "<C-c>", "<C-c>", { remap = true, silent = true })
+
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+        vim.highlight.on_yank({ higroup = "IncSearch" })
+    end,
+    group = highlight_group,
+    pattern = "*",
 })
 
 -- require("mason").setup()
@@ -328,7 +376,6 @@ require("lualine").setup({
 })
 
 -- nvim-cmp {{{
-vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require("cmp")
 ---@cast cmp -?
 local lspkind = require("lspkind")
@@ -627,7 +674,6 @@ require("mini.ai").setup({
     },
 })
 require("mini.surround").setup({})
-require("mini.cursorword").setup({})
 require("mini.bufremove").setup({})
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
 -- }}}

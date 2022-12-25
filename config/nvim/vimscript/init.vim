@@ -1,10 +1,6 @@
 " normal settings
 set hidden
 
-" move by screen-line instead of text-line
-noremap j gj
-noremap k gk
-
 " hop to the beginning and ends of line easily
 nnoremap H ^
 nnoremap L $
@@ -75,14 +71,8 @@ set fileformat=unix
 nnoremap gp `[v`]
 
 " search options
-set ignorecase
-set smartcase
 nnoremap n nzz
 nnoremap N Nzz
-
-" line numbering
-set number
-set signcolumn=yes
 
 " link to system clipboard
 set clipboard=unnamed
@@ -131,9 +121,6 @@ autocmd FileType go setlocal noexpandtab
 " add toggle for pinning a window at a size
 nnoremap ]st :set winfixheight<CR>
 nnoremap [st :set nowinfixheight<CR>
-
-" use mouse
-set mouse=a
 
 " disable preview window
 set pumheight=30
@@ -255,11 +242,6 @@ command! -range=% JSONformat :<line1>,<line2>!python -m json.tool
 command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
-
-" theming
-" set termguicolors
-" colorscheme material
-set background=dark
 
 " vim-grepper config
 nmap gs <plug>(GrepperOperator)
