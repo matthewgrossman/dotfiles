@@ -65,7 +65,7 @@ require("packer").startup(function(use)
     use("majutsushi/tagbar")
 
     -- usability
-    use("tpope/vim-commentary")
+    use("numToStr/Comment.nvim")
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     use({ "~/src/telescope-file-browser.nvim" })
@@ -197,7 +197,7 @@ vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
-local sourceVimrcCmd = string.format(":source %s | PackerCompile", vimrcPath)
+local sourceVimrcCmd = string.format(":source %s | PackerInstall<CR>", vimrcPath)
 vim.keymap.set("n", "<leader>sl", sourceVimrcCmd) -- <leader> Source Lua
 vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 
@@ -218,33 +218,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
 })
 
--- require("mason").setup()
--- require("mason-lspconfig").setup({
---     ensure_installed = {
---         "tsserver",
---         "gopls",
---         "rust_analyzer",
---         "pylsp",
---         "sumneko_lua",
---     },
--- })
+-- status and window bars
+vim.opt.laststatus = 3
 
-local nvim_lsp = require("lspconfig")
-require("nightfox").setup({
-    options = {
-        dim_inactive = true,
-        styles = {
-            comments = "italic",
-            keywords = "bold",
-            types = "italic,bold",
-        },
-        -- inverse = {
-        --     search = true,
-        -- },
-    },
+require("lualine").setup()
+require("Comment").setup()
+
+require("indent_blankline").setup({
+    char = "┊",
+    show_trailing_blankline_indent = false,
 })
-vim.cmd("colorscheme nightfox")
--- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 require("gitsigns").setup({
     on_attach = function(bufnr)
@@ -281,6 +264,33 @@ require("gitsigns").setup({
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })
+-- require("mason").setup()
+-- require("mason-lspconfig").setup({
+--     ensure_installed = {
+--         "tsserver",
+--         "gopls",
+--         "rust_analyzer",
+--         "pylsp",
+--         "sumneko_lua",
+--     },
+-- })
+
+local nvim_lsp = require("lspconfig")
+require("nightfox").setup({
+    options = {
+        dim_inactive = true,
+        styles = {
+            comments = "italic",
+            keywords = "bold",
+            types = "italic,bold",
+        },
+        -- inverse = {
+        --     search = true,
+        -- },
+    },
+})
+vim.cmd("colorscheme nightfox")
+-- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -301,10 +311,12 @@ require("nvim-treesitter.configs").setup({
         "regex",
         "json",
         "json5",
+        "rust",
+        "help",
     },
 
     highlight = { enable = true },
-    -- indent = { enable = true },
+    indent = { enable = true, disable = { "python" } },
     incremental_selection = {
         enable = true,
         keymaps = {
@@ -381,14 +393,6 @@ require("onedark").setup({
 --     telescope = false,
 -- }
 -- vim.cmd('colorscheme base16-default-dark')
-
--- status and window bars
-vim.opt.laststatus = 3
-require("lualine").setup({
-    options = {
-        theme = "onedark",
-    },
-})
 
 -- nvim-cmp {{{
 local cmp = require("cmp")
@@ -497,36 +501,32 @@ local on_attach_null_ls = function(_, bufnr) -- luacheck: ignore
 
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
-    vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
+    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, bufopts)
+    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 end
 
 local on_attach = function(client, bufnr) -- luacheck: ignore
+    local nmap = function(keys, func, desc)
+        if desc then
+            desc = "LSP: " .. desc
+        end
+
+        vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+    end
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    -- new below
-    -- see `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, bufopts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+    nmap("<c-]>", vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+    nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+    nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+
     on_attach_null_ls(client, bufnr)
-    -- if client.server_capabilities.documentSymbolProvider then
-    --     require("nvim-navic").attach(client, bufnr)
-    -- end
-    -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-    -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-    -- vim.keymap.set('n', '<space>wl', function()
-    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    -- end, bufopts)
-    -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-    -- vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-    -- vim.api
-    --     .nvim_command [[autocmd bufwritepre <buffer> lua vim.lsp.buf.formatting()]]
 end
 
 -- DEBUGGING LSP
