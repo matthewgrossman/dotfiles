@@ -24,19 +24,34 @@ require("packer").startup(function(use)
     use("lewis6991/gitsigns.nvim")
 
     -- completion
-    use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
     use("jayp0521/mason-null-ls.nvim")
 
-    use("neovim/nvim-lspconfig")
+    use({ -- LSP Configuration & Plugins
+        "neovim/nvim-lspconfig",
+        requires = {
+            -- Automatically install LSPs to stdpath for neovim
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+
+            -- Useful status updates for LSP
+            "j-hui/fidget.nvim",
+
+            -- Additional lua configuration, makes nvim stuff amazing
+            "folke/neodev.nvim",
+        },
+    })
     -- use("SmiteshP/nvim-navic")
-    use("hrsh7th/nvim-cmp")
-    use("hrsh7th/cmp-nvim-lsp")
-    use("hrsh7th/cmp-buffer")
-    use("hrsh7th/cmp-path")
-    use("hrsh7th/cmp-cmdline")
-    use("saadparwaiz1/cmp_luasnip")
-    use("L3MON4D3/LuaSnip")
+    use({ -- Autocompletion
+        "hrsh7th/nvim-cmp",
+        requires = {
+            "hrsh7th/cmp-nvim-lsp",
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+        },
+    })
     use("onsails/lspkind-nvim")
     use("windwp/nvim-autopairs")
 
@@ -182,7 +197,7 @@ vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
-local sourceVimrcCmd = string.format("source %s | PackerCompile", vimrcPath)
+local sourceVimrcCmd = string.format(":source %s | PackerCompile", vimrcPath)
 vim.keymap.set("n", "<leader>sl", sourceVimrcCmd) -- <leader> Source Lua
 vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 
