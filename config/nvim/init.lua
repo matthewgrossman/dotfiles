@@ -264,16 +264,6 @@ require("gitsigns").setup({
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 })
--- require("mason").setup()
--- require("mason-lspconfig").setup({
---     ensure_installed = {
---         "tsserver",
---         "gopls",
---         "rust_analyzer",
---         "pylsp",
---         "sumneko_lua",
---     },
--- })
 
 local nvim_lsp = require("lspconfig")
 require("nightfox").setup({
@@ -516,15 +506,15 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    nmap("<c-]>", vim.lsp.buf.definition, '[G]oto [D]efinition')
-    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-    nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-    nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap("<c-]>", vim.lsp.buf.definition, "[G]oto [D]efinition")
+    nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+    nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+    nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+    nmap("K", vim.lsp.buf.hover, "Hover Documentation")
+    nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+    nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
+    nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 
     on_attach_null_ls(client, bufnr)
 end
@@ -543,14 +533,93 @@ require("null-ls").setup({
         require("null-ls").builtins.diagnostics.luacheck.with({
             extra_args = { "--config", vim.fn.expand("$XDG_CONFIG_HOME/luacheck/.luacheckrc") },
         }),
-        require("null-ls").builtins.diagnostics.mypy.with({
-            extra_args = { "--ignore-missing-imports" },
-        }),
+        -- require("null-ls").builtins.diagnostics.mypy.with({
+        --     extra_args = { "--ignore-missing-imports" },
+        -- }),
         require("null-ls").builtins.formatting.reorder_python_imports,
         require("null-ls").builtins.diagnostics.shellcheck,
         require("null-ls").builtins.formatting.trim_whitespace,
     },
     on_attach = on_attach_null_ls,
+})
+
+local libraries = vim.api.nvim_get_runtime_file("", true)
+table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
+local servers = {
+    -- clangd = {},
+    gopls = {},
+    -- pylsp = {
+    --     pylsp = {
+    --         configurationSources = { "flake8" },
+    --     },
+    -- },
+    pyright = {
+        python = {
+            analysis = {
+                diagnosticSeverityOverrides = {
+                    reportUnusedVariable = false
+                }
+            },
+        },
+    },
+    rust_analyzer = {},
+    tsserver = {},
+
+    sumneko_lua = {
+        -- Lua = {
+        --     runtime = {
+        --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        --         version = "LuaJIT",
+        --     },
+        --     diagnostics = {
+        --         -- Get the language server to recognize the globals
+        --         globals = { "vim", "hs", "spoon" },
+        --     },
+        --     workspace = {
+        --         -- Make the server aware of Neovim runtime files
+        --         library = libraries,
+        --     },
+        --     -- Do not send telemetry data containing a randomized but unique identifier
+        --     telemetry = {
+        --         enable = false,
+        --     },
+        -- },
+        Lua = {
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+        },
+    },
+}
+
+-- Setup neovim lua configuration
+require("neodev").setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+require("mason").setup()
+
+-- Ensure the servers above are installed
+local mason_lspconfig = require("mason-lspconfig")
+mason_lspconfig.setup({
+    ensure_installed = vim.tbl_keys(servers),
+})
+
+mason_lspconfig.setup_handlers({
+    function(server_name)
+
+        -- ensures that the `servers` var is the source of truth
+        if servers[server_name] == nil then
+            return
+        end
+
+        require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+        })
+    end,
 })
 
 -- require("mason-null-ls").setup({
@@ -560,57 +629,11 @@ require("null-ls").setup({
 --         "reorder_python_imports",
 --         "mypy",
 --     },
--- })
 -- Setup lspconfig.
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- })
 
-nvim_lsp["tsserver"].setup({
-    on_attach = on_attach,
-})
-
-nvim_lsp["gopls"].setup({
-    on_attach = on_attach,
-})
-
-nvim_lsp["rust_analyzer"].setup({
-    on_attach = on_attach,
-})
-
-nvim_lsp["pylsp"].setup({
-    on_attach = on_attach,
-    settings = {
-        pylsp = {
-            configurationSources = { "flake8" },
-        },
-    },
-})
-
-local libraries = vim.api.nvim_get_runtime_file("", true)
-table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
-nvim_lsp.sumneko_lua.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-            },
-            diagnostics = {
-                -- Get the language server to recognize the globals
-                globals = { "vim", "hs", "spoon" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = libraries,
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-})
+-- Turn on lsp status information
+require("fidget").setup()
 
 -- telescope {{{
 -- indiviual pickers are in telescope.lua
@@ -653,6 +676,7 @@ require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
 vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
 vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
+vim.keymap.set("n", "q:", require("telescope.builtin").command_history)
 -- }}}
 
 -- user commands {{{
