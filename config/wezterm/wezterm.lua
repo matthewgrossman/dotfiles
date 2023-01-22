@@ -13,6 +13,7 @@ return {
         top = 0,
         bottom = 0,
     },
+    default_gui_startup_args = { 'connect', 'WSL:Ubuntu'},
     -- keys = {
     --     {
     --         key = "/",
