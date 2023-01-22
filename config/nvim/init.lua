@@ -74,7 +74,7 @@ require("packer").startup(function(use)
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
-    use({ "echasnovski/mini.nvim", branch = "stable" })
+    use("echasnovski/mini.nvim")
 
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
@@ -86,6 +86,7 @@ require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
 
     -- ui
+    use("karb94/neoscroll.nvim")
     use("rcarriga/nvim-notify")
     use({
         "nvim-treesitter/nvim-treesitter",
@@ -107,6 +108,7 @@ require("packer").startup(function(use)
     use("folke/lsp-colors.nvim")
     use("lewis6991/impatient.nvim")
     use("monkoose/matchparen.nvim")
+    use("folke/which-key.nvim")
 
     -- python
     use({
@@ -223,6 +225,7 @@ vim.opt.laststatus = 3
 
 require("lualine").setup()
 require("Comment").setup()
+require("neoscroll").setup()
 
 require("indent_blankline").setup({
     char = "┊",
@@ -557,8 +560,8 @@ local servers = {
         python = {
             analysis = {
                 diagnosticSeverityOverrides = {
-                    reportUnusedVariable = false
-                }
+                    reportUnusedVariable = false,
+                },
             },
         },
     },
@@ -608,7 +611,6 @@ mason_lspconfig.setup({
 
 mason_lspconfig.setup_handlers({
     function(server_name)
-
         -- ensures that the `servers` var is the source of truth
         if servers[server_name] == nil then
             return
@@ -702,8 +704,8 @@ if vim.env.WSL_DISTRO_NAME then
 end
 
 require("matchparen").setup({})
+require("which-key").setup()
 
--- user keymaps {{{
 require("mini.ai").setup({
     mappings = {
         around_next = "",
@@ -715,5 +717,6 @@ require("mini.ai").setup({
 require("mini.surround").setup({})
 require("mini.bufremove").setup({})
 vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
--- }}}
+
+
 return M
