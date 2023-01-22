@@ -33,9 +33,13 @@ winget install EpicGames.EpicGamesLauncher --accept-package-agreements
 winget install Parsec.Parsec --accept-package-agreements
 winget install Discord.Discord --accept-package-agreements
 
+Refresh-Environment
+
 # install scoop {{{
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
 irm get.scoop.sh | iex
+
+Refresh-Environment
 
 scoop bucket add nerd-fonts
 scoop bucket add extras

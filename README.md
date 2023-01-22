@@ -3,6 +3,7 @@
 1. Open `Powershell` and run the following:
     ```powershell
     winget install -e Git.Git
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
     cd $HOME; git clone https://github.com/matthewgrossman/dotfiles; . .\dotfiles\windows\setup.ps1
     ```
 
