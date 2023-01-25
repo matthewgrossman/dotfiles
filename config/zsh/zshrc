@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# export KITTY_DEVELOP_FROM="$HOME/src/kitty"
+export SHELL="$(which zsh)" # wtf??? wezterm????
 # uncomment this and `zprof` at the bottom to profile zsh startup
 # zmodload zsh/zprof
 

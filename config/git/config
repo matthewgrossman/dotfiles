@@ -33,6 +33,8 @@
     pr = "!git po && gh pr create --fill --web"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
+    comment = "!gh pr comment -b"
+    ptal = "!f() { gh pr comment -b \"ptal $1\"; }; f"
 [core]
     excludesfile = ~/.config/git/gitignore_global
 [pull]
