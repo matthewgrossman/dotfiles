@@ -21,10 +21,7 @@ sudo apt install -y \
     python3-pip \
     fswatch \
     net-tools \
-    neovim-remote \
     ansible \
-    poetry \
-    reorder-python-imports \
 
 chsh --shell /usr/bin/zsh
 
@@ -37,6 +34,9 @@ brew install neovim
 brew install node
 brew install go
 brew install gh
+brew install reorder-python-imports
+brew install poetry
+brew install neovim-remote
 <"$HOME/.config/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # python
