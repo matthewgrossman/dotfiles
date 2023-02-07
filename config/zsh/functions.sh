@@ -170,6 +170,10 @@ ttabs () {
     echo "$tabs"
 }
 
+sgs () {
+    /opt/homebrew/bin/src search -stream -json "$@" | jq -c 'select(.repository != null) | { repo: .repository, match: .chunkMatches[0].content, path: .path}'
+}
+
 pjq () {
     if [[ -z $1 ]] || [[ $1 == "-" ]]; then
         input=$(mktemp)
