@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# export KITTY_DEVELOP_FROM="$HOME/src/kitty"
+export SHELL="$(which zsh)" # wtf??? wezterm????
 # uncomment this and `zprof` at the bottom to profile zsh startup
 # zmodload zsh/zprof
 
@@ -15,12 +17,12 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
 export PATH="$HOME/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
 export GOPATH=$HOME/src
 export GO111MODULE='on'
 export PYTHONBREAKPOINT=ipdb.set_trace
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.cargo/bin
-export PATH="$PATH:$HOME/.local/bin"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"

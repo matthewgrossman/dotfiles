@@ -170,6 +170,10 @@ ttabs () {
     echo "$tabs"
 }
 
+sgs () {
+    /opt/homebrew/bin/src search -stream -json "$@" | jq -c 'select(.repository != null) | { repo: .repository, match: .chunkMatches[]?.content, path: .path}'
+}
+
 pjq () {
     if [[ -z $1 ]] || [[ $1 == "-" ]]; then
         input=$(mktemp)
@@ -184,4 +188,12 @@ pjq () {
               --preview-window='up:90%' \
               --print-query \
               --preview "jq --color-output -r {q} $input"
+}
+
+se_agent_killer() {
+    while true; do
+      echo "Killing se_agent at $(date)"
+      sudo pkill se_agent || echo "No se_agent"
+      sleep 120
+    done
 }
