@@ -22,6 +22,7 @@ sudo apt install -y \
     fswatch \
     net-tools \
     ansible \
+    nmap \
 
 chsh --shell /usr/bin/zsh
 
