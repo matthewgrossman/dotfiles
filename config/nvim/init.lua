@@ -75,6 +75,7 @@ require("packer").startup(function(use)
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use("echasnovski/mini.nvim")
+    use("famiu/bufdelete.nvim")
 
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
@@ -715,8 +716,7 @@ require("mini.ai").setup({
     },
 })
 require("mini.surround").setup({})
-require("mini.bufremove").setup({})
-vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
+vim.keymap.set("n", "<C-q>", ":Bdelete<CR>")
 
 
 return M
