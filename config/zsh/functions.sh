@@ -190,6 +190,15 @@ pjq () {
               --preview "jq --color-output -r {q} $input"
 }
 
+nmapm () {
+    sudo nmap -sn "$@" -oX - | xq -r '
+    .nmaprun.host[].address
+    | select(type == "array")
+    | map({(."@addrtype"): ."@addr", vendor: ."@vendor"})
+    | add
+    | "\(.ipv4)\t\(.mac)\t\(.vendor)"'
+}
+
 se_agent_killer() {
     while true; do
       echo "Killing se_agent at $(date)"

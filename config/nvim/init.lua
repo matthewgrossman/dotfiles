@@ -75,6 +75,7 @@ require("packer").startup(function(use)
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use("echasnovski/mini.nvim")
+    use("famiu/bufdelete.nvim")
 
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
@@ -196,6 +197,12 @@ vim.keymap.set("n", "<C-I>", "<C-I>")
 -- clear highlighting
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
+
+-- vim-fugitive
+vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
+    local branch = vim.fn.system("git default-branch")
+    return string.format(":Gvdiffsplit %s:%%<CR>", branch)
+end, { expr = true, silent = true })
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
@@ -715,8 +722,7 @@ require("mini.ai").setup({
     },
 })
 require("mini.surround").setup({})
-require("mini.bufremove").setup({})
-vim.keymap.set("n", "<C-q>", ":lua MiniBufremove.delete()<CR>")
+vim.keymap.set("n", "<C-q>", ":Bdelete<CR>")
 
 
 return M

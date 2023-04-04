@@ -270,7 +270,6 @@ let g:highlightedyank_highlight_duration = 150
 " fugitive config
 nmap <Leader>gg :Git<cr>
 nmap <Leader>gdd :Gdiffsplit<cr>
-nmap <Leader>gdm :Gdiffsplit master<cr>
 nmap <Leader>gb :Git blame<cr>
 nmap <Leader>ga :Gwrite<cr>
 nmap <Leader>gp :Git push<cr>
