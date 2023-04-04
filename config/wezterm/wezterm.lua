@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 return {
-    font = wezterm.font("Fira Code"),
+    -- font = wezterm.font("Fira Code"),
     color_scheme = "OneDark (base16)",
     window_decorations = "RESIZE",
     enable_csi_u_key_encoding = true,

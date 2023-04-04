@@ -1,5 +1,8 @@
 Start-Process powershell -Verb runAs -ArgumentList "-file $PSScriptRoot\setup_admin.ps1"
 
+# no idea of this will work
+[Environment]::SetEnvironmentVariable("XDG_CONFIG_HOME", "\\wsl.localhost\Ubuntu\home\mg\dotfiles\config\wezterm", 'User')
+
 # essentials
 winget install Mozilla.Firefox --accept-package-agreements
 winget install Google.Chrome --accept-package-agreements
