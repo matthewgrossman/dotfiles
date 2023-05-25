@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 return {
-    font = wezterm.font("Fira Code"),
+    -- font = wezterm.font("Fira Code"),
     color_scheme = "OneDark (base16)",
     window_decorations = "RESIZE",
     enable_csi_u_key_encoding = true,
@@ -13,15 +13,9 @@ return {
         top = 0,
         bottom = 0,
     },
+    -- debug_key_events=true,
     default_gui_startup_args = { 'connect', 'WSL:Ubuntu'},
-    -- keys = {
-    --     {
-    --         key = "/",
-    --         mods = "CTRL",
-    --         action = act.SendKey({
-    --             key = "_",
-    --             mods = "CTRL",
-    --         }),
-    --     },
-    -- },
+    keys = {
+        {key="/", mods="CTRL", action=wezterm.action{SendString="\x1f"}},
+    }
 }
