@@ -198,6 +198,9 @@ vim.keymap.set("n", "<C-I>", "<C-I>")
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
+-- change last-searched word, with no register-clobbering issues
+vim.keymap.set("n", "c/", ":%s///g<left><left>")
+
 -- vim-fugitive
 vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
     local branch = vim.fn.system("git default-branch")
@@ -556,7 +559,7 @@ require("null-ls").setup({
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
 local servers = {
-    -- clangd = {},
+    -- ccls = {},
     gopls = {},
     -- pylsp = {
     --     pylsp = {
@@ -629,6 +632,12 @@ mason_lspconfig.setup_handlers({
             settings = servers[server_name],
         })
     end,
+})
+
+require("lspconfig")['ccls'].setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = {},
 })
 
 -- require("mason-null-ls").setup({
@@ -723,6 +732,5 @@ require("mini.ai").setup({
 })
 require("mini.surround").setup({})
 vim.keymap.set("n", "<C-q>", ":Bdelete<CR>")
-
 
 return M

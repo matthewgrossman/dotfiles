@@ -20,6 +20,7 @@
     s = status
     m = merge
     l = log
+    lo = log --oneline -5
     ld = log --stat --patch --full-diff
     mm = "!git merge $(git default-branch)"
     giff = diff
