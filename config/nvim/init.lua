@@ -87,7 +87,7 @@ require("packer").startup(function(use)
     use("AndrewRadev/splitjoin.vim")
 
     -- ui
-    use("karb94/neoscroll.nvim")
+    -- use("karb94/neoscroll.nvim")
     use("rcarriga/nvim-notify")
     use({
         "nvim-treesitter/nvim-treesitter",
@@ -235,7 +235,7 @@ vim.opt.laststatus = 3
 
 require("lualine").setup()
 require("Comment").setup()
-require("neoscroll").setup()
+-- require("neoscroll").setup()
 
 require("indent_blankline").setup({
     char = "┊",
@@ -578,30 +578,53 @@ local servers = {
     rust_analyzer = {},
     tsserver = {},
 
-    sumneko_lua = {
+    -- lua_ls = {
+    --     Lua = {
+    --         runtime = {
+    --             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+    --             version = "LuaJIT",
+    --         },
+    --         diagnostics = {
+    --             -- Get the language server to recognize the globals
+    --             globals = { "vim", "hs", "spoon" },
+    --         },
+    --         workspace = {
+    --             -- Make the server aware of Neovim runtime files
+    --             library = libraries,
+    --         },
+    --         -- Do not send telemetry data containing a randomized but unique identifier
+    --         telemetry = {
+    --             enable = false,
+    --         },
+    --     },
         -- Lua = {
-        --     runtime = {
-        --         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        --         version = "LuaJIT",
-        --     },
-        --     diagnostics = {
-        --         -- Get the language server to recognize the globals
-        --         globals = { "vim", "hs", "spoon" },
-        --     },
-        --     workspace = {
-        --         -- Make the server aware of Neovim runtime files
-        --         library = libraries,
-        --     },
-        --     -- Do not send telemetry data containing a randomized but unique identifier
-        --     telemetry = {
-        --         enable = false,
-        --     },
+        --     workspace = { checkThirdParty = false },
+        --     telemetry = { enable = false },
         -- },
-        Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
+    -- },
+}
+
+require'lspconfig'.lua_ls.setup {
+  settings = {
+    Lua = {
+        runtime = {
+            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            version = "LuaJIT",
+        },
+        diagnostics = {
+            -- Get the language server to recognize the globals
+            globals = { "vim", "hs", "spoon" },
+        },
+        workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = libraries,
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+            enable = false,
         },
     },
+  },
 }
 
 -- Setup neovim lua configuration
