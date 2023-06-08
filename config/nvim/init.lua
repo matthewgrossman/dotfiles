@@ -549,6 +549,7 @@ require("null-ls").setup({
         require("null-ls").builtins.formatting.reorder_python_imports,
         require("null-ls").builtins.diagnostics.shellcheck,
         require("null-ls").builtins.formatting.trim_whitespace,
+        require("null-ls").builtins.diagnostics.ruff,
     },
     on_attach = on_attach_null_ls,
 })
@@ -563,6 +564,15 @@ local servers = {
     --         configurationSources = { "flake8" },
     --     },
     -- },
+    pylsp = {
+        configurationSources = 'flake8',
+        plugins = {
+            flake8 = {
+                enabled = "true",
+                maxLineLength = 120
+            }
+        }
+    },
     pyright = {
         python = {
             analysis = {
@@ -642,7 +652,7 @@ mason_lspconfig.setup_handlers({
 -- })
 
 -- Turn on lsp status information
-require("fidget").setup()
+-- require("fidget").setup()
 
 -- telescope {{{
 -- indiviual pickers are in telescope.lua
