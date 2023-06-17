@@ -1,9 +1,7 @@
 #!/bin/bash
+set -Eeuxo pipefail
 
 # first run link.sh!
-
-# need xcode to do anything fun on macs
-xcode-select --install
 
 # install homebrew and all programs in mac/Brewfile
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
