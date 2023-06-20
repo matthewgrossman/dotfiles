@@ -315,7 +315,6 @@ require("nvim-treesitter.configs").setup({
         "json",
         "json5",
         "rust",
-        "help",
     },
 
     highlight = { enable = true },
