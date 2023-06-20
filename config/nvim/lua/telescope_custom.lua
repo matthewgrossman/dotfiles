@@ -13,18 +13,17 @@ local finders = require("telescope.finders")
 local conf = require("telescope.config").values
 local utils = require("telescope.utils")
 
-local get_kitty_tabs = function()
-    local cmd =
-    [[kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id) \(.is_focused)"']]
+M.get_terminal_tabs = function()
+    local cmd = [[wezterm cli list --format json | jq -r '.[] | "\(.cwd) \(.pane_id)"']]
+
     local output = utils.get_os_command_output({ "bash", "-c", cmd })
     local tabs = {}
     for _, line in pairs(output) do
         local linesplit = vim.split(line, " ")
-        local dir = vim.env.HOME .. "/src/" .. linesplit[1]
+        local dir = string.sub(linesplit[1], 8)
         tabs[dir] = {
-            title = linesplit[1],
             id = linesplit[2],
-            is_focused = linesplit[3],
+            is_focused = linesplit[2] == vim.env.WEZTERM_PANE,
         }
     end
     return tabs
@@ -42,7 +41,7 @@ M.src_dir = function(opts)
         "d",
     })
     opts = opts or {}
-    local kitty_tabs = get_kitty_tabs()
+    local terminal_tabs = M.get_terminal_tabs()
     local action_state = require("telescope.actions.state")
     pickers.new(opts, {
         prompt_title = "~/src",
@@ -54,23 +53,31 @@ M.src_dir = function(opts)
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
                 local selection = action_state.get_selected_entry()
+                local terminal_tab = terminal_tabs[selection[1]]
                 local path_tail = utils.path_tail(selection[1])
-                local kitty_tab = kitty_tabs[ selection[1] ]
 
-                if kitty_tab ~= nil then
+                if terminal_tab ~= nil then
                     -- if project is already open, switch to the tab
-                    utils.get_os_command_output({ "kitty", "@", "focus-tab", "--match", "id:" .. kitty_tab.id })
+                    utils.get_os_command_output({ "wezterm", "cli", "activate-pane", "--pane-id", terminal_tab.id })
                 else
                     -- otherwise, open a new window in that project
-                    utils.get_os_command_output({
-                        "kitty",
-                        "@",
-                        "new-window",
-                        "--new-tab",
+                    local pane_id = utils.get_os_command_output({
+                        "wezterm",
+                        "cli",
+                        "spawn",
                         "--cwd",
                         selection[1],
-                        "--tab-title",
-                        path_tail,
+                        "--",
+                        vim.env.SHELL,
+                    })
+                    utils.get_os_command_output({
+                        "wezterm",
+                        "cli",
+                        "set-tab-title",
+                        "--pane-id",
+                        pane_id[1],
+                        path_tail
+
                     })
                 end
             end)

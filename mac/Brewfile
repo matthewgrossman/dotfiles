@@ -2,6 +2,7 @@
 brew 'mas'
 cask 'google-drive'
 cask 'kitty'
+cask 'wezterm'
 cask 'alfred'
 cask 'keepassxc'
 cask 'firefox'

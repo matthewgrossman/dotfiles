@@ -1,5 +1,5 @@
 alias ls="ls -G"
-alias dot='cd $HOME/dotfiles; kitty @ set-tab-title "dotfiles" 2>/dev/null'
+alias dot='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
 alias g="git"
 
 alias vi='nvim'

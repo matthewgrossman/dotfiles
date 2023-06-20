@@ -37,7 +37,7 @@ ab() {
 # cd to repo in src/
 src () {
     local root_path repo_paths repo_path venv_path repo_basename open_tabs existing_tab_index current_tab
-    open_tabs="$(kitty @ ls | jq -r '.[] | select(.is_focused == true) | .tabs | .[] | "\(.title) \(.id) \(.is_focused)"')"
+    open_tabs="$(wezterm cli list --format json | jq '.[] | "\(.cwd) \(.pane_id)"')"
     root_path="${PROJECT_ROOT:-$HOME/src}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     out=$(fzf --expect=ctrl-t <<< "$repo_paths")
@@ -54,24 +54,23 @@ src () {
         # ask for a new tab via "ctrl-t", switch to the existing tab
         existing_tab_index=$(awk -v REPO="$repo_basename" '$1 == REPO { print $2 }' <<< "$open_tabs")
         if [[ -n "$existing_tab_index" && "$key" != "ctrl-t" ]]; then
-            current_tab=$(awk -v REPO="$repo_basename" '$3 == "true" { print $2 }' <<< "$open_tabs")
-            kitty @ focus-tab --match id:"$existing_tab_index"
-            kitty @ close-tab --match id:"$current_tab"
+            wezterm cli activate-pane --pane-id "$existing_tab_index"
+            wezterm kill-pane
             return
         fi
 
         cd "$repo_path" || return
 
-        # set kitty's tab title
-        kitty @ set-tab-title "$repo_basename" 2>/dev/null
+        # set tab title
+        wezterm cli set-tab-title "$repo_basename" 2>/dev/null
 
         # overwrite the venv path if .venv is used, default in poetry
-        venv_path='venv'
-        [ -d ".venv" ] && venv_path='.venv'
+        # venv_path='venv'
+        # [ -d ".venv" ] && venv_path='.venv'
 
-        deactivate 2>/dev/null  # deactivate python venv
+        # deactivate 2>/dev/null  # deactivate python venv
         # shellcheck disable=SC1090
-        source "$venv_path/bin/activate" 2>/dev/null || true  # activate new python venv
+        # source "$venv_path/bin/activate" 2>/dev/null || true  # activate new python venv
     fi
 }
 
@@ -161,13 +160,6 @@ lclone () {
     gh repo clone "lyft/$service"
     direnv allow "$service"
     cd "$service" || return
-}
-
-ttabs () {
-    local tabs
-    kittyjson=$(kitty @ ls)
-    tabs=$(jq -r '.[0].tabs | .[] | "\(.title) \(.windows[0].cwd) already_open \(.id)"' <<< "$kittyjson")
-    echo "$tabs"
 }
 
 sgs () {
