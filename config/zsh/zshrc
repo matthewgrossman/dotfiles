@@ -40,9 +40,9 @@ bindkey -e
 # eval "$(rbenv init -)"
 
 # node things
-if command -v fnm > /dev/null; then
-    eval "$(fnm env)"
-fi
+# if command -v fnm > /dev/null; then
+#     eval "$(fnm env)"
+# fi
 
 # if command -v direnv > /dev/null; then
 #     eval "$(direnv hook zsh)"
@@ -78,6 +78,9 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/functions.sh
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
 
+# zprof
+export PATH=/opt/homebrew/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 if [[ "$(uname)" == "Linux" ]]; then
     # linux via `apt`
@@ -95,25 +98,3 @@ else
 fi
 source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-# zprof
-
-### lyft_localdevtools_shell_rc start
-### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
-if [[ -f "/opt/homebrew/Library/Taps/lyft/homebrew-localdevtools/scripts/shell_rc.sh" ]]; then
-    source "/opt/homebrew/Library/Taps/lyft/homebrew-localdevtools/scripts/shell_rc.sh"
-fi
-### lyft_localdevtools_shell_rc end
-PATH="$PATH:/Users/mgrossman/.spcli/bin"
-export PATH=/opt/homebrew/bin:$PATH
-export PATH="$HOME/.local/bin:$PATH"
-
-### lyft_rd_shell_rc start
-### DO NOT REMOVE: automatically installed as part of Rancher Desktop setup
-if [[ -f /Users/mgrossman/.rd/shell_rc.sh ]]; then
-  source /Users/mgrossman/.rd/shell_rc.sh
-fi
-### lyft_rd_shell_rc end
-
-### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
-eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"

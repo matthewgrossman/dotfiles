@@ -1,13 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 set -Eeuxo pipefail
 
 # first run link.sh!
+. "$HOME/dotfiles/link.sh"
+
+# Check if Xcode Command Line Tools are already installed
+if ! xcode-select -p &> /dev/null; then
+    echo "Xcode Command Line Tools are not installed. Installing..."
+    xcode-select --install
+else
+    echo "Xcode Command Line Tools are already installed."
+fi
 
 # install homebrew and all programs in mac/Brewfile
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if ! command -v brew &> /dev/null; then
+    echo "Homebrew is not installed. Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    echo "Homebrew is already installed."
+fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew bundle
-rehash
 
 # link hammerspoon data
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
@@ -17,13 +30,14 @@ source ~/.zshrc
 
 # install non-brew deps
 <"$XDG_CONFIG_HOME/npm/packages.txt" xargs -n1 npm -g install
-<"$XDG_CONFIG_HOME/cargo/cargo.txt" xargs -n1 cargo install
 <"$XDG_CONFIG_HOME/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # random mac settings {{{
 
-# allow key-repeat
+# allow key-repeat and speed it up
 defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
+defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
 
 # automatically hide the dock when not hovering over
 defaults write com.apple.dock "autohide" -bool "true"
