@@ -1,4 +1,4 @@
-local wezterm = require('wezterm')
+local wezterm = require("wezterm")
 local act = wezterm.action
 
 local config = {
@@ -6,17 +6,17 @@ local config = {
   font_rules = {
     {
       italic = true,
-      font = wezterm.font {
-        family = 'JetBrains Mono',
-        italic = true
-      },
+      font = wezterm.font({
+        family = "JetBrains Mono",
+        italic = true,
+      }),
     },
   },
   font_size = 15.0,
   color_scheme = "OneDark (base16)",
   window_decorations = "RESIZE",
   window_frame = {
-    font_size = 15.0
+    font_size = 15.0,
   },
   window_padding = {
     left = 0,
@@ -30,30 +30,30 @@ local config = {
 config.keys = {
   -- Rebind OPT-Left, OPT-Right as ALT-b, ALT-f respectively to match Terminal.app behavior
   {
-    key = 'LeftArrow',
-    mods = 'OPT',
-    action = act.SendKey {
-      key = 'b',
-      mods = 'ALT',
-    },
+    key = "LeftArrow",
+    mods = "OPT",
+    action = act.SendKey({
+      key = "b",
+      mods = "ALT",
+    }),
   },
   {
-    key = 'RightArrow',
-    mods = 'OPT',
-    action = act.SendKey { key = 'f', mods = 'ALT' },
+    key = "RightArrow",
+    mods = "OPT",
+    action = act.SendKey({ key = "f", mods = "ALT" }),
   },
   {
     key = "t",
     mods = "SUPER",
-    action = act.SpawnCommandInNewTab { cwd = "~" }
-  }
+    action = act.SpawnCommandInNewTab({ cwd = "~" }),
+  },
 }
 
 for i = 1, 8 do
   -- CTRL+ALT + number to activate that tab
   table.insert(config.keys, {
     key = tostring(i),
-    mods = 'WIN',
+    mods = "WIN",
     action = act.ActivateTab(i - 1),
   })
 end

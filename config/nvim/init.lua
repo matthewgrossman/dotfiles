@@ -672,15 +672,15 @@ require("lspconfig")['ccls'].setup({
     settings = {},
 })
 
--- require("mason-null-ls").setup({
---     ensure_installed = {
---         "stylua",
---         "black",
---         "reorder_python_imports",
---         "mypy",
---     },
+require("mason-null-ls").setup({
+    ensure_installed = {
+        "stylua",
+        "black",
+        "reorder_python_imports",
+        "mypy",
+    },
+})
 -- Setup lspconfig.
--- })
 
 -- Turn on lsp status information
 -- require("fidget").setup()
