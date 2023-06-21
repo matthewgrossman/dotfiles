@@ -2,17 +2,17 @@ local wezterm = require('wezterm')
 local act = wezterm.action
 
 local config = {
-  font = "Fira Code",
+  font = wezterm.font("Fira Code"),
   font_rules = {
     {
       italic = true,
       font = wezterm.font {
         family = 'JetBrains Mono',
+        italic = true
       },
     },
   },
   font_size = 15.0,
-  default_cwd = "TODO",
   color_scheme = "OneDark (base16)",
   window_decorations = "RESIZE",
   window_frame = {
@@ -42,6 +42,11 @@ config.keys = {
     mods = 'OPT',
     action = act.SendKey { key = 'f', mods = 'ALT' },
   },
+  {
+    key = "t",
+    mods = "SUPER",
+    action = act.SpawnCommandInNewTab { cwd = "~" }
+  }
 }
 
 for i = 1, 8 do
