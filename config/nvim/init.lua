@@ -210,7 +210,7 @@ end, { expr = true, silent = true })
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
 local sourceVimrcCmd = string.format(":source %s | PackerInstall<CR>", vimrcPath)
-vim.keymap.set("n", "<leader>sl", sourceVimrcCmd) -- <leader> Source Lua
+vim.keymap.set("n", "<leader>sl", sourceVimrcCmd)   -- <leader> Source Lua
 vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 
 -- for the life of me, I can't help but hit <C-c> when cancelling
@@ -322,11 +322,11 @@ require("nvim-treesitter.configs").setup({
     incremental_selection = {
         enable = true,
         keymaps = {
-            init_selection = "<c-space>",
-            node_incremental = "<c-space>",
+            init_selection = "<CR>",
+            node_incremental = "<CR>",
             -- TODO: I'm not sure for this one.
             scope_incremental = "<c-s>",
-            node_decremental = "<c-backspace>",
+            node_decremental = "<S-CR>",
         },
     },
     textobjects = {
@@ -535,25 +535,32 @@ end
 -- vim.lsp.set_log_level("debug")
 -- :lua vim.cmd('e'..vim.lsp.get_log_path())
 
+require("mason").setup()
 require("null-ls").setup({
     debug = true,
     sources = {
         require("null-ls").builtins.formatting.stylua.with({
             extra_args = { "--indent-type", "Spaces" },
         }),
-        require("null-ls").builtins.formatting.black,
         require("null-ls").builtins.diagnostics.luacheck.with({
             extra_args = { "--config", vim.fn.expand("$XDG_CONFIG_HOME/luacheck/.luacheckrc") },
         }),
         -- require("null-ls").builtins.diagnostics.mypy.with({
         --     extra_args = { "--ignore-missing-imports" },
         -- }),
-        require("null-ls").builtins.formatting.reorder_python_imports,
         require("null-ls").builtins.diagnostics.shellcheck,
         require("null-ls").builtins.formatting.trim_whitespace,
+
+        -- python
         require("null-ls").builtins.diagnostics.ruff,
+        require("null-ls").builtins.formatting.ruff,
+        require("null-ls").builtins.formatting.black,
     },
     on_attach = on_attach_null_ls,
+})
+require("mason-null-ls").setup({
+    -- ensure_installed = nil,
+    automatic_installation = true,
 })
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
@@ -567,12 +574,17 @@ local servers = {
     --     },
     -- },
     pylsp = {
-        configurationSources = 'flake8',
-        plugins = {
-            flake8 = {
-                enabled = "true",
-                maxLineLength = 120
-            }
+        pylsp = {
+            plugins = {
+                pycodestyle = { enabled = false },
+                flake8 = { enabled = false },
+                pydocstyle = { enabled = false },
+                pyflakes = { enabled = false },
+                pylint = { enabled = false },
+                mccabe = { enabled = false },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+            },
         }
     },
     pyright = {
@@ -606,35 +618,35 @@ local servers = {
     --             enable = false,
     --         },
     --     },
-        -- Lua = {
-        --     workspace = { checkThirdParty = false },
-        --     telemetry = { enable = false },
-        -- },
+    -- Lua = {
+    --     workspace = { checkThirdParty = false },
+    --     telemetry = { enable = false },
+    -- },
     -- },
 }
 
-require'lspconfig'.lua_ls.setup {
-  settings = {
-    Lua = {
-        runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = "LuaJIT",
-        },
-        diagnostics = {
-            -- Get the language server to recognize the globals
-            globals = { "vim", "hs", "spoon" },
-        },
-        workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = libraries,
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-            enable = false,
+require("lspconfig").lua_ls.setup({
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                -- Get the language server to recognize the globals
+                globals = { "vim", "hs", "spoon" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = libraries,
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
         },
     },
-  },
-}
+})
 
 -- Setup neovim lua configuration
 require("neodev").setup()
@@ -642,8 +654,6 @@ require("neodev").setup()
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
-require("mason").setup()
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require("mason-lspconfig")
@@ -666,20 +676,12 @@ mason_lspconfig.setup_handlers({
     end,
 })
 
-require("lspconfig")['ccls'].setup({
+require("lspconfig")["ccls"].setup({
     capabilities = capabilities,
     on_attach = on_attach,
     settings = {},
 })
 
-require("mason-null-ls").setup({
-    ensure_installed = {
-        "stylua",
-        "black",
-        "reorder_python_imports",
-        "mypy",
-    },
-})
 -- Setup lspconfig.
 
 -- Turn on lsp status information

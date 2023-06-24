@@ -33,6 +33,9 @@ source ~/.zshrc
 <"$XDG_CONFIG_HOME/luarocks/luarocks.txt" xargs -n1 luarocks install
 
 # random mac settings {{{
+# many of these were taken from these two sources:
+# https://github.com/mathiasbynens/dotfiles/blob/main/.macos
+# https://github.com/buo/dotfiles/blob/master/osx/_25trackpad.sh
 
 # allow key-repeat and speed it up
 defaults write -g ApplePressAndHoldEnabled -bool false
@@ -53,5 +56,12 @@ defaults write com.apple.Finder "AppleShowAllFiles" -bool "true"
 
 # don't warn whenever I change file extensions
 defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
+
+# Enable three finger drag
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+defaults -currentHost write -g com.apple.trackpad.threeFingerDragGesture -bool true
+defaults -currentHost write -g com.apple.trackpad.threeFingerHorizSwipeGesture -int 0
+defaults -currentHost write -g com.apple.trackpad.threeFingerVertSwipeGesture -int 0
 
 # }}}

@@ -1,5 +1,6 @@
 # essentials
 brew 'mas'
+cask 'authy'
 cask 'google-drive'
 cask 'kitty'
 cask 'wezterm'
