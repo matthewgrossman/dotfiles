@@ -47,6 +47,16 @@ config.keys = {
     mods = "SUPER",
     action = act.SpawnCommandInNewTab({ cwd = "~" }),
   },
+  {
+    key = "[",
+    mods = "SUPER",
+    action = act.MoveTabRelative(-1),
+  },
+  {
+    key = "]",
+    mods = "SUPER",
+    action = act.MoveTabRelative(1),
+  },
 }
 
 for i = 1, 8 do
