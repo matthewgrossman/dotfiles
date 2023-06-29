@@ -332,7 +332,7 @@ LockWatcher:start()
 -- luacheck:ignore 
 HRWindowThings = function ()
     HRWindow = nil
-    URLTitleSubstring = "Essentials H2"
+    URLTitleSubstring = "PDHE"
     for _, window in pairs(WF:getWindows()) do
         if string.find(window:title(), URLTitleSubstring) then
             HRWindow = window

@@ -198,8 +198,17 @@ vim.keymap.set("n", "<C-I>", "<C-I>")
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
--- change last-searched word, with no register-clobbering issues
-vim.keymap.set("n", "c/", ":%s///g<left><left>")
+-- maps for "normal" buffers only, to exclude mappings in telescope, etc
+local normalbuf = vim.api.nvim_create_augroup('normalbuf', { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = normalbuf,
+    callback = function(args)
+        if vim.bo[args.buf].buftype ~= '' then return end
+
+        -- change last-searched word, with no register-clobbering issues
+        vim.keymap.set("n", "c/", ":%s///g<left><left>", {  buffer = args.buf  })
+    end
+})
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
@@ -217,7 +226,7 @@ vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 -- a vim.ui.input, which breaks things in a few plugins I have.
 -- this is a fine workaround until https://github.com/neovim/neovim/issues/18144
 -- https://vim.fandom.com/wiki/Avoid_the_escape_key
-vim.keymap.set("c", "<C-c>", "<C-c>", { remap = true, silent = true })
+-- vim.keymap.set("c", "<C-c>", "<C-c>", { remap = true, silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -539,12 +548,12 @@ require("mason").setup()
 require("null-ls").setup({
     debug = true,
     sources = {
-        require("null-ls").builtins.formatting.stylua.with({
-            extra_args = { "--indent-type", "Spaces" },
-        }),
-        require("null-ls").builtins.diagnostics.luacheck.with({
-            extra_args = { "--config", vim.fn.expand("$XDG_CONFIG_HOME/luacheck/.luacheckrc") },
-        }),
+        -- require("null-ls").builtins.formatting.stylua.with({
+        --     extra_args = { "--indent-type", "Spaces" },
+        -- }),
+        -- require("null-ls").builtins.diagnostics.luacheck.with({
+        --     extra_args = { "--config", vim.fn.expand("$XDG_CONFIG_HOME/luacheck/.luacheckrc") },
+        -- }),
         -- require("null-ls").builtins.diagnostics.mypy.with({
         --     extra_args = { "--ignore-missing-imports" },
         -- }),
@@ -754,7 +763,7 @@ if vim.env.WSL_DISTRO_NAME then
 end
 
 require("matchparen").setup({})
-require("which-key").setup()
+-- require("which-key").setup()
 
 require("mini.ai").setup({
     mappings = {
