@@ -5,9 +5,6 @@ set hidden
 nnoremap H ^
 nnoremap L $
 
-" make capital Y act more normal
-nnoremap Y y$
-
 " make saving easier
 nnoremap <c-s> :w<CR>
 inoremap <c-s> <c-o>:w<CR>
