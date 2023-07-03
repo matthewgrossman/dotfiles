@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 
 alias shutdown='wsl.exe --terminate $WSL_DISTRO_NAME'
+wezterm() {
+    wezterm.exe "$@"
+}
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 export BROWSER='cmd.exe /c start ""'
