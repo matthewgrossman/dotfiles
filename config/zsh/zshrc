@@ -98,3 +98,4 @@ else
 fi
 source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+eval "$(direnv hook zsh)"
