@@ -12,6 +12,7 @@ winget install OpenWhisperSystems.Signal --accept-package-agreements
 winget install Google.Drive --accept-package-agreements
 winget install KeePassXCTeam.KeePassXC --accept-package-agreements
 winget install Microsoft.PowerToys --accept-package-agreements
+winget install SyncTrayzor.SyncTrayzor --accept-package-agreements
 
 # hardware
 winget install Nvidia.GeForceExperience --accept-package-agreements

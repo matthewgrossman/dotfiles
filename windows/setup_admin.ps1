@@ -4,5 +4,6 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 choco install -y razer-synapse-3
 choco install -y 7zip
+choco install -y firacode
 
 wsl --install --distribution Ubuntu
