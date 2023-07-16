@@ -204,8 +204,8 @@ vnoremap <C-l> <esc><C-w>l
 let g:mkdp_auto_close = 0
 
 " gutentags config
-let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
-set nofsync
+" let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
+" set nofsync
 
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)
@@ -265,13 +265,13 @@ let g:test#strategy = 'clipboard'
 let g:highlightedyank_highlight_duration = 150
 
 " fugitive config
-nmap <Leader>gg :Git<cr>
-nmap <Leader>gdd :Gdiffsplit<cr>
-nmap <Leader>gb :Git blame<cr>
-nmap <Leader>ga :Gwrite<cr>
-nmap <Leader>gp :Git push<cr>
-nmap <Leader>gh V:GBrowse<cr>
-vmap <Leader>gh :GBrowse<cr>
+" nmap <Leader>gg :Git<cr>
+" nmap <Leader>gdd :Gdiffsplit<cr>
+" nmap <Leader>gb :Git blame<cr>
+" nmap <Leader>ga :Gwrite<cr>
+" nmap <Leader>gp :Git push<cr>
+" nmap <Leader>gh V:GBrowse<cr>
+" vmap <Leader>gh :GBrowse<cr>
 
 " winbar config
 au VimEnter,BufWinEnter * if &buftype == "" | setlocal winbar=%f | endif

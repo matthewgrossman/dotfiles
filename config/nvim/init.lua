@@ -61,8 +61,9 @@ require("packer").startup(function(use)
     use("tpope/vim-fugitive")
     use("tpope/vim-rhubarb")
     use("tpope/vim-eunuch")
-    use("ludovicchabant/vim-gutentags")
+    -- use("ludovicchabant/vim-gutentags")
     use("majutsushi/tagbar")
+    use("NeogitOrg/neogit")
 
     -- usability
     use("numToStr/Comment.nvim")
@@ -203,10 +204,18 @@ local normalbuf = vim.api.nvim_create_augroup('normalbuf', { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
     group = normalbuf,
     callback = function(args)
-        if vim.bo[args.buf].buftype ~= '' then return end
+        local buf = vim.bo[args.buf]
+        if buf.filetype == "fugitive" then
+            vim.wo.foldmethod = "syntax"
+            vim.keymap.set("n", "<C-p>", "[c", { buffer = args.buf, remap=true })
+            vim.keymap.set("n", "<C-n>", "]c", { buffer = args.buf, remap=true })
+            -- print(string.format('inside fugitive: %s', vim.inspect(buf.filetype)))
+            return
+        end
+        if buf.buftype ~= '' then return end
 
         -- change last-searched word, with no register-clobbering issues
-        vim.keymap.set("n", "c/", ":%s///g<left><left>", {  buffer = args.buf  })
+        vim.keymap.set("n", "c/", ":%s///g<left><left>", { buffer = args.buf })
     end
 })
 
@@ -215,6 +224,18 @@ vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
     local branch = vim.fn.system("git default-branch")
     return string.format(":Gvdiffsplit %s:%%<CR>", branch)
 end, { expr = true, silent = true })
+
+vim.keymap.set("n", "<leader>gg", ":Git<cr>")
+vim.keymap.set("n", "<leader>gdd", ":Gdiffsplit<cr>")
+vim.keymap.set("n", "<leader>gb", ":Git blame<cr>")
+vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
+vim.keymap.set("n", "<leader>gp", ":Git push<cr>")
+vim.keymap.set("n", "<leader>gh", "V:GBrowse<cr>")
+vim.keymap.set("v", "<leader>gh", ":GBrowse<cr>")
+
+-- neogit
+local neogit = require('neogit')
+neogit.setup {}
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
