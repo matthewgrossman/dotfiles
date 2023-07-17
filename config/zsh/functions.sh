@@ -198,3 +198,27 @@ se_agent_killer() {
       sleep 120
     done
 }
+
+function lz() {
+    filename="$HOME/src/repos.txt"
+    if [[ ! -f "$filename" || $(find "$filename" -mtime +30) ]]; then
+        echo "Refreshing repos list"
+        echo "" > "$filename"
+        orgs=("gretelai" "gretellabs")
+        for repo in "${orgs[@]}"; do
+            gh repo list "$repo" --json nameWithOwner,name,sshUrl --jq '.[] | [.nameWithOwner, .name, .sshUrl] | @tsv' >> "$filename"
+        done
+    fi
+    out=$(fzf --with-nth 1 < "$filename")
+    [[ -z "$out" ]] && return
+
+    IFS=$'\t' read -r nameWithOwner repo sshUrl <<< "$out"
+    if [[ -d "$HOME/src/$repo" ]]; then
+        cd "$HOME/src/$repo"
+    else
+        cd "$HOME/src"
+        gh repo clone "$nameWithOwner"
+        cd "$repo"
+    fi
+
+}
