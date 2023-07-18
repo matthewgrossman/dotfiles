@@ -79,7 +79,7 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 PATH=$PATH:/Users/mgrossman/.lyftkube-bin
 
 # zprof
-export PATH=/opt/homebrew/bin:$PATH
+export PATH=$PATH:/opt/homebrew/bin
 export PATH="$HOME/.local/bin:$PATH"
 
 if [[ "$(uname)" == "Linux" ]]; then
