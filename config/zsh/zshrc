@@ -65,10 +65,9 @@ if [ -d "$HOME/.kube"  ]; then
     export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 fi
 
-# lyft
-export PROJECT_ROOT="$HOME/src"
-if [ -f ~/.lyftrc  ]; then
-    source ~/.lyftrc
+# gretel
+if [ -f ~/.gretelrc  ]; then
+    source ~/.gretelrc
 fi
 
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
@@ -76,7 +75,6 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
-PATH=$PATH:/Users/mgrossman/.lyftkube-bin
 
 # zprof
 export PATH=$PATH:/opt/homebrew/bin
