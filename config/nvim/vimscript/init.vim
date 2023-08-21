@@ -96,6 +96,7 @@ set cursorline
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set cinkeys-=:
 
 " don't error out when quitting w/ an open terminal
 " https://github.com/neovim/neovim/issues/14061

@@ -14,6 +14,7 @@ done
 compinit -C
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export WORDCHARS=${WORDCHARS/\/}
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
 export PATH="$HOME/bin:$PATH"
@@ -24,11 +25,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
-export PATH="/usr/local/opt/libxml2/bin:$PATH"
 export CLANG_FORMAT="clang-format"
-alias bazel=bazelisk
 HISTSIZE=10000000
 SAVEHIST=1000000
 setopt autocd extendedglob

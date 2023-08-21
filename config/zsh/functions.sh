@@ -222,3 +222,11 @@ function lz() {
     fi
 
 }
+
+function jvenv() {
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install jupyterlab
+    pip install ipykernel
+    python -m ipykernel install --user --name=venv
+}

@@ -225,7 +225,7 @@ vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
     return string.format(":Gvdiffsplit %s:%%<CR>", branch)
 end, { expr = true, silent = true })
 
-vim.keymap.set("n", "<leader>gg", ":Git<cr>")
+vim.keymap.set("n", "<leader>gg", ":tab Git<cr>")
 vim.keymap.set("n", "<leader>gdd", ":Gdiffsplit<cr>")
 vim.keymap.set("n", "<leader>gb", ":Git blame<cr>")
 vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
@@ -628,6 +628,7 @@ local servers = {
     },
     rust_analyzer = {},
     tsserver = {},
+    terraformls = {},
 
     -- lua_ls = {
     --     Lua = {
