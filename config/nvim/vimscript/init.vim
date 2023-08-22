@@ -1,11 +1,3 @@
-" normal settings
-
-
-" make saving easier
-nnoremap <c-s> :w<CR>
-inoremap <c-s> <c-o>:w<CR>
-vnoremap <c-s> <esc>:w<CR>gv
-
 " common typos
 command! -bang Qa qa
 command! -bang QA qa
@@ -15,31 +7,6 @@ command! -bang Wqa wqa
 
 " paste from the copy buffer
 vnoremap x "0p
-
-" copy things from vim-rsi
-inoremap        <C-A> <C-O>^
-cnoremap        <C-A> <Home>
-
-inoremap <expr> <C-B> getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
-cnoremap        <C-B> <Left>
-
-inoremap <expr> <C-D> col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
-cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
-
-inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
-
-inoremap <expr> <C-F> col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
-cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
-
-
-noremap!        <M-b> <S-Left>
-noremap!        <M-f> <S-Right>
-noremap!        <M-d> <C-O>dw
-cnoremap        <M-d> <S-Right><C-W>
-noremap!        <M-n> <Down>
-noremap!        <M-p> <Up>
-noremap!        <M-BS> <C-W>
-noremap!        <M-C-h> <C-W>
 
 " don't error out when quitting w/ an open terminal
 " https://github.com/neovim/neovim/issues/14061
@@ -134,9 +101,6 @@ vnoremap <C-h> <esc><C-w>h
 vnoremap <C-j> <esc><C-w>j
 vnoremap <C-k> <esc><C-w>k
 vnoremap <C-l> <esc><C-w>l
-
-" markdown config
-let g:mkdp_auto_close = 0
 
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)

@@ -264,6 +264,26 @@ vim.keymap.set("n", "<C-I>", "<C-I>")
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
+-- make saving easier
+vim.keymap.set("n", "<C-s>", ":w<CR>")
+vim.keymap.set("i", "<C-s>", "<c-o>:w<CR>")
+vim.keymap.set("v", "<C-s>", "<esc>:w<CR>gv")
+
+-- readline-esque bindings
+vim.keymap.set("i", "<C-a>", "<c-o>^")
+vim.keymap.set("i", "<C-b>", "<Left>")
+vim.keymap.set("i", "<C-d>", "<Del>")
+vim.keymap.set("i", "<C-e>", "<c-o>$")
+vim.keymap.set("i", "<C-f>", "<Right>")
+vim.keymap.set("c", "<C-a>", "<Home>")
+vim.keymap.set("c", "<C-b>", "<Left>")
+vim.keymap.set("c", "<C-d>", "<Del>")
+vim.keymap.set("c", "<C-e>", "<End>")
+vim.keymap.set("c", "<C-f>", "<Right>")
+
+-- allow indent/dedent now that we've clobbered ctrl-d
+vim.keymap.set("i", "<C-s-t>", "<c-d>")
+
 -- maps for "normal" buffers only, to exclude mappings in telescope, etc
 local normalbuf = vim.api.nvim_create_augroup('normalbuf', { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {

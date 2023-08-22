@@ -58,6 +58,11 @@ config.keys = {
     mods = "SUPER",
     action = act.MoveTabRelative(1),
   },
+  {
+    key = "t",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 for i = 1, 8 do
