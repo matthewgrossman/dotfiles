@@ -29,78 +29,14 @@ autocmd FileType go setlocal noexpandtab
 " reload external changes
 autocmd! FocusGained,BufEnter * if mode() != 'c' | checktime | endif
 
-" Leader commands
-nnoremap <silent> <Leader>c :let @+ = expand("%")<CR> |" copy filepath
-nnoremap <leader>sv :source $MYVIMRC<CR>
-nnoremap <silent> <leader>l :redraw!<CR>
-
-" python config
-" use host python3
-let g:python3_host_prog = "/usr/local/bin/python3"
-
 " cron config
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 " NEOVIM SPECIFIC
 
 " neovim remote
-let $EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-let $VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
 autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
-
-" NEOVIM TERMINAL CONFIG
-autocmd TermOpen * call InitTermBuffer()
-function! InitTermBuffer()
-    setlocal nonumber
-    setlocal signcolumn=no
-    nnoremap <buffer> <C-c> :startinsert<CR>
-    nnoremap <buffer> <C-b> :startinsert<CR>
-    nnoremap <buffer> <C-e> :startinsert<CR><C-e>
-    nnoremap <buffer> <C-a> :startinsert<CR><C-a>
-    nnoremap <buffer> q :startinsert<CR>q
-endfunction
-
-nnoremap <C-w>\| :vsplit term://$SHELL <CR>:startinsert<CR>
-nnoremap <C-w>- :split term://$SHELL <CR>:startinsert<CR>
-nnoremap <C-w>t :tabnew <bar> :terminal<CR>a
-vnoremap <C-w>\| <esc>:vsplit term://$SHELL <CR>:startinsert<CR>
-vnoremap <C-w>- <esc>:split term://$SHELL <CR>:startinsert<CR>
-vnoremap <C-w>t <esc>:tabnew <bar> :terminal<CR>a
-
-" Remember last mode in terminal buffer
-function! LeaveTermWhileInInsert(direction)
-    let b:last_mode = 'insert'
-    execute 'wincmd '.a:direction
-endfunction
-function! LeaveTermAndResetMode()
-    let b:last_mode = 'normal'
-endfunction
-function! EnterTermAndActivateLastMode()
-    if !exists('b:last_mode') || (exists('b:last_mode') && b:last_mode == 'insert')
-        startinsert
-    endif
-endfunction
-autocmd WinEnter term://* silent call EnterTermAndActivateLastMode()
-tnoremap <silent> <esc> <C-\><C-N>:call LeaveTermAndResetMode()<CR>
-
-tnoremap <silent> <C-h> <C-\><C-N>:call LeaveTermWhileInInsert('h')<CR>
-tnoremap <silent> <C-j> <C-\><C-N>:call LeaveTermWhileInInsert('j')<CR>
-tnoremap <silent> <C-k> <C-\><C-N>:call LeaveTermWhileInInsert('k')<CR>
-tnoremap <silent> <C-l> <C-\><C-N>:call LeaveTermWhileInInsert('l')<CR>
-tnoremap <M-[> <Esc>
-inoremap <C-h> <C-\><C-N><C-w>h
-inoremap <C-j> <C-\><C-N><C-w>j
-inoremap <C-k> <C-\><C-N><C-w>k
-inoremap <C-l> <C-\><C-N><C-w>l
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-vnoremap <C-h> <esc><C-w>h
-vnoremap <C-j> <esc><C-w>j
-vnoremap <C-k> <esc><C-w>k
-vnoremap <C-l> <esc><C-w>l
 
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)

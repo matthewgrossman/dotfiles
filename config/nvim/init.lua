@@ -203,12 +203,12 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
 -- disable preview window
-vim.o.pumheight=30
+vim.o.pumheight = 30
 vim.o.hidden = true
 
 vim.o.autoread = true
 
-vim.o.inccommand="nosplit"
+vim.o.inccommand = "nosplit"
 
 -- Set colorscheme
 vim.o.termguicolors = true
@@ -303,6 +303,69 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.keymap.set("n", "c/", ":%s///g<left><left>", { buffer = args.buf })
     end
 })
+
+-- general leader commands
+vim.keymap.set("n", "<leader>c", ":let @+ = expand('%')<CR>", { silent = true })
+vim.keymap.set("n", "<leader>l", ":redraw!<CR>", { silent = true })
+
+-- neovim remote
+vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+
+-- terminal
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function(args)
+        vim.wo.number = false
+        vim.wo.signcolumn = "no"
+        vim.keymap.set("n", "<C-c>", ":startinsert<CR>", { buffer = args.buf })
+        vim.keymap.set("n", "<C-b>", ":startinsert<CR>", { buffer = args.buf })
+        vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", { buffer = args.buf })
+        vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", { buffer = args.buf })
+    end
+})
+
+vim.keymap.set("n", "<C-w>|", ":vsplit term://$SHELL <CR>:startinsert<CR>")
+vim.keymap.set("n", "<C-w>-", ":split term://$SHELL <CR>:startinsert<CR>")
+vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
+
+function LeaveTermWhileInInsert(direction)
+    vim.b.last_mode = 'insert'
+    vim.cmd("wincmd " .. direction)
+end
+
+function LeaveTermAndResetMode()
+    vim.b.last_mode = 'normal'
+end
+
+function EnterTermAndActivateLastMode()
+    if vim.b.last_mode == "insert" then
+        vim.cmd("startinsert")
+    end
+end
+
+vim.api.nvim_create_autocmd("WinEnter", {
+    pattern = "term://*",
+    callback = EnterTermAndActivateLastMode
+})
+
+vim.keymap.set("t", "<esc>", "<C-\\><C-N>:lua LeaveTermAndResetMode()<CR>", {silent = true})
+vim.keymap.set("t", "<C-h>", function() LeaveTermWhileInInsert("h") end)
+vim.keymap.set("t", "<C-j>", function() LeaveTermWhileInInsert("j") end)
+vim.keymap.set("t", "<C-k>", function() LeaveTermWhileInInsert("k") end)
+vim.keymap.set("t", "<C-l>", function() LeaveTermWhileInInsert("l") end)
+vim.keymap.set("t", "<M-[>", "<esc>")
+vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
+vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
+vim.keymap.set("i", "<C-k>", "<C-\\><C-N><C-w>k")
+vim.keymap.set("i", "<C-l>", "<C-\\><C-N><C-w>l")
+vim.keymap.set("n", "<C-h>","<C-w>h")
+vim.keymap.set("n", "<C-j>","<C-w>j")
+vim.keymap.set("n", "<C-k>","<C-w>k")
+vim.keymap.set("n", "<C-l>","<C-w>l")
+vim.keymap.set("v", "<C-h>","<esc><C-w>h")
+vim.keymap.set("v", "<C-j>","<esc><C-w>j")
+vim.keymap.set("v", "<C-k>","<esc><C-w>k")
+vim.keymap.set("v", "<C-l>","<esc><C-w>l")
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
@@ -688,6 +751,24 @@ local servers = {
     --         configurationSources = { "flake8" },
     --     },
     -- },
+    jsonls = {
+        filetypes = { "json", "jsonc" },
+        settings = {
+            json = {
+                -- Schemas https://www.schemastore.org
+                schemas = {
+                    {
+                        fileMatch = { "package.json" },
+                        url = "https://json.schemastore.org/package.json"
+                    },
+                    {
+                        fileMatch = { "tsconfig*.json" },
+                        url = "https://json.schemastore.org/tsconfig.json"
+                    },
+                }
+            }
+        }
+    },
     pylsp = {
         pylsp = {
             plugins = {
