@@ -13,25 +13,6 @@ vnoremap x "0p
 command Z w | qa
 cabbrev wqa Z
 
-" filetype autocmds
-autocmd BufNewFile,BufRead *.sls  set syntax=yaml
-autocmd BufNewFile,BufRead tsconfig.json  set filetype=jsonc
-autocmd BufNewFile,BufRead Tiltfile  set filetype=bzl
-autocmd FileType json let &formatprg='python3 -m json.tool'
-autocmd FileType xml let &formatprg='xmllint --format -'
-autocmd FileType python let &formatprg='black --quiet -'
-autocmd FileType crontab setlocal nobackup nowritebackup
-autocmd FileType vimwiki setlocal noexpandtab
-autocmd FileType fugitive* nmap <buffer> q gq
-autocmd FileType lua setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType go setlocal noexpandtab
-
-" reload external changes
-autocmd! FocusGained,BufEnter * if mode() != 'c' | checktime | endif
-
-" cron config
-autocmd filetype crontab setlocal nobackup nowritebackup
-
 " NEOVIM SPECIFIC
 
 " neovim remote

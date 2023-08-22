@@ -348,7 +348,7 @@ vim.api.nvim_create_autocmd("WinEnter", {
     callback = EnterTermAndActivateLastMode
 })
 
-vim.keymap.set("t", "<esc>", "<C-\\><C-N>:lua LeaveTermAndResetMode()<CR>", {silent = true})
+vim.keymap.set("t", "<esc>", "<C-\\><C-N>:lua LeaveTermAndResetMode()<CR>", { silent = true })
 vim.keymap.set("t", "<C-h>", function() LeaveTermWhileInInsert("h") end)
 vim.keymap.set("t", "<C-j>", function() LeaveTermWhileInInsert("j") end)
 vim.keymap.set("t", "<C-k>", function() LeaveTermWhileInInsert("k") end)
@@ -358,14 +358,14 @@ vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
 vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
 vim.keymap.set("i", "<C-k>", "<C-\\><C-N><C-w>k")
 vim.keymap.set("i", "<C-l>", "<C-\\><C-N><C-w>l")
-vim.keymap.set("n", "<C-h>","<C-w>h")
-vim.keymap.set("n", "<C-j>","<C-w>j")
-vim.keymap.set("n", "<C-k>","<C-w>k")
-vim.keymap.set("n", "<C-l>","<C-w>l")
-vim.keymap.set("v", "<C-h>","<esc><C-w>h")
-vim.keymap.set("v", "<C-j>","<esc><C-w>j")
-vim.keymap.set("v", "<C-k>","<esc><C-w>k")
-vim.keymap.set("v", "<C-l>","<esc><C-w>l")
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("v", "<C-h>", "<esc><C-w>h")
+vim.keymap.set("v", "<C-j>", "<esc><C-w>j")
+vim.keymap.set("v", "<C-k>", "<esc><C-w>k")
+vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
@@ -407,6 +407,30 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     group = highlight_group,
     pattern = "*",
 })
+
+vim.filetype.add({
+    { pattern = "tsconfig.json", "jsonc" },
+    { pattern = "Tiltfile",      "bzl" },
+})
+-- FileType autocmds
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function(ev)
+        local buf = vim.bo[ev.buf]
+        if buf.filetype == "json" then
+            vim.opt_local.formatprg = "python3 -m json.tool"
+        elseif buf.filetype == "xml" then
+            vim.opt_local.formatprg = "xmllint --format -"
+        elseif buf.filetype == "crontab" then
+            vim.opt_local.backup = false
+            vim.opt_local.writebackup = false
+        elseif buf.filetype == "go" then
+            vim.opt_local.expandtab = false
+        end
+    end
+})
+
+-- reload external changes
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, { command = "if mode() != 'c' | checktime | endif" })
 
 -- status and window bars
 vim.opt.laststatus = 3
