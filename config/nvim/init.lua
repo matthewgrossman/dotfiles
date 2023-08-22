@@ -3,6 +3,12 @@ local M = {}
 -- disable matchparen before any config
 vim.g.loaded_matchparen = 1
 
+-- if vim.g.vscode then
+--     -- vscode extension
+--     vim.print("inside vscode neovim")
+-- else
+-- end
+
 -- Install packer
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local is_bootstrap = false
@@ -61,7 +67,6 @@ require("packer").startup(function(use)
     use("tpope/vim-fugitive")
     use("tpope/vim-rhubarb")
     use("tpope/vim-eunuch")
-    -- use("ludovicchabant/vim-gutentags")
     use("majutsushi/tagbar")
     use("NeogitOrg/neogit")
 
@@ -168,6 +173,43 @@ vim.o.smartcase = true
 vim.o.updatetime = 250
 vim.wo.signcolumn = "yes"
 
+-- make splits more intuitive
+vim.o.splitbelow = true
+vim.o.splitright = true
+
+-- make line-global replacements the default
+vim.o.gdefault = true
+
+-- enforce we are doing mac/linux files
+vim.o.fileformat = "unix"
+
+-- link to system clipboard
+vim.o.clipboard = "unnamed"
+
+-- diff
+vim.o.diffopt = 'internal,algorithm:patience,indent-heuristic'
+
+-- fold settings
+vim.o.foldmethod = "indent"
+vim.o.foldlevelstart = 99
+
+-- don't redraw during macros
+vim.o.lazyredraw = true
+vim.o.cursorline = true
+
+-- sane defaults for languages not covered by file plugins
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+
+-- disable preview window
+vim.o.pumheight=30
+vim.o.hidden = true
+
+vim.o.autoread = true
+
+vim.o.inccommand="nosplit"
+
 -- Set colorscheme
 vim.o.termguicolors = true
 vim.cmd([[colorscheme nightfox]])
@@ -190,6 +232,29 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- add line text object
+vim.keymap.set("x", "il", "g_o^")
+vim.keymap.set("o", "il", ":normal vil<CR>")
+
+-- improved repeatibility
+vim.keymap.set("v", "Q", ":normal @q<CR>")
+vim.keymap.set("n", "Q", "@q")
+vim.keymap.set("v", ".", ":normal .<CR>")
+
+-- hop to the beginning and ends of line easily
+vim.keymap.set("n", "H", "^")
+vim.keymap.set("n", "L", "$")
+
+-- highlight pasted text
+vim.keymap.set("n", "gp", "`[v`]")
+
+-- search options
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
+
+-- zoom in function to take a split to the full screen
+vim.keymap.set("n", "<C-w>z", ":tab split<CR>")
+
 -- Remap tab/s-tab to change... tabs
 vim.keymap.set("n", "<TAB>", "gt")
 vim.keymap.set("n", "<S-TAB>", "gT")
@@ -207,8 +272,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
         local buf = vim.bo[args.buf]
         if buf.filetype == "fugitive" then
             vim.wo.foldmethod = "syntax"
-            vim.keymap.set("n", "<C-p>", "[c", { buffer = args.buf, remap=true })
-            vim.keymap.set("n", "<C-n>", "]c", { buffer = args.buf, remap=true })
+            vim.keymap.set("n", "<C-p>", "[c", { buffer = args.buf, remap = true })
+            vim.keymap.set("n", "<C-n>", "]c", { buffer = args.buf, remap = true })
             -- print(string.format('inside fugitive: %s', vim.inspect(buf.filetype)))
             return
         end

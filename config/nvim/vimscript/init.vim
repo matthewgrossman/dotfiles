@@ -1,9 +1,5 @@
 " normal settings
-set hidden
 
-" hop to the beginning and ends of line easily
-nnoremap H ^
-nnoremap L $
 
 " make saving easier
 nnoremap <c-s> :w<CR>
@@ -19,13 +15,6 @@ command! -bang Wqa wqa
 
 " paste from the copy buffer
 vnoremap x "0p
-
-" easily replay recent macro
-nnoremap Q @q
-
-" improve visual commands
-vnoremap Q :normal @q<CR>
-vnoremap . :normal .<CR>
 
 " copy things from vim-rsi
 inoremap        <C-A> <C-O>^
@@ -52,52 +41,6 @@ noremap!        <M-p> <Up>
 noremap!        <M-BS> <C-W>
 noremap!        <M-C-h> <C-W>
 
-" add line text object
-xnoremap il g_o^
-onoremap il :normal vil<CR>
-xnoremap al $o0
-onoremap al :normal val<CR>
-
-" make line-global replacements the default
-set gdefault
-
-" enforce we are doing mac/linux files
-set fileformat=unix
-
-" highlight pasted text
-nnoremap gp `[v`]
-
-" search options
-nnoremap n nzz
-nnoremap N Nzz
-
-" link to system clipboard
-set clipboard=unnamed
-
-" make splits more intuitive
-set splitbelow
-set splitright
-
-" zoom in function to take a split to the full screen
-nnoremap <C-w>z :tab split<CR>
-
-" diff
-set diffopt=internal,algorithm:patience,indent-heuristic
-
-" fold settings
-set foldmethod=indent
-set foldlevelstart=99
-
-" don't redraw during macros
-set lazyredraw
-set cursorline
-
-" sane defaults for languages not covered by file plugins
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set cinkeys-=:
-
 " don't error out when quitting w/ an open terminal
 " https://github.com/neovim/neovim/issues/14061
 command Z w | qa
@@ -116,15 +59,7 @@ autocmd FileType fugitive* nmap <buffer> q gq
 autocmd FileType lua setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd FileType go setlocal noexpandtab
 
-" add toggle for pinning a window at a size
-nnoremap ]st :set winfixheight<CR>
-nnoremap [st :set nowinfixheight<CR>
-
-" disable preview window
-set pumheight=30
-
 " reload external changes
-set autoread
 autocmd! FocusGained,BufEnter * if mode() != 'c' | checktime | endif
 
 " Leader commands
@@ -140,7 +75,6 @@ let g:python3_host_prog = "/usr/local/bin/python3"
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 " NEOVIM SPECIFIC
-set inccommand=nosplit
 
 " neovim remote
 let $EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
@@ -204,10 +138,6 @@ vnoremap <C-l> <esc><C-w>l
 " markdown config
 let g:mkdp_auto_close = 0
 
-" gutentags config
-" let g:gutentags_cache_dir = $HOME.'/.build/gutentags'
-" set nofsync
-
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -215,23 +145,7 @@ nmap ga <Plug>(EasyAlign)
 " file_browser config
 nnoremap - :Telescope file_browser path=%:p:h<CR>
 
-" airline config
-" let g:airline_highlighting_cache = 1
-
-let g:html_indent_script1 = "inc"
-let g:html_indent_style1 = "inc"
-
-" vim-qf config
-noremap <leader>q <Plug>(qf_qf_toggle_stay)
-
-set shortmess+=c
-
-" python config
-let g:python_highlight_indent_errors = 0
-let g:python_highlight_space_errors = 0
-let g:python_highlight_all = 1
 abbreviate dbg breakpoint()
-
 " nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>a :Telescope grep_string search=<CR>
 
@@ -265,21 +179,8 @@ let g:test#strategy = 'clipboard'
 " highlightedyank config
 let g:highlightedyank_highlight_duration = 150
 
-" fugitive config
-" nmap <Leader>gg :Git<cr>
-" nmap <Leader>gdd :Gdiffsplit<cr>
-" nmap <Leader>gb :Git blame<cr>
-" nmap <Leader>ga :Gwrite<cr>
-" nmap <Leader>gp :Git push<cr>
-" nmap <Leader>gh V:GBrowse<cr>
-" vmap <Leader>gh :GBrowse<cr>
-
 " winbar config
 au VimEnter,BufWinEnter * if &buftype == "" | setlocal winbar=%f | endif
-
-" tagbar config
-noremap <Leader>t :TagbarOpenAutoClose<CR>
-let g:tagbar_left = 1
 
 " fzf config
 " nnoremap <c-p> :GFiles<cr>
