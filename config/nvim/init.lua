@@ -434,6 +434,14 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, { command = "if mode(
 -- status and window bars
 vim.opt.laststatus = 3
 
+
+-- generate ctags for bazel
+vim.opt.tags = '.tags'
+function MTags()
+    vim.cmd [[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]]
+end
+vim.keymap.set("n", "<leader>mt", MTags)
+
 require("lualine").setup()
 require("Comment").setup()
 -- require("neoscroll").setup()

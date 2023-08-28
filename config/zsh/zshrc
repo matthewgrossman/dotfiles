@@ -74,7 +74,7 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/functions.sh
 
 # zprof
-export PATH=$PATH:/opt/homebrew/bin
+export PATH=/opt/homebrew/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 if [[ "$(uname)" == "Linux" ]]; then
