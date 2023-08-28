@@ -25,7 +25,6 @@ require("packer").startup(function(use)
 
     use("nvim-lua/plenary.nvim")
     use("kyazdani42/nvim-web-devicons")
-    use("antoinemadec/FixCursorHold.nvim")
     use("jose-elias-alvarez/null-ls.nvim")
     use("lewis6991/gitsigns.nvim")
 
@@ -517,6 +516,7 @@ require("nvim-treesitter.configs").setup({
         "json",
         "json5",
         "rust",
+        "terraform",
     },
 
     highlight = { enable = true },

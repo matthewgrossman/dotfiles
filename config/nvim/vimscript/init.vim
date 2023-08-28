@@ -57,9 +57,6 @@ let g:test#strategy = 'clipboard'
 " let g:test#transformation = 'python_module'
 " let g:test#python#runner = 'pytest'
 
-" highlightedyank config
-let g:highlightedyank_highlight_duration = 150
-
 " winbar config
 au VimEnter,BufWinEnter * if &buftype == "" | setlocal winbar=%f | endif
 
