@@ -765,6 +765,8 @@ require("null-ls").setup({
         require("null-ls").builtins.diagnostics.ruff,
         require("null-ls").builtins.formatting.ruff,
         require("null-ls").builtins.formatting.black,
+        require("null-ls").builtins.diagnostics.buildifier,
+        require("null-ls").builtins.formatting.buildifier,
     },
     on_attach = on_attach_null_ls,
 })
