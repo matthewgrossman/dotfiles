@@ -17,34 +17,34 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export WORDCHARS=${WORDCHARS/\/}
 
 HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
-export PATH="$HOME/bin:$PATH"
 export GOPATH=$HOME/src
 export GO111MODULE='on'
-export PYTHONBREAKPOINT=ipdb.set_trace
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$HOME/.cargo/bin
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export CLANG_FORMAT="clang-format"
+
+# only modify PATH if we aren't in a nvim subshell
+if [ -z "$NVIM" ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+    export PATH="/usr/local/sbin:$PATH"
+    export PATH="$HOME/.cargo/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
+    export PATH="$GOPATH/bin:$PATH"
+    export PATH="HOME/bin:$PATH"
+    export PATH="/usr/local/opt/llvm/bin:$PATH"
+    export CLANG_FORMAT="clang-format"
+
+    # when in nvim, VISUAL is overriden by nvr instead
+    export VISUAL="$(which nvim)"
+fi
+
+if command -v direnv > /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
 HISTSIZE=10000000
 SAVEHIST=1000000
 setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 setopt CLOBBER
 bindkey -e
-
-#ruby things
-# eval "$(rbenv init -)"
-
-# node things
-# if command -v fnm > /dev/null; then
-#     eval "$(fnm env)"
-# fi
-
-# TERM=xterm-256color
-if [ -z "$NVIM" ]; then
-    export VISUAL="$(which nvim)"
-fi
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -68,16 +68,6 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
-
-# zprof
-export PATH=/opt/homebrew/bin:$PATH
-export PATH="$HOME/.local/bin:$PATH"
-
-# run after adding homebrew to PATH
-if command -v direnv > /dev/null; then
-    eval "$(direnv hook zsh)"
-fi
-
 
 if [[ "$(uname)" == "Linux" ]]; then
     # linux via `apt`
