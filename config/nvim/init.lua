@@ -782,13 +782,7 @@ require("mason-null-ls").setup({
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
 local servers = {
-    -- ccls = {},
     gopls = {},
-    -- pylsp = {
-    --     pylsp = {
-    --         configurationSources = { "flake8" },
-    --     },
-    -- },
     jsonls = {
         filetypes = { "json", "jsonc" },
         settings = {
@@ -807,29 +801,29 @@ local servers = {
             }
         }
     },
-    pylsp = {
-        pylsp = {
-            plugins = {
-                pycodestyle = { enabled = false },
-                flake8 = { enabled = false },
-                pydocstyle = { enabled = false },
-                pyflakes = { enabled = false },
-                pylint = { enabled = false },
-                mccabe = { enabled = false },
-                autopep8 = { enabled = false },
-                yapf = { enabled = false },
-            },
-        }
-    },
-    pyright = {
-        python = {
-            analysis = {
-                diagnosticSeverityOverrides = {
-                    reportUnusedVariable = false,
-                },
-            },
-        },
-    },
+    -- pylsp = {
+    --     pylsp = {
+    --         plugins = {
+    --             pycodestyle = { enabled = false },
+    --             flake8 = { enabled = false },
+    --             pydocstyle = { enabled = false },
+    --             pyflakes = { enabled = false },
+    --             pylint = { enabled = false },
+    --             mccabe = { enabled = false },
+    --             autopep8 = { enabled = false },
+    --             yapf = { enabled = false },
+    --         },
+    --     }
+    -- },
+    -- pyright = {
+    --     python = {
+    --         analysis = {
+    --             diagnosticSeverityOverrides = {
+    --                 reportUnusedVariable = false,
+    --             },
+    --         },
+    --     },
+    -- },
     rust_analyzer = {},
     tsserver = {},
     terraformls = {},
@@ -882,6 +876,14 @@ require("lspconfig").lua_ls.setup({
         },
     },
 })
+
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+require('lspconfig')['pyright'].setup {
+    capabilities = capabilities,
+    on_attach = on_attach
+}
 
 -- Setup neovim lua configuration
 require("neodev").setup()
