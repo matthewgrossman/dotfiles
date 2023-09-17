@@ -259,6 +259,9 @@ vim.keymap.set("n", "<TAB>", "gt")
 vim.keymap.set("n", "<S-TAB>", "gT")
 vim.keymap.set("n", "<C-I>", "<C-I>")
 
+-- match word-deletion to macOS
+vim.keymap.set("i", "<A-BS>", "<C-W>")
+
 -- clear highlighting
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
@@ -765,6 +768,7 @@ require("null-ls").setup({
         require("null-ls").builtins.diagnostics.ruff,
         require("null-ls").builtins.formatting.ruff,
         require("null-ls").builtins.formatting.black,
+        require("null-ls").builtins.formatting.isort,
         require("null-ls").builtins.diagnostics.buildifier,
         require("null-ls").builtins.formatting.buildifier,
     },
