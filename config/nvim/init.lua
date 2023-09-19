@@ -490,7 +490,6 @@ require("gitsigns").setup({
     end,
 })
 
-local nvim_lsp = require("lspconfig")
 require("nightfox").setup({
     options = {
         dim_inactive = true,
@@ -695,6 +694,68 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 -- }}}
 
+-- START LSP {{{
+require("mason").setup()
+require("mason-lspconfig").setup()
+local lsp = require("lspconfig")
+lsp.gopls.setup {}
+lsp.rust_analyzer.setup {}
+lsp.tsserver.setup {}
+lsp.terraformls.setup {}
+lsp.ccls.setup {}
+lsp.ccls.setup {}
+
+local libraries = vim.api.nvim_get_runtime_file("", true)
+table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
+lsp.lua_ls.setup({
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                -- Get the language server to recognize the globals
+                globals = { "vim", "hs", "spoon" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = libraries,
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+})
+lsp.jsonls.setup {
+    settings = {
+        jsonls = {
+            filetypes = { "json", "jsonc" },
+            settings = {
+                json = {
+                    -- Schemas https://www.schemastore.org
+                    schemas = {
+                        {
+                            fileMatch = { "package.json" },
+                            url = "https://json.schemastore.org/package.json"
+                        },
+                        {
+                            fileMatch = { "tsconfig*.json" },
+                            url = "https://json.schemastore.org/tsconfig.json"
+                        },
+                    }
+                }
+            }
+        },
+    }
+}
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+lsp.pyright.setup { capabilities = capabilities }
+
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     -- Enable underline, use default values
@@ -744,11 +805,6 @@ local on_attach = function(client, bufnr) -- luacheck: ignore
     on_attach_null_ls(client, bufnr)
 end
 
--- DEBUGGING LSP
--- vim.lsp.set_log_level("debug")
--- :lua vim.cmd('e'..vim.lsp.get_log_path())
-
-require("mason").setup()
 require("null-ls").setup({
     debug = true,
     sources = {
@@ -779,111 +835,11 @@ require("mason-null-ls").setup({
     automatic_installation = true,
 })
 
-local libraries = vim.api.nvim_get_runtime_file("", true)
-table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
-local servers = {
-    gopls = {},
-    jsonls = {
-        filetypes = { "json", "jsonc" },
-        settings = {
-            json = {
-                -- Schemas https://www.schemastore.org
-                schemas = {
-                    {
-                        fileMatch = { "package.json" },
-                        url = "https://json.schemastore.org/package.json"
-                    },
-                    {
-                        fileMatch = { "tsconfig*.json" },
-                        url = "https://json.schemastore.org/tsconfig.json"
-                    },
-                }
-            }
-        }
-    },
-    -- pylsp = {
-    --     pylsp = {
-    --         plugins = {
-    --             pycodestyle = { enabled = false },
-    --             flake8 = { enabled = false },
-    --             pydocstyle = { enabled = false },
-    --             pyflakes = { enabled = false },
-    --             pylint = { enabled = false },
-    --             mccabe = { enabled = false },
-    --             autopep8 = { enabled = false },
-    --             yapf = { enabled = false },
-    --         },
-    --     }
-    -- },
-    -- pyright = {
-    --     python = {
-    --         analysis = {
-    --             diagnosticSeverityOverrides = {
-    --                 reportUnusedVariable = false,
-    --             },
-    --         },
-    --     },
-    -- },
-    rust_analyzer = {},
-    tsserver = {},
-    terraformls = {},
+-- DEBUGGING LSP
+-- vim.lsp.set_log_level("debug")
+-- :lua vim.cmd('e'..vim.lsp.get_log_path())
 
-    -- lua_ls = {
-    --     Lua = {
-    --         runtime = {
-    --             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-    --             version = "LuaJIT",
-    --         },
-    --         diagnostics = {
-    --             -- Get the language server to recognize the globals
-    --             globals = { "vim", "hs", "spoon" },
-    --         },
-    --         workspace = {
-    --             -- Make the server aware of Neovim runtime files
-    --             library = libraries,
-    --         },
-    --         -- Do not send telemetry data containing a randomized but unique identifier
-    --         telemetry = {
-    --             enable = false,
-    --         },
-    --     },
-    -- Lua = {
-    --     workspace = { checkThirdParty = false },
-    --     telemetry = { enable = false },
-    -- },
-    -- },
-}
-
-require("lspconfig").lua_ls.setup({
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-            },
-            diagnostics = {
-                -- Get the language server to recognize the globals
-                globals = { "vim", "hs", "spoon" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = libraries,
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-})
-
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-require('lspconfig')['pyright'].setup {
-    capabilities = capabilities,
-    on_attach = on_attach
-}
+-- }}} END LSP
 
 -- Setup neovim lua configuration
 require("neodev").setup()
@@ -892,37 +848,8 @@ require("neodev").setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
--- Ensure the servers above are installed
-local mason_lspconfig = require("mason-lspconfig")
-mason_lspconfig.setup({
-    ensure_installed = vim.tbl_keys(servers),
-})
-
-mason_lspconfig.setup_handlers({
-    function(server_name)
-        -- ensures that the `servers` var is the source of truth
-        if servers[server_name] == nil then
-            return
-        end
-
-        require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-        })
-    end,
-})
-
-require("lspconfig")["ccls"].setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {},
-})
-
--- Setup lspconfig.
-
 -- Turn on lsp status information
--- require("fidget").setup()
+require("fidget").setup()
 
 -- telescope {{{
 -- indiviual pickers are in telescope.lua
