@@ -1,23 +1,7 @@
-" common typos
-command! -bang Qa qa
-command! -bang QA qa
-command! -bang Wq wq
-command! -bang WQ wq
-command! -bang Wqa wqa
-
-" paste from the copy buffer
-vnoremap x "0p
-
 " don't error out when quitting w/ an open terminal
 " https://github.com/neovim/neovim/issues/14061
 command Z w | qa
 cabbrev wqa Z
-
-" NEOVIM SPECIFIC
-
-" neovim remote
-autocmd FileType gitcommit,gitrebase,gitconfig setlocal bufhidden=delete
-autocmd BufNewFile,BufRead kubectl-edit-*.yaml  setlocal bufhidden=delete
 
 " vim-easy-align config
 xmap ga <Plug>(EasyAlign)

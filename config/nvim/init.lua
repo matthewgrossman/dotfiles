@@ -247,6 +247,9 @@ vim.keymap.set("n", "L", "$")
 -- highlight pasted text
 vim.keymap.set("n", "gp", "`[v`]")
 
+-- paste from the copy buffer
+vim.keymap.set("v", "x", "0p")
+
 -- search options
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
@@ -443,6 +446,7 @@ vim.opt.tags = '.tags'
 function MTags()
     vim.cmd [[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]]
 end
+
 vim.keymap.set("n", "<leader>mt", MTags)
 
 require("lualine").setup()
@@ -909,6 +913,14 @@ local cMessages = function()
 end
 vim.api.nvim_create_user_command("Scratch", cScratch, {})
 vim.api.nvim_create_user_command("Messages", cMessages, {})
+
+-- common typos
+vim.api.nvim_create_user_command("Qa", "qa", { bang = true })
+vim.api.nvim_create_user_command("QA", "qa", { bang = true })
+vim.api.nvim_create_user_command("Wq", "wq", { bang = true })
+vim.api.nvim_create_user_command("WQ", "wq", { bang = true })
+vim.api.nvim_create_user_command("Wqa", "wqa", { bang = true })
+vim.api.nvim_create_user_command("WQa", "wqa", { bang = true })
 -- }}}
 
 vim.cmd("runtime vimscript/init.vim")
