@@ -320,6 +320,9 @@ vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 -- terminal
 vim.api.nvim_create_autocmd("TermOpen", {
     callback = function(args)
+        -- https://github.com/neovim/neovim/issues/20726 workaround for freezing
+        vim.wo.foldmethod = "manual"
+
         vim.wo.number = false
         vim.wo.signcolumn = "no"
         vim.keymap.set("n", "<C-c>", ":startinsert<CR>", { buffer = args.buf })
