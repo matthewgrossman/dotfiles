@@ -27,7 +27,7 @@ if [ -z "$NVIM" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
     export PATH="$HOME/.local/bin:$PATH"
     export PATH="$GOPATH/bin:$PATH"
-    export PATH="HOME/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
     export PATH="/usr/local/opt/llvm/bin:$PATH"
     export CLANG_FORMAT="clang-format"
 
