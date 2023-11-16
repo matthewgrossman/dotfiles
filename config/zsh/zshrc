@@ -58,16 +58,16 @@ if [ -d "$HOME/.kube"  ]; then
     export KUBECONFIG="$KUBECONFIG:$kubeconfigs"
 fi
 
-# gretel
-if [ -f ~/.gretelrc  ]; then
-    source ~/.gretelrc
-fi
-
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
+
+# gretel
+if [ -f ~/.gretelrc  ]; then
+    source ~/.gretelrc
+fi
 
 if [[ "$(uname)" == "Linux" ]]; then
     # linux via `apt`

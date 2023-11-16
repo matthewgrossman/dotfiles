@@ -39,7 +39,7 @@ require("packer").startup(function(use)
             "williamboman/mason-lspconfig.nvim",
 
             -- Useful status updates for LSP
-            "j-hui/fidget.nvim",
+            -- "j-hui/fidget.nvim",
 
             -- Additional lua configuration, makes nvim stuff amazing
             "folke/neodev.nvim",
@@ -81,7 +81,6 @@ require("packer").startup(function(use)
     use("tpope/vim-unimpaired")
     use("echasnovski/mini.nvim")
     use("famiu/bufdelete.nvim")
-
     use("vim-test/vim-test")
     use("mhinz/vim-grepper")
     -- use 'romainl/vim-qf'
@@ -374,6 +373,19 @@ vim.keymap.set("v", "<C-h>", "<esc><C-w>h")
 vim.keymap.set("v", "<C-j>", "<esc><C-w>j")
 vim.keymap.set("v", "<C-k>", "<esc><C-w>k")
 vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
+
+-- vim-grepper
+vim.keymap.set({ "n", "x" }, "gs", "<plug>(GrepperOperator)")
+-- TODO this seems to break
+-- vim.g.grepper.highlight = 1
+-- vim.g.grepper.tools = { "rg" }
+
+-- vim-test
+vim.keymap.set("n", "<leader>r", ":TestNearest<CR>", { silent = true })
+vim.keymap.set("n", "<leader>R", ":TestFile<CR>", { silent = true })
+
+-- easyalign
+vim.keymap.set({ "n", "x" }, "ga", "<Plug>(EasyAlign)")
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
@@ -710,7 +722,6 @@ lsp.rust_analyzer.setup {}
 lsp.tsserver.setup {}
 lsp.terraformls.setup {}
 lsp.ccls.setup {}
-lsp.ccls.setup {}
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
@@ -775,45 +786,51 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
     update_in_insert = false,
 })
 
--- keybinds for formatting/diagnostics
-local on_attach_null_ls = function(_, bufnr) -- luacheck: ignore
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set("n", "gf", function()
-        vim.lsp.buf.format({ async = true })
-    end, bufopts)
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', 'gf', function()
+    vim.lsp.buf.format { async = true }
+end)
 
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
-    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, bufopts)
-    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
-end
 
-local on_attach = function(client, bufnr) -- luacheck: ignore
-    local nmap = function(keys, func, desc)
-        if desc then
-            desc = "LSP: " .. desc
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+        -- null-ls generally doesn't implement the below functions;
+        -- escape early to not apply keybinds
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client.name == "null-ls" then
+            return
         end
 
-        vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-    end
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-    nmap("<c-]>", vim.lsp.buf.definition, "[G]oto [D]efinition")
-    nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-    nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-    nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-    nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-    nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-    nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-    nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-    nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-
-    on_attach_null_ls(client, bufnr)
-end
+        -- Buffer local mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local opts = { buffer = ev.buf }
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+        vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+        end, opts)
+        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+        vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    end,
+})
 
 require("null-ls").setup({
-    debug = true,
     sources = {
         -- require("null-ls").builtins.formatting.stylua.with({
         --     extra_args = { "--indent-type", "Spaces" },
@@ -835,7 +852,6 @@ require("null-ls").setup({
         require("null-ls").builtins.diagnostics.buildifier,
         require("null-ls").builtins.formatting.buildifier,
     },
-    on_attach = on_attach_null_ls,
 })
 require("mason-null-ls").setup({
     -- ensure_installed = nil,
@@ -897,6 +913,7 @@ require("telescope").setup({
 })
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
+vim.keymap.set("n", "-", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
 vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
 vim.keymap.set("n", "q:", require("telescope.builtin").command_history)

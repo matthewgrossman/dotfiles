@@ -3,13 +3,6 @@
 command Z w | qa
 cabbrev wqa Z
 
-" vim-easy-align config
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
-" file_browser config
-nnoremap - :Telescope file_browser path=%:p:h<CR>
-
 abbreviate dbg breakpoint()
 " nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>a :Telescope grep_string search=<CR>
@@ -21,16 +14,17 @@ command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
 " vim-grepper config
+" TODO just drop for telescope?
 nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
-let g:grepper = {
-\   'highlight': 1,
-\   'tools': ['rg']
-\ }
+" let g:grepper = {
+" \   'highlight': 1,
+" \   'tools': ['rg']
+" \ }
 
 " vim-test config
-nmap <silent> <leader>r :TestNearest<CR>
-nmap <silent> <leader>R :TestFile<CR>
+" nmap <silent> <leader>r :TestNearest<CR>
+" nmap <silent> <leader>R :TestFile<CR>
 function! ClipboardStrategy(cmd)
     let @+ = a:cmd
 endfunction
