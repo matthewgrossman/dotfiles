@@ -20,6 +20,7 @@ brew 'fnm'
 brew 'fzf'
 brew 'gh'
 brew 'git'
+brew 'git-lfs'
 brew 'go'
 brew 'gron'
 brew 'jq'
@@ -107,6 +108,7 @@ brew 'wireguard-tools'
 brew 'xonsh'
 brew 'xsv'
 brew 'yarn'
+brew 'cloudflare-wrangler2'
 
 mas 'todoist', id: 585829637
 mas 'tailscale', id: 1475387142

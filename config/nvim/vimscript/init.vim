@@ -4,6 +4,7 @@ command Z w | qa
 cabbrev wqa Z
 
 abbreviate dbg breakpoint()
+abbreviate iii import ipdb; ipdb.set_trace()
 " nnoremap <leader>a <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>a :Telescope grep_string search=<CR>
 

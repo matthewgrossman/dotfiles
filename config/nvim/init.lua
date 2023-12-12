@@ -464,14 +464,11 @@ end
 
 vim.keymap.set("n", "<leader>mt", MTags)
 
+require("ibl").setup()
 require("lualine").setup()
 require("Comment").setup()
 -- require("neoscroll").setup()
 
-require("indent_blankline").setup({
-    char = "┊",
-    show_trailing_blankline_indent = false,
-})
 
 require("gitsigns").setup({
     on_attach = function(bufnr)
@@ -872,7 +869,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 -- Turn on lsp status information
-require("fidget").setup()
+-- require("fidget").setup()
 
 -- telescope {{{
 -- indiviual pickers are in telescope.lua
