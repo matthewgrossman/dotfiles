@@ -183,3 +183,9 @@ function jvenv() {
     pip install ipykernel
     python -m ipykernel install --user --name=venv
 }
+
+function lc() {
+    local cmd
+    cmd=$(fc -ln -50 | awk '!/lc/' | fzf --tac)
+    [ -n "$cmd" ] && echo -n "$cmd" | pbcopy
+}
