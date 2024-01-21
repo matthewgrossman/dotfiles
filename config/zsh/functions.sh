@@ -123,45 +123,6 @@ sync() {
     done
 }
 
-lkssh() {
-    # $> lkssh ufo 06a26
-    local service sha pod pods
-    service="$1"
-    sha="${2:0:5}" # grab only first 5 characters of arg $2
-    pods=$(lyftkube -e staging -p "$service" get pods)
-    pod=$(awk -v sha="$sha" '$3==sha {print $2;exit}' <<< "$pods")
-    lyftkube ssh "$pod"
-}
-
-deloffloaded() {
-    # $> deloffloaded ufo 8fad6
-    local service sha deployments
-    service="$1"
-    sha="${2:0:5}" # grab only first 5 characters of arg $2
-    deployments=$(lyftkube -e staging --cluster core-staging-1 kubectl -- -n "$service"-staging get deployments --selector='lyft.net/offloaded-facet=true')
-    deployment=$(awk -v sha="$sha" '$1 ~ sha {print $1;exit}' <<< "$deployments")
-    [ -z "$deployment" ] && echo "No deployment found for service {$service} and sha {$sha}" && return 1
-    lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
-}
-
-deloff () {
-    local service deployment deployments
-    service="$1"
-    deployments=$(lyftkube -e staging --cluster core-staging-1 kubectl -- -n "$service"-staging get deployments --selector='lyft.net/offloaded-facet=true' | awk 'NR>1 {print $1}')
-    deployment=$(fzf --tac --no-sort <<< "$deployments")
-    [[ -z "$deployment" ]] && echo 'cancelling offloaded-facet deletion' && return
-    lyftkube -e staging --cluster core-staging-1 kubectl -- delete --now -n "$service"-staging deployment/"$deployment"
-}
-
-lclone () {
-    local service
-    service="$1"
-    cd "$HOME/src" || return
-    gh repo clone "lyft/$service"
-    direnv allow "$service"
-    cd "$service" || return
-}
-
 sgs () {
     /opt/homebrew/bin/src search -stream -json "$@" | jq -c 'select(.repository != null) | { repo: .repository, match: .chunkMatches[]?.content, path: .path}'
 }
@@ -189,14 +150,6 @@ nmapm () {
     | map({(."@addrtype"): ."@addr", vendor: ."@vendor"})
     | add
     | "\(.ipv4)\t\(.mac)\t\(.vendor)"'
-}
-
-se_agent_killer() {
-    while true; do
-      echo "Killing se_agent at $(date)"
-      sudo pkill se_agent || echo "No se_agent"
-      sleep 120
-    done
 }
 
 function lz() {

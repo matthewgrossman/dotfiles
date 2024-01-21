@@ -6,7 +6,7 @@
     last-commit = log -1 --pretty=%B
 
     p = push
-    b = branch
+    b = "!git branch --sort=committerdate | awk '/^[^*]/ {print $1}'"
     fm = pull
     co = checkout
     dm = "!git diff $(git default-branch)"
@@ -31,12 +31,23 @@
     pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
     bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!git po && gh pr create --fill --web"
+    pr = "!git po && gh pr create --base $(git parent) --fill --web"
+    prinfo = "!f() { gh pr list --state all --json url,state --head $1 | jq '.[]'; }; f"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
     comment = "!gh pr comment -b"
     ptal = "!f() { gh pr comment -b \"ptal $1\"; }; f"
     offload = "!gh pr comment -b '/offload'"
+
+    # experimenting with setting branch parents in metadata
+    set-parent = "!git config branch.$(git branch-name).parent"
+    add-child = "!git config --add branch.$(git branch-name).child"
+    get-children = "!git config --get-all branch.$(git branch-name).child"
+    parent-pr = "!git prinfo $(git parent)"
+    update-parent = "!f() { status=$(git parent-pr | jq '.[\"state\"]']); par=$(git branch-name); git checkout -b $1; git set-parent $par; }; f"
+    parent = "!git config --get branch.$(git branch-name).parent || git default-branch"
+    pp = "!git checkout $(git parent) && git pull && git checkout - && git merge $(git parent) --no-edit"
+    bp = "!f() { par=$(git branch-name); git add-child $1; git checkout -b $1; git set-parent $par; }; f"
 [core]
     excludesfile = ~/.config/git/gitignore_global
 [pull]

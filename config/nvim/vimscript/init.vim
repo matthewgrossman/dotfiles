@@ -2,6 +2,7 @@
 " https://github.com/neovim/neovim/issues/14061
 command Z w | qa
 cabbrev wqa Z
+cabbrev wqa! Z
 
 abbreviate dbg breakpoint()
 abbreviate iii import ipdb; ipdb.set_trace()
