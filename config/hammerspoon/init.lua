@@ -58,7 +58,14 @@ for key, layouts in pairs(LayoutMapping) do
             end -- wrap around
             layout = layouts[unitRectIndex]
         end
-        hs.window.focusedWindow():moveToUnit(layout)
+        local win = hs.window.focusedWindow()
+
+        -- apply fix from https://github.com/Hammerspoon/hammerspoon/issues/3224
+        local axApp = hs.axuielement.applicationElement(win:application())
+        local oldAxEnhanced = axApp.AXEnhancedUserInterface
+        axApp.AXEnhancedUserInterface = false
+        win:moveToUnit(layout)
+        axApp.AXEnhancedUserInterface = oldAxEnhanced
     end)
 end
 
@@ -143,7 +150,7 @@ hs.hotkey.bind(AppHyper, "m", ToggleMute)
 
 -- create a keybind for play/pause on spotify, so we can map our mouse to it
 -- the mouse currently has an issue using the system-native play/pause
-hs.hotkey.bind(AppHyper, "0", function ()
+hs.hotkey.bind(AppHyper, "0", function()
     hs.spotify.playpause()
 end)
 
@@ -329,8 +336,8 @@ end)
 LockWatcher:start()
 
 -- HRWindow shenanigans {{{
--- luacheck:ignore 
-HRWindowThings = function ()
+-- luacheck:ignore
+HRWindowThings = function()
     HRWindow = nil
     URLTitleSubstring = "PDHE"
     for _, window in pairs(WF:getWindows()) do
@@ -345,11 +352,21 @@ HRWindowThings = function ()
     hs.hotkey.bind({ "cmd", "ctrl" }, "m", function()
         local oldWindow = hs.window.focusedWindow()
         HRWindow:focus()
-        hs.eventtap.keyStroke({"ctrl", "alt"}, ".", 200, HRApplication) -- next
-        hs.eventtap.keyStroke({"ctrl", "alt"}, "s", 200, HRApplication) -- submit
+        hs.eventtap.keyStroke({ "ctrl", "alt" }, ".", 200, HRApplication) -- next
+        hs.eventtap.keyStroke({ "ctrl", "alt" }, "s", 200, HRApplication) -- submit
         oldWindow:focus()
     end)
 end
+function zapEnhancedUserInterface()
+    for _, app in ipairs(hs.application.runningApplications()) do
+        local ax = hs.axuielement.applicationElement(app)
+        if ax.AXEnhancedUserInterface then
+            print(app:name())
+            ax.AXEnhancedUserInterface = false
+        end
+    end
+end
+
 -- HRWindowThings()
 --- }}}
 
