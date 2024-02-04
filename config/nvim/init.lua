@@ -45,6 +45,10 @@ require("packer").startup(function(use)
             "folke/neodev.nvim",
         },
     })
+    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
+    use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap" } }
+    use { "nvim-telescope/telescope-dap.nvim" }
+    use { 'theHamsta/nvim-dap-virtual-text' }
     -- use("SmiteshP/nvim-navic")
     use({ -- Autocompletion
         "hrsh7th/nvim-cmp",
@@ -66,22 +70,43 @@ require("packer").startup(function(use)
     use("tpope/vim-fugitive")
     use("tpope/vim-rhubarb")
     use("tpope/vim-eunuch")
+    use("tpope/vim-sleuth")
     use("majutsushi/tagbar")
-    use("NeogitOrg/neogit")
 
     -- usability
     use("numToStr/Comment.nvim")
+    use { 'stevearc/dressing.nvim' }
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     -- use({ "~/src/telescope-file-browser.nvim" })
     use({ "nvim-telescope/telescope-file-browser.nvim" })
-    use("lukas-reineke/indent-blankline.nvim")
+    use { 'nvim-telescope/telescope-ui-select.nvim',
+        config = function()
+            require("telescope").load_extension("ui-select")
+        end
+    }
+    use {
+        "nvim-telescope/telescope-frecency.nvim",
+        config = function()
+            require("telescope").load_extension "frecency"
+        end,
+    }
+    use { "lukas-reineke/indent-blankline.nvim" }
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use("echasnovski/mini.nvim")
     use("famiu/bufdelete.nvim")
     use("vim-test/vim-test")
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-neotest/neotest-python",
+        }
+    }
     use("mhinz/vim-grepper")
     -- use 'romainl/vim-qf'
     use("stefandtw/quickfix-reflector.vim")
@@ -110,20 +135,13 @@ require("packer").startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
     use("psliwka/termcolors.nvim")
+    use("akinsho/toggleterm.nvim")
     use("folke/lsp-colors.nvim")
     use("lewis6991/impatient.nvim")
     use("monkoose/matchparen.nvim")
     use("folke/which-key.nvim")
 
-    -- python
-    use({
-        "vim-python/python-syntax",
-        ft = { "python" },
-    })
-
     -- other languages
-    use("sheerun/vim-polyglot")
-    use({ "Glench/Vim-Jinja2-Syntax", ft = { "jinja.html" } })
     use({ "plasticboy/vim-markdown", ft = { "markdown" } })
     use({
         "iamcco/markdown-preview.nvim",
@@ -195,11 +213,6 @@ vim.o.foldlevelstart = 99
 vim.o.lazyredraw = true
 vim.o.cursorline = true
 
--- sane defaults for languages not covered by file plugins
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-
 -- disable preview window
 vim.o.pumheight = 30
 vim.o.hidden = true
@@ -227,8 +240,8 @@ vim.g.maplocalleader = " "
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- add line text object
 vim.keymap.set("x", "il", "g_o^")
@@ -268,6 +281,11 @@ vim.keymap.set("i", "<A-BS>", "<C-W>")
 vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
+-- clear things, like highlight
+vim.keymap.set("n", "<C-[>", function()
+    vim.cmd("nohlsearch")
+end)
+
 -- make saving easier
 vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("i", "<C-s>", "<c-o>:w<CR>")
@@ -304,7 +322,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
         if buf.buftype ~= '' then return end
 
         -- change last-searched word, with no register-clobbering issues
-        vim.keymap.set("n", "c/", ":%s///g<left><left>", { buffer = args.buf })
+        vim.keymap.set("n", "c/", ":%s//<C-r>=@/<CR>/g<left><left>", { buffer = args.buf })
+        -- vim.keymap.set("n", "c/", ":%s///g<left><left>", { buffer = args.buf })
     end
 })
 
@@ -317,50 +336,26 @@ vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
-vim.api.nvim_create_autocmd("TermOpen", {
-    callback = function(args)
-        -- https://github.com/neovim/neovim/issues/20726 workaround for freezing
-        vim.wo.foldmethod = "manual"
-
-        vim.wo.number = false
-        vim.wo.signcolumn = "no"
-        vim.keymap.set("n", "<C-c>", ":startinsert<CR>", { buffer = args.buf })
-        vim.keymap.set("n", "<C-b>", ":startinsert<CR>", { buffer = args.buf })
-        vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", { buffer = args.buf })
-        vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", { buffer = args.buf })
-    end
-})
-
-vim.keymap.set("n", "<C-w>|", ":vsplit term://$SHELL <CR>:startinsert<CR>")
-vim.keymap.set("n", "<C-w>-", ":split term://$SHELL <CR>:startinsert<CR>")
+require("toggleterm").setup{
+    open_mapping = [[<C-;>]],
+    direction = "float"
+}
 vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
 
-function LeaveTermWhileInInsert(direction)
-    vim.b.last_mode = 'insert'
-    vim.cmd("wincmd " .. direction)
+function _G.set_terminal_keymaps()
+    local opts = { buffer = 0 }
+    vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+    vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+    vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+    vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+    vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+    vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", opts)
+    vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
+    vim.keymap.set("t", "<M-[>", "<esc>")
 end
 
-function LeaveTermAndResetMode()
-    vim.b.last_mode = 'normal'
-end
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
-function EnterTermAndActivateLastMode()
-    if vim.b.last_mode == "insert" then
-        vim.cmd("startinsert")
-    end
-end
-
-vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "term://*",
-    callback = EnterTermAndActivateLastMode
-})
-
-vim.keymap.set("t", "<esc>", "<C-\\><C-N>:lua LeaveTermAndResetMode()<CR>", { silent = true })
-vim.keymap.set("t", "<C-h>", function() LeaveTermWhileInInsert("h") end)
-vim.keymap.set("t", "<C-j>", function() LeaveTermWhileInInsert("j") end)
-vim.keymap.set("t", "<C-k>", function() LeaveTermWhileInInsert("k") end)
-vim.keymap.set("t", "<C-l>", function() LeaveTermWhileInInsert("l") end)
-vim.keymap.set("t", "<M-[>", "<esc>")
 vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
 vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
 vim.keymap.set("i", "<C-k>", "<C-\\><C-N><C-w>k")
@@ -384,6 +379,13 @@ vim.keymap.set({ "n", "x" }, "gs", "<plug>(GrepperOperator)")
 vim.keymap.set("n", "<leader>r", ":TestNearest<CR>", { silent = true })
 vim.keymap.set("n", "<leader>R", ":TestFile<CR>", { silent = true })
 
+-- neotest
+require("neotest").setup({
+    adapters = {
+        require("neotest-python")
+    }
+})
+
 -- easyalign
 vim.keymap.set({ "n", "x" }, "ga", "<Plug>(EasyAlign)")
 
@@ -400,10 +402,6 @@ vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
 vim.keymap.set("n", "<leader>gp", ":Git push<cr>")
 vim.keymap.set("n", "<leader>gh", "V:GBrowse<cr>")
 vim.keymap.set("v", "<leader>gh", ":GBrowse<cr>")
-
--- neogit
-local neogit = require('neogit')
-neogit.setup {}
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
@@ -467,6 +465,21 @@ vim.keymap.set("n", "<leader>mt", MTags)
 require("ibl").setup()
 require("lualine").setup()
 require("Comment").setup()
+
+require("dapui").setup()
+local function setupDapPython()
+    local debugpy_venv_name = "debugpy_venv"
+    local debugpy_venv_dir = vim.fn.stdpath("data") .. "/" .. debugpy_venv_name
+    local venv_exists = vim.fn.isdirectory(debugpy_venv_dir) == 1
+    if not venv_exists then
+        cmd = string.format("cd %s; python3 -m venv %s; source %s/bin/activate; pip install debugpy",
+            vim.fn.stdpath("data"), debugpy_venv_dir, debugpy_venv_name)
+        vim.fn.system(cmd)
+    end
+    require('dap-python').setup(debugpy_venv_dir)
+end
+setupDapPython()
+require('telescope').load_extension('dap')
 -- require("neoscroll").setup()
 
 
@@ -538,6 +551,7 @@ require("nvim-treesitter.configs").setup({
         "markdown",
         "tsx",
         "vim",
+        "vimdoc",
         "regex",
         "json",
         "json5",
@@ -546,7 +560,7 @@ require("nvim-treesitter.configs").setup({
     },
 
     highlight = { enable = true },
-    indent = { enable = true, disable = { "python" } },
+    indent = { enable = true },
     incremental_selection = {
         enable = true,
         keymaps = {
@@ -814,7 +828,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
         vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
         vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
         vim.keymap.set('n', '<space>wl', function()
@@ -906,12 +919,21 @@ require("telescope").setup({
                 },
             },
         },
+        frecency = {
+            default_workspace = "CWD",
+            show_unindexed = true,
+            auto_validate = false,
+        }
     },
 })
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
+-- require("telescope").extensions.frecency.frecency {
+--   sorter = require("telescope.sorters").fuzzy_with_index_bias()
+-- }
 vim.keymap.set("n", "-", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
-vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
+-- vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
+vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency<CR>")
 vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
 vim.keymap.set("n", "q:", require("telescope.builtin").command_history)
 -- }}}
