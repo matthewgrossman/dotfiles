@@ -337,10 +337,11 @@ vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
 require("toggleterm").setup{
-    open_mapping = [[<C-;>]],
-    direction = "float"
+    shade_terminals = false,
 }
 vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
+vim.keymap.set("n", "<C-w>-", ":ToggleTerm direction=horizontal<CR>")
+vim.keymap.set({"n", "i", "t"}, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
 
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
