@@ -60,18 +60,13 @@ for key, layouts in pairs(LayoutMapping) do
         end
         local win = hs.window.focusedWindow()
 
-        -- apply fix from https://github.com/Hammerspoon/hammerspoon/issues/3224
-        local axApp = hs.axuielement.applicationElement(win:application())
-        local oldAxEnhanced = axApp.AXEnhancedUserInterface
-        axApp.AXEnhancedUserInterface = false
-        win:moveToUnit(layout)
-        axApp.AXEnhancedUserInterface = oldAxEnhanced
+        Helpers.withAXFix(win, win.moveToUnit, layout)
     end)
 end
 
 hs.hotkey.bind(LayoutHyper, "return", function()
     local win = hs.window.focusedWindow()
-    win:moveToScreen(win:screen():next())
+    Helpers.withAXFix(win, win.moveToScreen, win:screen():next())
 end)
 
 hs.hotkey.bind("ctrl", "[", function()
