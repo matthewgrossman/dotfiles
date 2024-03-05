@@ -352,6 +352,7 @@ function _G.set_terminal_keymaps()
     vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
     vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", opts)
     vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
+    vim.keymap.set("n", "<C-c>", ":startinsert<CR>", opts)
     vim.keymap.set("t", "<M-[>", "<esc>")
 end
 
@@ -734,6 +735,7 @@ lsp.rust_analyzer.setup {}
 lsp.tsserver.setup {}
 lsp.terraformls.setup {}
 lsp.ccls.setup {}
+lsp.ruff_lsp.setup {}
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
@@ -856,9 +858,6 @@ require("null-ls").setup({
         require("null-ls").builtins.formatting.trim_whitespace,
 
         -- python
-        require("null-ls").builtins.diagnostics.ruff,
-        require("null-ls").builtins.formatting.ruff,
-        require("null-ls").builtins.formatting.black,
         require("null-ls").builtins.formatting.isort,
         require("null-ls").builtins.diagnostics.buildifier,
         require("null-ls").builtins.formatting.buildifier,

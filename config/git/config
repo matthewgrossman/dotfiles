@@ -30,8 +30,7 @@
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
     bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
-    po = "!git push -u origin $(git branch-name)"
-    pr = "!git po && gh pr create --base $(git parent) --fill --web"
+    pr = "!git push && gh pr create --base $(git parent) --fill --web"
     prinfo = "!f() { gh pr list --state all --json url,state --head $1 | jq '.[]'; }; f"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
@@ -52,6 +51,8 @@
     excludesfile = ~/.config/git/gitignore_global
 [pull]
     rebase = false
+[push]
+    default = current
 [submodule]
 	recurse = true
 [init]
@@ -61,3 +62,23 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[merge]
+    mergestyle = zdiff3
+    conflictstyle = zdiff3
+
+[url "git@github.com:"]
+	insteadOf = "https://github.com/"
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+
+[diff]
+    colorMoved = default
+	submodule = log
+[status]
+	submoduleSummary = true

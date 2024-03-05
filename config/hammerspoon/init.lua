@@ -184,6 +184,7 @@ AppHideMapping = {
     KeePassXC = { key = "k", shouldMinimize = true },
     Todoist = { key = "t", shouldMinimize = true },
     ["Google Meet"] = { key = "h", shouldMinimize = false },
+    Slack = { key = "r", shouldMinimize = true },
 }
 
 -- tabHideMapping = {
