@@ -1,18 +1,22 @@
 # essentials
 brew 'mas'
-cask 'authy'
-cask 'dropbox'
-cask 'google-drive'
-cask 'kitty'
-cask 'wezterm'
 cask 'alfred'
-cask 'keepassxc'
 cask 'firefox'
 cask 'firefox-developer-edition'
 cask 'google-chrome'
+cask 'google-drive'
+cask 'hammerspoon'
+cask 'keepassxc'
+cask 'kitty'
+cask 'onedrive'
 cask 'slack'
+cask 'spotify'
 cask 'steermouse'
 cask 'syncthing'
+cask 'wezterm'
+
+mas 'todoist', id: 585829637
+mas 'tailscale', id: 1475387142
 
 # essential brew
 brew 'ag'
@@ -46,10 +50,11 @@ cask 'balenaetcher'
 cask 'bitwarden'
 cask 'calibre'
 cask 'chromedriver'
+cask 'cloudflare-warp'
 cask 'discord'
 cask 'docker'
 cask 'flux'
-cask 'hammerspoon'
+cask 'google-cloud-sdk'
 cask 'ivpn'
 cask 'keepingyouawake'
 cask 'kindle'
@@ -57,8 +62,6 @@ cask 'microsoft-remote-desktop'
 cask 'parsec'
 cask 'signal'
 cask 'sonos'
-cask 'spotify'
-cask 'google-cloud-sdk'
 cask 'uhk-agent'
 cask 'visual-studio-code'
 cask 'vlc'
@@ -112,10 +115,6 @@ brew 'wireguard-tools'
 brew 'xonsh'
 brew 'xsv'
 brew 'yarn'
-
-mas 'todoist', id: 585829637
-mas 'tailscale', id: 1475387142
-
 
 tap 'homebrew/cask-fonts'
 cask 'font-hack-nerd-font'

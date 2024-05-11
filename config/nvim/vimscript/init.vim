@@ -15,30 +15,12 @@ command! -range=% XMLformat :<line1>,<line2>!xmllint --format -
 command! -range EscapeForwardSlash :<line1>,<line2>s,/,\\/
 command! -range SpongebobCase :<line1>,<line2>luado return require('spongebob')(line)
 
-" vim-grepper config
-" TODO just drop for telescope?
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
-" let g:grepper = {
-" \   'highlight': 1,
-" \   'tools': ['rg']
-" \ }
-
 " vim-test config
-" nmap <silent> <leader>r :TestNearest<CR>
-" nmap <silent> <leader>R :TestFile<CR>
 function! ClipboardStrategy(cmd)
     let @+ = a:cmd
 endfunction
 let g:test#custom_strategies = {'clipboard': function('ClipboardStrategy')}
 let g:test#strategy = 'clipboard'
-" let g:test#custom_transformations = {'service_venv': function({cmd -> 'service_venv '.cmd})}
-" let g:test#custom_transformations = {'python_module': function({cmd -> 'python3 -m '.cmd})}
-" let g:test#transformation = 'python_module'
-" let g:test#python#runner = 'pytest'
-
-" winbar config
-au VimEnter,BufWinEnter * if &buftype == "" | setlocal winbar=%f | endif
 
 " fzf config
 " nnoremap <c-p> :GFiles<cr>

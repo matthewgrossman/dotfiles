@@ -103,7 +103,7 @@ scratchvenv() {
 }
 
 _sync_once() {
-    rsync --archive --delete --progress --filter=":- .gitignore" --filter="- .git/" "$1" "$2"
+    rsync --archive --progress --filter=":- .gitignore" --filter="- .git/" "$1" "$2"
 }
 
 sync() {
@@ -177,11 +177,12 @@ function lz() {
 }
 
 function jvenv() {
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install jupyterlab
-    pip install ipykernel
-    python -m ipykernel install --user --name=venv
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "You are not in a virtual environment."
+        return 1
+    fi
+    uv pip install jupyter ipykernel ipdb
+    python -m ipykernel install --user --name=$(basename "$PWD")_venv
 }
 
 function lc() {

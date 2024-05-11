@@ -63,6 +63,7 @@ require("packer").startup(function(use)
     })
     use("onsails/lspkind-nvim")
     use("windwp/nvim-autopairs")
+    use("github/copilot.vim")
 
     -- file management
     use({ "junegunn/fzf", run = ":call fzf#install()" })
@@ -105,6 +106,7 @@ require("packer").startup(function(use)
             "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
             "nvim-neotest/neotest-python",
+            "nvim-neotest/nvim-nio",
         }
     }
     use("mhinz/vim-grepper")
@@ -136,9 +138,10 @@ require("packer").startup(function(use)
     })
     use("psliwka/termcolors.nvim")
     use("akinsho/toggleterm.nvim")
+    use("ryanmsnyder/toggleterm-manager.nvim")
     use("folke/lsp-colors.nvim")
     use("lewis6991/impatient.nvim")
-    use("monkoose/matchparen.nvim")
+    -- use("monkoose/matchparen.nvim")
     use("folke/which-key.nvim")
 
     -- other languages
@@ -336,12 +339,30 @@ vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
-require("toggleterm").setup{
+require("toggleterm").setup {
     shade_terminals = false,
+    auto_scroll = false,
 }
 vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
-vim.keymap.set("n", "<C-w>-", ":ToggleTerm direction=horizontal<CR>")
-vim.keymap.set({"n", "i", "t"}, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
+vim.keymap.set("n", "<C-w>-", ":ToggleTerm size=20 direction=horizontal<CR>")
+vim.keymap.set({ "n", "i", "t" }, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
+vim.keymap.set({ "n", "i", "t" }, "<C-\\>", "<Cmd>Telescope toggleterm_manager<CR>")
+local toggleterm_manager = require("toggleterm-manager")
+local tt_actions = toggleterm_manager.actions
+
+toggleterm_manager.setup {
+    mappings = {
+        i = {
+            ["<CR>"] = { action = tt_actions.open_term, exit_on_action = true },
+            ["<C-d>"] = { action = tt_actions.delete_term, exit_on_action = false },
+            ["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false},
+        },
+        n = {
+            ["<CR>"] = { action = tt_actions.create_and_name_term, exit_on_action = true },
+            ["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
+        },
+    },
+}
 
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
@@ -353,6 +374,8 @@ function _G.set_terminal_keymaps()
     vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", opts)
     vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
     vim.keymap.set("n", "<C-c>", ":startinsert<CR>", opts)
+    vim.keymap.set("n", "<C-p>", ":startinsert<CR><C-p>", opts)
+    vim.keymap.set("n", "<C-q>", ":terminal<CR>:bd!#<CR>:startinsert<CR>", opts)
     vim.keymap.set("t", "<M-[>", "<esc>")
 end
 
@@ -373,10 +396,11 @@ vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
 
 -- vim-grepper
 vim.keymap.set({ "n", "x" }, "gs", "<plug>(GrepperOperator)")
--- TODO this seems to break
--- vim.g.grepper.highlight = 1
--- vim.g.grepper.tools = { "rg" }
+vim.g.grepper = {
+    highlight = 1,
+    tools = { "rg" }
 
+}
 -- vim-test
 vim.keymap.set("n", "<leader>r", ":TestNearest<CR>", { silent = true })
 vim.keymap.set("n", "<leader>R", ":TestFile<CR>", { silent = true })
@@ -404,6 +428,7 @@ vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
 vim.keymap.set("n", "<leader>gp", ":Git push<cr>")
 vim.keymap.set("n", "<leader>gh", "V:GBrowse<cr>")
 vim.keymap.set("v", "<leader>gh", ":GBrowse<cr>")
+vim.keymap.set("v", "<leader>gr", ":Git pr<cr>")
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
@@ -465,7 +490,14 @@ end
 vim.keymap.set("n", "<leader>mt", MTags)
 
 require("ibl").setup()
-require("lualine").setup()
+require("lualine").setup({
+    winbar={
+        lualine_a={"filename"}
+    },
+    inactive_winbar={
+        lualine_a={"filename"}
+    }
+})
 require("Comment").setup()
 
 require("dapui").setup()
@@ -478,10 +510,12 @@ local function setupDapPython()
             vim.fn.stdpath("data"), debugpy_venv_dir, debugpy_venv_name)
         vim.fn.system(cmd)
     end
-    require('dap-python').setup(debugpy_venv_dir)
+    require('dap-python').setup(debugpy_venv_dir .. "/bin/python")
 end
 setupDapPython()
+
 require('telescope').load_extension('dap')
+require("nvim-dap-virtual-text").setup()
 -- require("neoscroll").setup()
 
 
@@ -729,17 +763,16 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 -- START LSP {{{
 require("mason").setup()
 require("mason-lspconfig").setup()
-local lsp = require("lspconfig")
-lsp.gopls.setup {}
-lsp.rust_analyzer.setup {}
-lsp.tsserver.setup {}
-lsp.terraformls.setup {}
-lsp.ccls.setup {}
-lsp.ruff_lsp.setup {}
+require("lspconfig").gopls.setup {}
+require("lspconfig").rust_analyzer.setup {}
+require("lspconfig").tsserver.setup {}
+require("lspconfig").terraformls.setup {}
+require("lspconfig").ccls.setup {}
+require("lspconfig").ruff_lsp.setup {}
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
-lsp.lua_ls.setup({
+require("lspconfig").lua_ls.setup({
     settings = {
         Lua = {
             runtime = {
@@ -761,7 +794,7 @@ lsp.lua_ls.setup({
         },
     },
 })
-lsp.jsonls.setup {
+require("lspconfig").jsonls.setup {
     settings = {
         jsonls = {
             filetypes = { "json", "jsonc" },
@@ -786,7 +819,7 @@ lsp.jsonls.setup {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-lsp.pyright.setup { capabilities = capabilities }
+require("lspconfig").pyright.setup { capabilities = capabilities }
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -868,6 +901,12 @@ require("mason-null-ls").setup({
     automatic_installation = true,
 })
 
+vim.keymap.set('i', '<C-CR>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+vim.g.copilot_no_tab_map = true
+
 -- DEBUGGING LSP
 -- vim.lsp.set_log_level("debug")
 -- :lua vim.cmd('e'..vim.lsp.get_log_path())
@@ -933,7 +972,7 @@ require("telescope").load_extension("file_browser")
 -- }
 vim.keymap.set("n", "-", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 -- vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
-vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency<CR>")
+vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency workspace=CWD<CR>")
 vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
 vim.keymap.set("n", "q:", require("telescope.builtin").command_history)
 -- }}}
@@ -968,7 +1007,7 @@ if vim.env.WSL_DISTRO_NAME then
     vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
 end
 
-require("matchparen").setup({})
+-- require("matchparen").setup({})
 -- require("which-key").setup()
 
 require("mini.ai").setup({
