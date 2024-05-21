@@ -24,6 +24,7 @@
     ld = log --stat --patch --full-diff
     mm = "!git merge $(git default-branch)"
     giff = diff
+    wt = worktree
 
     default-branch = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
@@ -38,6 +39,8 @@
     comment = "!gh pr comment -b"
     ptal = "!f() { gh pr comment -b \"ptal $1\"; }; f"
     offload = "!gh pr comment -b '/offload'"
+
+    wtc = "!f() { git worktree add \"$(pwd)--$1\" -b $1; }; f"
 
     # experimenting with setting branch parents in metadata
     set-parent = "!git config branch.$(git branch-name).parent"
