@@ -181,12 +181,13 @@ function jvenv() {
         echo "You are not in a virtual environment."
         return 1
     fi
-    uv pip install jupyter ipykernel ipdb
+    pip install uv
+    uv pip install jupyter ipykernel ipdb notebook jupyterlab-vim jupyterlab-code-formatter ruff
     python -m ipykernel install --user --name=$(basename "$PWD")_venv
 }
 
 function lc() {
     local cmd
     cmd=$(fc -ln -50 | awk '!/lc/' | fzf --tac)
-    [ -n "$cmd" ] && echo -n "$cmd" | pbcopy
+    [ -n "$cmd" ] && echo -n "$cmd" | sed 's/\\n/\\\n/g' | pbcopy
 }

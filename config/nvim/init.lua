@@ -64,6 +64,26 @@ require("packer").startup(function(use)
     use("onsails/lspkind-nvim")
     use("windwp/nvim-autopairs")
     use("github/copilot.vim")
+    use({
+        "stevearc/oil.nvim",
+        config = function()
+            require("oil").setup({
+                default_file_explorer = false,
+                git = {
+                    add = function(path)
+                        return true
+                    end,
+                    mv = function(src_path, dest_path)
+                        return true
+                    end,
+                    rm = function(path)
+                        return true
+                    end,
+                }
+
+            })
+        end,
+    })
 
     -- file management
     use({ "junegunn/fzf", run = ":call fzf#install()" })
@@ -142,7 +162,7 @@ require("packer").startup(function(use)
     use("folke/lsp-colors.nvim")
     use("lewis6991/impatient.nvim")
     -- use("monkoose/matchparen.nvim")
-    use("folke/which-key.nvim")
+    -- use("folke/which-key.nvim")
 
     -- other languages
     use({ "plasticboy/vim-markdown", ft = { "markdown" } })
@@ -154,6 +174,7 @@ require("packer").startup(function(use)
     })
     use({ "rust-lang/rust.vim", ft = { "rust" } })
     use("neoclide/jsonc.vim")
+    use("towolf/vim-helm")
 
     if is_bootstrap then
         require("packer").sync()
@@ -173,63 +194,70 @@ end
 -- See `:help vim.o`
 
 -- Enable mouse mode
-vim.o.mouse = "a"
+vim.opt.mouse = "a"
 
 -- Make line numbers default
 vim.wo.number = true
 
 -- Enable break indent
-vim.o.breakindent = true
+vim.opt.breakindent = true
 
 -- Save undo history
-vim.o.undofile = true
+vim.opt.undofile = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- Decrease update time
-vim.o.updatetime = 250
+vim.opt.updatetime = 250
 vim.wo.signcolumn = "yes"
 
 -- make splits more intuitive
-vim.o.splitbelow = true
-vim.o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 -- make line-global replacements the default
-vim.o.gdefault = true
+vim.opt.gdefault = true
 
 -- enforce we are doing mac/linux files
-vim.o.fileformat = "unix"
+vim.opt.fileformat = "unix"
 
 -- link to system clipboard
-vim.o.clipboard = "unnamed"
+vim.opt.clipboard = "unnamed"
 
 -- diff
-vim.o.diffopt = 'internal,algorithm:patience,indent-heuristic'
+vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic" }
 
 -- fold settings
-vim.o.foldmethod = "indent"
-vim.o.foldlevelstart = 99
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevelstart = 99
 
 -- don't redraw during macros
-vim.o.lazyredraw = true
-vim.o.cursorline = true
+vim.opt.lazyredraw = true
+vim.opt.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
 
 -- disable preview window
-vim.o.pumheight = 30
-vim.o.hidden = true
+vim.opt.pumheight = 30
+vim.opt.hidden = true
 
-vim.o.autoread = true
+vim.opt.autoread = true
 
-vim.o.inccommand = "nosplit"
+vim.opt.inccommand = "nosplit"
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Set colorscheme
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 vim.cmd([[colorscheme nightfox]])
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = "menu,menuone,noselect"
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
@@ -355,7 +383,7 @@ toggleterm_manager.setup {
         i = {
             ["<CR>"] = { action = tt_actions.open_term, exit_on_action = true },
             ["<C-d>"] = { action = tt_actions.delete_term, exit_on_action = false },
-            ["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false},
+            ["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
         },
         n = {
             ["<CR>"] = { action = tt_actions.create_and_name_term, exit_on_action = true },
@@ -377,6 +405,7 @@ function _G.set_terminal_keymaps()
     vim.keymap.set("n", "<C-p>", ":startinsert<CR><C-p>", opts)
     vim.keymap.set("n", "<C-q>", ":terminal<CR>:bd!#<CR>:startinsert<CR>", opts)
     vim.keymap.set("t", "<M-[>", "<esc>")
+    vim.keymap.set("t", "<S-CR>", "<C-v><C-j>")
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
@@ -444,13 +473,12 @@ vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-    callback = function()
-        vim.highlight.on_yank({ higroup = "IncSearch" })
-    end,
-    group = highlight_group,
-    pattern = "*",
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
 })
 
 vim.filetype.add({
@@ -491,11 +519,11 @@ vim.keymap.set("n", "<leader>mt", MTags)
 
 require("ibl").setup()
 require("lualine").setup({
-    winbar={
-        lualine_a={"filename"}
+    winbar = {
+        lualine_a = { "filename" }
     },
-    inactive_winbar={
-        lualine_a={"filename"}
+    inactive_winbar = {
+        lualine_a = { "filename" }
     }
 })
 require("Comment").setup()
@@ -769,6 +797,7 @@ require("lspconfig").tsserver.setup {}
 require("lspconfig").terraformls.setup {}
 require("lspconfig").ccls.setup {}
 require("lspconfig").ruff_lsp.setup {}
+require("lspconfig").helm_ls.setup {}
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
@@ -902,8 +931,8 @@ require("mason-null-ls").setup({
 })
 
 vim.keymap.set('i', '<C-CR>', 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false
+    expr = true,
+    replace_keycodes = false
 })
 vim.g.copilot_no_tab_map = true
 
@@ -974,6 +1003,7 @@ vim.keymap.set("n", "-", ":Telescope file_browser path=%:p:h select_buffer=true<
 -- vim.keymap.set("n", "<C-p>", "<Cmd>lua require('telescope_custom').project_files()<CR>")
 vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency workspace=CWD<CR>")
 vim.keymap.set("n", "<leader>p", "<Cmd>lua require('telescope_custom').src_dir()<CR>")
+vim.keymap.set("n", "<leader>f", ":Telescope live_grep<CR>")
 vim.keymap.set("n", "q:", require("telescope.builtin").command_history)
 -- }}}
 

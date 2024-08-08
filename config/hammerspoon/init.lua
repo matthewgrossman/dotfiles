@@ -69,6 +69,8 @@ hs.hotkey.bind(LayoutHyper, "return", function()
     Helpers.withAXFix(win, win.moveToScreen, win:screen():next())
 end)
 
+hs.hotkey.bind(LayoutHyper, "v", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
+
 hs.hotkey.bind("ctrl", "[", function()
     hs.eventtap.keyStroke({}, "ESCAPE")
 end)
@@ -144,9 +146,20 @@ AppHyper = { "cmd", "ctrl" }
 hs.hotkey.bind(AppHyper, "m", ToggleMute)
 
 -- create a keybind for play/pause on spotify, so we can map our mouse to it
--- the mouse currently has an issue using the system-native play/pause
 hs.hotkey.bind(AppHyper, "0", function()
-    hs.spotify.playpause()
+    if hs.spotify.isPlaying() then
+        hs.spotify.pause()
+    else
+        hs.spotify.play()
+    end
+
+    -- seems to have issues focusing, and requires multiple presses
+    -- hs.spotify.playpause()
+
+    -- system key events have the problem that all macos mediakey has;
+    -- event gets forwarded to go to some often random app
+    -- hs.eventtap.event.newSystemKeyEvent('PLAY', true):post()
+    -- hs.eventtap.event.newSystemKeyEvent('PLAY', false):post()
 end)
 
 

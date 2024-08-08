@@ -70,6 +70,7 @@ cask 'wireshark'
 cask 'zoom'
 
 brew 'ansible'
+brew 'azure-cli'
 brew 'bat'
 brew 'blueutil'
 brew 'cloudflare-wrangler2'
