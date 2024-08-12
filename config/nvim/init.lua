@@ -406,6 +406,9 @@ function _G.set_terminal_keymaps()
     vim.keymap.set("n", "<C-q>", ":terminal<CR>:bd!#<CR>:startinsert<CR>", opts)
     vim.keymap.set("t", "<M-[>", "<esc>")
     vim.keymap.set("t", "<S-CR>", "<C-v><C-j>")
+
+    -- C-c causes frequent freezes; attempt fix from https://github.com/neovim/neovim/issues/20726
+    vim.wo.foldmethod = "manual"
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
