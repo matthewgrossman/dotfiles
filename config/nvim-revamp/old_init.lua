@@ -65,17 +65,17 @@ require("packer").startup(function(use)
 	-- file management
 	use({ "junegunn/fzf", run = ":call fzf#install()" })
 	use("junegunn/fzf.vim")
-	use("tpope/vim-fugitive")
-	use("tpope/vim-rhubarb")
+	-- use("tpope/vim-fugitive")
+	-- use("tpope/vim-rhubarb")
 	use("tpope/vim-eunuch")
-	use("tpope/vim-sleuth")
+	-- use("tpope/vim-sleuth")
 	use("majutsushi/tagbar")
 
 	-- usability
 	use("numToStr/Comment.nvim")
 	use({ "stevearc/dressing.nvim" })
-	use("nvim-telescope/telescope.nvim")
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	-- use("nvim-telescope/telescope.nvim")
+	-- use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 	-- use({ "~/src/telescope-file-browser.nvim" })
 	use({ "nvim-telescope/telescope-file-browser.nvim" })
 	use({
@@ -127,7 +127,7 @@ require("packer").startup(function(use)
 	use("marko-cerovac/material.nvim")
 	use("navarasu/onedark.nvim")
 	use("daschw/leaf.nvim")
-	use("EdenEast/nightfox.nvim")
+	-- use("EdenEast/nightfox.nvim")
 	use("sainnhe/sonokai")
 	use({
 		"nvim-lualine/lualine.nvim",
@@ -231,7 +231,7 @@ vim.opt.hidden = true
 
 -- Set colorscheme
 -- vim.opt.termguicolors = true
-vim.cmd([[colorscheme nightfox]])
+-- vim.cmd([[colorscheme nightfox]])
 
 -- Set completeopt to have a better completion experience
 -- vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -346,30 +346,30 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
-require("toggleterm").setup({
-	shade_terminals = false,
-	auto_scroll = false,
-})
-vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
-vim.keymap.set("n", "<C-w>-", ":ToggleTerm size=20 direction=horizontal<CR>")
-vim.keymap.set({ "n", "i", "t" }, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
-vim.keymap.set({ "n", "i", "t" }, "<C-\\>", "<Cmd>Telescope toggleterm_manager<CR>")
-local toggleterm_manager = require("toggleterm-manager")
-local tt_actions = toggleterm_manager.actions
-
-toggleterm_manager.setup({
-	mappings = {
-		i = {
-			["<CR>"] = { action = tt_actions.open_term, exit_on_action = true },
-			["<C-d>"] = { action = tt_actions.delete_term, exit_on_action = false },
-			["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
-		},
-		n = {
-			["<CR>"] = { action = tt_actions.create_and_name_term, exit_on_action = true },
-			["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
-		},
-	},
-})
+-- require("toggleterm").setup({
+-- 	shade_terminals = false,
+-- 	auto_scroll = false,
+-- })
+-- vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
+-- vim.keymap.set("n", "<C-w>-", ":ToggleTerm size=20 direction=horizontal<CR>")
+-- vim.keymap.set({ "n", "i", "t" }, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
+-- vim.keymap.set({ "n", "i", "t" }, "<C-\\>", "<Cmd>Telescope toggleterm_manager<CR>")
+-- local toggleterm_manager = require("toggleterm-manager")
+-- local tt_actions = toggleterm_manager.actions
+--
+-- toggleterm_manager.setup({
+-- 	mappings = {
+-- 		i = {
+-- 			["<CR>"] = { action = tt_actions.open_term, exit_on_action = true },
+-- 			["<C-d>"] = { action = tt_actions.delete_term, exit_on_action = false },
+-- 			["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
+-- 		},
+-- 		n = {
+-- 			["<CR>"] = { action = tt_actions.create_and_name_term, exit_on_action = true },
+-- 			["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
+-- 		},
+-- 	},
+-- })
 
 function _G.set_terminal_keymaps()
 	local opts = { buffer = 0 }
@@ -423,20 +423,20 @@ require("neotest").setup({
 -- easyalign
 vim.keymap.set({ "n", "x" }, "ga", "<Plug>(EasyAlign)")
 
--- vim-fugitive
-vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
-	local branch = vim.fn.system("git default-branch")
-	return string.format(":Gvdiffsplit %s:%%<CR>", branch)
-end, { expr = true, silent = true })
-
-vim.keymap.set("n", "<leader>gg", ":tab Git<cr>")
-vim.keymap.set("n", "<leader>gdd", ":Gdiffsplit<cr>")
-vim.keymap.set("n", "<leader>gb", ":Git blame<cr>")
-vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
-vim.keymap.set("n", "<leader>gp", ":Git push<cr>")
-vim.keymap.set("n", "<leader>gh", "V:GBrowse<cr>")
-vim.keymap.set("v", "<leader>gh", ":GBrowse<cr>")
-vim.keymap.set("v", "<leader>gr", ":Git pr<cr>")
+-- -- vim-fugitive
+-- vim.keymap.set("n", "<leader>gdm", function() -- diffsplit against main
+-- 	local branch = vim.fn.system("git default-branch")
+-- 	return string.format(":Gvdiffsplit %s:%%<CR>", branch)
+-- end, { expr = true, silent = true })
+--
+-- vim.keymap.set("n", "<leader>gg", ":tab Git<cr>")
+-- vim.keymap.set("n", "<leader>gdd", ":Gdiffsplit<cr>")
+-- vim.keymap.set("n", "<leader>gb", ":Git blame<cr>")
+-- vim.keymap.set("n", "<leader>ga", ":Gwrite<cr>")
+-- vim.keymap.set("n", "<leader>gp", ":Git push<cr>")
+-- vim.keymap.set("n", "<leader>gh", "V:GBrowse<cr>")
+-- vim.keymap.set("v", "<leader>gh", ":GBrowse<cr>")
+-- vim.keymap.set("v", "<leader>gr", ":Git pr<cr>")
 
 -- reload init.lua file
 local vimrcPath = vim.fn.expand("$MYVIMRC")
@@ -566,20 +566,20 @@ require("gitsigns").setup({
 	end,
 })
 
-require("nightfox").setup({
-	options = {
-		dim_inactive = true,
-		styles = {
-			comments = "italic",
-			keywords = "bold",
-			types = "italic,bold",
-		},
-		-- inverse = {
-		--     search = true,
-		-- },
-	},
-})
-vim.cmd("colorscheme nightfox")
+-- require("nightfox").setup({
+-- 	options = {
+-- 		dim_inactive = true,
+-- 		styles = {
+-- 			comments = "italic",
+-- 			keywords = "bold",
+-- 			types = "italic,bold",
+-- 		},
+-- 		-- inverse = {
+-- 		--     search = true,
+-- 		-- },
+-- 	},
+-- })
+-- vim.cmd("colorscheme nightfox")
 -- vim.pretty_print(require('nightfox.palette').load('nightfox'))
 
 -- [[ Configure Treesitter ]]

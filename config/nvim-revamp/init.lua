@@ -57,6 +57,7 @@ vim.opt.scrolloff = 10
 -- MG custom opts begin {{{
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
 
 vim.opt.fileformat = "unix"
 vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic", "linematch:60" }
@@ -252,7 +253,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Fies ("." for repeat)' })
+			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 			vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency workspace=CWD<CR>")
 		end,
@@ -444,16 +445,16 @@ require("lazy").setup({
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				-- tsserver = {},
 				--
-				basedpyright = {
+				pyright = {
 					settings = {
-						basedpyright = {
-							disableTaggedHints = true,
+						pyright = {
+							-- Using Ruff's import organizer
+							disableOrganizeImports = true,
+						},
+						python = {
 							analysis = {
-								ignore = "*",
-								autoSearchPaths = true,
-								diagnosticMode = "openFilesOnly",
-								useLibraryCodeForTypes = true,
-								typeCheckingMode = "off",
+								-- Ignore all files for analysis to exclusively use Ruff for linting
+								ignore = { "*" },
 							},
 						},
 					},
@@ -515,7 +516,7 @@ require("lazy").setup({
 		cmd = { "ConformInfo" },
 		keys = {
 			{
-				"<leader>f",
+				"gf",
 				function()
 					require("conform").format({ async = true, lsp_fallback = true })
 				end,
@@ -525,16 +526,16 @@ require("lazy").setup({
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
-				return {
-					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-				}
-			end,
+			-- format_on_save = function(bufnr)
+			-- 	-- Disable "format_on_save lsp_fallback" for languages that don't
+			-- 	-- have a well standardized coding style. You can add additional
+			-- 	-- languages here or re-enable it for the disabled ones.
+			-- 	local disable_filetypes = { c = true, cpp = true }
+			-- 	return {
+			-- 		timeout_ms = 500,
+			-- 		lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+			-- 	}
+			-- end,
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
@@ -666,13 +667,24 @@ require("lazy").setup({
 		-- change the command in the config to whatever the name of that colorscheme is.
 		--
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
+		"EdenEast/nightfox.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			require("nightfox").setup({
+				options = {
+					dim_inactive = true,
+					styles = {
+						comments = "italic",
+						keywords = "bold",
+						types = "italic,bold",
+					},
+				},
+			})
+			vim.opt.termguicolors = true
+			vim.cmd.colorscheme("nightfox")
 
 			-- You can configure highlights by doing something like:
 			vim.cmd.hi("Comment gui=none")
@@ -794,18 +806,6 @@ require("lazy").setup({
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
 	},
-
-	-- require("lua.oil"),
-	-- require("kickstart.plugins.indent_line"),
-	-- require("kickstart.plugins.lint"),
-	-- require 'kickstart.plugins.neo-tree',
-	-- require("kickstart.plugins.gitsigns"), -- adds gitsigns recommend keymaps
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
 	{ import = "plugins" },
 }, {
 	change_detection = {
