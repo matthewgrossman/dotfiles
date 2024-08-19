@@ -1,22 +1,11 @@
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- [[ Setting options ]]
--- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
-
 -- Make line numbers default
 vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
@@ -24,10 +13,6 @@ vim.opt.mouse = "a"
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
--- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
@@ -56,14 +41,12 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = "split"
+vim.opt.inccommand = "nosplit"
+vim.opt.autoread = true
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -71,28 +54,27 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- MG custom opts being {{{
+-- MG custom opts begin {{{
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
+
+vim.opt.fileformat = "unix"
+vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic", "linematch:60" }
+vim.opt.termguicolors = true
 -- }}}
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+-- clear things, like highlight
+vim.keymap.set("n", "<C-[>", function()
+	vim.cmd("nohlsearch")
+end)
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set("t", "<Evc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -119,6 +101,28 @@ vim.keymap.set("c", "<C-b>", "<Left>")
 vim.keymap.set("c", "<C-d>", "<Del>")
 vim.keymap.set("c", "<C-e>", "<End>")
 vim.keymap.set("c", "<C-f>", "<Right>")
+
+-- allow indent/dedent now that we've clobbered ctrl-d
+vim.keymap.set("i", "<C-s-t>", "<c-d>")
+
+-- hop to the beginning and ends of line easily
+vim.keymap.set("n", "H", "^")
+vim.keymap.set("n", "L", "$")
+
+-- match word-deletion to macOS
+vim.keymap.set("i", "<A-BS>", "<C-W>")
+
+-- zoom in function to take a split to the full screen
+vim.keymap.set("n", "<C-w>z", ":tab split<CR>")
+
+-- highlight pasted text
+vim.keymap.set("n", "gp", "`[v`]")
+
+vim.keymap.set("n", "<leader>c", ":let @+ = expand('%')<CR>", { silent = true })
+
+-- neovim remote
+vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- }}}
 
@@ -205,6 +209,7 @@ require("lazy").setup({
 				end,
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
+			{ "nvim-telescope/telescope-frecency.nvim" },
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
@@ -224,12 +229,18 @@ require("lazy").setup({
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
 					},
+					frecency = {
+						default_workspace = "CWD",
+						show_unindexed = true,
+						auto_validate = false,
+					},
 				},
 			})
 
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+			pcall(require("telescope").load_extension, "frecency")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -241,8 +252,9 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Fies ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+			vim.keymap.set("n", "<C-p>", "<Cmd>Telescope frecency workspace=CWD<CR>")
 		end,
 	},
 
@@ -418,10 +430,12 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
-				-- gopls = {},
-				-- pyright = {},
-				-- rust_analyzer = {},
+				clangd = {},
+				gopls = {},
+				ruff_lsp = {},
+				helm_ls = {},
+				terraformls = {},
+				rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -430,6 +444,20 @@ require("lazy").setup({
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				-- tsserver = {},
 				--
+				basedpyright = {
+					settings = {
+						basedpyright = {
+							disableTaggedHints = true,
+							analysis = {
+								ignore = "*",
+								autoSearchPaths = true,
+								diagnosticMode = "openFilesOnly",
+								useLibraryCodeForTypes = true,
+								typeCheckingMode = "off",
+							},
+						},
+					},
+				},
 
 				lua_ls = {
 					-- cmd = {...},
@@ -466,7 +494,10 @@ require("lazy").setup({
 			require("mason-lspconfig").setup({
 				handlers = {
 					function(server_name)
-						local server = servers[server_name] or {}
+						local server = servers[server_name]
+						if server == nil then
+							return
+						end
 						-- This handles overriding only values explicitly passed
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for tsserver)
@@ -707,30 +738,47 @@ require("lazy").setup({
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		opts = {
 			ensure_installed = {
 				"bash",
 				"c",
+				"cpp",
 				"diff",
+				"go",
+				"hcl",
 				"html",
+				"json",
+				"json5",
 				"lua",
 				"luadoc",
 				"markdown",
 				"markdown_inline",
+				"python",
 				"query",
+				"regex",
+				"rust",
+				"terraform",
+				"tsx",
+				"typescript",
 				"vim",
 				"vimdoc",
+				"yaml",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
-			highlight = {
+			highlight = { enable = true },
+			indent = { enable = true },
+			incremental_selection = {
 				enable = true,
-				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-				--  If you are experiencing weird indenting issues, add the language to
-				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
+				keymaps = {
+					init_selection = "<CR>",
+					node_incremental = "<CR>",
+					-- TODO: I'm not sure for this one.
+					scope_incremental = "<c-s>",
+					node_decremental = "<S-CR>",
+				},
 			},
-			indent = { enable = true, disable = { "ruby" } },
 		},
 		config = function(_, opts)
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`

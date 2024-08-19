@@ -171,40 +171,40 @@ end
 -- See `:help vim.o`
 
 -- Enable mouse mode
-vim.opt.mouse = "a"
+-- vim.opt.mouse = "a"
 
 -- Make line numbers default
-vim.wo.number = true
+-- vim.wo.number = true
 
 -- Enable break indent
-vim.opt.breakindent = true
+-- vim.opt.breakindent = true
 
 -- Save undo history
-vim.opt.undofile = true
+-- vim.opt.undofile = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+-- vim.opt.ignorecase = true
+-- vim.opt.smartcase = true
 
 -- Decrease update time
-vim.opt.updatetime = 250
-vim.wo.signcolumn = "yes"
+-- vim.opt.updatetime = 250
+-- vim.wo.signcolumn = "yes"
 
 -- make splits more intuitive
-vim.opt.splitbelow = true
-vim.opt.splitright = true
+-- vim.opt.splitbelow = true
+-- vim.opt.splitright = true
 
 -- make line-global replacements the default
 vim.opt.gdefault = true
 
 -- enforce we are doing mac/linux files
-vim.opt.fileformat = "unix"
+-- vim.opt.fileformat = "unix"
 
 -- link to system clipboard
-vim.opt.clipboard = "unnamed"
+-- vim.opt.clipboard = "unnamed"
 
 -- diff
-vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic" }
+-- vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic" }
 
 -- fold settings
 vim.opt.foldmethod = "indent"
@@ -212,36 +212,36 @@ vim.opt.foldlevelstart = 99
 
 -- don't redraw during macros
 vim.opt.lazyredraw = true
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+-- vim.opt.scrolloff = 10
 
 -- disable preview window
 vim.opt.pumheight = 30
 vim.opt.hidden = true
 
-vim.opt.autoread = true
+-- vim.opt.autoread = true
 
-vim.opt.inccommand = "nosplit"
+-- vim.opt.inccommand = "nosplit"
 
 -- Sets how neovim will display certain whitespace characters in the editor.
-vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Set colorscheme
-vim.opt.termguicolors = true
+-- vim.opt.termguicolors = true
 vim.cmd([[colorscheme nightfox]])
 
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+-- vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+-- vim.g.mapleader = " "
+-- vim.g.maplocalleader = " "
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -256,16 +256,16 @@ vim.keymap.set("x", "il", "g_o^")
 vim.keymap.set("o", "il", ":normal vil<CR>")
 
 -- improved repeatibility
-vim.keymap.set("v", "Q", ":normal @q<CR>")
-vim.keymap.set("n", "Q", "@q")
-vim.keymap.set("v", ".", ":normal .<CR>")
+-- vim.keymap.set("v", "Q", ":normal @q<CR>")
+-- vim.keymap.set("n", "Q", "@q")
+-- vim.keymap.set("v", ".", ":normal .<CR>")
 
 -- hop to the beginning and ends of line easily
-vim.keymap.set("n", "H", "^")
-vim.keymap.set("n", "L", "$")
+-- vim.keymap.set("n", "H", "^")
+-- vim.keymap.set("n", "L", "$")
 
 -- highlight pasted text
-vim.keymap.set("n", "gp", "`[v`]")
+-- vim.keymap.set("n", "gp", "`[v`]")
 
 -- paste from the copy buffer
 vim.keymap.set("v", "x", "0p")
@@ -275,7 +275,7 @@ vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
 -- zoom in function to take a split to the full screen
-vim.keymap.set("n", "<C-w>z", ":tab split<CR>")
+-- vim.keymap.set("n", "<C-w>z", ":tab split<CR>")
 
 -- Remap tab/s-tab to change... tabs
 vim.keymap.set("n", "<TAB>", "gt")
@@ -283,36 +283,36 @@ vim.keymap.set("n", "<S-TAB>", "gT")
 vim.keymap.set("n", "<C-I>", "<C-I>")
 
 -- match word-deletion to macOS
-vim.keymap.set("i", "<A-BS>", "<C-W>")
+-- vim.keymap.set("i", "<A-BS>", "<C-W>")
 
 -- clear highlighting
-vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
-vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
+-- vim.keymap.set("n", "<C-/>", ":nohlsearch<CR>", { silent = true })
+-- vim.keymap.set("t", "<C-/>", "<C-\\><C-N>:nohlsearch<CR>a", { silent = true })
 
 -- clear things, like highlight
-vim.keymap.set("n", "<C-[>", function()
-	vim.cmd("nohlsearch")
-end)
+-- vim.keymap.set("n", "<C-[>", function()
+-- 	vim.cmd("nohlsearch")
+-- end)
 
 -- make saving easier
-vim.keymap.set("n", "<C-s>", ":w<CR>")
-vim.keymap.set("i", "<C-s>", "<c-o>:w<CR>")
-vim.keymap.set("v", "<C-s>", "<esc>:w<CR>gv")
+-- vim.keymap.set("n", "<C-s>", ":w<CR>")
+-- vim.keymap.set("i", "<C-s>", "<c-o>:w<CR>")
+-- vim.keymap.set("v", "<C-s>", "<esc>:w<CR>gv")
 
 -- readline-esque bindings
-vim.keymap.set("i", "<C-a>", "<c-o>^")
-vim.keymap.set("i", "<C-b>", "<Left>")
-vim.keymap.set("i", "<C-d>", "<Del>")
-vim.keymap.set("i", "<C-e>", "<c-o>$")
-vim.keymap.set("i", "<C-f>", "<Right>")
-vim.keymap.set("c", "<C-a>", "<Home>")
-vim.keymap.set("c", "<C-b>", "<Left>")
-vim.keymap.set("c", "<C-d>", "<Del>")
-vim.keymap.set("c", "<C-e>", "<End>")
-vim.keymap.set("c", "<C-f>", "<Right>")
+-- vim.keymap.set("i", "<C-a>", "<c-o>^")
+-- vim.keymap.set("i", "<C-b>", "<Left>")
+-- vim.keymap.set("i", "<C-d>", "<Del>")
+-- vim.keymap.set("i", "<C-e>", "<c-o>$")
+-- vim.keymap.set("i", "<C-f>", "<Right>")
+-- vim.keymap.set("c", "<C-a>", "<Home>")
+-- vim.keymap.set("c", "<C-b>", "<Left>")
+-- vim.keymap.set("c", "<C-d>", "<Del>")
+-- vim.keymap.set("c", "<C-e>", "<End>")
+-- vim.keymap.set("c", "<C-f>", "<Right>")
 
 -- allow indent/dedent now that we've clobbered ctrl-d
-vim.keymap.set("i", "<C-s-t>", "<c-d>")
+-- vim.keymap.set("i", "<C-s-t>", "<c-d>")
 
 -- maps for "normal" buffers only, to exclude mappings in telescope, etc
 local normalbuf = vim.api.nvim_create_augroup("normalbuf", { clear = true })
@@ -338,12 +338,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 -- general leader commands
-vim.keymap.set("n", "<leader>c", ":let @+ = expand('%')<CR>", { silent = true })
-vim.keymap.set("n", "<leader>l", ":redraw!<CR>", { silent = true })
+-- vim.keymap.set("n", "<leader>c", ":let @+ = expand('%')<CR>", { silent = true })
+-- vim.keymap.set("n", "<leader>l", ":redraw!<CR>", { silent = true })
 
 -- neovim remote
-vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+-- vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+-- vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
 require("toggleterm").setup({
@@ -390,18 +390,18 @@ end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
-vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
-vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
-vim.keymap.set("i", "<C-k>", "<C-\\><C-N><C-w>k")
-vim.keymap.set("i", "<C-l>", "<C-\\><C-N><C-w>l")
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
-vim.keymap.set("v", "<C-h>", "<esc><C-w>h")
-vim.keymap.set("v", "<C-j>", "<esc><C-w>j")
-vim.keymap.set("v", "<C-k>", "<esc><C-w>k")
-vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
+-- vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
+-- vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
+-- vim.keymap.set("i", "<C-k>", "<C-\\><C-N><C-w>k")
+-- vim.keymap.set("i", "<C-l>", "<C-\\><C-N><C-w>l")
+-- vim.keymap.set("n", "<C-h>", "<C-w>h")
+-- vim.keymap.set("n", "<C-j>", "<C-w>j")
+-- vim.keymap.set("n", "<C-k>", "<C-w>k")
+-- vim.keymap.set("n", "<C-l>", "<C-w>l")
+-- vim.keymap.set("v", "<C-h>", "<esc><C-w>h")
+-- vim.keymap.set("v", "<C-j>", "<esc><C-w>j")
+-- vim.keymap.set("v", "<C-k>", "<esc><C-w>k")
+-- vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
 
 -- vim-grepper
 vim.keymap.set({ "n", "x" }, "gs", "<plug>(GrepperOperator)")
@@ -971,6 +971,7 @@ require("telescope").setup({
 		},
 		frecency = {
 			default_workspace = "CWD",
+			show_filter_column = false,
 			show_unindexed = true,
 			auto_validate = false,
 		},
