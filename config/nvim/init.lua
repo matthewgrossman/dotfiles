@@ -45,10 +45,10 @@ require("packer").startup(function(use)
             "folke/neodev.nvim",
         },
     })
-    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
-    use { 'mfussenegger/nvim-dap-python', requires = { "mfussenegger/nvim-dap" } }
-    use { "nvim-telescope/telescope-dap.nvim" }
-    use { 'theHamsta/nvim-dap-virtual-text' }
+    use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
+    use({ "mfussenegger/nvim-dap-python", requires = { "mfussenegger/nvim-dap" } })
+    use({ "nvim-telescope/telescope-dap.nvim" })
+    use({ "theHamsta/nvim-dap-virtual-text" })
     -- use("SmiteshP/nvim-navic")
     use({ -- Autocompletion
         "hrsh7th/nvim-cmp",
@@ -79,8 +79,7 @@ require("packer").startup(function(use)
                     rm = function(path)
                         return true
                     end,
-                }
-
+                },
             })
         end,
     })
@@ -96,30 +95,31 @@ require("packer").startup(function(use)
 
     -- usability
     use("numToStr/Comment.nvim")
-    use { 'stevearc/dressing.nvim' }
+    use({ "stevearc/dressing.nvim" })
     use("nvim-telescope/telescope.nvim")
     use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     -- use({ "~/src/telescope-file-browser.nvim" })
     use({ "nvim-telescope/telescope-file-browser.nvim" })
-    use { 'nvim-telescope/telescope-ui-select.nvim',
+    use({
+        "nvim-telescope/telescope-ui-select.nvim",
         config = function()
             require("telescope").load_extension("ui-select")
-        end
-    }
-    use {
+        end,
+    })
+    use({
         "nvim-telescope/telescope-frecency.nvim",
         config = function()
-            require("telescope").load_extension "frecency"
+            require("telescope").load_extension("frecency")
         end,
-    }
-    use { "lukas-reineke/indent-blankline.nvim" }
+    })
+    use({ "lukas-reineke/indent-blankline.nvim" })
     use("tpope/vim-repeat")
     -- use 'tpope/vim-rsi'
     use("tpope/vim-unimpaired")
     use("echasnovski/mini.nvim")
     use("famiu/bufdelete.nvim")
     use("vim-test/vim-test")
-    use {
+    use({
         "nvim-neotest/neotest",
         requires = {
             "nvim-lua/plenary.nvim",
@@ -127,8 +127,8 @@ require("packer").startup(function(use)
             "nvim-treesitter/nvim-treesitter",
             "nvim-neotest/neotest-python",
             "nvim-neotest/nvim-nio",
-        }
-    }
+        },
+    })
     use("mhinz/vim-grepper")
     -- use 'romainl/vim-qf'
     use("stefandtw/quickfix-reflector.vim")
@@ -250,7 +250,7 @@ vim.opt.inccommand = "nosplit"
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Set colorscheme
 vim.opt.termguicolors = true
@@ -271,8 +271,8 @@ vim.g.maplocalleader = " "
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- add line text object
 vim.keymap.set("x", "il", "g_o^")
@@ -338,7 +338,7 @@ vim.keymap.set("c", "<C-f>", "<Right>")
 vim.keymap.set("i", "<C-s-t>", "<c-d>")
 
 -- maps for "normal" buffers only, to exclude mappings in telescope, etc
-local normalbuf = vim.api.nvim_create_augroup('normalbuf', { clear = true })
+local normalbuf = vim.api.nvim_create_augroup("normalbuf", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
     group = normalbuf,
     callback = function(args)
@@ -350,12 +350,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
             -- print(string.format('inside fugitive: %s', vim.inspect(buf.filetype)))
             return
         end
-        if buf.buftype ~= '' then return end
+        if buf.buftype ~= "" then
+            return
+        end
 
         -- change last-searched word, with no register-clobbering issues
         vim.keymap.set("n", "c/", ":%s//<C-r>=@/<CR>/g<left><left>", { buffer = args.buf })
         -- vim.keymap.set("n", "c/", ":%s///g<left><left>", { buffer = args.buf })
-    end
+    end,
 })
 
 -- general leader commands
@@ -367,10 +369,10 @@ vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
 -- terminal
-require("toggleterm").setup {
+require("toggleterm").setup({
     shade_terminals = false,
     auto_scroll = false,
-}
+})
 vim.keymap.set("n", "<C-w>t", ":tabnew <bar> :terminal<CR>a")
 vim.keymap.set("n", "<C-w>-", ":ToggleTerm size=20 direction=horizontal<CR>")
 vim.keymap.set({ "n", "i", "t" }, "<C-;>", "<Cmd>ToggleTerm direction=float<CR>")
@@ -378,7 +380,7 @@ vim.keymap.set({ "n", "i", "t" }, "<C-\\>", "<Cmd>Telescope toggleterm_manager<C
 local toggleterm_manager = require("toggleterm-manager")
 local tt_actions = toggleterm_manager.actions
 
-toggleterm_manager.setup {
+toggleterm_manager.setup({
     mappings = {
         i = {
             ["<CR>"] = { action = tt_actions.open_term, exit_on_action = true },
@@ -390,15 +392,15 @@ toggleterm_manager.setup {
             ["<C-i>"] = { action = tt_actions.create_and_name_term, exit_on_action = false },
         },
     },
-}
+})
 
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
-    vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-    vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-    vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-    vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-    vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+    vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+    vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+    vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+    vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+    vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
     vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", opts)
     vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
     vim.keymap.set("n", "<C-c>", ":startinsert<CR>", opts)
@@ -406,12 +408,10 @@ function _G.set_terminal_keymaps()
     vim.keymap.set("n", "<C-q>", ":terminal<CR>:bd!#<CR>:startinsert<CR>", opts)
     vim.keymap.set("t", "<M-[>", "<esc>")
     vim.keymap.set("t", "<S-CR>", "<C-v><C-j>")
-
-    -- C-c causes frequent freezes; attempt fix from https://github.com/neovim/neovim/issues/20726
     vim.wo.foldmethod = "manual"
 end
 
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
 vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
 vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
@@ -430,8 +430,7 @@ vim.keymap.set("v", "<C-l>", "<esc><C-w>l")
 vim.keymap.set({ "n", "x" }, "gs", "<plug>(GrepperOperator)")
 vim.g.grepper = {
     highlight = 1,
-    tools = { "rg" }
-
+    tools = { "rg" },
 }
 -- vim-test
 vim.keymap.set("n", "<leader>r", ":TestNearest<CR>", { silent = true })
@@ -440,8 +439,8 @@ vim.keymap.set("n", "<leader>R", ":TestFile<CR>", { silent = true })
 -- neotest
 require("neotest").setup({
     adapters = {
-        require("neotest-python")
-    }
+        require("neotest-python"),
+    },
 })
 
 -- easyalign
@@ -476,12 +475,12 @@ vim.keymap.set("n", "<leader>ll", ":luafile %<CR>") -- <leader> Lua Lua
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
 })
 
 vim.filetype.add({
@@ -502,7 +501,7 @@ vim.api.nvim_create_autocmd("FileType", {
         elseif buf.filetype == "go" then
             vim.opt_local.expandtab = false
         end
-    end
+    end,
 })
 
 -- reload external changes
@@ -511,11 +510,11 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, { command = "if mode(
 -- status and window bars
 vim.opt.laststatus = 3
 
-
 -- generate ctags for bazel
-vim.opt.tags = '.tags'
+vim.opt.tags = ".tags"
 function MTags()
-    vim.cmd [[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]]
+    vim.cmd(
+        [[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]])
 end
 
 vim.keymap.set("n", "<leader>mt", MTags)
@@ -523,11 +522,11 @@ vim.keymap.set("n", "<leader>mt", MTags)
 require("ibl").setup()
 require("lualine").setup({
     winbar = {
-        lualine_a = { "filename" }
+        lualine_a = { "filename" },
     },
     inactive_winbar = {
-        lualine_a = { "filename" }
-    }
+        lualine_a = { "filename" },
+    },
 })
 require("Comment").setup()
 
@@ -537,18 +536,21 @@ local function setupDapPython()
     local debugpy_venv_dir = vim.fn.stdpath("data") .. "/" .. debugpy_venv_name
     local venv_exists = vim.fn.isdirectory(debugpy_venv_dir) == 1
     if not venv_exists then
-        cmd = string.format("cd %s; python3 -m venv %s; source %s/bin/activate; pip install debugpy",
-            vim.fn.stdpath("data"), debugpy_venv_dir, debugpy_venv_name)
+        cmd = string.format(
+            "cd %s; python3 -m venv %s; source %s/bin/activate; pip install debugpy",
+            vim.fn.stdpath("data"),
+            debugpy_venv_dir,
+            debugpy_venv_name
+        )
         vim.fn.system(cmd)
     end
-    require('dap-python').setup(debugpy_venv_dir .. "/bin/python")
+    require("dap-python").setup(debugpy_venv_dir .. "/bin/python")
 end
 setupDapPython()
 
-require('telescope').load_extension('dap')
+require("telescope").load_extension("dap")
 require("nvim-dap-virtual-text").setup()
 -- require("neoscroll").setup()
-
 
 require("gitsigns").setup({
     on_attach = function(bufnr)
@@ -794,13 +796,13 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 -- START LSP {{{
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("lspconfig").gopls.setup {}
-require("lspconfig").rust_analyzer.setup {}
-require("lspconfig").tsserver.setup {}
-require("lspconfig").terraformls.setup {}
-require("lspconfig").ccls.setup {}
-require("lspconfig").ruff_lsp.setup {}
-require("lspconfig").helm_ls.setup {}
+require("lspconfig").gopls.setup({})
+require("lspconfig").rust_analyzer.setup({})
+require("lspconfig").tsserver.setup({})
+require("lspconfig").terraformls.setup({})
+require("lspconfig").ccls.setup({})
+require("lspconfig").ruff_lsp.setup({})
+require("lspconfig").helm_ls.setup({})
 
 local libraries = vim.api.nvim_get_runtime_file("", true)
 table.insert(libraries, string.format("%s/hammerspoon/Spoons/EmmyLua.spoon/annotations", vim.env.XDG_CONFIG_HOME))
@@ -826,7 +828,7 @@ require("lspconfig").lua_ls.setup({
         },
     },
 })
-require("lspconfig").jsonls.setup {
+require("lspconfig").jsonls.setup({
     settings = {
         jsonls = {
             filetypes = { "json", "jsonc" },
@@ -836,22 +838,22 @@ require("lspconfig").jsonls.setup {
                     schemas = {
                         {
                             fileMatch = { "package.json" },
-                            url = "https://json.schemastore.org/package.json"
+                            url = "https://json.schemastore.org/package.json",
                         },
                         {
                             fileMatch = { "tsconfig*.json" },
-                            url = "https://json.schemastore.org/tsconfig.json"
+                            url = "https://json.schemastore.org/tsconfig.json",
                         },
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
-    }
-}
+    },
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-require("lspconfig").pyright.setup { capabilities = capabilities }
+require("lspconfig").pyright.setup({ capabilities = capabilities })
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -867,20 +869,19 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
-vim.keymap.set('n', 'gf', function()
-    vim.lsp.buf.format { async = true }
+vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
+vim.keymap.set("n", "gf", function()
+    vim.lsp.buf.format({ async = true })
 end)
 
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("UserLspConfig", {}),
     callback = function(ev)
         -- Enable completion triggered by <c-x><c-o>
-        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
         -- null-ls generally doesn't implement the below functions;
         -- escape early to not apply keybinds
@@ -892,19 +893,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-        vim.keymap.set('n', '<space>wl', function()
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+        vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+        vim.keymap.set("n", "<space>wl", function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, opts)
-        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+        vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
     end,
 })
 
@@ -933,9 +934,9 @@ require("mason-null-ls").setup({
     automatic_installation = true,
 })
 
-vim.keymap.set('i', '<C-CR>', 'copilot#Accept("\\<CR>")', {
+vim.keymap.set("i", "<C-CR>", 'copilot#Accept("\\<CR>")', {
     expr = true,
-    replace_keycodes = false
+    replace_keycodes = false,
 })
 vim.g.copilot_no_tab_map = true
 
@@ -994,7 +995,7 @@ require("telescope").setup({
             default_workspace = "CWD",
             show_unindexed = true,
             auto_validate = false,
-        }
+        },
     },
 })
 require("telescope").load_extension("fzf")
