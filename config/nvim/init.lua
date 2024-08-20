@@ -266,6 +266,11 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
+-- we remapped C-c to a different keybind, which then neovim will process and re-send
+-- C-c to the underlying terminals/buffers.
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-M-Right>", "<C-c>", { noremap = true, silent = true })
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
