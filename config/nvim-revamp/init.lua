@@ -57,7 +57,6 @@ vim.opt.scrolloff = 10
 -- MG custom opts begin {{{
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
-vim.opt.tabstop = 4
 
 vim.opt.fileformat = "unix"
 vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic", "linematch:60" }
