@@ -129,8 +129,23 @@ vim.cmd.abbreviate("iii", "import ipdb; ipdb.set_trace()")
 -- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
 -- we remapped C-c to a different keybind, which then neovim will process and re-send
 -- C-c to the underlying terminals/buffers.
-vim.keymap.set({ "n", "i", "v", "t" }, "<C-M-Right>", "<C-c>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-M-Right>", "<C-c>", { remap = true, silent = true })
 
+function _G.set_terminal_keymaps()
+   local opts = { buffer = 0 }
+   vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+   vim.keymap.set("n", "<C-e>", ":startinsert<CR><C-e>", opts)
+   vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
+   vim.keymap.set("n", "<C-a>", ":startinsert<CR><C-a>", opts)
+   vim.keymap.set("n", "<C-c>", ":startinsert<CR>", opts)
+   vim.keymap.set("n", "<C-p>", ":startinsert<CR><C-p>", opts)
+   vim.keymap.set("n", "<C-q>", ":terminal<CR>:bd!#<CR>:startinsert<CR>", opts)
+   vim.keymap.set("t", "<M-[>", "<esc>")
+   vim.keymap.set("t", "<S-CR>", "<C-v><C-j>")
+   vim.wo.foldmethod = "manual"
+end
+
+vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 -- }}}
 
 -- [[ Basic Autocommands ]]
@@ -201,14 +216,17 @@ require("lazy").setup({
          { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
       },
       config = function()
+         local actions = require("telescope.actions")
          require("telescope").setup({
             -- You can put your default mappings / updates / etc. in here
             --  All the info you're looking for is in `:help telescope.setup()`
             --
             -- defaults = {
-            --   mappings = {
-            --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-            --   },
+            --    mappings = {
+            --       i = {
+            --          ["<c-enter>"] = "to_fuzzy_refine",
+            --       },
+            --    },
             -- },
             -- pickers = {}
             extensions = {
@@ -219,6 +237,7 @@ require("lazy").setup({
                   default_workspace = "CWD",
                   show_unindexed = true,
                   auto_validate = false,
+                  show_filter_column = false,
                },
             },
          })
@@ -747,25 +766,6 @@ require("lazy").setup({
 }, {
    change_detection = {
       notify = false,
-   },
-   ui = {
-      -- If you are using a Nerd Font: set icons to an empty table which will use the
-      -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-      icons = vim.g.have_nerd_font and {} or {
-         cmd = "⌘",
-         config = "🛠",
-         event = "📅",
-         ft = "📂",
-         init = "⚙",
-         keys = "🗝",
-         plugin = "🔌",
-         runtime = "💻",
-         require = "🌙",
-         source = "📄",
-         start = "🚀",
-         task = "📌",
-         lazy = "💤 ",
-      },
    },
 })
 
