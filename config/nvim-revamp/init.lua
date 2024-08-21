@@ -22,6 +22,7 @@ vim.opt.breakindent = true
 
 -- Save undo history
 vim.opt.undofile = true
+vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
@@ -55,8 +56,8 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 -- MG custom opts begin {{{
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2
+-- vim.opt.softtabstop = 2
+-- vim.opt.shiftwidth = 2
 
 vim.opt.fileformat = "unix"
 vim.opt.diffopt = { "internal", "algorithm:patience", "indent-heuristic", "linematch:60" }
@@ -189,6 +190,7 @@ require("lazy").setup({
    -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
    "tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
    "tpope/vim-unimpaired",
+   "tpope/vim-repeat",
 
    { -- Fuzzy Finder (files, lsp, etc)
       "nvim-telescope/telescope.nvim",
@@ -232,6 +234,12 @@ require("lazy").setup({
             extensions = {
                ["ui-select"] = {
                   require("telescope.themes").get_dropdown(),
+               },
+               fzf = {
+                  fuzzy = true,
+                  override_generic_sorter = true,
+                  override_file_sorter = true,
+                  case_mode = "smart_case",
                },
                frecency = {
                   default_workspace = "CWD",
