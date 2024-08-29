@@ -96,4 +96,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.font_size = 12.0
 end
 
+-- https://github.com/wez/wezterm/issues/4962
+config.enable_wayland = false
+
 return config
