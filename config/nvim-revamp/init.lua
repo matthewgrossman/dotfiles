@@ -445,6 +445,15 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        yamlls = {
+          settings = {
+            yaml = {
+              schemas = {
+                kubernetes = '*',
+              },
+            },
+          },
+        },
         pyright = {
           settings = {
             pyright = {
@@ -781,7 +790,10 @@ require('lazy').setup({
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = { enable = true },
-      indent = { enable = true },
+      indent = {
+        enable = true,
+        disable = { 'yaml' },
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
