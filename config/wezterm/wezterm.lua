@@ -2,8 +2,10 @@ local wezterm = require('wezterm')
 local act = wezterm.action
 
 local function is_vim(pane)
-  return pane:get_foreground_process_name():find('n?vim') ~= nil
+  local proc_name = pane:get_foreground_process_name()
+  return proc_name ~= nil and proc_name:find('n?vim') ~= nil
 end
+
 local config = {
   font = wezterm.font('Fira Code'),
   font_rules = {
@@ -71,10 +73,11 @@ config.keys = {
     mods = 'CTRL',
     action = wezterm.action_callback(function(window, pane)
       -- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
-      -- we remapped C-c to a different keybind, which then neovim will process and re-send
-      -- C-c to the underlying terminals/buffers.
+      -- we remap C-c to a different keybind, which then neovim will process and re-send
+      -- C-c to the underlying terminals/buffers. This ensures we don't catch neovim
+      -- "offguard".
       if is_vim(pane) then
-        window:perform_action(wezterm.action.SendString('\x1b[1;7C'), pane)
+        window:perform_action(wezterm.action.SendKey({ key = 'F16' }), pane)
       else
         window:perform_action(wezterm.action.SendKey({ key = 'c', mods = 'CTRL' }), pane)
       end
