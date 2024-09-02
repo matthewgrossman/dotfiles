@@ -161,6 +161,12 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+vim.api.nvim_create_user_command("Z", "w | qa", {})
+vim.cmd([[
+  cabbrev wqa Z
+  cabbrev wqa! Z
+]])
 -- }}}
 
 -- [[ Basic Autocommands ]]
