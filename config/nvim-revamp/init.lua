@@ -143,7 +143,8 @@ vim.cmd.abbreviate('iii', 'import ipdb; ipdb.set_trace()')
 -- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
 -- we remapped C-c to a different keybind, which then neovim will process and re-send
 -- C-c to the underlying terminals/buffers.
-vim.keymap.set({ 'n', 'i', 'v', 't' }, '<F16>', "<C-c>", {remap = true, silent = true})
+local allKeymaps = { 'n', 'i', 'v', 'x', 's', 'o', 'c', 't' }
+vim.keymap.set(allKeymaps, '<F16>', '<C-c>', { remap = true, silent = true })
 
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
