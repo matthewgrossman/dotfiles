@@ -7,9 +7,9 @@ require('packer').startup(function(use)
   -- use("lewis6991/gitsigns.nvim")
 
   -- completion
-  use 'jayp0521/mason-null-ls.nvim'
+  use('jayp0521/mason-null-ls.nvim')
 
-  use { -- LSP Configuration & Plugins
+  use({ -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     requires = {
       -- Automatically install LSPs to stdpath for neovim
@@ -22,13 +22,13 @@ require('packer').startup(function(use)
       -- Additional lua configuration, makes nvim stuff amazing
       'folke/neodev.nvim',
     },
-  }
-  use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
-  use { 'mfussenegger/nvim-dap-python', requires = { 'mfussenegger/nvim-dap' } }
-  use { 'nvim-telescope/telescope-dap.nvim' }
-  use { 'theHamsta/nvim-dap-virtual-text' }
+  })
+  use({ 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } })
+  use({ 'mfussenegger/nvim-dap-python', requires = { 'mfussenegger/nvim-dap' } })
+  use({ 'nvim-telescope/telescope-dap.nvim' })
+  use({ 'theHamsta/nvim-dap-virtual-text' })
   -- use("SmiteshP/nvim-navic")
-  use { -- Autocompletion
+  use({ -- Autocompletion
     'hrsh7th/nvim-cmp',
     requires = {
       'hrsh7th/cmp-nvim-lsp',
@@ -38,14 +38,14 @@ require('packer').startup(function(use)
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
     },
-  }
-  use 'onsails/lspkind-nvim'
-  use 'windwp/nvim-autopairs'
-  use 'github/copilot.vim'
-  use {
+  })
+  use('onsails/lspkind-nvim')
+  use('windwp/nvim-autopairs')
+  use('github/copilot.vim')
+  use({
     'stevearc/oil.nvim',
     config = function()
-      require('oil').setup {
+      require('oil').setup({
         default_file_explorer = false,
         git = {
           add = function(path)
@@ -58,45 +58,45 @@ require('packer').startup(function(use)
             return true
           end,
         },
-      }
+      })
     end,
-  }
+  })
 
   -- file management
-  use { 'junegunn/fzf', run = ':call fzf#install()' }
-  use 'junegunn/fzf.vim'
+  use({ 'junegunn/fzf', run = ':call fzf#install()' })
+  use('junegunn/fzf.vim')
   -- use("tpope/vim-fugitive")
   -- use("tpope/vim-rhubarb")
-  use 'tpope/vim-eunuch'
+  use('tpope/vim-eunuch')
   -- use("tpope/vim-sleuth")
-  use 'majutsushi/tagbar'
+  use('majutsushi/tagbar')
 
   -- usability
-  use 'numToStr/Comment.nvim'
-  use { 'stevearc/dressing.nvim' }
+  use('numToStr/Comment.nvim')
+  use({ 'stevearc/dressing.nvim' })
   -- use("nvim-telescope/telescope.nvim")
   -- use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
   -- use({ "~/src/telescope-file-browser.nvim" })
-  use { 'nvim-telescope/telescope-file-browser.nvim' }
-  use {
+  use({ 'nvim-telescope/telescope-file-browser.nvim' })
+  use({
     'nvim-telescope/telescope-ui-select.nvim',
     config = function()
-      require('telescope').load_extension 'ui-select'
+      require('telescope').load_extension('ui-select')
     end,
-  }
-  use {
+  })
+  use({
     'nvim-telescope/telescope-frecency.nvim',
     config = function()
-      require('telescope').load_extension 'frecency'
+      require('telescope').load_extension('frecency')
     end,
-  }
-  use { 'lukas-reineke/indent-blankline.nvim' }
-  use 'tpope/vim-repeat'
+  })
+  use({ 'lukas-reineke/indent-blankline.nvim' })
+  use('tpope/vim-repeat')
   -- use 'tpope/vim-rsi'
-  use 'tpope/vim-unimpaired'
-  use 'echasnovski/mini.nvim'
-  use 'vim-test/vim-test'
-  use {
+  use('tpope/vim-unimpaired')
+  use('echasnovski/mini.nvim')
+  use('vim-test/vim-test')
+  use({
     'nvim-neotest/neotest',
     requires = {
       'nvim-lua/plenary.nvim',
@@ -105,53 +105,53 @@ require('packer').startup(function(use)
       'nvim-neotest/neotest-python',
       'nvim-neotest/nvim-nio',
     },
-  }
-  use 'mhinz/vim-grepper'
+  })
+  use('mhinz/vim-grepper')
   -- use 'romainl/vim-qf'
-  use 'stefandtw/quickfix-reflector.vim'
-  use 'junegunn/vim-easy-align'
-  use 'nelstrom/vim-visual-star-search'
+  use('stefandtw/quickfix-reflector.vim')
+  use('junegunn/vim-easy-align')
+  use('nelstrom/vim-visual-star-search')
 
-  use 'AndrewRadev/splitjoin.vim'
+  use('AndrewRadev/splitjoin.vim')
 
   -- ui
   -- use("karb94/neoscroll.nvim")
-  use 'rcarriga/nvim-notify'
-  use {
+  use('rcarriga/nvim-notify')
+  use({
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-  }
-  use { 'nvim-treesitter/nvim-treesitter-textobjects', after = { 'nvim-treesitter' } }
-  use 'RRethy/nvim-base16'
+  })
+  use({ 'nvim-treesitter/nvim-treesitter-textobjects', after = { 'nvim-treesitter' } })
+  use('RRethy/nvim-base16')
   -- use 'chriskempson/base16-vim'
-  use 'marko-cerovac/material.nvim'
-  use 'navarasu/onedark.nvim'
-  use 'daschw/leaf.nvim'
+  use('marko-cerovac/material.nvim')
+  use('navarasu/onedark.nvim')
+  use('daschw/leaf.nvim')
   -- use("EdenEast/nightfox.nvim")
-  use 'sainnhe/sonokai'
-  use {
+  use('sainnhe/sonokai')
+  use({
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-  }
-  use 'psliwka/termcolors.nvim'
-  use 'akinsho/toggleterm.nvim'
-  use 'ryanmsnyder/toggleterm-manager.nvim'
-  use 'folke/lsp-colors.nvim'
-  use 'lewis6991/impatient.nvim'
+  })
+  use('psliwka/termcolors.nvim')
+  use('akinsho/toggleterm.nvim')
+  use('ryanmsnyder/toggleterm-manager.nvim')
+  use('folke/lsp-colors.nvim')
+  use('lewis6991/impatient.nvim')
   -- use("monkoose/matchparen.nvim")
   -- use("folke/which-key.nvim")
 
   -- other languages
-  use { 'plasticboy/vim-markdown', ft = { 'markdown' } }
-  use {
+  use({ 'plasticboy/vim-markdown', ft = { 'markdown' } })
+  use({
     'iamcco/markdown-preview.nvim',
     run = function()
       vim.fn['mkdp#util#install']()
     end,
-  }
-  use { 'rust-lang/rust.vim', ft = { 'rust' } }
-  use 'neoclide/jsonc.vim'
-  use 'towolf/vim-helm'
+  })
+  use({ 'rust-lang/rust.vim', ft = { 'rust' } })
+  use('neoclide/jsonc.vim')
+  use('towolf/vim-helm')
 
   if is_bootstrap then
     require('packer').sync()
@@ -159,11 +159,11 @@ require('packer').startup(function(use)
 end)
 
 if is_bootstrap then
-  print '=================================='
-  print '    Plugins are being installed'
-  print '    Wait until Packer completes,'
-  print '       then restart nvim'
-  print '=================================='
+  print('==================================')
+  print('    Plugins are being installed')
+  print('    Wait until Packer completes,')
+  print('       then restart nvim')
+  print('==================================')
   return
 end
 
@@ -388,7 +388,7 @@ function _G.set_terminal_keymaps()
   vim.wo.foldmethod = 'manual'
 end
 
-vim.cmd 'autocmd! TermOpen term://* lua set_terminal_keymaps()'
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- vim.keymap.set("i", "<C-h>", "<C-\\><C-N><C-w>h")
 -- vim.keymap.set("i", "<C-j>", "<C-\\><C-N><C-w>j")
@@ -414,11 +414,11 @@ vim.g.grepper = {
 -- vim.keymap.set('n', '<leader>R', ':TestFile<CR>', { silent = true })
 
 -- neotest
-require('neotest').setup {
+require('neotest').setup({
   adapters = {
-    require 'neotest-python',
+    require('neotest-python'),
   },
-}
+})
 
 -- easyalign
 vim.keymap.set({ 'n', 'x' }, 'ga', '<Plug>(EasyAlign)')
@@ -439,7 +439,7 @@ vim.keymap.set({ 'n', 'x' }, 'ga', '<Plug>(EasyAlign)')
 -- vim.keymap.set("v", "<leader>gr", ":Git pr<cr>")
 
 -- reload init.lua file
-local vimrcPath = vim.fn.expand '$MYVIMRC'
+local vimrcPath = vim.fn.expand('$MYVIMRC')
 local sourceVimrcCmd = string.format(':source %s | PackerInstall<CR>', vimrcPath)
 vim.keymap.set('n', '<leader>sl', sourceVimrcCmd) -- <leader> Source Lua
 vim.keymap.set('n', '<leader>ll', ':luafile %<CR>') -- <leader> Lua Lua
@@ -460,10 +460,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.filetype.add {
+vim.filetype.add({
   { pattern = 'tsconfig.json', 'jsonc' },
   { pattern = 'Tiltfile', 'bzl' },
-}
+})
 -- FileType autocmds
 vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
@@ -490,36 +490,36 @@ vim.opt.laststatus = 3
 -- generate ctags for bazel
 vim.opt.tags = '.tags'
 function MTags()
-  vim.cmd [[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]]
+  vim.cmd([[!/opt/homebrew/bin/ctags --langmap=python:.BUILD,python:.bzl -f .tags --languages=python --exclude=.git -R bzl services]])
 end
 
 vim.keymap.set('n', '<leader>mt', MTags)
 
 require('ibl').setup()
-require('lualine').setup {
+require('lualine').setup({
   winbar = {
     lualine_a = { 'filename' },
   },
   inactive_winbar = {
     lualine_a = { 'filename' },
   },
-}
+})
 require('Comment').setup()
 
 require('dapui').setup()
 local function setupDapPython()
   local debugpy_venv_name = 'debugpy_venv'
-  local debugpy_venv_dir = vim.fn.stdpath 'data' .. '/' .. debugpy_venv_name
+  local debugpy_venv_dir = vim.fn.stdpath('data') .. '/' .. debugpy_venv_name
   local venv_exists = vim.fn.isdirectory(debugpy_venv_dir) == 1
   if not venv_exists then
-    cmd = string.format('cd %s; python3 -m venv %s; source %s/bin/activate; pip install debugpy', vim.fn.stdpath 'data', debugpy_venv_dir, debugpy_venv_name)
+    cmd = string.format('cd %s; python3 -m venv %s; source %s/bin/activate; pip install debugpy', vim.fn.stdpath('data'), debugpy_venv_dir, debugpy_venv_name)
     vim.fn.system(cmd)
   end
   require('dap-python').setup(debugpy_venv_dir .. '/bin/python')
 end
 setupDapPython()
 
-require('telescope').load_extension 'dap'
+require('telescope').load_extension('dap')
 require('nvim-dap-virtual-text').setup()
 -- require("neoscroll").setup()
 
@@ -577,7 +577,7 @@ require('nvim-dap-virtual-text').setup()
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = {
     'python',
@@ -657,11 +657,11 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
-}
+})
 
 require('nvim-autopairs').setup()
-vim.cmd 'set termguicolors'
-require('onedark').setup {
+vim.cmd('set termguicolors')
+require('onedark').setup({
   style = 'darker',
   toggle_style_key = '<leader>to',
   highlights = {
@@ -670,7 +670,7 @@ require('onedark').setup {
     TelescopeResultsBorder = { fg = '$grey' },
     TelescopePreviewBorder = { fg = '$grey' },
   },
-}
+})
 -- require("onedark").load()
 -- require('base16-colorscheme').setup()
 -- require('base16-colorscheme').with_config {
@@ -679,17 +679,17 @@ require('onedark').setup {
 -- vim.cmd('colorscheme base16-default-dark')
 
 -- nvim-cmp {{{
-local cmp = require 'cmp'
+local cmp = require('cmp')
 ---@cast cmp -?
-local lspkind = require 'lspkind'
+local lspkind = require('lspkind')
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
-local luasnip = require 'luasnip'
-cmp.setup {
+local luasnip = require('luasnip')
+cmp.setup({
   formatting = {
     format = lspkind.cmp_format(),
   },
@@ -703,7 +703,7 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm { select = false },
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -732,7 +732,7 @@ cmp.setup {
   }, {
     { name = 'buffer' },
   }),
-}
+})
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
@@ -759,7 +759,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- automatically insert parens for methods/functions
-local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 -- }}}
@@ -767,17 +767,17 @@ cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 -- START LSP {{{
 require('mason').setup()
 require('mason-lspconfig').setup()
-require('lspconfig').gopls.setup {}
-require('lspconfig').rust_analyzer.setup {}
-require('lspconfig').tsserver.setup {}
-require('lspconfig').terraformls.setup {}
-require('lspconfig').ccls.setup {}
-require('lspconfig').ruff_lsp.setup {}
-require('lspconfig').helm_ls.setup {}
+require('lspconfig').gopls.setup({})
+require('lspconfig').rust_analyzer.setup({})
+require('lspconfig').tsserver.setup({})
+require('lspconfig').terraformls.setup({})
+require('lspconfig').ccls.setup({})
+require('lspconfig').ruff_lsp.setup({})
+require('lspconfig').helm_ls.setup({})
 
 local libraries = vim.api.nvim_get_runtime_file('', true)
 table.insert(libraries, string.format('%s/hammerspoon/Spoons/EmmyLua.spoon/annotations', vim.env.XDG_CONFIG_HOME))
-require('lspconfig').lua_ls.setup {
+require('lspconfig').lua_ls.setup({
   settings = {
     Lua = {
       runtime = {
@@ -798,8 +798,8 @@ require('lspconfig').lua_ls.setup {
       },
     },
   },
-}
-require('lspconfig').jsonls.setup {
+})
+require('lspconfig').jsonls.setup({
   settings = {
     jsonls = {
       filetypes = { 'json', 'jsonc' },
@@ -820,11 +820,11 @@ require('lspconfig').jsonls.setup {
       },
     },
   },
-}
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-require('lspconfig').pyright.setup { capabilities = capabilities }
+require('lspconfig').pyright.setup({ capabilities = capabilities })
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -845,7 +845,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 vim.keymap.set('n', 'gf', function()
-  vim.lsp.buf.format { async = true }
+  vim.lsp.buf.format({ async = true })
 end)
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -880,7 +880,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require('null-ls').setup {
+require('null-ls').setup({
   sources = {
     -- require("null-ls").builtins.formatting.stylua.with({
     --     extra_args = { "--indent-type", "Spaces" },
@@ -899,11 +899,11 @@ require('null-ls').setup {
     require('null-ls').builtins.diagnostics.buildifier,
     require('null-ls').builtins.formatting.buildifier,
   },
-}
-require('mason-null-ls').setup {
+})
+require('mason-null-ls').setup({
   -- ensure_installed = nil,
   automatic_installation = true,
-}
+})
 
 vim.keymap.set('i', '<C-CR>', 'copilot#Accept("\\<CR>")', {
   expr = true,
@@ -929,10 +929,10 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- telescope {{{
 -- indiviual pickers are in telescope.lua
-local action_layout = require 'telescope.actions.layout'
-local actions = require 'telescope.actions'
+local action_layout = require('telescope.actions.layout')
+local actions = require('telescope.actions')
 local fb_actions = require('telescope').extensions.file_browser.actions
-require('telescope').setup {
+require('telescope').setup({
   defaults = {
     layout_strategy = 'flex',
     mappings = {
@@ -969,9 +969,9 @@ require('telescope').setup {
       auto_validate = false,
     },
   },
-}
-require('telescope').load_extension 'fzf'
-require('telescope').load_extension 'file_browser'
+})
+require('telescope').load_extension('fzf')
+require('telescope').load_extension('file_browser')
 -- require("telescope").extensions.frecency.frecency {
 --   sorter = require("telescope.sorters").fuzzy_with_index_bias()
 -- }
@@ -985,7 +985,7 @@ vim.keymap.set('n', 'q:', require('telescope.builtin').command_history)
 
 -- user commands {{{
 local cScratch = function()
-  vim.cmd 'split'
+  vim.cmd('split')
   local win = vim.api.nvim_get_current_win()
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_win_set_buf(win, buf)
@@ -993,7 +993,7 @@ local cScratch = function()
 end
 local cMessages = function()
   cScratch()
-  vim.cmd "put = execute('messages')"
+  vim.cmd("put = execute('messages')")
 end
 vim.api.nvim_create_user_command('Scratch', cScratch, {})
 vim.api.nvim_create_user_command('Messages', cMessages, {})
@@ -1007,7 +1007,7 @@ vim.api.nvim_create_user_command('Wqa', 'wqa', { bang = true })
 vim.api.nvim_create_user_command('WQa', 'wqa', { bang = true })
 -- }}}
 
-vim.cmd 'runtime vimscript/init.vim'
+vim.cmd('runtime vimscript/init.vim')
 
 if vim.env.WSL_DISTRO_NAME then
   vim.g.netrw_browsex_viewer = 'cmd.exe /c start ""'
@@ -1016,14 +1016,14 @@ end
 -- require("matchparen").setup({})
 -- require("which-key").setup()
 
-require('mini.ai').setup {
+require('mini.ai').setup({
   mappings = {
     around_next = '',
     inside_next = '',
     around_last = '',
     inside_last = '',
   },
-}
-require('mini.surround').setup {}
+})
+require('mini.surround').setup({})
 
 return M
