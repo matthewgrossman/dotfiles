@@ -70,6 +70,7 @@ vim.opt.scrolloff = 10
 vim.opt.fileformat = 'unix'
 vim.opt.diffopt = { 'internal', 'algorithm:patience', 'indent-heuristic', 'linematch:60' }
 vim.opt.termguicolors = true
+
 -- }}}
 
 -- [[ Basic Keymaps ]]
@@ -110,6 +111,10 @@ vim.keymap.set('c', '<C-b>', '<Left>')
 vim.keymap.set('c', '<C-d>', '<Del>')
 vim.keymap.set('c', '<C-e>', '<End>')
 vim.keymap.set('c', '<C-f>', '<Right>')
+
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- allow indent/dedent now that we've clobbered ctrl-d
 vim.keymap.set('i', '<C-s-t>', '<c-d>')
@@ -717,7 +722,13 @@ require('lazy').setup({
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      require('mini.ai').setup {
+        n_lines = 500,
+      }
+
+      -- line text object, overwrites some keybinds from mini.ai
+      vim.keymap.set('x', 'il', 'g_o^')
+      vim.keymap.set('o', 'il', ':normal vil<CR>')
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --

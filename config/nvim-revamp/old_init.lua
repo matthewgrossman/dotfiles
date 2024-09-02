@@ -245,15 +245,15 @@ vim.opt.hidden = true
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+-- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- add line text object
-vim.keymap.set('x', 'il', 'g_o^')
-vim.keymap.set('o', 'il', ':normal vil<CR>')
+-- vim.keymap.set('x', 'il', 'g_o^')
+-- vim.keymap.set('o', 'il', ':normal vil<CR>')
 
 -- improved repeatibility
 -- vim.keymap.set("v", "Q", ":normal @q<CR>")
@@ -268,11 +268,11 @@ vim.keymap.set('o', 'il', ':normal vil<CR>')
 -- vim.keymap.set("n", "gp", "`[v`]")
 
 -- paste from the copy buffer
-vim.keymap.set('v', 'x', '0p')
+-- vim.keymap.set('v', 'x', '0p')
 
 -- search options
-vim.keymap.set('n', 'n', 'nzz')
-vim.keymap.set('n', 'N', 'Nzz')
+-- vim.keymap.set('n', 'n', 'nzz')
+-- vim.keymap.set('n', 'N', 'Nzz')
 
 -- zoom in function to take a split to the full screen
 -- vim.keymap.set("n", "<C-w>z", ":tab split<CR>")
@@ -410,8 +410,8 @@ vim.g.grepper = {
   tools = { 'rg' },
 }
 -- vim-test
-vim.keymap.set('n', '<leader>r', ':TestNearest<CR>', { silent = true })
-vim.keymap.set('n', '<leader>R', ':TestFile<CR>', { silent = true })
+-- vim.keymap.set('n', '<leader>r', ':TestNearest<CR>', { silent = true })
+-- vim.keymap.set('n', '<leader>R', ':TestFile<CR>', { silent = true })
 
 -- neotest
 require('neotest').setup {
