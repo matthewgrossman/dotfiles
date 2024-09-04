@@ -217,7 +217,7 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('fzf-lua').setup({
-        "telescope",
+        'telescope',
         keymap = {
           builtin = {
             ['<C-f>'] = 'preview-down',
