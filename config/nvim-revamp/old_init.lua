@@ -77,25 +77,25 @@ require('packer').startup(function(use)
   -- use("nvim-telescope/telescope.nvim")
   -- use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
   -- use({ "~/src/telescope-file-browser.nvim" })
-  use({ 'nvim-telescope/telescope-file-browser.nvim' })
-  use({
-    'nvim-telescope/telescope-ui-select.nvim',
-    config = function()
-      require('telescope').load_extension('ui-select')
-    end,
-  })
-  use({
-    'nvim-telescope/telescope-frecency.nvim',
-    config = function()
-      require('telescope').load_extension('frecency')
-    end,
-  })
-  use({ 'lukas-reineke/indent-blankline.nvim' })
-  use('tpope/vim-repeat')
+  -- use({ 'nvim-telescope/telescope-file-browser.nvim' })
+  -- use({
+  --   'nvim-telescope/telescope-ui-select.nvim',
+  --   config = function()
+  --     require('telescope').load_extension('ui-select')
+  --   end,
+  -- })
+  -- use({
+  --   'nvim-telescope/telescope-frecency.nvim',
+  --   config = function()
+  --     require('telescope').load_extension('frecency')
+  --   end,
+  -- })
+  -- use({ 'lukas-reineke/indent-blankline.nvim' })
+  -- use('tpope/vim-repeat')
   -- use 'tpope/vim-rsi'
-  use('tpope/vim-unimpaired')
-  use('echasnovski/mini.nvim')
-  use('vim-test/vim-test')
+  -- use('tpope/vim-unimpaired')
+  -- use('echasnovski/mini.nvim')
+  -- use('vim-test/vim-test')
   use({
     'nvim-neotest/neotest',
     requires = {
@@ -1024,6 +1024,6 @@ require('mini.ai').setup({
     inside_last = '',
   },
 })
-require('mini.surround').setup({})
+-- require('mini.surround').setup({})
 
 return M

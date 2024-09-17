@@ -84,6 +84,14 @@ end)
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.goto_prev({ float = true })
+end)
+
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.goto_next({ float = true })
+end)
+
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Keybinds to make split navigation easier.
@@ -212,6 +220,11 @@ require('lazy').setup({
   'tpope/vim-unimpaired',
   'tpope/vim-repeat',
   {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+  },
+  {
     'ibhagwan/fzf-lua',
     -- optional for icon support
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -309,6 +322,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
+
+      vim.keymap.set('n', '<leader>sa', function ()
+        require("telescope.builtin").grep_string({search = "", previewer=false})
+      end, { desc = '[S]earch current [W]ord' })
     end,
   },
 
@@ -565,6 +582,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
+        bzl = { 'buildifier' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -765,7 +783,6 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
-      require('mini.pairs').setup()
       require('mini.tabline').setup()
 
       local miniFiles = require('mini.files')
