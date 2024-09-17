@@ -28,10 +28,6 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 # reload ZSH now that setup is done
 source ~/.zshrc
 
-# install non-brew deps
-<"$XDG_CONFIG_HOME/npm/packages.txt" xargs -n1 npm -g install
-<"$XDG_CONFIG_HOME/luarocks/luarocks.txt" xargs -n1 luarocks install
-
 # random mac settings {{{
 # many of these were taken from these two sources:
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
