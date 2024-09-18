@@ -316,8 +316,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
 
-      vim.keymap.set('n', '<leader>sa', function ()
-        require("telescope.builtin").grep_string({search = "", previewer=false})
+      vim.keymap.set('n', '<leader>sa', function()
+        require('telescope.builtin').grep_string({ search = '', previewer = false })
       end, { desc = '[S]earch current [W]ord' })
     end,
   },
@@ -524,6 +524,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'buildifier', -- Used to format Bazel code
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
