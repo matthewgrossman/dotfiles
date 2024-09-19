@@ -230,6 +230,16 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('fzf-lua').setup({
+        keymap = {
+          builtin = {
+            'false',
+            ['<C-j>'] = 'preview-down',
+            ['<C-k>'] = 'preview-up',
+          },
+          fzf = {
+            'false',
+          },
+        },
         winopts = {
           preview = {
             layout = 'vertical',
@@ -271,13 +281,18 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --    mappings = {
-        --       i = {
-        --          ["<c-enter>"] = "to_fuzzy_refine",
-        --       },
-        --    },
-        -- },
+        defaults = {
+          mappings = {
+            i = {
+              ['<C-j>'] = actions.preview_scrolling_down,
+              ['<C-k>'] = actions.preview_scrolling_up,
+            },
+            n = {
+              ['<C-j>'] = actions.preview_scrolling_down,
+              ['<C-k>'] = actions.preview_scrolling_up,
+            },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -644,8 +659,8 @@ require('lazy').setup({
           ['<C-p>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-j>'] = cmp.mapping.scroll_docs(4),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
