@@ -15,7 +15,6 @@ compinit -C
 
 export WORDCHARS=${WORDCHARS/\/}
 
-HISTFILE=$XDG_CONFIG_HOME/zsh/histfile
 export GOPATH=$HOME/src
 export GO111MODULE='on'
 
