@@ -250,6 +250,19 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'nvim-telescope/telescope-frecency.nvim',
+    -- we do NOT want to load frecency lazily, as it can cause issues
+    -- where it's lazily loaded right when we're about to quit neovim,
+    -- causing a stalled uv loop
+    main = 'frecency',
+    opts = {
+      default_workspace = 'CWD',
+      show_unindexed = true,
+      auto_validate = false,
+      show_filter_column = false,
+    },
+  },
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -270,7 +283,6 @@ require('lazy').setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-      { 'nvim-telescope/telescope-frecency.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -304,12 +316,7 @@ require('lazy').setup({
             override_file_sorter = true,
             case_mode = 'smart_case',
           },
-          frecency = {
-            default_workspace = 'CWD',
-            show_unindexed = true,
-            auto_validate = false,
-            show_filter_column = false,
-          },
+          -- loaded frecency independently in deps
         },
       })
 
