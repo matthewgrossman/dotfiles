@@ -606,6 +606,9 @@ require('lazy').setup({
     },
   },
   {
+    -- longer term, might be worth checking out copilot-cmp,
+    -- but currently has issues with newline-completions:
+    -- https://github.com/hrsh7th/nvim-cmp/issues/1272
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
@@ -682,10 +685,11 @@ require('lazy').setup({
           ['<C-k>'] = cmp.mapping.scroll_docs(-4),
           ['<C-j>'] = cmp.mapping.scroll_docs(4),
 
-          -- Accept ([y]es) the completion.
+          --  Accept the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+          --  previously was <C-y>, but this felt more ergonomic
+          ['<C-CR>'] = cmp.mapping.confirm({ select = true }),
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
