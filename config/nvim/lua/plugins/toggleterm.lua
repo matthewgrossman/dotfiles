@@ -4,6 +4,7 @@ return {
     config = function()
       local percent = 0.95
       require('toggleterm').setup({
+        auto_scroll = false,
         float_opts = {
           width = function()
             return math.floor(vim.o.columns * percent)

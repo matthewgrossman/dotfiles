@@ -182,7 +182,7 @@ function jvenv() {
         return 1
     fi
     pip install uv
-    uv pip install jupyter ipykernel ipdb notebook jupyterlab-vim jupyterlab-code-formatter ruff
+    uv pip install jupyter ipykernel ipdb notebook jupyterlab-vim jupyterlab-code-formatter ruff pynvim
     python -m ipykernel install --user --name=$(basename "$PWD")_venv
 }
 

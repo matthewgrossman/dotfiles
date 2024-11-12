@@ -24,6 +24,7 @@ vim.opt.breakindent = true
 -- `vim-sleuth` or other plugins
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
 
 -- Save undo history
 vim.opt.undofile = true
@@ -109,6 +110,11 @@ vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('i', '<C-s>', '<c-o>:w<CR>')
 vim.keymap.set('v', '<C-s>', '<esc>:w<CR>gv')
 
+-- improved repeatibility
+vim.keymap.set('v', '.', ':normal .<CR>')
+vim.keymap.set('v', 'Q', ':normal @q<CR>')
+vim.keymap.set('n', 'Q', '@q')
+
 vim.keymap.set('i', '<C-a>', '<c-o>^')
 vim.keymap.set('i', '<C-b>', '<Left>')
 vim.keymap.set('i', '<C-d>', '<Del>')
@@ -141,6 +147,7 @@ vim.keymap.set('n', '<C-w>z', ':tab split<CR>')
 vim.keymap.set('n', 'gp', '`[v`]')
 
 vim.keymap.set('n', '<leader>c', ":let @+ = expand('%')<CR>", { silent = true })
+vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true })
 
 -- neovim remote
 vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
@@ -169,6 +176,11 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+-- useful helper for snagging the visual selection
+_G.get_visual_selection = function()
+  return vim.fn.getregion(vim.fn.getpos('.'), vim.fn.getpos('v'), { mode = vim.fn.mode() })
+end
 
 vim.api.nvim_create_user_command('Z', 'w | qa', {})
 vim.cmd([[
@@ -219,6 +231,19 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-unimpaired',
   'tpope/vim-repeat',
+  {
+    'stevearc/quicker.nvim',
+    event = 'FileType qf',
+    config = function()
+      require('quicker').setup()
+      vim.keymap.set('n', '<leader>q', function()
+        require('quicker').toggle()
+      end, {
+        desc = 'Toggle quickfix',
+      })
+    end,
+  },
+  { 'towolf/vim-helm', ft = 'helm' },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -294,6 +319,7 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
+          layout_strategy = 'vertical',
           mappings = {
             i = {
               ['<C-j>'] = actions.preview_scrolling_down,
@@ -337,6 +363,12 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
+
+      vim.keymap.set('v', '<leader>sw', function()
+        require('telescope.builtin').live_grep({
+          default_text = table.concat(get_visual_selection()),
+        })
+      end)
 
       vim.keymap.set('n', '<leader>sa', function()
         require('telescope.builtin').grep_string({ search = '', previewer = false })
@@ -425,6 +457,7 @@ require('lazy').setup({
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+          client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -481,7 +514,15 @@ require('lazy').setup({
         clangd = {},
         gopls = {},
         ruff_lsp = {},
-        helm_ls = {},
+        helm_ls = {
+          settings = {
+            ['helm-ls'] = {
+              yamlls = {
+                path = 'yaml-language-server',
+              },
+            },
+          },
+        },
         terraformls = {},
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
