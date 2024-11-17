@@ -824,6 +824,44 @@ require('lspconfig').jsonls.setup({
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       disableOrganizeImports = true, -- Using Ruff
+        --     },
+        --     python = {
+        --       analysis = {
+        --         ignore = { '*' }, -- Using Ruff
+        --       },
+        --     },
+        --   },
+        -- },
+        -- pyright = {
+        --   -- https://github.com/astral-sh/ruff-lsp/issues/384
+        --   settings = {
+        --     pyright = {
+        --       disableOrganizeImports = true, -- Using Ruff
+        --       -- disableTaggedHints = true,
+        --     },
+        --     python = {
+        --       analysis = {
+        --         diagnosticMode = 'openFilesOnly',
+        --         -- diagnosticSeverityOverrides = {
+        --           -- Disable all diagnostics except for type checking
+        --           -- reportPrivateImportUsage = false,
+        --           -- reportMissingImports = false,
+        --           -- reportUnusedImport = false,
+        --           -- reportUnusedFunction = false,
+        --           -- reportUnusedVariable = false,
+        --           -- reportUndefinedVariable = false,
+        --           -- reportMissingTypeStubs = false,
+        --         -- },
+        --       },
+        --     },
+        --   },
+        -- },
+
 require('lspconfig').pyright.setup({ capabilities = capabilities })
 
 -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end

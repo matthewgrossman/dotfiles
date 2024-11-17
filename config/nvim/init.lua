@@ -34,6 +34,9 @@ vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- don't show the keybind at the bottom right
+vim.opt.showcmd = false
+
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
 
@@ -177,6 +180,33 @@ end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
+local function setupPythonVenv()
+  local path = vim.fn.stdpath('data') .. '/venv'
+  if not (vim.fn.isdirectory(path) == 1) then
+    print('Creating new python venv')
+    local packages = { 'pynvim', 'debugpy', 'typing_extensions' }
+    local cmd = string.format(
+      [[
+      uv venv %s;
+      UV_PYTHON=%s uv pip install %s
+      ]],
+      path,
+      path,
+      table.concat(packages, ' ')
+    )
+    print(string.format('Running cmd:\n%s', cmd))
+    local result = vim.system({ 'bash', '-c', cmd }):wait()
+    if result.code ~= 0 then
+      print('Error setting up Python environment:', result.stderr)
+    else
+      print('Python environment setup complete!')
+    end
+  end
+  vim.g.python3_host_prog = path .. '/bin/python'
+end
+
+setupPythonVenv()
+
 -- useful helper for snagging the visual selection
 _G.get_visual_selection = function()
   return vim.fn.getregion(vim.fn.getpos('.'), vim.fn.getpos('v'), { mode = vim.fn.mode() })
@@ -185,6 +215,7 @@ end
 vim.api.nvim_create_user_command('Z', 'w | qa', {})
 vim.cmd([[
   cabbrev wqa Z
+  cabbrev Wqa Z
   cabbrev wqa! Z
 ]])
 -- }}}
@@ -314,7 +345,15 @@ require('lazy').setup({
     },
     config = function()
       local actions = require('telescope.actions')
+
+      -- allow for more space for the fnames
+      local picker_config = {}
+      for b, _ in pairs(require('telescope.builtin')) do
+        picker_config[b] = { fname_width = 80 }
+      end
+
       require('telescope').setup({
+
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
@@ -331,7 +370,7 @@ require('lazy').setup({
             },
           },
         },
-        -- pickers = {}
+        pickers = picker_config,
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -513,7 +552,22 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
-        ruff_lsp = {},
+        ruff = {},
+        yamlls = {
+          settings = {
+            yaml = {
+              schemas = {
+                kubernetes = '*.yaml',
+                ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*',
+                ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
+                ['http://json.schemastore.org/ansible-playbook'] = '*play*.{yml,yaml}',
+                ['http://json.schemastore.org/chart'] = 'Chart.{yml,yaml}',
+                ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '*docker-compose*.{yml,yaml}',
+                ['https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json'] = '*flow*.{yml,yaml}',
+              },
+            },
+          },
+        },
         helm_ls = {
           settings = {
             ['helm-ls'] = {
@@ -533,26 +587,16 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-        yamlls = {},
-        -- yamlls = {
-        --   settings = {
-        --     yaml = {
-        --       schemas = {
-        --         kubernetes = '*',
-        --       },
-        --     },
-        --   },
-        -- },
         pyright = {
-          settings = {
-            pyright = {
-              -- Using Ruff's import organizer
-              disableOrganizeImports = true,
-            },
-            python = {
-              analysis = {
-                -- Ignore all files for analysis to exclusively use Ruff for linting
-                ignore = { '*' },
+          pyright = {
+            disableOrganizeImports = true,
+            disableTaggedHints = true,
+          },
+          python = {
+            analysis = {
+              diagnosticSeverityOverrides = {
+                -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
+                reportUndefinedVariable = 'none',
               },
             },
           },
@@ -588,6 +632,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'buildifier', -- Used to format Bazel code
+        -- 'mypy',
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 

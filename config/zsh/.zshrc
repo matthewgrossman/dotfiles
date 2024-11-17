@@ -37,6 +37,13 @@ if command -v direnv > /dev/null; then
     eval "$(direnv hook zsh)"
 fi
 
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+if [[ -d $PYENV_ROOT/bin && -z "$VIRTUAL_ENV" ]]; then
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+fi
+
 HISTSIZE=10000000
 SAVEHIST=10000000
 unsetopt SHARE_HISTORY
@@ -50,7 +57,7 @@ bindkey -e
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--ansi --no-height"
-export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 
@@ -86,3 +93,4 @@ else
 fi
 source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# zprof
