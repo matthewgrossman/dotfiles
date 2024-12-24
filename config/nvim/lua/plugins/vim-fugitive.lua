@@ -5,7 +5,8 @@ return {
   },
   config = function()
     vim.keymap.set('n', '<leader>gg', ':tab Git<cr>')
-    vim.keymap.set('n', '<leader>gdd', ':Gdiffsplit<cr>')
+    vim.keymap.set('n', '<leader>gdd', ':Gvdiffsplit<cr>')
+    vim.keymap.set('n', '<leader>gdm', ':Gvdiffsplit master<cr>')
     vim.keymap.set('n', '<leader>gb', ':Git blame<cr>')
     vim.keymap.set('n', '<leader>ga', ':Gwrite<cr>')
     vim.keymap.set('n', '<leader>gp', ':Git push<cr>')

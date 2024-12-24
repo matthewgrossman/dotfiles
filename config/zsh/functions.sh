@@ -181,7 +181,11 @@ function jvenv() {
         echo "You are not in a virtual environment."
         return 1
     fi
-    pip install uv
+
+    if ! command -v uv > /dev/null; then
+        pip install uv
+    fi
+
     uv pip install jupyter ipykernel ipdb notebook jupyterlab-vim jupyterlab-code-formatter ruff pynvim
     python -m ipykernel install --user --name=$(basename "$PWD")_venv
 }

@@ -156,7 +156,7 @@ vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true 
 vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
-vim.cmd.abbreviate('iii', 'import ipdb; ipdb.set_trace()')
+vim.cmd.abbreviate('iii', 'import ipdb; ipdb.set_trace()  # fmt: skip')
 
 -- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
 -- we remapped C-c to a different keybind, which then neovim will process and re-send
@@ -274,6 +274,25 @@ require('lazy').setup({
       })
     end,
   },
+  {
+    'stevearc/aerial.nvim',
+    config = function()
+      require('aerial').setup({
+        -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+        on_attach = function(bufnr)
+          -- Jump forwards/backwards with '{' and '}'
+          vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '<leader>t', '<cmd>AerialToggle float<CR>', { buffer = bufnr })
+        end,
+      })
+    end,
+    -- Optional dependencies
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
   { 'towolf/vim-helm', ft = 'helm' },
   {
     'windwp/nvim-autopairs',
@@ -285,12 +304,14 @@ require('lazy').setup({
     -- optional for icon support
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+      local actions = require('fzf-lua.actions')
       require('fzf-lua').setup({
         keymap = {
           builtin = {
             'false',
             ['<C-j>'] = 'preview-down',
             ['<C-k>'] = 'preview-up',
+            ['<C-h>'] = 'hide',
           },
           fzf = {
             'false',
@@ -302,7 +323,23 @@ require('lazy').setup({
           },
         },
       })
-      vim.keymap.set('n', '<leader>sg', require('fzf-lua').grep_project)
+      vim.keymap.set('n', '<leader>sg', function()
+        require('fzf-lua').grep_project({
+          fzf_opts = { ['--nth'] = false },
+          file_icons = false,
+          rg_opts = '--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --glob "!.git/*" -e',
+        })
+      end)
+    end,
+  },
+  { 'alexander-born/bazel.nvim', dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' } },
+  {
+    'benlubas/molten-nvim',
+    version = '^1.0.0', -- use version <2.0.0 to avoid breaking changes
+    build = ':UpdateRemotePlugins',
+    init = function()
+      -- this is an example, not a default. Please see the readme for more configuration options
+      vim.g.molten_output_win_max_height = 12
     end,
   },
 
@@ -496,7 +533,11 @@ require('lazy').setup({
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
+
+          -- these two lines disable syntax highlighting from the LSP server, if it exists
+          -- client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
+          -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
+
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -556,11 +597,13 @@ require('lazy').setup({
         yamlls = {
           settings = {
             yaml = {
+              schemaStore = {
+                enable = false,
+              },
               schemas = {
-                kubernetes = '*.yaml',
+                -- kubernetes = '*.yaml',
                 ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*',
                 ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-                ['http://json.schemastore.org/ansible-playbook'] = '*play*.{yml,yaml}',
                 ['http://json.schemastore.org/chart'] = 'Chart.{yml,yaml}',
                 ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '*docker-compose*.{yml,yaml}',
                 ['https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json'] = '*flow*.{yml,yaml}',
@@ -585,7 +628,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        denols = {},
         --
         pyright = {
           pyright = {
@@ -646,6 +689,7 @@ require('lazy').setup({
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
+            -- server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -653,6 +697,26 @@ require('lazy').setup({
       })
     end,
   },
+  -- { -- Linting
+  --   'mfussenegger/nvim-lint',
+  --   event = { 'BufReadPre', 'BufNewFile' },
+  --   config = function()
+  --     local lint = require('lint')
+  --     lint.linters_by_ft = {
+  --       python = { 'mypy' },
+  --       bzl = { 'buildifier' },
+  --     }
+  --
+  --     vim.print(lint.linters.buildifier.args)
+  --     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+  --     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+  --       group = lint_augroup,
+  --       callback = function()
+  --         lint.try_lint()
+  --       end,
+  --     })
+  --   end,
+  -- },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -707,6 +771,37 @@ require('lazy').setup({
       },
     },
   },
+  -- {
+  --   'saghen/blink.cmp',
+  --   -- optional: provides snippets for the snippet source
+  --   dependencies = 'rafamadriz/friendly-snippets',
+  --
+  --   -- use a release tag to download pre-built binaries
+  --   version = 'v0.*',
+  --   -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+  --   -- build = 'cargo build --release',
+  --   -- If you use nix, you can build from source using latest nightly rust with:
+  --   -- build = 'nix run .#build-plugin',
+  --
+  --   opts = {
+  --     keymap = { preset = 'default' },
+  --
+  --     appearance = {
+  --       -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+  --       -- Useful for when your theme doesn't support blink.cmp
+  --       -- will be removed in a future release
+  --       use_nvim_cmp_as_default = true,
+  --       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+  --       -- Adjusts spacing to ensure icons are aligned
+  --       nerd_font_variant = 'mono',
+  --     },
+  --     -- experimental signature help support
+  --     signature = { enabled = true },
+  --   },
+  --   -- allows extending the providers array elsewhere in your config
+  --   -- without having to redefine it
+  --   opts_extend = { 'sources.default' },
+  -- },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',

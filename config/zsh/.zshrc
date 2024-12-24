@@ -38,11 +38,11 @@ if command -v direnv > /dev/null; then
 fi
 
 # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d $PYENV_ROOT/bin && -z "$VIRTUAL_ENV" ]]; then
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-fi
+# export PYENV_ROOT="$HOME/.pyenv"
+# if [[ -d $PYENV_ROOT/bin && -z "$VIRTUAL_ENV" ]]; then
+#     export PATH="$PYENV_ROOT/bin:$PATH"
+#     eval "$(pyenv init --path)"
+# fi
 
 HISTSIZE=10000000
 SAVEHIST=10000000
