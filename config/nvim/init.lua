@@ -579,6 +579,7 @@ require('lazy').setup({
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
@@ -689,7 +690,6 @@ require('lazy').setup({
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
-            -- server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -764,42 +764,68 @@ require('lazy').setup({
     event = 'InsertEnter',
     opts = {
       suggestion = {
-        keymap = {
-          accept = '<C-CR>',
-          next = '<C-g>',
-        },
+        enabled = false,
+        -- keymap = {
+        --   accept = '<C-CR>',
+        --   next = '<C-g>',
+        -- },
       },
+      panel = { enabled = false },
     },
   },
   -- {
   --   'saghen/blink.cmp',
   --   -- optional: provides snippets for the snippet source
-  --   dependencies = 'rafamadriz/friendly-snippets',
+  --   dependencies = {
+  --     'rafamadriz/friendly-snippets',
+  --     'giuxtaposition/blink-cmp-copilot',
+  --   },
   --
   --   -- use a release tag to download pre-built binaries
-  --   version = 'v0.*',
+  --   version = '*',
   --   -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
   --   -- build = 'cargo build --release',
   --   -- If you use nix, you can build from source using latest nightly rust with:
   --   -- build = 'nix run .#build-plugin',
   --
   --   opts = {
-  --     keymap = { preset = 'default' },
+  --     keymap = {
+  --       preset = 'default',
+  --       ['<C-CR>'] = { 'accept' },
+  --       ['<C-K>'] = { 'scroll_documentation_up' },
+  --       ['<C-J>'] = { 'scroll_documentation_down' },
+  --       ['<C-L>'] = { 'snippet_forward' },
+  --       ['<C-H>'] = { 'snippet_backward' },
+  --     },
+  --     completion = {
+  --       list = {
+  --         selection = 'auto_insert',
+  --       },
+  --       documentation = {
+  --         auto_show = true,
+  --         auto_show_delay_ms = 100,
+  --       },
+  --     },
   --
   --     appearance = {
-  --       -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-  --       -- Useful for when your theme doesn't support blink.cmp
-  --       -- will be removed in a future release
   --       use_nvim_cmp_as_default = true,
-  --       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-  --       -- Adjusts spacing to ensure icons are aligned
   --       nerd_font_variant = 'mono',
   --     },
-  --     -- experimental signature help support
-  --     signature = { enabled = true },
+  --
+  --     -- Default list of enabled providers defined so that you can extend it
+  --     -- elsewhere in your config, without redefining it, due to `opts_extend`
+  --     sources = {
+  --       default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+  --       providers = {
+  --         copilot = {
+  --           name = 'copilot',
+  --           module = 'blink-cmp-copilot',
+  --           score_offset = 100,
+  --           async = true,
+  --         },
+  --       },
+  --     },
   --   },
-  --   -- allows extending the providers array elsewhere in your config
-  --   -- without having to redefine it
   --   opts_extend = { 'sources.default' },
   -- },
   { -- Autocompletion

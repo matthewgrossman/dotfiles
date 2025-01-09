@@ -14,7 +14,8 @@ return {
           end,
         },
       })
-      vim.keymap.set({ 'n', 't' }, '<C-;>', '<CMD>ToggleTerm direction=float<CR>')
+      vim.keymap.set({ 'n', 't' }, '<C-;>', '<CMD>ToggleTerm direction=float name=primary<CR>')
+      vim.keymap.set({ 'n', 't' }, '<leader>;s', '<CMD>ToggleTerm direction=float name=server<CR>')
     end,
   },
 }
