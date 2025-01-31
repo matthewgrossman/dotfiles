@@ -156,7 +156,7 @@ vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true 
 vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 
-vim.cmd.abbreviate('iii', 'import ipdb; ipdb.set_trace()  # fmt: skip')
+vim.cmd.abbreviate('iii', 'breakpoint()')
 
 -- MAJOR HACK; blasting C-c to neovim sometimes causes it to freeze. In wezterm,
 -- we remapped C-c to a different keybind, which then neovim will process and re-send
@@ -179,6 +179,18 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+function _G.file_contains(file_path, search_string)
+  local f = io.open(file_path, 'r') -- Open the file in read mode
+  if not f then
+    return false, 'File not found or could not be opened'
+  end
+
+  local content = f:read('*all') -- Read the entire content of the file
+  f:close()
+
+  return content:find(search_string, 1, true) ~= nil
+end
 
 local function setupPythonVenv()
   local path = vim.fn.stdpath('data') .. '/venv'
@@ -206,6 +218,20 @@ local function setupPythonVenv()
 end
 
 setupPythonVenv()
+
+_G.getPythonPath = function()
+  local virtual_env = vim.fn.getenv('VIRTUAL_ENV')
+  if virtual_env ~= vim.NIL then
+    -- if we're explicitly in an active venv, use that python
+    return virtual_env .. '/bin/python'
+  elseif vim.uv.fs_stat('.venv/bin/python') then
+    -- if there's a venv in the cwd, use that
+    return '.venv/bin/python'
+  else
+    -- else use the nvim venv; never use the global python!
+    return vim.g.python3_host_prog
+  end
+end
 
 -- useful helper for snagging the visual selection
 _G.get_visual_selection = function()
@@ -481,6 +507,7 @@ require('lazy').setup({
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
+      'microsoft/python-type-stubs',
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -535,7 +562,7 @@ require('lazy').setup({
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
           -- these two lines disable syntax highlighting from the LSP server, if it exists
-          -- client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
+          client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
           -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
@@ -581,6 +608,7 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -630,21 +658,71 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         denols = {},
+
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         mypy = {
+        --           enabled = true,
+        --         },
+        --         pycodestyle = {
+        --           enabled = false,
+        --         },
+        --         pyflakes = {
+        --           enabled = false,
+        --         },
+        --         mccabe = {
+        --           enabled = false,
+        --         },
+        --         rope_autoimport = {
+        --           enabled = true,
+        --         },
+        --         jedi_completion = {
+        --           fuzzy = true,
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
         --
         pyright = {
-          pyright = {
-            disableOrganizeImports = true,
-            disableTaggedHints = true,
-          },
-          python = {
-            analysis = {
-              diagnosticSeverityOverrides = {
-                -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
-                reportUndefinedVariable = 'none',
+          settings = {
+            pyright = {
+              disableOrganizeImports = true,
+            },
+            python = {
+              pythonPath = getPythonPath(),
+              analysis = {
+                stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
+                exclude = { 'bazel-bin/**', '**/venv', '**/.venv' },
+                diagnosticMode = 'openFilesOnly', -- workspace
+                -- ignore = { '*' },
               },
             },
           },
         },
+
+        -- pyright = {
+        --   settings = {
+        --     pyright = {
+        --       disableOrganizeImports = true,
+        --       disableTaggedHints = true,
+        --     },
+        --     python = {
+        --       analysis = {
+        --         typeCheckingMode = 'off',
+        --         exclude = { 'bazel-bin/**', '**/venv', '**/.venv' },
+        --         stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
+        --         useLibraryCodeForTypes = false, -- Disable type checking of library code, done for speed
+        --         diagnosticSeverityOverrides = {
+        --           -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
+        --           reportUndefinedVariable = 'error',
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
 
         lua_ls = {
           -- cmd = {...},
@@ -676,7 +754,9 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'buildifier', -- Used to format Bazel code
-        -- 'mypy',
+        'mypy',
+        'black',
+        'isort',
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
@@ -733,6 +813,8 @@ require('lazy').setup({
       },
     },
     opts = {
+
+      log_level = vim.log.levels.DEBUG,
       notify_on_error = false,
       -- format_on_save = function(bufnr)
       --  -- Disable "format_on_save lsp_fallback" for languages that don't
@@ -746,8 +828,14 @@ require('lazy').setup({
       -- end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = function(_)
+          local root_dir = vim.fs.root(vim.fn.getcwd(), { 'pyproject.toml' })
+          if file_contains(root_dir .. '/pyproject.toml', '[tool.ruff]') then
+            return { 'ruff_format', 'ruff', 'ruff_organize_imports' }
+          else
+            return { 'isort', 'black' }
+          end
+        end,
         bzl = { 'buildifier' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
