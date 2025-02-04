@@ -17,12 +17,12 @@ local config = {
       }),
     },
   },
-  font_size = 15.0,
+  font_size = 17.0,
   color_scheme = 'OneDark (base16)',
   window_decorations = 'RESIZE',
   adjust_window_size_when_changing_font_size = false,
   window_frame = {
-    font_size = 15.0,
+    font_size = 17.0,
   },
   window_padding = {
     left = 0,
