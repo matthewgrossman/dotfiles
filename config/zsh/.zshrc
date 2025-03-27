@@ -13,7 +13,10 @@ for dump in ~/.zcompdump(N.mh+24); do
 done
 compinit -C
 
+
 export WORDCHARS=${WORDCHARS/\/}
+
+export PYTHONBREAKPOINT="ipdb.set_trace"
 
 export GOPATH=$HOME/src
 export GO111MODULE='on'
@@ -27,6 +30,7 @@ if [ -z "$NVIM" ]; then
     export PATH="$GOPATH/bin:$PATH"
     export PATH="$HOME/bin:$PATH"
     export PATH="/usr/local/opt/llvm/bin:$PATH"
+    export PATH="/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
     export CLANG_FORMAT="clang-format"
 
     # when in nvim, VISUAL is overriden by nvr instead
