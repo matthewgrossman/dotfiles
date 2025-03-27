@@ -152,6 +152,18 @@ vim.keymap.set('n', 'gp', '`[v`]')
 vim.keymap.set('n', '<leader>c', ":let @+ = expand('%')<CR>", { silent = true })
 vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true })
 
+
+-- vim.keymap.set('n', 'c/', ':%s//<C-r>=@/<CR>/g<left><left>', { silent = true })
+
+vim.keymap.set('n', '<leader>/', function()
+  local search_pattern = vim.fn.getreg('/')
+  -- Remove word boundary markers
+  search_pattern = search_pattern:gsub('\\<', ''):gsub('\\>', ''):gsub('\\V', '')
+  local cmd = ':%s//' .. search_pattern .. '/g' .. "<left><left>"
+  local escaped = vim.api.nvim_replace_termcodes(cmd, true, true, true)
+  vim.api.nvim_feedkeys(escaped, 'n', false)
+end, { silent = true })
+
 -- neovim remote
 vim.env.EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 vim.env.VISUAL = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
@@ -175,6 +187,25 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('n', '<C-q>', ':terminal<CR>:bd!#<CR>:startinsert<CR>', opts)
   vim.keymap.set('t', '<M-[>', '<esc>')
   vim.keymap.set('t', '<S-CR>', '<C-v><C-j>')
+  -- vim.keymap.set('v', 'Y', function()
+  -- TODO fix softwrap copying
+  --   local region = vim.region(0, "'<", "'>", vim.fn.visualmode(), true)
+  -- -- vim.region(0, "v", ".", vim.fn.visualmode(), true)
+  --   local text = ""
+  --   local maxcol = vim.v.maxcol
+  --   for line, cols in vim.spairs(region) do
+  --     vim.print(line)
+  --     vim.print(cols)
+  --     local endcol = cols[2] == maxcol and -1 or cols[2]
+  --     local chunk = vim.api.nvim_buf_get_text(0, line, cols[1], line, endcol, {})[1]
+  --     local last_char = chunk:sub(-1)
+  --     print("Chunk: '" .. chunk .. "'")
+  --     print("Last character: '" .. last_char .. "' (ASCII: " .. string.byte(last_char) .. ")")
+  --     text = ('%s%s\n'):format(text, chunk)
+  --   end
+  --   print(text)
+  --   vim.fn.setreg('+', text)
+  -- end)
   vim.wo.foldmethod = 'manual'
 end
 
@@ -309,7 +340,7 @@ require('lazy').setup({
           -- Jump forwards/backwards with '{' and '}'
           vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
           vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
-          vim.keymap.set('n', '<leader>t', '<cmd>AerialToggle float<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '<leader>t', '<cmd>AerialToggle<CR>', { buffer = bufnr })
         end,
       })
     end,
@@ -323,7 +354,12 @@ require('lazy').setup({
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
-    config = true,
+    config = function()
+      require('nvim-autopairs').setup({})
+      local Rule = require('nvim-autopairs.rule')
+      local npairs = require('nvim-autopairs')
+      npairs.add_rule(Rule('```', '```', 'codecompanion'))
+    end,
   },
   {
     'ibhagwan/fzf-lua',
@@ -358,7 +394,18 @@ require('lazy').setup({
       end)
     end,
   },
-  { 'alexander-born/bazel.nvim', dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' } },
+  { 'bazelbuild/vim-bazel', dependencies = { 'google/vim-maktaba' } },
+  -- {
+  --   'alexander-born/bazel.nvim',
+  --   dependencies = {
+  --     { 'bazelbuild/vim-bazel', dependencies = { 'google/vim-maktaba' } },
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  --   config = function ()
+  --     vim.keymap.set('n', '<C-]>', vim.fn.GoToBazelDefinition, { desc = '[S]earch [H]elp' })
+  --   end
+  -- },
   {
     'benlubas/molten-nvim',
     version = '^1.0.0', -- use version <2.0.0 to avoid breaking changes
@@ -426,6 +473,7 @@ require('lazy').setup({
             i = {
               ['<C-j>'] = actions.preview_scrolling_down,
               ['<C-k>'] = actions.preview_scrolling_up,
+              ['<C-d>'] = false, -- Disables Telescope's <C-d> mapping to get normal behavior
             },
             n = {
               ['<C-j>'] = actions.preview_scrolling_down,
@@ -460,15 +508,32 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
 
+      -- TODO fix thi
+      vim.keymap.set('n', '<leader>sd', function()
+        local current_buffer_dir = vim.fn.expand('%:p:h')
+        vim.ui.input({ prompt = 'Search directory: ', default = current_buffer_dir }, function(input)
+          if input then -- check if input wasn't cancelled
+            require('telescope.builtin').live_grep({
+              search_dirs = { input },
+              additional_args = function(args)
+                return vim.list_extend(args, { '--fixed-strings' })
+              end,
+            })
+          end
+        end)
+      end)
+
       vim.keymap.set('v', '<leader>sw', function()
         require('telescope.builtin').live_grep({
           default_text = table.concat(get_visual_selection()),
+          additional_args = function(args)
+            return vim.list_extend(args, { '--fixed-strings' })
+          end,
         })
       end)
 
@@ -777,26 +842,24 @@ require('lazy').setup({
       })
     end,
   },
-  -- { -- Linting
-  --   'mfussenegger/nvim-lint',
-  --   event = { 'BufReadPre', 'BufNewFile' },
-  --   config = function()
-  --     local lint = require('lint')
-  --     lint.linters_by_ft = {
-  --       python = { 'mypy' },
-  --       bzl = { 'buildifier' },
-  --     }
-  --
-  --     vim.print(lint.linters.buildifier.args)
-  --     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
-  --     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
-  --       group = lint_augroup,
-  --       callback = function()
-  --         lint.try_lint()
-  --       end,
-  --     })
-  --   end,
-  -- },
+  { -- Linting
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        bzl = { 'buildifier' },
+      }
+      table.insert(lint.linters.buildifier.args, '--warnings=-reorder-dict-items')
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -830,7 +893,8 @@ require('lazy').setup({
         lua = { 'stylua' },
         python = function(_)
           local root_dir = vim.fs.root(vim.fn.getcwd(), { 'pyproject.toml' })
-          if file_contains(root_dir .. '/pyproject.toml', '[tool.ruff]') then
+          -- we want to use ruff for newer projects and as a default
+          if root_dir == nil or file_contains(root_dir .. '/pyproject.toml', '[tool.ruff]') then
             return { 'ruff_format', 'ruff', 'ruff_organize_imports' }
           else
             return { 'isort', 'black' }
@@ -841,24 +905,6 @@ require('lazy').setup({
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
-    },
-  },
-  {
-    -- longer term, might be worth checking out copilot-cmp,
-    -- but currently has issues with newline-completions:
-    -- https://github.com/hrsh7th/nvim-cmp/issues/1272
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    event = 'InsertEnter',
-    opts = {
-      suggestion = {
-        enabled = false,
-        -- keymap = {
-        --   accept = '<C-CR>',
-        --   next = '<C-g>',
-        -- },
-      },
-      panel = { enabled = false },
     },
   },
   -- {
@@ -1069,7 +1115,6 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },
-  { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {} },
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
@@ -1116,12 +1161,84 @@ require('lazy').setup({
       local miniFiles = require('mini.files')
       miniFiles.setup()
       vim.keymap.set('n', '-', function()
-        miniFiles.open(vim.api.nvim_buf_get_name(0))
+        local current_file = vim.api.nvim_buf_get_name(0)
+        if vim.fn.filereadable(current_file) == 1 then
+          miniFiles.open(current_file)
+        else
+          local current_dir = vim.fn.fnamemodify(current_file, ':h')
+          miniFiles.open(current_dir)
+        end
       end)
 
       local miniBufremove = require('mini.bufremove')
       miniBufremove.setup()
       vim.keymap.set('n', '<C-q>', miniBufremove.delete)
+    end,
+  },
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      bigfile = { enabled = true },
+      dashboard = { enabled = true },
+      indent = { enabled = true, animate = { enabled = false } },
+      input = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      -- scroll = { enabled = true },
+      -- statuscolumn = { enabled = true },
+      words = { enabled = true },
+      picker = { enabled = true },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = { 'markdown', 'codecompanion' },
+  },
+  {
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      local cc = require('codecompanion')
+      cc.setup({
+        display = {
+          chat = {
+            window = {
+              layout = 'float',
+              height = 0.8,
+              width = 0.8,
+            },
+          },
+        },
+        adapters = {
+          copilot = function()
+            return require('codecompanion.adapters').extend('copilot', {
+              schema = {
+                model = {
+                  default = 'claude-3.7-sonnet',
+                },
+              },
+            })
+          end,
+        },
+        strategies = {
+          chat = {
+            adapter = 'copilot',
+          },
+          inline = {
+            adapter = 'copilot',
+          },
+        },
+      })
+      vim.keymap.set('n', '<leader>a', cc.toggle, { silent = true })
+      vim.keymap.set('v', '<leader>a', ':CodeCompanionChat Add<CR>')
     end,
   },
   { -- Highlight, edit, and navigate code
@@ -1169,6 +1286,21 @@ require('lazy').setup({
           -- TODO: I'm not sure for this one.
           scope_incremental = '<c-s>',
           node_decremental = '<S-CR>',
+        },
+      },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+          },
+          selection_modes = {
+            ['@parameter.outer'] = 'v', -- charwise
+            ['@function.outer'] = 'V', -- linewise
+            ['@class.outer'] = '<c-v>', -- blockwise
+          },
         },
       },
     },
