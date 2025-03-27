@@ -87,14 +87,7 @@ end)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
-vim.keymap.set('n', '[d', function()
-  vim.diagnostic.goto_prev({ float = true })
-end)
-
-vim.keymap.set('n', ']d', function()
-  vim.diagnostic.goto_next({ float = true })
-end)
+vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -152,14 +145,13 @@ vim.keymap.set('n', 'gp', '`[v`]')
 vim.keymap.set('n', '<leader>c', ":let @+ = expand('%')<CR>", { silent = true })
 vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true })
 
-
 -- vim.keymap.set('n', 'c/', ':%s//<C-r>=@/<CR>/g<left><left>', { silent = true })
 
 vim.keymap.set('n', '<leader>/', function()
   local search_pattern = vim.fn.getreg('/')
   -- Remove word boundary markers
   search_pattern = search_pattern:gsub('\\<', ''):gsub('\\>', ''):gsub('\\V', '')
-  local cmd = ':%s//' .. search_pattern .. '/g' .. "<left><left>"
+  local cmd = ':%s//' .. search_pattern .. '/g' .. '<left><left>'
   local escaped = vim.api.nvim_replace_termcodes(cmd, true, true, true)
   vim.api.nvim_feedkeys(escaped, 'n', false)
 end, { silent = true })
@@ -330,6 +322,132 @@ require('lazy').setup({
         desc = 'Toggle quickfix',
       })
     end,
+  },
+  {
+    'akinsho/toggleterm.nvim',
+    config = function()
+      local percent = 0.95
+      require('toggleterm').setup({
+        auto_scroll = false,
+        float_opts = {
+          width = function()
+            return math.floor(vim.o.columns * percent)
+          end,
+          height = function()
+            return math.floor((vim.o.lines - vim.o.cmdheight) * percent)
+          end,
+        },
+      })
+      vim.keymap.set({ 't' }, '<C-;>', '<CMD>ToggleTerm<CR>')
+      vim.keymap.set({ 'n' }, '<C-;>', '<CMD>ToggleTerm direction=float name=primary<CR>')
+      vim.keymap.set({ 'n' }, '<leader>;s', '<CMD>ToggleTerm name=server direction=float<CR>')
+    end,
+  },
+  {
+    'tpope/vim-fugitive',
+    dependencies = {
+      { 'tpope/vim-rhubarb' },
+    },
+    config = function()
+      vim.keymap.set('n', '<leader>gg', ':tab Git<cr>')
+      vim.keymap.set('n', '<leader>gdd', ':Gvdiffsplit<cr>')
+      vim.keymap.set('n', '<leader>gdm', ':Gvdiffsplit master<cr>')
+      vim.keymap.set('n', '<leader>gb', ':Git blame<cr>')
+      vim.keymap.set('n', '<leader>ga', ':Gwrite<cr>')
+      vim.keymap.set('n', '<leader>gp', ':Git push<cr>')
+      vim.keymap.set('n', '<leader>gh', 'V:GBrowse<cr>')
+      vim.keymap.set('v', '<leader>gh', ':GBrowse<cr>')
+      vim.keymap.set('v', '<leader>gr', ':Git pr<cr>')
+    end,
+  },
+  {
+    'vim-test/vim-test',
+    config = function()
+      local function clipboard_strategy(cmd)
+        vim.fn.setreg('+', cmd)
+      end
+
+      -- Set up the custom strategy
+      vim.g['test#custom_strategies'] = {
+        clipboard = clipboard_strategy,
+      }
+
+      -- Set the default strategy
+      vim.g['test#strategy'] = 'clipboard'
+      -- set strategy here
+      vim.keymap.set('n', '<leader>r', ':TestNearest<CR>', { silent = true })
+      vim.keymap.set('n', '<leader>R', ':TestFile<CR>', { silent = true })
+    end,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      view_options = {
+        show_hidden = true,
+      },
+      keymaps = {
+        -- ["l"] = "actions.select",
+        -- ["h"] = "actions.parent",
+        ['<C-h>'] = false,
+        ['<C-l>'] = false,
+        ['<C-s>'] = false,
+        ['<C-r>'] = 'actions.refresh',
+        ['<C-\\>'] = { 'actions.select', opts = { vertical = true }, desc = 'Open the entry in a vertical split' },
+        ['<C-_>'] = { 'actions.select', opts = { horizontal = true }, desc = 'Open the entry in a horizontal split' },
+      },
+      git = {
+        -- Return true to automatically git add/mv/rm files
+        add = function(_)
+          return true
+        end,
+        mv = function(_, _)
+          return true
+        end,
+        rm = function(_)
+          return true
+        end,
+      },
+    },
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+      },
+      on_attach = function(bufnr)
+        local gitsigns = require('gitsigns')
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal({ ']c', bang = true })
+          else
+            gitsigns.nav_hunk('next')
+          end
+        end)
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal({ '[c', bang = true })
+          else
+            gitsigns.nav_hunk('prev')
+          end
+        end)
+      end,
+    },
   },
   {
     'stevearc/aerial.nvim',
@@ -1308,7 +1426,6 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
-  { import = 'plugins' },
 }, {
   change_detection = {
     notify = false,
