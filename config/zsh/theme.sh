@@ -43,4 +43,5 @@ kube_status() {
 setopt prompt_subst
 path_name=$(zc '%~' 'black' 'blue')
 leading=$'\u00BB'
-export PROMPT="${path_name}\$(git_status) ${leading} "
+osc=$(printf "\033]133;A\007")
+export PROMPT="${osc}${path_name}\$(git_status) ${leading} "
