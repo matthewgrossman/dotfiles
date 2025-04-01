@@ -20,13 +20,17 @@ else
     echo "Homebrew is already installed."
 fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
+cd "$HOME/dotfiles/mac"
 brew bundle
+
+# install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # link hammerspoon data
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 
 # reload ZSH now that setup is done
-source ~/.zshrc
+zsh "$HOME/.config/zsh/.zshrc"
 
 # random mac settings {{{
 # many of these were taken from these two sources:
