@@ -75,7 +75,7 @@ vim.opt.scrolloff = 10
 -- vim.opt.softtabstop = 2
 
 vim.opt.fileformat = 'unix'
-vim.opt.diffopt = { 'internal', 'algorithm:patience', 'indent-heuristic', 'linematch:60' }
+vim.opt.diffopt:append({ 'algorithm:patience', 'indent-heuristic', 'linematch:60' })
 vim.opt.termguicolors = true
 
 -- }}}
