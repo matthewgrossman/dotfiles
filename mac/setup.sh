@@ -51,6 +51,18 @@ defaults write com.apple.dock "mru-spaces" -bool "false"
 # show file extensions in finder
 defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
 
+# default to the list view in Finder
+defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv"
+
+# show the path bar at the bottom
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+
+# spaces span multiple spaces
+defaults write com.apple.spaces "spans-displays" -bool "true"
+
+# make activity monitor update more frequently
+defaults write com.apple.ActivityMonitor "UpdatePeriod" -int "1"
+
 # show hidden dotfiles
 defaults write com.apple.Finder "AppleShowAllFiles" -bool "true"
 
@@ -63,5 +75,7 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 defaults -currentHost write -g com.apple.trackpad.threeFingerDragGesture -bool true
 defaults -currentHost write -g com.apple.trackpad.threeFingerHorizSwipeGesture -int 0
 defaults -currentHost write -g com.apple.trackpad.threeFingerVertSwipeGesture -int 0
+
+killall Finder
 
 # }}}
