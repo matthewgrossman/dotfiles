@@ -45,7 +45,7 @@ vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 500
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -311,6 +311,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-unimpaired', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-repeat',
   {
     'stevearc/quicker.nvim',
@@ -446,6 +447,9 @@ require('lazy').setup({
           else
             gitsigns.nav_hunk('prev')
           end
+        end)
+        map('n', '<leader>gq', function()
+          gitsigns.setqflist('all')
         end)
       end,
     },
