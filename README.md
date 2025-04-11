@@ -8,7 +8,21 @@
 1. `gh repo clone matthewgrossman/dotfiles`
 1. `cd dotfiles/mac; ./setup.sh`
 
+Once a whole bunch of programs have installed, a first priority is to get access to keepass.
+1. Sign into Google Drive
+1. Open keepassxc with`sync/pwdb.kdbx`
+
 This script will end up prompting for password a few times (ideally at the beginning), so check on it periodically.
+
+`setup.sh` should handle lots of default macos settings, but AFAIK these still require manual clicking:
+1. Disable cmd-space for spotlight in keyboard settings
+1. Turn off auto-brightness
+
+#### Alfred
+1. Enter the powerpack info
+1. Point the settings at `gdrive://sync/alfred.kdbx`
+1. Change the theme
+1. Enable clipboard history
 
 ## windows
 1. Open the `Microsoft Store` and get updates for `App Installer`, which will ensure we have `winget`
