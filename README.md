@@ -19,10 +19,13 @@ This script will end up prompting for password a few times (ideally at the begin
 1. Turn off auto-brightness
 
 #### Alfred
-1. Enter the powerpack info
+1. Enter the powerpack info, search gdrive for "alfred"
 1. Point the settings at `gdrive://sync/alfred.kdbx`
 1. Change the theme
 1. Enable clipboard history
+
+#### Steermouse
+
 
 ## windows
 1. Open the `Microsoft Store` and get updates for `App Installer`, which will ensure we have `winget`
