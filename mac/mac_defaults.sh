@@ -33,9 +33,6 @@ defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 # show the path bar at the bottom
 defaults write com.apple.finder "ShowPathbar" -bool "true"
 
-# spaces span multiple spaces
-defaults write com.apple.spaces "spans-displays" -bool "true"
-
 # make activity monitor update more frequently
 defaults write com.apple.ActivityMonitor "UpdatePeriod" -int "1"
 
