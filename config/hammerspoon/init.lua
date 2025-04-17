@@ -20,18 +20,26 @@ LayoutUpperRightSixth = { x = 0.6666, y = 0, w = 0.3333, h = 0.5 }
 LayoutLowerRightSixth = { x = 0.6666, y = 0.5, w = 0.3333, h = 0.5 }
 LayoutLowerLeftSixth = { x = 0, y = 0.5, w = 0.3333, h = 0.5 }
 LayoutUpperLeftSixth = { x = 0, y = 0, w = 0.3333, h = 0.5 }
+
+LayoutVertBottom33 = { x = 0, y = 0.6666, w = 1, h = 0.3333 }
 LayoutBottomHalf = { x = 0, y = 0.5, w = 1, h = 0.5 }
-LayoutVertBottom33 = { x = 0, y = 0, w = 1, h = 0.3333 }
+LayoutVertBottom66 = { x = 0, y = 0.3333, w = 1, h = 0.6666 }
+
 LayoutVertMiddle33 = { x = 0, y = 0.3333, w = 1, h = 0.3333 }
-LayoutVertTop33 = { x = 0, y = 0.6666, w = 1, h = 0.3333 }
+
+LayoutVertTop33 = { x = 0, y = 0, w = 1, h = 0.3333 }
 LayoutTopHalf = { x = 0, y = 0, w = 1, h = 0.5 }
+LayoutVertTop66 = { x = 0, y = 0, w = 1, h = 0.6666 }
 
 LayoutMapping = {
   h = { LayoutLeft33, hs.layout.left50, LayoutLeft66 },
   l = { LayoutRight33, hs.layout.right50, LayoutRight66 },
-  k = { LayoutHorizMiddle33, hs.layout.maximized },
+  k = {
+    tall = { LayoutVertTop33, LayoutTopHalf, LayoutVertTop66 },
+    wide = { LayoutHorizMiddle33, hs.layout.maximized },
+  },
   j = {
-    tall = { LayoutVertBottom33, LayoutVertMiddle33, LayoutVertTop33 },
+    tall = { LayoutVertBottom33, LayoutBottomHalf, LayoutVertBottom66 },
     wide = { LayoutTopHalf, LayoutBottomHalf },
   },
   m = { LayoutLowerRightSixth, LayoutLowerRight },
