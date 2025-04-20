@@ -259,3 +259,11 @@ LockWatcher = hs.caffeinate.watcher.new(function(event)
   end
 end)
 LockWatcher:start()
+
+-- try to find out which device it came from
+-- eventtap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+--   for key, value in pairs(hs.eventtap.event.properties) do
+--     print(key .. ': ' .. event:getProperty(value))
+--   end
+--   return false
+-- end)

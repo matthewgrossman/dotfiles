@@ -1288,6 +1288,14 @@ require('lazy').setup({
     ft = { 'markdown', 'codecompanion' },
   },
   {
+    'zbirenbaum/copilot.lua',
+    lazy = true, -- Make it fully lazy loaded, seems to cause slow startup
+    cmd = 'Copilot', -- Keep this to make it accessible via command
+    config = function()
+      require('copilot').setup({})
+    end,
+  },
+  {
     'olimorris/codecompanion.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
