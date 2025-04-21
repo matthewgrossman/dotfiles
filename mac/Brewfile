@@ -5,7 +5,6 @@ cask 'keepassxc'
 # casks which require a password; do these at the beginning
 cask 'docker'
 cask 'tailscale'
-cask 'cloudflare-warp'
 cask 'zoom'
 
 # essentials
