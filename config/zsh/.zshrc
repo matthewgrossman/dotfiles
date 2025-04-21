@@ -76,9 +76,9 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
 
-# gretel
-if [ -f ~/.gretelrc  ]; then
-    source ~/.gretelrc
+# work configuration
+if [ -f ~/.workrc  ]; then
+    source ~/.workrc
 fi
 
 if [[ "$(uname)" == "Linux" ]]; then

@@ -1303,6 +1303,16 @@ require('lazy').setup({
     },
     config = function()
       local cc = require('codecompanion')
+      local oai_url = vim.env.OAI_URL
+      local oai_api_key = vim.env.OAI_APIKEY
+      local oai_model = vim.env.OAI_MODEL
+
+      -- If a `~/.workrc` has set these envvars on this machine,
+      -- ensure we use them for LLM access instead of copilot.
+      local adapter = 'copilot'
+      if oai_url and oai_api_key and oai_model then
+        adapter = 'azure_compat'
+      end
       cc.setup({
         display = {
           chat = {
@@ -1323,13 +1333,26 @@ require('lazy').setup({
               },
             })
           end,
+          azure_compat = function()
+            return require('codecompanion.adapters').extend('azure_openai', {
+              env = {
+                api_key = oai_api_key,
+                endpoint = oai_url,
+              },
+              schema = {
+                model = {
+                  default = oai_model,
+                },
+              },
+            })
+          end,
         },
         strategies = {
           chat = {
-            adapter = 'copilot',
+            adapter = adapter,
           },
           inline = {
-            adapter = 'copilot',
+            adapter = adapter,
           },
         },
       })
@@ -1407,6 +1430,12 @@ require('lazy').setup({
 }, {
   change_detection = {
     notify = false,
+  },
+  git = {
+    throttle = {
+      enabled = true,
+      duration = 1000,
+    },
   },
 })
 
