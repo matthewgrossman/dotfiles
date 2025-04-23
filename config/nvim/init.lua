@@ -1284,16 +1284,16 @@ require('lazy').setup({
     },
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    ft = { 'markdown', 'codecompanion' },
-  },
-  {
     'zbirenbaum/copilot.lua',
     lazy = true, -- Make it fully lazy loaded, seems to cause slow startup
     cmd = 'Copilot', -- Keep this to make it accessible via command
     config = function()
       require('copilot').setup({})
     end,
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = { 'markdown', 'codecompanion' },
   },
   {
     'olimorris/codecompanion.nvim',
