@@ -59,7 +59,7 @@ alias hist="fc -RI"
 bindkey -e
 
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 export FZF_DEFAULT_OPTS="--ansi --no-height"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -76,9 +76,9 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
 
-# gretel
-if [ -f ~/.gretelrc  ]; then
-    source ~/.gretelrc
+# work configuration
+if [ -f ~/.workrc  ]; then
+    source ~/.workrc
 fi
 
 if [[ "$(uname)" == "Linux" ]]; then

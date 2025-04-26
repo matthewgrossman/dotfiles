@@ -11,7 +11,7 @@ LayoutLeft66 = { x = 0, y = 0, w = 0.6666, h = 1 }
 LayoutLeft33 = { x = 0, y = 0, w = 0.3333, h = 1 }
 LayoutRight33 = { x = 0.6666, y = 0, w = 0.3333, h = 1 }
 LayoutRight66 = { x = 0.3333, y = 0, w = 0.6666, h = 1 }
-LayoutMiddle33 = { x = 0.3333, y = 0, w = 0.3333, h = 1 }
+LayoutHorizMiddle33 = { x = 0.3333, y = 0, w = 0.3333, h = 1 }
 LayoutUpperLeft = { x = 0, y = 0, w = 0.5, h = 0.5 }
 LayoutUpperRight = { x = 0.5, y = 0, w = 0.5, h = 0.5 }
 LayoutLowerRight = { x = 0.5, y = 0.5, w = 0.5, h = 0.5 }
@@ -20,14 +20,28 @@ LayoutUpperRightSixth = { x = 0.6666, y = 0, w = 0.3333, h = 0.5 }
 LayoutLowerRightSixth = { x = 0.6666, y = 0.5, w = 0.3333, h = 0.5 }
 LayoutLowerLeftSixth = { x = 0, y = 0.5, w = 0.3333, h = 0.5 }
 LayoutUpperLeftSixth = { x = 0, y = 0, w = 0.3333, h = 0.5 }
+
+LayoutVertBottom33 = { x = 0, y = 0.6666, w = 1, h = 0.3333 }
 LayoutBottomHalf = { x = 0, y = 0.5, w = 1, h = 0.5 }
+LayoutVertBottom66 = { x = 0, y = 0.3333, w = 1, h = 0.6666 }
+
+LayoutVertMiddle33 = { x = 0, y = 0.3333, w = 1, h = 0.3333 }
+
+LayoutVertTop33 = { x = 0, y = 0, w = 1, h = 0.3333 }
 LayoutTopHalf = { x = 0, y = 0, w = 1, h = 0.5 }
+LayoutVertTop66 = { x = 0, y = 0, w = 1, h = 0.6666 }
 
 LayoutMapping = {
   h = { LayoutLeft33, hs.layout.left50, LayoutLeft66 },
   l = { LayoutRight33, hs.layout.right50, LayoutRight66 },
-  k = { LayoutMiddle33, hs.layout.maximized },
-  j = { LayoutBottomHalf, LayoutTopHalf },
+  k = {
+    tall = { LayoutVertTop33, LayoutTopHalf, LayoutVertTop66 },
+    wide = { LayoutHorizMiddle33, hs.layout.maximized },
+  },
+  j = {
+    tall = { LayoutVertBottom33, LayoutBottomHalf, LayoutVertBottom66 },
+    wide = { LayoutTopHalf, LayoutBottomHalf },
+  },
   m = { LayoutLowerRightSixth, LayoutLowerRight },
   n = { LayoutLowerLeftSixth, LayoutLowerLeft },
   o = { LayoutUpperRightSixth, LayoutUpperRight },
@@ -35,28 +49,38 @@ LayoutMapping = {
 }
 for key, layouts in pairs(LayoutMapping) do
   hs.hotkey.bind(LayoutHyper, key, function()
+    local w = hs.window.focusedWindow()
+    local screenFrame = w:screen():frame()
+
     local layout
     if layouts.x ~= nil then
       -- if single layout is passed (checked existence of 'x'), directly apply layout
       layout = layouts
     else
+      local usedLayouts = layouts
+      if layouts.tall ~= nil then
+        -- use different configs depending on if its a tall or wide screen
+        if screenFrame.h > screenFrame.w then
+          usedLayouts = layouts.tall
+        else
+          usedLayouts = layouts.wide
+        end
+      end
       -- otherwise, cycle through the layout sizes
-      local w = hs.window.focusedWindow()
-      local screenFrame = w:screen():frame()
       local windowFrame = w:frame()
       local currentUnitRect = windowFrame:toUnitRect(screenFrame)
 
       local unitRectIndex = 2 -- arbitrarily choose the 50% layout as default
-      for i, unitRect in ipairs(layouts) do
+      for i, unitRect in ipairs(usedLayouts) do
         if Helpers.approxEqualRects(currentUnitRect, unitRect) then
           unitRectIndex = i + 1
           break
         end
       end
-      if unitRectIndex > #layouts then
+      if unitRectIndex > #usedLayouts then
         unitRectIndex = 1
       end -- wrap around
-      layout = layouts[unitRectIndex]
+      layout = usedLayouts[unitRectIndex]
     end
     local win = hs.window.focusedWindow()
 
@@ -235,3 +259,11 @@ LockWatcher = hs.caffeinate.watcher.new(function(event)
   end
 end)
 LockWatcher:start()
+
+-- try to find out which device it came from
+-- eventtap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+--   for key, value in pairs(hs.eventtap.event.properties) do
+--     print(key .. ': ' .. event:getProperty(value))
+--   end
+--   return false
+-- end)
