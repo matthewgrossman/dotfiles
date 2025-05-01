@@ -34,11 +34,11 @@ ab() {
     fi
 }
 
-# cd to repo in src/
-src () {
+# cd to repo in dev/
+dev () {
     local root_path repo_paths repo_path venv_path repo_basename open_tabs existing_tab_index current_tab
     open_tabs="$(wezterm cli list --format json | jq '.[] | "\(.cwd) \(.pane_id)"')"
-    root_path="${PROJECT_ROOT:-$HOME/src}"
+    root_path="${PROJECT_ROOT:-$HOME/dev}"
     repo_paths=$(find "$root_path" -mindepth 1 -maxdepth 1 -type d)
     out=$(fzf --expect=ctrl-t <<< "$repo_paths")
     [[ -z "$out" ]] && return
@@ -153,7 +153,7 @@ nmapm () {
 }
 
 function lz() {
-    filename="$HOME/src/repos.txt"
+    filename="$HOME/dev/repos.txt"
     if [[ ! -f "$filename" || $(find "$filename" -mtime +30) ]]; then
         echo "Refreshing repos list"
         echo "" > "$filename"
@@ -166,10 +166,10 @@ function lz() {
     [[ -z "$out" ]] && return
 
     IFS=$'\t' read -r nameWithOwner repo sshUrl <<< "$out"
-    if [[ -d "$HOME/src/$repo" ]]; then
-        cd "$HOME/src/$repo"
+    if [[ -d "$HOME/dev/$repo" ]]; then
+        cd "$HOME/dev/$repo"
     else
-        cd "$HOME/src"
+        cd "$HOME/dev"
         gh repo clone "$nameWithOwner"
         cd "$repo"
     fi
@@ -185,4 +185,13 @@ function lc() {
     local cmd
     cmd=$(fc -ln -50 | awk '!/lc/' | fzf --tac)
     [ -n "$cmd" ] && echo -n "$cmd" | sed 's/\\n/\\\n/g' | pbcopy
+}
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
 }

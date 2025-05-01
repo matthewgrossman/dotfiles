@@ -349,6 +349,7 @@ require('lazy').setup({
     'tpope/vim-fugitive',
     dependencies = {
       { 'tpope/vim-rhubarb' },
+      { 'shumphrey/fugitive-gitlab.vim' },
     },
     config = function()
       vim.keymap.set('n', '<leader>gg', ':tab Git<cr>')
@@ -360,6 +361,11 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>gh', 'V:GBrowse<cr>')
       vim.keymap.set('v', '<leader>gh', ':GBrowse<cr>')
       vim.keymap.set('v', '<leader>gr', ':Git pr<cr>')
+
+      if vim.env.GITLAB_DOMAINS then
+        vim.g.fugitive_gitlab_domains = vim.split(vim.env.GITLAB_DOMAINS, ',')
+        print(vim.g.fugitive_gitlab_domains)
+      end
     end,
   },
   {
