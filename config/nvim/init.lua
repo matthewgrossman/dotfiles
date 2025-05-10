@@ -89,7 +89,7 @@ vim.keymap.set('n', '<C-[>', function()
 end)
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>d', vim.diagnostic.setqflist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
