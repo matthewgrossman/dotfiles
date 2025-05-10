@@ -29,16 +29,19 @@
     default-branch = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
-    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
+    smu = "!git submodule update --init --recursive"
+    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit && git smu"
     bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
-    pr = "!git po && gh pr create --base $(git parent) --fill --web"
-    prinfo = "!f() { gh pr list --state all --json url,state --head $1 | jq '.[]'; }; f"
+
+    # provider specific
+    pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr; else git github-pr; fi; }; f"
+    mr = pr
+    github-pr = "!gh pr create --base $(git parent) --fill --web"
+    gitlab-mr = "!glab mr create --target-branch $(git parent) --fill --web"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
     comment = "!gh pr comment -b"
-    ptal = "!f() { gh pr comment -b \"ptal $1\"; }; f"
-    offload = "!gh pr comment -b '/offload'"
 
     wtc = "!f() { git worktree add \"$(pwd)--$1\" -b $1; }; f"
 
@@ -46,6 +49,7 @@
     set-parent = "!git config branch.$(git branch-name).parent"
     add-child = "!git config --add branch.$(git branch-name).child"
     get-children = "!git config --get-all branch.$(git branch-name).child"
+    prinfo = "!f() { gh pr list --state all --json url,state --head $1 | jq '.[]'; }; f"
     parent-pr = "!git prinfo $(git parent)"
     update-parent = "!f() { status=$(git parent-pr | jq '.[\"state\"]']); par=$(git branch-name); git checkout -b $1; git set-parent $par; }; f"
     parent = "!git config --get branch.$(git branch-name).parent || git default-branch"
@@ -74,6 +78,9 @@
 	insteadOf = "https://github.com/"
 [core]
     pager = delta
+	logallrefupdates = true
+	quotePath = false
+	commitGraph = true
 
 [interactive]
     diffFilter = delta --color-only
@@ -84,6 +91,7 @@
 [diff]
     colorMoved = default
 	submodule = log
+	algorithm = histogram
 [status]
 	submoduleSummary = true
 
@@ -92,3 +100,16 @@
 
 [includeIf "hasconfig:remote.*.url:git@github.com:gretellabs/**"]
     path = ~/.config/git/workconfig
+[gc]
+	reflogexpire = 90
+	writeCommitGraph = true
+[receive]
+	advertisePushOptions = true
+	procReceiveRefs = refs/for
+[fetch]
+	writeCommitGraph = true
+[safe]
+	directory = *
+[uploadpack]
+	allowfilter = true
+	allowAnySHA1InWant = true

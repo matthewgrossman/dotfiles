@@ -354,7 +354,7 @@ require('lazy').setup({
     config = function()
       vim.keymap.set('n', '<leader>gg', ':tab Git<cr>')
       vim.keymap.set('n', '<leader>gdd', ':Gvdiffsplit<cr>')
-      vim.keymap.set('n', '<leader>gdm', ':Gvdiffsplit master<cr>')
+      vim.keymap.set('n', '<leader>gdm', ':Gvdiffsplit! master<cr><C-w>w')
       vim.keymap.set('n', '<leader>gb', ':Git blame<cr>')
       vim.keymap.set('n', '<leader>ga', ':Gwrite<cr>')
       vim.keymap.set('n', '<leader>gp', ':Git push<cr>')
@@ -364,7 +364,6 @@ require('lazy').setup({
 
       if vim.env.GITLAB_DOMAINS then
         vim.g.fugitive_gitlab_domains = vim.split(vim.env.GITLAB_DOMAINS, ',')
-        print(vim.g.fugitive_gitlab_domains)
       end
     end,
   },
@@ -1309,16 +1308,6 @@ require('lazy').setup({
     },
     config = function()
       local cc = require('codecompanion')
-      local oai_url = vim.env.OAI_URL
-      local oai_api_key = vim.env.OAI_APIKEY
-      local oai_model = vim.env.OAI_MODEL
-
-      -- If a `~/.workrc` has set these envvars on this machine,
-      -- ensure we use them for LLM access instead of copilot.
-      local adapter = 'copilot'
-      if oai_url and oai_api_key and oai_model then
-        adapter = 'azure_compat'
-      end
       cc.setup({
         display = {
           chat = {
@@ -1339,26 +1328,13 @@ require('lazy').setup({
               },
             })
           end,
-          azure_compat = function()
-            return require('codecompanion.adapters').extend('azure_openai', {
-              env = {
-                api_key = oai_api_key,
-                endpoint = oai_url,
-              },
-              schema = {
-                model = {
-                  default = oai_model,
-                },
-              },
-            })
-          end,
         },
         strategies = {
           chat = {
-            adapter = adapter,
+            adapter = copilot,
           },
           inline = {
-            adapter = adapter,
+            adapter = copilot,
           },
         },
       })
