@@ -18,7 +18,7 @@ export WORDCHARS=${WORDCHARS/\/}
 
 export PYTHONBREAKPOINT="ipdb.set_trace"
 
-export GOPATH=$HOME/src
+export GOPATH=$HOME/dev
 export GO111MODULE='on'
 
 # only modify PATH if we aren't in a nvim subshell
