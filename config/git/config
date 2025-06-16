@@ -20,7 +20,7 @@
     s = status
     m = merge
     l = log
-    lo = log --oneline -5
+    ll = log --oneline -7 --reverse
     ld = log --stat --patch --full-diff
     mm = "!git merge $(git default-branch)"
     giff = diff
@@ -44,6 +44,9 @@
     comment = "!gh pr comment -b"
 
     wtc = "!f() { git worktree add \"$(pwd)--$1\" -b $1; }; f"
+
+    # glab
+    mrid = "!glab mr list --source-branch=\"$(git branch --show-current)\" -F json | jq '.[0].iid'"
 
     # experimenting with setting branch parents in metadata
     set-parent = "!git config branch.$(git branch-name).parent"
@@ -113,3 +116,7 @@
 [uploadpack]
 	allowfilter = true
 	allowAnySHA1InWant = true
+[test]
+	key-a = val-a-changed
+[sync-test]
+	cfg-key-a = CfgValA

@@ -68,6 +68,16 @@ config.keys = {
     mods = 'CTRL|SHIFT',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  {
+    key = 'r',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
+  {
+    key = 'f',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
   { key = '-', mods = 'CTRL', action = wezterm.action.DisableDefaultAssignment },
   {
     key = 'c',

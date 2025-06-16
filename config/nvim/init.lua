@@ -326,6 +326,28 @@ require('lazy').setup({
     end,
   },
   {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {
+      options = {
+        component_separators = '',
+        section_separators = '',
+      },
+      extensions = { 'quickfix' },
+      winbar = {
+        lualine_b = { { 'filename', path = 1 } },
+      },
+      inactive_winbar = {
+        lualine_b = { { 'filename', path = 1 } },
+      },
+      tabline = {
+        lualine_a = { 'buffers' },
+        lualine_z = { 'tabs' },
+      },
+    },
+  },
+
+  {
     'akinsho/toggleterm.nvim',
     config = function()
       local percent = 0.95
@@ -340,9 +362,48 @@ require('lazy').setup({
           end,
         },
       })
-      vim.keymap.set({ 't' }, '<C-;>', '<CMD>ToggleTerm<CR>')
-      vim.keymap.set({ 'n' }, '<C-;>', '<CMD>ToggleTerm direction=float name=primary<CR>')
-      vim.keymap.set({ 'n' }, '<leader>;s', '<CMD>ToggleTerm name=server direction=float<CR>')
+
+      function CreateOrToggleTerm(name, direction)
+        direction = direction or 'float' -- Default to float direction if not specified
+
+        -- Check if terminal with given name exists in Terminal list
+        local term = nil
+        for _, t in ipairs(require('toggleterm.terminal').get_all(true)) do
+          if t.display_name == name then
+            term = t
+            break
+          end
+        end
+
+        if term then
+          -- Toggle existing terminal
+          term:toggle()
+        else
+          -- Create a new terminal with the given name
+          vim.cmd('TermNew name=' .. name .. ' direction=' .. direction)
+        end
+      end
+
+      -- Examples of usage in your keymappings:
+      vim.keymap.set({ 'n' }, '<C-;>', function()
+        CreateOrToggleTerm('main', 'float')
+      end)
+      vim.keymap.set({ 'n' }, "<C-'>", ':TermSelect<CR>')
+      vim.keymap.set({ 'n' }, '<leader>;s', function()
+        CreateOrToggleTerm('server', 'float')
+      end)
+      for _, key in ipairs({ 'q', 'w', 'e', 'r' }) do
+        vim.keymap.set({ 'n' }, '<leader>;' .. key, function()
+          CreateOrToggleTerm(key, 'float')
+        end)
+      end
+      for _, key in ipairs({ 'q', 'w', 'e', 'r', 't', 'f', 'g' }) do
+        vim.keymap.set({ 'n', 't' }, '<C-S-' .. key .. '>', function()
+          CreateOrToggleTerm(key, 'float')
+        end)
+      end
+      vim.keymap.set({ 't' }, '<C-;>', '<CMD>ToggleTerm<CR>') -- Keep existing terminal mapping
+      vim.keymap.set({ 't' }, "<C-'>", '<CMD>TermSelect<CR>')
     end,
   },
   {
@@ -692,8 +753,8 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
+      { 'williamboman/mason.nvim', config = true, version = '^1.0.0' }, -- NOTE: Must be loaded before dependants
+      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -985,13 +1046,13 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         python = function(_)
-          local root_dir = vim.fs.root(vim.fn.getcwd(), { 'pyproject.toml' })
-          -- we want to use ruff for newer projects and as a default
-          if root_dir == nil or file_contains(root_dir .. '/pyproject.toml', '[tool.ruff]') then
-            return { 'ruff_format', 'ruff', 'ruff_organize_imports' }
-          else
-            return { 'isort', 'black' }
+          local root_dir = vim.fs.root(vim.fn.getcwd(), { 'pyproject.toml', 'ruff.toml' })
+          local formatters = { 'ruff_format', 'ruff_organize_imports' }
+          if root_dir and not root_dir:find('monogretel') then
+            -- monogretel doesn't have `ruff --fix`, so it'd create a lot of large diffs
+            table.insert(formatters, 'ruff_fix')
           end
+          return formatters
         end,
         bzl = { 'buildifier' },
         --
@@ -1232,25 +1293,6 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require('mini.statusline')
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-      require('mini.tabline').setup()
-
       local miniFiles = require('mini.files')
       miniFiles.setup()
       vim.keymap.set('n', '-', function()
@@ -1266,27 +1308,57 @@ require('lazy').setup({
       local miniBufremove = require('mini.bufremove')
       miniBufremove.setup()
       vim.keymap.set('n', '<C-q>', miniBufremove.delete)
+
+      require('mini.diff').setup()
     end,
   },
   {
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-      bigfile = { enabled = true },
-      dashboard = { enabled = true },
-      indent = { enabled = true, animate = { enabled = false } },
-      input = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      -- scroll = { enabled = true },
-      -- statuscolumn = { enabled = true },
-      words = { enabled = true },
-      picker = { enabled = true },
-    },
+    -- keys = {
+    --   {
+    --     '<C-p>',
+    --     function()
+    --       require('snacks').picker.smart()
+    --     end,
+    --     desc = 'Smart Find Files',
+    --   },
+    -- },
+    config = function()
+      require('snacks').setup({
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+        bigfile = { enabled = true },
+        dashboard = { enabled = true },
+        indent = { enabled = true, animate = { enabled = false } },
+        input = { enabled = true },
+        notifier = { enabled = true },
+        quickfile = { enabled = true },
+        -- scroll = { enabled = true },
+        -- statuscolumn = { enabled = true },
+        words = { enabled = true },
+        picker = {
+          -- layout = {
+          --   preset = "vscode",
+          -- },
+
+          matcher = {
+            frecency = true,
+          },
+          win = {
+            input = {
+              keys = {
+                ['<c-k>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+                ['<c-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+              },
+            },
+          },
+        },
+      })
+      vim.api.nvim_set_hl(0, 'SnacksPickerDir', { link = 'SnacksPickerFile' })
+    end,
   },
   {
     'zbirenbaum/copilot.lua',
@@ -1308,6 +1380,12 @@ require('lazy').setup({
     },
     config = function()
       local cc = require('codecompanion')
+
+      -- If a `~/.workrc` has set these envvars on this machine,
+      -- ensure we use them for LLM access instead of copilot.
+      local oai_url = vim.env.OAI_URL
+      local oai_api_key = vim.env.OAI_APIKEY
+      local oai_model = vim.env.OAI_MODEL
       cc.setup({
         display = {
           chat = {
@@ -1328,13 +1406,26 @@ require('lazy').setup({
               },
             })
           end,
+          azure_compat = function()
+            return require('codecompanion.adapters').extend('azure_openai', {
+              env = {
+                api_key = oai_api_key,
+                endpoint = oai_url,
+              },
+              schema = {
+                model = {
+                  default = oai_model,
+                },
+              },
+            })
+          end,
         },
         strategies = {
           chat = {
-            adapter = copilot,
+            adapter = 'copilot',
           },
           inline = {
-            adapter = copilot,
+            adapter = 'copilot',
           },
         },
       })

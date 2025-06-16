@@ -98,3 +98,5 @@ fi
 source "${PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 # zprof
+
+. "$HOME/.local/share/../bin/env"
