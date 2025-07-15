@@ -195,3 +195,5 @@ function y() {
 	fi
 	rm -f -- "$tmp"
 }
+
+alias kgpu='kubectl view-allocations -r nvidia.com/gpu'

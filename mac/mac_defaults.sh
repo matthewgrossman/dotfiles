@@ -9,6 +9,12 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
 
+# disable double-space inserting a period
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Disable smart quotes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
 # automatically hide the dock when not hovering over
 defaults write com.apple.dock "autohide" -bool "true"
 
