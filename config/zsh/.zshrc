@@ -29,7 +29,8 @@ else
 fi
 
 export WORDCHARS=${WORDCHARS/\/}
-export PYTHONBREAKPOINT="ipdb.set_trace"
+# export PYTHONBREAKPOINT="ipdb.set_trace"
+export PYTHONBREAKPOINT=pdbp.set_trace
 export GOPATH=$HOME/dev
 
 # only modify PATH if we aren't in a nvim subshell
@@ -75,6 +76,7 @@ if [ -d "$HOME/.kube"  ]; then
 fi
 
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
+export LLM_USER_PATH="$XDG_CONFIG_HOME/io.datasette.llm"
 
 . $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh

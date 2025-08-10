@@ -25,6 +25,7 @@ brew bundle
 
 # install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
+uv tool install llm
 
 # link hammerspoon data
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
