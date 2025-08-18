@@ -1,31 +1,32 @@
 # essentials
-winget install Mozilla.Firefox --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Google.Chrome --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Spotify.Spotify --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install OpenWhisperSystems.Signal --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Google.Drive --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install KeePassXCTeam.KeePassXC --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Microsoft.PowerToys --accept-package-agreements --disable-interactivity --accept-source-agreements
+winget install --id Mozilla.Firefox --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Google.Chrome --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Spotify.Spotify --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id OpenWhisperSystems.Signal --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Google.GoogleDrive --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id KeePassXCTeam.KeePassXC --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Microsoft.PowerToys --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # hardware
-winget install Nvidia.GeForceExperience --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Intel.IntelDriverAndSupportAssistant --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install AMD.RyzenMaster --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install REALiX.HWiNFO --accept-package-agreements --disable-interactivity --accept-source-agreements
+winget install --id Intel.IntelDriverAndSupportAssistant --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id REALiX.HWiNFO --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Rufus.Rufus --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id UltimateGadgetLaboratories.UHKAgent --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # programming
-winget install Microsoft.WindowsTerminal --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Microsoft.VisualStudioCode --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install RaspberryPiFoundation.RaspberryPiImager --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install tailscale.tailscale --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install RealVNC.VNCViewer --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Iterate.Cyberduck --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install calibre.calibre --accept-package-agreements --disable-interactivity --accept-source-agreements
+winget install --id Microsoft.WindowsTerminal --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Microsoft.VisualStudioCode --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id RaspberryPiFoundation.RaspberryPiImager --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id tailscale.tailscale --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id RealVNC.VNCViewer --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Iterate.Cyberduck --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id calibre.calibre --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # gaming
-winget install Valve.Steam --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install EpicGames.EpicGamesLauncher --accept-package-agreements --disable-interactivity --accept-source-agreements
-winget install Discord.Discord --accept-package-agreements --disable-interactivity --accept-source-agreements
+winget install --id Valve.Steam --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id EpicGames.EpicGamesLauncher --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Discord.Discord --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id ClassicOldSong.Apollo --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # extras if you want to program on this machine:
 

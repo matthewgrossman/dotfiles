@@ -34,13 +34,16 @@ This script will end up prompting for password a few times (ideally at the begin
 
 
 ## windows
-1. Open the `Microsoft Store` and get updates for `App Installer`, which will ensure we have `winget`
-1. Open `Powershell` and run the following:
+1. Open `Powershell` **as administrator** and run the following:
     ```powershell
     winget install -e Git.Git
-    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
-    cd $HOME; git clone https://github.com/matthewgrossman/dotfiles; . .\dotfiles\windows\setup.ps1
+    cd $HOME
+    git clone https://github.com/matthewgrossman/dotfiles
+    powershell -ExecutionPolicy Bypass -File .\dotfiles\windows\setup.ps1
     ```
+
+There are some apps that can't easily be installed via that script:
+- The NVIDIA app
 
 ## wsl2 / ubuntu
 1. Ensure you have github-allowlisted ssh keys
