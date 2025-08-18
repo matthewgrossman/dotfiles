@@ -37,6 +37,7 @@ winget install --accept-package-agreements --disable-interactivity --accept-sour
 winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
     Bambulab.Bambustudio `
     7zip.7zip `
+    Sonos.Controller `
     Chocolatey.Chocolatey
 
 # extras if you want to program on this machine:
