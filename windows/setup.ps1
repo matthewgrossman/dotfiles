@@ -12,6 +12,7 @@ winget install --id Intel.IntelDriverAndSupportAssistant --accept-package-agreem
 winget install --id REALiX.HWiNFO --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 winget install --id Rufus.Rufus --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 winget install --id UltimateGadgetLaboratories.UHKAgent --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Rem0o.FanControl --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # programming
 winget install --id Microsoft.WindowsTerminal --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
@@ -27,6 +28,9 @@ winget install --id Valve.Steam --accept-package-agreements --disable-interactiv
 winget install --id EpicGames.EpicGamesLauncher --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 winget install --id Discord.Discord --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 winget install --id ClassicOldSong.Apollo --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+
+# misc
+winget install --id Bambulab.Bambustudio --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # extras if you want to program on this machine:
 
