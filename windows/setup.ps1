@@ -1,38 +1,43 @@
 # essentials
-winget install --id Mozilla.Firefox --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Google.Chrome --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Spotify.Spotify --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id OpenWhisperSystems.Signal --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Google.GoogleDrive --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id KeePassXCTeam.KeePassXC --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Microsoft.PowerToys --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
+    Mozilla.Firefox `
+    Google.Chrome `
+    Spotify.Spotify `
+    OpenWhisperSystems.Signal `
+    Google.GoogleDrive `
+    KeePassXCTeam.KeePassXC `
+    Microsoft.PowerToys
 
 # hardware
-winget install --id Intel.IntelDriverAndSupportAssistant --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id REALiX.HWiNFO --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Rufus.Rufus --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id UltimateGadgetLaboratories.UHKAgent --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Rem0o.FanControl --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
+    Intel.IntelDriverAndSupportAssistant `
+    REALiX.HWiNFO `
+    Rufus.Rufus `
+    UltimateGadgetLaboratories.UHKAgent `
+    Rem0o.FanControl
 
 # programming
-winget install --id Microsoft.WindowsTerminal --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Microsoft.VisualStudioCode --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id RaspberryPiFoundation.RaspberryPiImager --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id tailscale.tailscale --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id RealVNC.VNCViewer --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Iterate.Cyberduck --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id calibre.calibre --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
+    Microsoft.WindowsTerminal `
+    Microsoft.VisualStudioCode `
+    RaspberryPiFoundation.RaspberryPiImager `
+    tailscale.tailscale `
+    RealVNC.VNCViewer `
+    Iterate.Cyberduck `
+    calibre.calibre
 
 # gaming
-winget install --id Valve.Steam --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id EpicGames.EpicGamesLauncher --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Discord.Discord --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id ClassicOldSong.Apollo --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
+    Valve.Steam `
+    EpicGames.EpicGamesLauncher `
+    Discord.Discord `
+    ClassicOldSong.Apollo
 
 # misc
-winget install --id Bambulab.Bambustudio --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id 7zip.7zip --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
-winget install --id Chocolatey.Chocolatey --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --accept-package-agreements --disable-interactivity --accept-source-agreements --exact `
+    Bambulab.Bambustudio `
+    7zip.7zip `
+    Chocolatey.Chocolatey
 
 # extras if you want to program on this machine:
 
