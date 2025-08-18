@@ -31,6 +31,8 @@ winget install --id ClassicOldSong.Apollo --accept-package-agreements --disable-
 
 # misc
 winget install --id Bambulab.Bambustudio --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id 7zip.7zip --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
+winget install --id Chocolatey.Chocolatey --accept-package-agreements --disable-interactivity --accept-source-agreements --exact
 
 # extras if you want to program on this machine:
 
