@@ -123,15 +123,18 @@ vim.keymap.set('c', '<C-e>', '<End>')
 vim.keymap.set('c', '<C-f>', '<Right>')
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- allow indent/dedent now that we've clobbered ctrl-d
 vim.keymap.set('i', '<C-s-t>', '<c-d>')
 
 -- hop to the beginning and ends of line easily
-vim.keymap.set('n', 'H', '^')
-vim.keymap.set('n', 'L', '$')
+vim.keymap.set({ 'n', 'v' }, 'H', '^')
+vim.keymap.set({ 'n', 'v' }, 'L', '$')
+
+-- easier jump-to-pair
+vim.keymap.set('n', 'mm', '%')
 
 -- match word-deletion to macOS
 vim.keymap.set('i', '<A-BS>', '<C-W>')
@@ -144,6 +147,9 @@ vim.keymap.set('n', 'gp', '`[v`]')
 
 vim.keymap.set('n', '<leader>c', ":let @+ = expand('%')<CR>", { silent = true })
 vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true })
+
+-- have X always pull from the yank register
+vim.keymap.set({ 'n', 'v' }, 'X', '"0p')
 
 -- vim.keymap.set('n', 'c/', ':%s//<C-r>=@/<CR>/g<left><left>', { silent = true })
 
@@ -178,6 +184,7 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('n', '<C-p>', ':startinsert<CR><C-p>', opts)
   vim.keymap.set('n', '<C-q>', ':terminal<CR>:bd!#<CR>:startinsert<CR>', opts)
   vim.keymap.set('t', '<M-[>', '<esc>')
+  vim.keymap.set('t', '<C-9>', '<C-\\><C-z>kill -9 %1')
   vim.keymap.set('t', '<S-CR>', '<C-v><C-j>')
   -- vim.keymap.set('v', 'Y', function()
   -- TODO fix softwrap copying
@@ -280,6 +287,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd('CmdwinEnter', {
+  group = vim.api.nvim_create_augroup('CmdwinOverrides', { clear = true }),
+  callback = function()
+    -- Remove any existing <CR> mapping in cmdwin
+    vim.keymap.del('n', '<CR>', { buffer = true })
   end,
 })
 
@@ -438,6 +453,9 @@ require('lazy').setup({
         clipboard = clipboard_strategy,
       }
 
+      vim.g['test#python#pytest#executable'] = 'uv run --frozen pytest'
+      -- vim.g['test#python#pytest#options'] = '--frozen'
+
       -- Set the default strategy
       vim.g['test#strategy'] = 'clipboard'
       -- set strategy here
@@ -572,15 +590,30 @@ require('lazy').setup({
           },
         },
       })
-      vim.keymap.set('n', '<leader>sg', function()
-        require('fzf-lua').grep_project({
-          fzf_opts = { ['--nth'] = false },
-          file_icons = false,
-          rg_opts = '--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --glob "!.git/*" -e',
-        })
-      end)
+      -- vim.keymap.set('n', '<leader>sg', function()
+      --   require('fzf-lua').grep_project({
+      --     fzf_opts = { ['--nth'] = false },
+      --     file_icons = false,
+      --     rg_opts = '--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --glob "!.git/*" -e',
+      --   })
+      -- end)
     end,
   },
+  -- {
+  --   'elanmed/fzf-lua-frecency.nvim',
+  --   config = function()
+  --     require('fzf-lua-frecency').setup()
+  --     vim.keymap.set('n', '<C-p>', function(
+  --
+  --     )
+  --       require('fzf-lua-frecency').frecency({
+  --         debug = true,
+  --         cwd_only = true,
+  --         display_score = false,
+  --       })
+  --     end)
+  --   end,
+  -- },
   { 'bazelbuild/vim-bazel', dependencies = { 'google/vim-maktaba' } },
   -- {
   --   'alexander-born/bazel.nvim',
@@ -692,15 +725,15 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
+      -- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+      -- vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+      -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      -- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      -- vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      -- vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      -- vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      -- vim.keymap.set('n', '<C-p>', '<Cmd>Telescope frecency workspace=CWD<CR>')
 
       -- TODO fix thi
       vim.keymap.set('n', '<leader>sd', function()
@@ -1219,20 +1252,8 @@ require('lazy').setup({
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
-    -- keys = {
-    --   {
-    --     '<C-p>',
-    --     function()
-    --       require('snacks').picker.smart()
-    --     end,
-    --     desc = 'Smart Find Files',
-    --   },
-    -- },
     config = function()
       require('snacks').setup({
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
         bigfile = { enabled = true },
         dashboard = { enabled = true },
         indent = { enabled = true, animate = { enabled = false } },
@@ -1243,16 +1264,19 @@ require('lazy').setup({
         -- statuscolumn = { enabled = true },
         words = { enabled = true },
         picker = {
-          -- layout = {
-          --   preset = "vscode",
-          -- },
-
+          layout = {
+            preset = 'vertical',
+            layout = {
+              width = 0.8,
+            },
+          },
           matcher = {
             frecency = true,
           },
           win = {
             input = {
               keys = {
+                ['<c-a>'] = false,
                 ['<c-k>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
                 ['<c-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
               },
@@ -1260,7 +1284,41 @@ require('lazy').setup({
           },
         },
       })
+
+      -- stop truncating file paths
+      local oldTruncPath = Snacks.picker.util.truncpath
+      Snacks.picker.util.truncpath = function(path, _, _)
+        return oldTruncPath(path, 120, _)
+      end
+
+      vim.keymap.set('n', '<C-p>', function()
+        Snacks.picker.smart({
+          multi = {
+            { source = 'files', hidden = true },
+          },
+        })
+      end)
+
+      vim.keymap.set('n', '<leader>sh', Snacks.picker.help, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sk', Snacks.picker.keymaps, { desc = '[S]earch [K]eymaps' })
+      vim.keymap.set('n', '<leader>sf', Snacks.picker.files, { desc = '[S]earch [F]iles' })
+      -- vim.keymap.set('n', '<leader>ss', Snacks.picker, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>sw', Snacks.picker.grep_word, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sr', Snacks.picker.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>sc', Snacks.picker.command_history, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader><leader>', Snacks.picker.buffers, { desc = '[ ] Find existing buffers' })
+
       vim.api.nvim_set_hl(0, 'SnacksPickerDir', { link = 'SnacksPickerFile' })
+
+      vim.keymap.set('n', '<leader>sg', function()
+        Snacks.picker.grep({
+          cwd = vim.fn.getcwd(), -- or Snacks.git.root() if you want repo root
+          live = false, -- start in fuzzy mode
+          search = '.', -- match everything initially
+          hidden = true,
+          args = { '--glob', '!.venv/**' }, -- exclude the .venv folder
+        })
+      end)
     end,
   },
   {
@@ -1275,6 +1333,46 @@ require('lazy').setup({
         help = true,
       },
     },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'mfussenegger/nvim-dap-python',
+      'nvim-neotest/nvim-nio',
+      'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
+    },
+    config = function()
+      local dap = require('dap')
+
+      require('nvim-dap-virtual-text').setup({
+        virt_text_pos = 'eol',
+      })
+      require('dap-python').setup('uv')
+      require('dapui').setup()
+      vim.fn.sign_define('DapBreakpoint', { text = '🐞' })
+      vim.keymap.set('n', '<leader>du', function()
+        require('dapui').toggle({})
+      end)
+      vim.keymap.set('n', '<leader>dc', dap.continue)
+      vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint)
+      vim.keymap.set('n', '<leader>dn', dap.step_over)
+      vim.keymap.set('n', '<leader>ds', dap.step_into)
+      vim.keymap.set('n', '<leader>do', dap.step_into)
+      vim.keymap.set('n', '<leader>dr', dap.restart)
+      vim.keymap.set('n', '<leader>dv', require('nvim-dap-virtual-text').toggle)
+      require('nvim-dap-virtual-text').disable()
+
+      -- python
+      table.insert(require('dap').configurations.python, {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch from cwd',
+        program = '${file}',
+        cwd = vim.fn.getcwd(),
+        -- ... more options, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+      })
+    end,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
@@ -1309,7 +1407,7 @@ require('lazy').setup({
             return require('codecompanion.adapters').extend('copilot', {
               schema = {
                 model = {
-                  default = 'claude-3.7-sonnet',
+                  default = 'claude-sonnet-4',
                 },
               },
             })

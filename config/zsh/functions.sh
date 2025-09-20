@@ -196,4 +196,83 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function fzf_ctrl_t_cmd() {
+    local type="${1:-files}"  # Default to 'files' if no argument provided
+    
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        # Outside a git repo - use the default find command
+        if [[ "$type" == "files" ]]; then
+            fd --type f
+        else
+            fd --type d --hidden --exclude .git
+        fi
+        return
+    fi
+    
+    # If we reach here, we're inside a git repo
+    local git_root=$(git rev-parse --show-toplevel)
+    local pwd_path=$(pwd)
+    
+    if [[ "$type" == "files" ]]; then
+        # List files in git repo
+        git ls-files --cached --others --exclude-standard | while read -r file; do
+            local abs_path="${git_root}/${file}"
+            local rel_path=$(realpath --relative-to="$pwd_path" "$abs_path")
+            echo -e "${abs_path}\t${rel_path}"
+        done
+    elif [[ "$type" == "dirs" ]]; then
+        # List directories in git repo
+        git ls-files --cached --others --exclude-standard | 
+            xargs -I{} dirname {} | 
+            sort -u | 
+            while read -r dir; do
+                # Skip the root directory (which shows up as ".")
+                if [[ "$dir" == "." ]]; then
+                    continue
+                fi
+                
+                local abs_path="${git_root}/${dir}"
+                local rel_path=$(realpath --relative-to="$pwd_path" "$abs_path")
+                echo -e "${abs_path}\t${rel_path}"
+            done
+    fi
+}
+
+function gl() {
+
+    local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+    
+    if [[ -z "$git_root" ]]; then
+        echo "Not in a git repository"
+        return 1
+    fi
+    
+    # Use rg to list directories, respecting gitignore
+    # --files lists files
+    # --null uses null character as separator
+    # --hidden includes hidden directories
+    # xargs -0 processes null-delimited input
+    # dirname gets the directory paths
+    # sort -u sorts and removes duplicates
+    local selected_dir=$(cd "$git_root" && 
+                        rg --files --null --hidden |
+                        xargs -0 dirname |
+                        sort -u |
+                        fzf --height 40% --reverse --header="Select directory to navigate to:")
+    
+    if [[ -n "$selected_dir" ]]; then
+        cd "$git_root/$selected_dir"
+    fi
+
+}
+
+alias gg="cd $(git rev-parse --show-toplevel)"
 alias kgpu='kubectl view-allocations -r nvidia.com/gpu'
+alias ls="ls -AGltr"
+alias dotf='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
+alias g="git"
+
+alias vim='nvim'
+alias k='kubectl'
+alias icat="kitty +kitten icat"
+alias rn='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'

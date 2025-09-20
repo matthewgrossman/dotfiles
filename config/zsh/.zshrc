@@ -55,20 +55,17 @@ fi
 
 HISTSIZE=10000000
 SAVEHIST=10000000
+export HISTFILE="$ZDOTDIR/zsh_history"
 unsetopt SHARE_HISTORY
 setopt autocd extendedglob
 setopt INC_APPEND_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt CLOBBER
-alias hist="fc -RI"
+alias hist="fc -RI" # update current shell w/ history from file
+alias histfix="fc -W" # save current shell's history to file
 bindkey -e
 
-# fzf
 source <(fzf --zsh)
-export FZF_DEFAULT_OPTS="--ansi --no-height"
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 
 if [ -d "$HOME/.kube"  ]; then
     kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
@@ -78,9 +75,15 @@ fi
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 export LLM_USER_PATH="$XDG_CONFIG_HOME/io.datasette.llm"
 
-. $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
+
+export FZF_DEFAULT_OPTS="--ansi --no-height"
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_CTRL_T_DIR_COMMAND=""
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
+export FZF_CTRL_T_OPTS="--bind ctrl-d:reload(eval )"
 
 # work configuration
 if [ -f ~/.workrc  ]; then

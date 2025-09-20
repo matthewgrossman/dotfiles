@@ -20,19 +20,23 @@
     s = status
     m = merge
     l = log
-    ll = log --oneline -7 --reverse
+    ll = log --pretty=format:'%C(yellow)%h%Creset %C(blue)%an%Creset: %s' -10 --reverse
     ld = log --stat --patch --full-diff
     mm = "!git merge $(git default-branch)"
     giff = diff
     wt = worktree
 
+    root = rev-parse --show-toplevel
     default-branch = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||'"
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     smu = "!git submodule update --init --recursive"
-    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit && git smu"
+    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
     bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
     po = "!git push -u origin $(git branch-name)"
+
+    squash-into-branch = "!f() { mc=$(git merge-base $(git branch-name) $1); git reset --soft $mc; git commit; }; f"
+    squashm = "!git squash-into-branch $(git default-branch)"
 
     # provider specific
     pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr; else git github-pr; fi; }; f"
@@ -64,8 +68,6 @@
     rebase = false
 [push]
     default = current
-[submodule]
-	recurse = true
 [init]
 	defaultBranch = main
 [filter "lfs"]
