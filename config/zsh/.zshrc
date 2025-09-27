@@ -82,8 +82,8 @@ export FZF_DEFAULT_OPTS="--ansi --no-height"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_DIR_COMMAND=""
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
-export FZF_CTRL_T_OPTS="--bind ctrl-d:reload(eval )"
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
+# export FZF_CTRL_T_OPTS='--bind ctrl-d:reload(eval "FZF_CTRL_T_DIR_COMMAND")'
 
 # work configuration
 if [ -f ~/.workrc  ]; then
