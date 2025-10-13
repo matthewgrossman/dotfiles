@@ -785,7 +785,7 @@ require('lazy').setup({
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true, version = '^1.0.0' }, -- NOTE: Must be loaded before dependants
-      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
+      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' }, -- used to allow specifying lspconfig names instead of mason names
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -1007,21 +1007,16 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
-      require('mason-lspconfig').setup({
-        handlers = {
-          function(server_name)
-            local server = servers[server_name]
-            if server == nil then
-              return
-            end
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      })
+      for server_name, server_config in pairs(servers) do
+        -- Merge capabilities with server-specific config
+        local config = vim.tbl_deep_extend('force', {
+          capabilities = capabilities,
+        }, server_config or {})
+
+        -- Configure the LSP server using the new API
+        vim.lsp.config(server_name, config)
+        vim.lsp.enable(server_name)
+      end
     end,
   },
   { -- Linting
@@ -1403,28 +1398,39 @@ require('lazy').setup({
           },
         },
         adapters = {
-          copilot = function()
-            return require('codecompanion.adapters').extend('copilot', {
-              schema = {
-                model = {
-                  default = 'claude-sonnet-4',
+          http = {
+            copilot = function()
+              return require('codecompanion.adapters').extend('copilot', {
+                schema = {
+                  model = {
+                    default = 'claude-sonnet-4',
+                  },
                 },
-              },
-            })
-          end,
-          azure_compat = function()
-            return require('codecompanion.adapters').extend('azure_openai', {
-              env = {
-                api_key = oai_api_key,
-                endpoint = oai_url,
-              },
-              schema = {
-                model = {
-                  default = oai_model,
+              })
+            end,
+            azure_compat = function()
+              return require('codecompanion.adapters').extend('azure_openai', {
+                env = {
+                  api_key = oai_api_key,
+                  endpoint = oai_url,
                 },
-              },
-            })
-          end,
+                schema = {
+                  model = {
+                    default = oai_model,
+                  },
+                },
+              })
+            end,
+          },
+          acp = {
+            claude_code = function()
+              return require('codecompanion.adapters').extend('claude_code', {
+                env = {
+                  CLAUDE_CODE_OAUTH_TOKEN = 'my-oauth-token',
+                },
+              })
+            end,
+          },
         },
         strategies = {
           chat = {

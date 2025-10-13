@@ -266,7 +266,14 @@ function gl() {
 
 }
 
-alias gg="cd $(git rev-parse --show-toplevel)"
+gg() {
+    local git_root
+    git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ $? -eq 0 ]]; then
+        cd "$git_root"
+    fi
+}
+
 alias kgpu='kubectl view-allocations -r nvidia.com/gpu'
 alias ls="ls -AGltr"
 alias dotf='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
