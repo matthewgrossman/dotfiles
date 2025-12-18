@@ -56,10 +56,20 @@ fi
 HISTSIZE=10000000
 SAVEHIST=10000000
 export HISTFILE="$ZDOTDIR/zsh_history"
-unsetopt SHARE_HISTORY
-setopt autocd extendedglob
-setopt INC_APPEND_HISTORY
+
+# Backup history daily
+if [[ ! -f "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" ]]; then
+    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" 2>/dev/null
+fi
+
+# Safe history sharing with file locking
+setopt SHARE_HISTORY
+setopt HIST_FCNTL_LOCK
 setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+
+setopt autocd extendedglob
 setopt CLOBBER
 alias hist="fc -RI" # update current shell w/ history from file
 alias histfix="fc -W" # save current shell's history to file

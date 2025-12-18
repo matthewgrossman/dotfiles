@@ -39,10 +39,10 @@
     squashm = "!git squash-into-branch $(git default-branch)"
 
     # provider specific
-    pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr; else git github-pr; fi; }; f"
+    pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr \"$@\"; else git github-pr \"$@\"; fi; }; f"
     mr = pr
     github-pr = "!gh pr create --base $(git parent) --fill --web"
-    gitlab-mr = "!glab mr create --target-branch $(git parent) --fill --web"
+    gitlab-mr = "!f() { target=${1:-$(git parent)}; echo \"$target\"; glab mr create --target-branch \"$target\" --fill --web; }; f"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
     comment = "!gh pr comment -b"
