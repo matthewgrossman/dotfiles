@@ -1,0 +1,1 @@
+alias awa import asyncio; lo = asyncio.get_running_loop(); ta = lo.create_task(%1);; next;; rest=ta.result()

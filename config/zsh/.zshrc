@@ -55,20 +55,27 @@ fi
 
 HISTSIZE=10000000
 SAVEHIST=10000000
-unsetopt SHARE_HISTORY
-setopt autocd extendedglob
-setopt INC_APPEND_HISTORY
+export HISTFILE="$ZDOTDIR/zsh_history"
+
+# Backup history daily
+if [[ ! -f "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" ]]; then
+    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" 2>/dev/null
+fi
+
+# Safe history sharing with file locking
+setopt SHARE_HISTORY
+setopt HIST_FCNTL_LOCK
 setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+
+setopt autocd extendedglob
 setopt CLOBBER
-alias hist="fc -RI"
+alias hist="fc -RI" # update current shell w/ history from file
+alias histfix="fc -W" # save current shell's history to file
 bindkey -e
 
-# fzf
 source <(fzf --zsh)
-export FZF_DEFAULT_OPTS="--ansi --no-height"
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 
 if [ -d "$HOME/.kube"  ]; then
     kubeconfigs=$(find "$HOME/.kube" -maxdepth 1 -type f | paste -sd ':' -)
@@ -78,9 +85,15 @@ fi
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgreprc"
 export LLM_USER_PATH="$XDG_CONFIG_HOME/io.datasette.llm"
 
-. $XDG_CONFIG_HOME/zsh/alias.sh
 . $XDG_CONFIG_HOME/zsh/theme.sh
 . $XDG_CONFIG_HOME/zsh/functions.sh
+
+export FZF_DEFAULT_OPTS="--ansi --no-height"
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_CTRL_T_DIR_COMMAND=""
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
+# export FZF_CTRL_T_OPTS='--bind ctrl-d:reload(eval "FZF_CTRL_T_DIR_COMMAND")'
 
 # work configuration
 if [ -f ~/.workrc  ]; then

@@ -34,9 +34,9 @@ git_status() {
 kube_status() {
     local current_context jsonpath cluster_namespace
     if current_context=$(kubectl config current-context 2> /dev/null); then
-        jsonpath="{.contexts[?(@.name=='$current_context')].context['cluster', 'namespace']}"
-        cluster_namespace=$(kubectl config view --output jsonpath="$jsonpath" | awk '{print $1 ":" $2}')
-        zc "$cluster_namespace" 'black' 'magenta'
+        namespace=$(kubectl config view --output jsonpath="{.contexts[?(@.name=='$current_context')].context.namespace}")
+        namespace=${namespace:-default}
+        zc "$current_context:$namespace" 'black' 'magenta'
     fi
 }
 
