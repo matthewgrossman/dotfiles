@@ -905,34 +905,8 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         denols = {},
+        -- ty = {},
 
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       plugins = {
-        --         mypy = {
-        --           enabled = true,
-        --         },
-        --         pycodestyle = {
-        --           enabled = false,
-        --         },
-        --         pyflakes = {
-        --           enabled = false,
-        --         },
-        --         mccabe = {
-        --           enabled = false,
-        --         },
-        --         rope_autoimport = {
-        --           enabled = true,
-        --         },
-        --         jedi_completion = {
-        --           fuzzy = true,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
-        --
         pyright = {
           settings = {
             pyright = {
@@ -949,27 +923,6 @@ require('lazy').setup({
             },
           },
         },
-
-        -- pyright = {
-        --   settings = {
-        --     pyright = {
-        --       disableOrganizeImports = true,
-        --       disableTaggedHints = true,
-        --     },
-        --     python = {
-        --       analysis = {
-        --         typeCheckingMode = 'off',
-        --         exclude = { 'bazel-bin/**', '**/venv', '**/.venv' },
-        --         stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
-        --         useLibraryCodeForTypes = false, -- Disable type checking of library code, done for speed
-        --         diagnosticSeverityOverrides = {
-        --           -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
-        --           reportUndefinedVariable = 'error',
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
 
         lua_ls = {
           -- cmd = {...},
