@@ -42,8 +42,9 @@ This script will end up prompting for password a few times (ideally at the begin
     powershell -ExecutionPolicy Bypass -File .\dotfiles\windows\setup.ps1
     ```
 
-There are some apps that can't easily be installed via that script:
+There are some apps that can't be installed via that script:
 - The NVIDIA app
+- AMD Chipset Driver ("Adrenalin")
 
 ## wsl2 / ubuntu
 1. Ensure you have github-allowlisted ssh keys

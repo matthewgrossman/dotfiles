@@ -394,6 +394,7 @@ require('lazy').setup({
         else
           -- Create a new terminal with the given name
           vim.cmd('TermNew name=' .. name .. ' direction=' .. direction)
+          vim.cmd('startinsert')
         end
       end
 
