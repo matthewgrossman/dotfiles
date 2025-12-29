@@ -99,12 +99,6 @@
 	algorithm = histogram
 [status]
 	submoduleSummary = true
-
-[includeIf "hasconfig:remote.*.url:git@github.com:gretelai/**"]
-    path = ~/.config/git/workconfig
-
-[includeIf "hasconfig:remote.*.url:git@github.com:gretellabs/**"]
-    path = ~/.config/git/workconfig
 [gc]
 	reflogexpire = 90
 	writeCommitGraph = true
