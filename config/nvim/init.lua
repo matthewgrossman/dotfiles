@@ -179,7 +179,6 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('n', '<C-e>', ':startinsert<CR><C-e>', opts)
   vim.keymap.set('n', '<C-a>', ':startinsert<CR><C-a>', opts)
-  vim.keymap.set('n', '<C-a>', ':startinsert<CR><C-a>', opts)
   vim.keymap.set('n', '<C-c>', ':startinsert<CR>', opts)
   vim.keymap.set('n', '<C-p>', ':startinsert<CR><C-p>', opts)
   vim.keymap.set('n', '<C-q>', ':terminal<CR>:bd!#<CR>:startinsert<CR>', opts)
@@ -616,17 +615,6 @@ require('lazy').setup({
   --   end,
   -- },
   { 'bazelbuild/vim-bazel', dependencies = { 'google/vim-maktaba' } },
-  -- {
-  --   'alexander-born/bazel.nvim',
-  --   dependencies = {
-  --     { 'bazelbuild/vim-bazel', dependencies = { 'google/vim-maktaba' } },
-  --     'nvim-treesitter/nvim-treesitter',
-  --     'nvim-lua/plenary.nvim',
-  --   },
-  --   config = function ()
-  --     vim.keymap.set('n', '<C-]>', vim.fn.GoToBazelDefinition, { desc = '[S]earch [H]elp' })
-  --   end
-  -- },
   {
     'benlubas/molten-nvim',
     version = '^1.0.0', -- use version <2.0.0 to avoid breaking changes
@@ -785,8 +773,9 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true, version = '^1.0.0' }, -- NOTE: Must be loaded before dependants
-      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' }, -- used to allow specifying lspconfig names instead of mason names
+      { 'williamboman/mason.nvim', version = '^1.0.0' },
+      -- Provides lspconfig-to-mason name translation (e.g., lua_ls → lua-language-server)
+      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.

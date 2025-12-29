@@ -1,0 +1,5 @@
+[src]
+exclude = []
+
+[environment]
+python-version = "3.11"
