@@ -876,6 +876,22 @@ require('lazy').setup({
         },
       })
 
+      vim.lsp.config('ty', {
+        root_dir = function(bufnr, on_dir)
+          local fname = vim.api.nvim_buf_get_name(bufnr)
+          -- Prefer git root for monorepo setups, fall back to standard markers
+          local root = vim.fs.root(fname, '.git') or vim.fs.root(fname, { 'pyproject.toml', 'ty.toml' })
+          if root then
+            on_dir(root)
+          end
+        end,
+        settings = {
+          ty = {
+            configurationFile = '~/.config/ty/ty.toml',
+          },
+        },
+      })
+
       vim.lsp.config('pyright', {
         root_dir = function(bufnr, on_dir)
           local fname = vim.api.nvim_buf_get_name(bufnr)
@@ -908,12 +924,12 @@ require('lazy').setup({
 
       -- Enable all LSP servers
       vim.lsp.enable({
-        'clangd',
         'denols',
         'gopls',
         'helm_ls',
         'lua_ls',
-        'pyright',
+        -- 'pyright',
+        'ty',
         'ruff',
         'rust_analyzer',
         'terraformls',
@@ -924,16 +940,13 @@ require('lazy').setup({
       require('mason').setup()
       require('mason-tool-installer').setup({
         ensure_installed = {
-          'black',
           'buildifier',
-          'clangd',
           'gopls',
           'helm_ls',
-          'isort',
           'lua_ls',
           'mypy',
           'pyright',
-          'ruff',
+          { 'ruff', version = '0.12.3' },
           'rust_analyzer',
           'stylua',
           'terraformls',
@@ -991,15 +1004,15 @@ require('lazy').setup({
       -- end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = function(_)
-          local root_dir = vim.fs.root(vim.fn.getcwd(), { 'pyproject.toml', 'ruff.toml' })
-          local formatters = { 'ruff_format', 'ruff_organize_imports' }
-          if root_dir and not root_dir:find('monogretel') then
-            -- monogretel doesn't have `ruff --fix`, so it'd create a lot of large diffs
-            table.insert(formatters, 'ruff_fix')
-          end
-          return formatters
-        end,
+        python = {
+          -- To fix auto-fixable lint errors.
+          'ruff_fix',
+          -- To run the Ruff formatter.
+          'ruff_format',
+          -- To organize the imports.
+          'ruff_organize_imports',
+        },
+
         bzl = { 'buildifier' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
