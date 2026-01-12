@@ -13,3 +13,7 @@ __pycache__/
 # artifacts
 tags
 scratch/
+
+# claude personal commands
+.claude/commands/personal
+.claude/skills/personal
