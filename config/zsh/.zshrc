@@ -95,6 +95,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 # export FZF_CTRL_T_OPTS='--bind ctrl-d:reload(eval "FZF_CTRL_T_DIR_COMMAND")'
 
+export DISABLE_AUTOUPDATER=1
+
 # work configuration
 if [ -f ~/.workrc  ]; then
     source ~/.workrc
