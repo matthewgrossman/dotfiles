@@ -31,8 +31,8 @@
     pr-name = "!echo \"$(git ticket-prefix)\"\"$(git last-commit)\""
     msg = "!tpl=\"$(cat pull_request_template.md 2>/dev/null)\";echo \"$(git pr-name)\\n\\n$tpl\""
     smu = "!git submodule update --init --recursive"
-    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
-    bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
+    pm = "!git fetch origin $(git default-branch):$(git default-branch) && git merge $(git default-branch) --no-edit"
+    bc = "!f() { git fetch origin $(git default-branch):$(git default-branch) && git checkout -b \"$1\" $(git default-branch); }; f"
     po = "!git push -u origin $(git branch-name)"
 
     squash-into-branch = "!f() { mc=$(git merge-base $(git branch-name) $1); git reset --soft $mc; git commit; }; f"
@@ -64,6 +64,10 @@
     bp = "!f() { par=$(git branch-name); git add-child $1; git checkout -b $1; git set-parent $par; }; f"
 [core]
     excludesfile = ~/.config/git/gitignore_global
+    pager = delta
+    logallrefupdates = true
+    quotePath = false
+    commitGraph = true
 [pull]
     rebase = false
 [push]
@@ -76,16 +80,10 @@
 	process = git-lfs filter-process
 	required = true
 [merge]
-    mergestyle = zdiff3
     conflictstyle = zdiff3
 
 [url "git@github.com:"]
 	insteadOf = "https://github.com/"
-[core]
-    pager = delta
-	logallrefupdates = true
-	quotePath = false
-	commitGraph = true
 
 [interactive]
     diffFilter = delta --color-only
@@ -112,7 +110,3 @@
 [uploadpack]
 	allowfilter = true
 	allowAnySHA1InWant = true
-[test]
-	key-a = val-a-changed
-[sync-test]
-	cfg-key-a = CfgValA
