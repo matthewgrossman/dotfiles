@@ -274,6 +274,14 @@ gg() {
     fi
 }
 
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 alias kgpu='kubectl view-allocations -r nvidia.com/gpu'
 alias ls="ls -AGltr"
 alias dotf='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
