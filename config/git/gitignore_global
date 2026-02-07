@@ -15,5 +15,5 @@ tags
 scratch/
 
 # claude personal commands
-.claude/commands/personal
-.claude/skills/personal
+.claude/commands/me
+.claude/skills/me

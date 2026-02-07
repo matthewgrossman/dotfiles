@@ -33,8 +33,10 @@
     smu = "!git submodule update --init --recursive"
     pm = "!git fetch origin $(git default-branch):$(git default-branch) && git merge $(git default-branch) --no-edit"
     bc = "!f() { git fetch origin $(git default-branch):$(git default-branch) && git checkout -b \"$1\" $(git default-branch); }; f"
-    po = "!git push -u origin $(git branch-name)"
+    pm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge $(git default-branch) --no-edit"
+    bc = "!git checkout $(git default-branch) && git pull && git checkout -b"
 
+    po = "!git push -u origin $(git branch-name)"
     squash-into-branch = "!f() { mc=$(git merge-base $(git branch-name) $1); git reset --soft $mc; git commit; }; f"
     squashm = "!git squash-into-branch $(git default-branch)"
 
@@ -110,3 +112,5 @@
 [uploadpack]
 	allowfilter = true
 	allowAnySHA1InWant = true
+[lfs]
+	sshtransfer = never
