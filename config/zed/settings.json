@@ -1,0 +1,36 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "format_on_save": "off",
+  "vim": {
+    "toggle_relative_line_numbers": false
+  },
+  "minimap": {
+    "show": "never"
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000
+    }
+  },
+  "agent_buffer_font_size": 17.0,
+  "base_keymap": "VSCode",
+  "vim_mode": true,
+  "ui_font_size": 17.0,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "One Dark",
+  },
+  "active_pane_modifiers": {
+    "border_size": 1.0,
+    "inactive_opacity": 0.8,
+  },
+}
