@@ -14,6 +14,7 @@ __pycache__/
 tags
 scratch/
 
-# claude personal commands
+# claude
 .claude/commands/me
 .claude/skills/me
+.claude/settings.local.json

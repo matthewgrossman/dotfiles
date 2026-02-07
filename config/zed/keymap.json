@@ -6,30 +6,58 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
+  // Null out ctrl-hjkl in contexts that would otherwise intercept them
+  // {
+  //   "context": "Editor && vim_mode == normal",
+  //   "bindings": {
+  //     "ctrl-h": null,
+  //     "ctrl-j": null,
+  //     "ctrl-k": null,
+  //     "ctrl-l": null,
+  //   },
+  // },
+  // {
+  //   "context": "Terminal",
+  //   "bindings": {
+  //     "ctrl-h": null,
+  //     "ctrl-j": null,
+  //     "ctrl-k": null,
+  //     "ctrl-l": null,
+  //   },
+  // },
   {
-    "context": "Workspace",
+    "context": "Editor && vim_mode == normal",
     "bindings": {
-      // "shift shift": "file_finder::Toggle"
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown",
+      // H/L to beginning/end of line (like ^ and $)
+      "shift-h": "vim::FirstNonWhitespace",
+      "shift-l": "vim::EndOfLine",
+      // mm to match pair (like %)
+      "m m": ["vim::Matching", { "match_quotes": true }],
+      // Q to replay macro q
+      "shift-q": ["vim::PushReplayRegister", { "register": "q" }],
+      // space-c/C to copy file path
+      "space c": "workspace::CopyPath",
+      "space shift-c": "workspace::CopyRelativePath",
     },
   },
   {
     "context": "Editor && vim_mode == insert",
     "bindings": {
-      // "j k": "vim::NormalBefore"
+      // Emacs-style insert mode navigation
+      "ctrl-e": ["editor::MoveToEndOfLine", { "stop_at_soft_wraps": false }],
+      "ctrl-a": ["editor::MoveToBeginningOfLine", { "stop_at_soft_wraps": false, "stop_at_indent": true }],
+      "ctrl-b": "editor::MoveLeft",
+      "ctrl-f": "editor::MoveRight",
+      "ctrl-d": "editor::Delete",
     },
   },
   {
-    "context": "Dock",
+    // Global pane navigation (no context = always active)
     "bindings": {
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
-      // .. or other keybindings
     },
   },
 ]
