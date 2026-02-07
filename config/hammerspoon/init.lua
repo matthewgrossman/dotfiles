@@ -1,6 +1,4 @@
 Helpers = require('helpers')
-hs.loadSpoon('SpoonInstall')
-spoon.SpoonInstall:andUse('EmmyLua')
 
 -- gotta go fast
 hs.window.animationDuration = 0
