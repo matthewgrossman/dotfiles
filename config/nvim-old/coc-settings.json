@@ -1,4 +1,0 @@
-{
-    "diagnostic.enable": false,
-    "pyls.plugins.pycodestyle.enabled": false,
-}
