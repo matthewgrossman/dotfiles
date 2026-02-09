@@ -7,6 +7,25 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-opus-4.5"
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "agent_servers": {
+    "github-copilot": {
+      "type": "registry"
+    },
+    "opencode": {
+      "type": "registry"
+    }
+  },
+  "edit_predictions": {
+    "provider": "copilot"
+  },
   "format_on_save": "off",
   "vim": {
     "toggle_relative_line_numbers": false
@@ -19,7 +38,7 @@
       "milliseconds": 1000
     }
   },
-  "agent_buffer_font_size": 17.0,
+  "agent_buffer_font_size": 16.0,
   "base_keymap": "VSCode",
   "vim_mode": true,
   "ui_font_size": 17.0,

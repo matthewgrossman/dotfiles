@@ -31,6 +31,8 @@
       // H/L to beginning/end of line (like ^ and $)
       "shift-h": "vim::FirstNonWhitespace",
       "shift-l": "vim::EndOfLine",
+      // Incremental selection (like nvim-treesitter)
+      "enter": "editor::SelectLargerSyntaxNode",
       // mm to match pair (like %)
       "m m": ["vim::Matching", { "match_quotes": true }],
       // Q to replay macro q
@@ -38,6 +40,40 @@
       // space-c/C to copy file path
       "space c": "workspace::CopyPath",
       "space shift-c": "workspace::CopyRelativePath",
+      // mini.surround-style keybindings (using SendKeystrokes to map to existing ys/ds/cs)
+      "s a": ["workspace::SendKeystrokes", "y s"], // sa{motion}{char} to add surrounding
+      "s d": ["workspace::SendKeystrokes", "d s"], // sd{char} to delete surrounding
+      "s r": ["workspace::SendKeystrokes", "c s"], // sr{old}{new} to replace surrounding
+      // Format buffer
+      "g f": "editor::Format",
+      // Diagnostics list
+      "space d": "diagnostics::Deploy",
+      // Outline/symbol panel toggle (like aerial <leader>t)
+      "space t": "outline::Toggle",
+      // AI assistant toggle (like codecompanion <leader>a)
+      "space a": "agent::ToggleFocus",
+      // Project search (like <leader>sg)
+      "space s g": "pane::DeploySearch",
+      // File explorer - reveal current file (like mini.files -)
+      "-": "pane::RevealInProjectPanel",
+      // Paste from yank register (like X -> "0p)
+      "shift-x": ["workspace::SendKeystrokes", "\" 0 p"],
+      // Git keybindings
+      "space g g": "git_panel::ToggleFocus", // like :Git
+      "space g b": "git::Blame", // like :Git blame
+      "space g h": "editor::OpenPermalinkToLine", // like :GBrowse - opens in browser
+      "space g y": "editor::CopyPermalinkToLine", // copy permalink to clipboard
+      "space g d": "editor::ToggleSelectedDiffHunks", // toggle inline diff
+    },
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      // mini.surround-style: sa{char} in visual mode to add surrounding
+      "s a": "vim::PushAddSurrounds",
+      // Incremental selection (like nvim-treesitter)
+      "enter": "editor::SelectLargerSyntaxNode",
+      "shift-enter": "editor::SelectSmallerSyntaxNode",
     },
   },
   {
@@ -45,19 +81,32 @@
     "bindings": {
       // Emacs-style insert mode navigation
       "ctrl-e": ["editor::MoveToEndOfLine", { "stop_at_soft_wraps": false }],
-      "ctrl-a": ["editor::MoveToBeginningOfLine", { "stop_at_soft_wraps": false, "stop_at_indent": true }],
+      "ctrl-a": [
+        "editor::MoveToBeginningOfLine",
+        { "stop_at_soft_wraps": false, "stop_at_indent": true },
+      ],
       "ctrl-b": "editor::MoveLeft",
       "ctrl-f": "editor::MoveRight",
       "ctrl-d": "editor::Delete",
     },
   },
   {
-    // Global pane navigation (no context = always active)
+    // Global bindings (no context = always active)
     "bindings": {
+      // Pane navigation
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
+      // Zoom pane
+      "ctrl-z": "workspace::ToggleZoom",
+    },
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-tab": "pane::ActivateNextItem",
+      "ctrl-shift-tab": "pane::ActivatePreviousItem",
     },
   },
 ]
