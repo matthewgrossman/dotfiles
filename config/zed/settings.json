@@ -10,33 +10,38 @@
   "agent": {
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-opus-4.5"
+      "model": "claude-opus-4.5",
     },
     "favorite_models": [],
-    "model_parameters": []
+    "model_parameters": [],
   },
   "agent_servers": {
     "github-copilot": {
-      "type": "registry"
+      "type": "registry",
     },
     "opencode": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
+    "Amp": {
+      "type": "custom",
+      "command": "npx",
+      "args": ["-y", "amp-acp"],
+    },
   },
   "edit_predictions": {
-    "provider": "copilot"
+    "provider": "copilot",
   },
   "format_on_save": "off",
   "vim": {
-    "toggle_relative_line_numbers": false
+    "toggle_relative_line_numbers": false,
   },
   "minimap": {
-    "show": "never"
+    "show": "never",
   },
   "autosave": {
     "after_delay": {
-      "milliseconds": 1000
-    }
+      "milliseconds": 1000,
+    },
   },
   "agent_buffer_font_size": 16.0,
   "base_keymap": "VSCode",
