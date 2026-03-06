@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "git": {
+    "path_style": "file_path_first"
+  },
   "agent": {
     "default_model": {
       "provider": "copilot_chat",
@@ -28,6 +31,8 @@
       "args": ["-y", "amp-acp"],
     },
   },
+  "colorize_brackets": true,
+  "diff_view_style":"split",
   "edit_predictions": {
     "provider": "copilot",
   },
@@ -57,4 +62,7 @@
     "border_size": 1.0,
     "inactive_opacity": 0.8,
   },
+  "terminal": {
+    "font_family": "Hack Nerd Font"
+  }
 }

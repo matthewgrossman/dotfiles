@@ -64,6 +64,13 @@
       "space g h": "editor::OpenPermalinkToLine", // like :GBrowse - opens in browser
       "space g y": "editor::CopyPermalinkToLine", // copy permalink to clipboard
       "space g d": "editor::ToggleSelectedDiffHunks", // toggle inline diff
+      // text objects
+      // "y i l": ["workspace::SendKeystrokes", "^ y g _"],
+      // "d i l": ["workspace::SendKeystrokes", "^ d g _"],
+      // "d a l": ["workspace::SendKeystrokes", "0 d $"],
+      "c i l": ["workspace::SendKeystrokes", "^ c g _"],
+      "c a l": ["workspace::SendKeystrokes", "0 c $"],
+      "Y": ["workspace::SendKeystrokes", "y $"]
     },
   },
   {
@@ -99,7 +106,9 @@
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
       // Zoom pane
-      "ctrl-z": "workspace::ToggleZoom",
+      "ctrl-;": "workspace::ToggleZoom",
+      "cmd-[": "pane::SwapItemLeft",
+      "cmd-]": "pane::SwapItemRight"
     },
   },
   {
