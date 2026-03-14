@@ -68,8 +68,8 @@
       // "y i l": ["workspace::SendKeystrokes", "^ y g _"],
       // "d i l": ["workspace::SendKeystrokes", "^ d g _"],
       // "d a l": ["workspace::SendKeystrokes", "0 d $"],
-      "c i l": ["workspace::SendKeystrokes", "^ c g _"],
-      "c a l": ["workspace::SendKeystrokes", "0 c $"],
+      // "c i l": ["workspace::SendKeystrokes", "^ c g _"],
+      // "c a l": ["workspace::SendKeystrokes", "0 c $"],
       "Y": ["workspace::SendKeystrokes", "y $"]
     },
   },
@@ -118,4 +118,10 @@
       "ctrl-shift-tab": "pane::ActivatePreviousItem",
     },
   },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "shift-enter": ["terminal::SendText", "\u0016\n"]
+    }
+  }
 ]
