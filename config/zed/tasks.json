@@ -51,4 +51,11 @@
     // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
     // "tags": []
   },
+  // https://github.com/zed-industries/zed/issues/20675#issuecomment-3039067804
+  {
+    "label": "Oil",
+    "command": "exec nvim --cmd \"set noswapfile\" -c \"lua require('oil').open_float('$ZED_DIRNAME')\" -c \"autocmd FileType oil nnoremap <buffer><silent> q :qa!<CR>\"",
+    "use_new_terminal": true,
+    "hide": "always",
+  },
 ]

@@ -64,5 +64,8 @@
   },
   "terminal": {
     "font_family": "Hack Nerd Font"
+  },
+  "git_panel": {
+    "collapse_untracked_diff": true
   }
 }

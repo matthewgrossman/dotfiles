@@ -64,13 +64,14 @@
       "space g h": "editor::OpenPermalinkToLine", // like :GBrowse - opens in browser
       "space g y": "editor::CopyPermalinkToLine", // copy permalink to clipboard
       "space g d": "editor::ToggleSelectedDiffHunks", // toggle inline diff
+      "space g p": "git::Push", // git push
       // text objects
       // "y i l": ["workspace::SendKeystrokes", "^ y g _"],
       // "d i l": ["workspace::SendKeystrokes", "^ d g _"],
       // "d a l": ["workspace::SendKeystrokes", "0 d $"],
       // "c i l": ["workspace::SendKeystrokes", "^ c g _"],
       // "c a l": ["workspace::SendKeystrokes", "0 c $"],
-      "Y": ["workspace::SendKeystrokes", "y $"]
+      "Y": ["workspace::SendKeystrokes", "y $"],
     },
   },
   {
@@ -108,7 +109,7 @@
       // Zoom pane
       "ctrl-;": "workspace::ToggleZoom",
       "cmd-[": "pane::SwapItemLeft",
-      "cmd-]": "pane::SwapItemRight"
+      "cmd-]": "pane::SwapItemRight",
     },
   },
   {
@@ -116,12 +117,37 @@
     "bindings": {
       "ctrl-tab": "pane::ActivateNextItem",
       "ctrl-shift-tab": "pane::ActivatePreviousItem",
+      // cmd-N to switch tabs (instead of default pane switching)
+      "cmd-1": ["pane::ActivateItem", 0],
+      "cmd-2": ["pane::ActivateItem", 1],
+      "cmd-3": ["pane::ActivateItem", 2],
+      "cmd-4": ["pane::ActivateItem", 3],
+      "cmd-5": ["pane::ActivateItem", 4],
+      "cmd-6": ["pane::ActivateItem", 5],
+      "cmd-7": ["pane::ActivateItem", 6],
+      "cmd-8": ["pane::ActivateItem", 7],
+      "cmd-9": "pane::ActivateLastItem",
     },
   },
   {
     "context": "Terminal",
     "bindings": {
-      "shift-enter": ["terminal::SendText", "\u0016\n"]
-    }
-  }
+      "shift-enter": ["terminal::SendText", "\u0016\n"],
+      "ctrl-/": "terminal::ToggleViMode",
+    },
+  },
+  {
+    "context": "Terminal && vi_mode",
+    "bindings": {
+      // Exit vi mode and scroll to bottom
+      "ctrl-c": ["workspace::SendKeystrokes", "shift-g ctrl-/"],
+    },
+  },
+  {
+    "context": "FileFinder",
+    "bindings": {
+      "ctrl-v": "pane::SplitRight",
+      "ctrl-s": "pane::SplitDown",
+    },
+  },
 ]
