@@ -93,7 +93,17 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_DIR_COMMAND=""
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
-# export FZF_CTRL_T_OPTS='--bind ctrl-d:reload(eval "FZF_CTRL_T_DIR_COMMAND")'
+# ctrl-y in history search copies command to clipboard
+# awk removes leading tabs from continuation lines (fzf adds them for display)
+export FZF_CTRL_R_OPTS="--bind 'ctrl-y:execute-silent(echo -n {2..} | awk \"NR>1{sub(/^\t/,\\\"\\\")}1\" | pbcopy)+abort'"
+
+# Wrap fzf-history-widget to fix bracketed paste after fzf exits
+fzf-history-widget-wrapper() {
+  fzf-history-widget
+  printf '\e[?2004h'
+}
+zle -N fzf-history-widget-wrapper
+bindkey -M emacs '^R' fzf-history-widget-wrapper
 
 export DISABLE_AUTOUPDATER=1
 
