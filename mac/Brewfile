@@ -9,6 +9,7 @@ cask 'zoom'
 
 # essentials
 cask 'alfred'
+cask 'atuin'
 cask 'betterdisplay'
 cask 'coreutils'
 cask 'zed'

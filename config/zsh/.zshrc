@@ -57,13 +57,14 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 export HISTFILE="$ZDOTDIR/zsh_history"
 
-# Backup history daily
-if [[ ! -f "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" ]]; then
-    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d)" 2>/dev/null
+# Backup history hourly, keep last 3 days
+if [[ ! -f "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d%H)" ]]; then
+    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d%H)" 2>/dev/null
+    find "$ZDOTDIR" -name "zsh_history.backup.*" -mtime +3 -delete 2>/dev/null &!
 fi
 
-# Safe history sharing with file locking
-setopt SHARE_HISTORY
+# Safe history with append-only writes (crash-safe, no file rewrites)
+setopt INC_APPEND_HISTORY
 setopt HIST_FCNTL_LOCK
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
@@ -93,6 +94,8 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_DIR_COMMAND=""
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
+# eval "$(atuin init zsh --disable-ctrl-r)"  # Use atuin for history recording only
+# source "$HOME/dotfiles/config/zsh/fzf-atuin.zsh"  # Custom fzf+atuin ctrl-r
 # ctrl-y in history search copies command to clipboard
 # awk removes leading tabs from continuation lines (fzf adds them for display)
 export FZF_CTRL_R_OPTS="--bind 'ctrl-y:execute-silent(echo -n {2..} | awk \"NR>1{sub(/^\t/,\\\"\\\")}1\" | pbcopy)+abort'"
@@ -122,3 +125,6 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# opencode
+export PATH=/Users/mgrossman/.opencode/bin:$PATH

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": false,
+  "plugin": ["opencode-openai-residency"],
+  "provider": {
+      "openai": {
+        "options": {
+          "enforce_residency": "us",
+        },
+      },
+    },
+}
