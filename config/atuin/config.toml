@@ -1,0 +1,11 @@
+# Atuin configuration
+# See: https://docs.atuin.sh/configuration/config/
+
+# Show more lines in preview for multiline commands
+max_preview_height = 10
+
+# Execute command on enter (tab to edit)
+enter_accept = true
+
+[sync]
+records = true

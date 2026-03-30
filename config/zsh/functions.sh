@@ -17,9 +17,9 @@ fo() {
 # checkout recent branches
 co() {
     local branch branches
-    branches=$(git branch --sort=committerdate | awk '/^[^*]/ {print $1}')
+    branches=$(git branch --sort=committerdate | awk '!/^\*/ { if (/^\+/) print "+ " $2; else print $1 }')
     branch=$(fzf --tac --no-sort <<< "$branches")
-    [ -n "$branch" ] && git checkout "$branch"
+    [ -n "$branch" ] && git checkout "${branch#+ }"
 }
 
 # attach to abduco session
@@ -291,3 +291,9 @@ alias vim='nvim'
 alias k='kubectl'
 alias icat="kitty +kitten icat"
 alias rn='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+
+# Use zed as editor when inside Zed terminal
+if [[ "$ZED_TERM" == "true" ]]; then
+  export EDITOR="zed --wait"
+  export VISUAL="zed --wait"
+fi

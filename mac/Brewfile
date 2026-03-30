@@ -9,7 +9,9 @@ cask 'zoom'
 
 # essentials
 cask 'alfred'
+cask 'atuin'
 cask 'betterdisplay'
+cask 'coreutils'
 cask 'zed'
 cask 'firefox'
 cask 'firefox@developer-edition'

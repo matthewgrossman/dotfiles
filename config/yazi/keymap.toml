@@ -1,0 +1,5 @@
+[mgr]
+prepend_keymap = [
+  # o: open in editor without waiting (non-blocking)
+  { on = "o", run = 'shell -- zed "$@"', desc = "Open in editor (non-blocking)" },
+]

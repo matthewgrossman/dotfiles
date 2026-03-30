@@ -8,7 +8,7 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "git": {
-    "path_style": "file_path_first"
+    "path_style": "file_path_first",
   },
   "agent": {
     "default_model": {
@@ -32,7 +32,7 @@
     },
   },
   "colorize_brackets": true,
-  "diff_view_style":"split",
+  "diff_view_style": "split",
   "edit_predictions": {
     "provider": "copilot",
   },
@@ -63,6 +63,22 @@
     "inactive_opacity": 0.8,
   },
   "terminal": {
-    "font_family": "Hack Nerd Font"
-  }
+    "font_family": "Hack Nerd Font",
+  },
+  "git_panel": {
+    "collapse_untracked_diff": true,
+  },
+  "languages": {
+    "Python": {
+      "language_servers": ["ty", "ruff"],
+    },
+  },
+  "lsp": {
+    "ty": {
+      "binary": {
+        "path": "~/.local/bin/ty",
+        "arguments": ["server"],
+      },
+    },
+  },
 }
