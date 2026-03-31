@@ -73,7 +73,8 @@ vim.opt.scrolloff = 10
 -- vim.opt.softtabstop = 2
 
 vim.opt.fileformat = 'unix'
-vim.opt.diffopt:append({ 'algorithm:patience', 'indent-heuristic', 'linematch:60' })
+-- 'indent-heuristic' removed: now a 0.12 default. 'inline:char' also a 0.12 default.
+vim.opt.diffopt:append({ 'algorithm:patience', 'linematch:60' })
 vim.opt.termguicolors = true
 
 -- }}}
@@ -174,7 +175,7 @@ vim.cmd.abbreviate('iii', 'breakpoint()')
 local allKeymaps = { 'n', 'i', 'v', 'x', 's', 'o', 'c', 't' }
 vim.keymap.set(allKeymaps, '<F16>', '<C-c>', { remap = true, silent = true })
 
-function _G.set_terminal_keymaps()
+local function set_terminal_keymaps()
   local opts = { buffer = 0 }
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
   vim.keymap.set('n', '<C-e>', ':startinsert<CR><C-e>', opts)
@@ -207,7 +208,12 @@ function _G.set_terminal_keymaps()
   vim.wo.foldmethod = 'manual'
 end
 
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+vim.api.nvim_create_autocmd('TermOpen', {
+  desc = 'Set terminal keymaps',
+  pattern = 'term://*',
+  group = vim.api.nvim_create_augroup('terminal-keymaps', { clear = true }),
+  callback = set_terminal_keymaps,
+})
 
 function _G.file_contains(file_path, search_string)
   local f = io.open(file_path, 'r') -- Open the file in read mode
@@ -774,8 +780,9 @@ require('lazy').setup({
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', version = '^1.0.0' },
-      -- Provides lspconfig-to-mason name translation (e.g., lua_ls → lua-language-server)
-      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
+      -- Translates between lspconfig server names and mason package names (e.g. helm_ls → helm-language-server).
+      -- Works passively via after/lsp/ files on the runtimepath; does not need an explicit require().
+      { 'williamboman/mason-lspconfig.nvim' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -789,7 +796,7 @@ require('lazy').setup({
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
           local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            vim.keymap.set('n', keys, func, { buf = event.buf, desc = 'LSP: ' .. desc })
           end
 
           -- The following two autocommands are used to highlight references of the
@@ -798,12 +805,15 @@ require('lazy').setup({
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+          -- TODO(nvim12): consider adding `if not client then return end` guard here;
+          -- 0.12's more active vim.lsp.enable() (detaches non-applicable clients) may
+          -- surface a race where client is nil at this point.
 
           -- these two lines disable syntax highlighting from the LSP server, if it exists
-          client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights
+          client.server_capabilities.semanticTokensProvider = nil -- disable semantic highlights (prefer treesitter)
           -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -831,7 +841,7 @@ require('lazy').setup({
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, '[T]oggle Inlay [H]ints')
