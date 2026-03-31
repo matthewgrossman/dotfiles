@@ -1,12 +1,19 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "lsp": false,
+  "mcp": {
+    "linear": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp"
+    }
+  },
   "plugin": ["opencode-openai-residency"],
   "provider": {
-      "openai": {
-        "options": {
-          "enforce_residency": "us",
-        },
-      },
-    },
+    "openai": {
+      "options": {
+        "enforce_residency": "us"
+      }
+    }
+  }
 }

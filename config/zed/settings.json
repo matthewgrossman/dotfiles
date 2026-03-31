@@ -10,6 +10,7 @@
   "git": {
     "path_style": "file_path_first",
   },
+  "confirm_quit": true,
   "agent": {
     "default_model": {
       "provider": "copilot_chat",
