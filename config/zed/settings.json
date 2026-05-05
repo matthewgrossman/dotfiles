@@ -7,11 +7,21 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "project_panel": {
+    "dock": "right"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
   "git": {
     "path_style": "file_path_first",
   },
   "confirm_quit": true,
   "agent": {
+    "dock": "left",
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-opus-4.5",
@@ -20,6 +30,9 @@
     "model_parameters": [],
   },
   "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
     "github-copilot": {
       "type": "registry",
     },
@@ -67,6 +80,7 @@
     "font_family": "Hack Nerd Font",
   },
   "git_panel": {
+    "dock": "right",
     "collapse_untracked_diff": true,
   },
   "languages": {

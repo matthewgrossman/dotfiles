@@ -19,6 +19,7 @@
     d = diff --no-ext-diff
     s = status
     m = merge
+    ri = "!git rebase -i $(git merge-base $(git default-branch) HEAD)"
     l = log
     ll = log --pretty=format:'%C(yellow)%h%Creset %C(blue)%an%Creset: %s' -10 --reverse
     ld = log --stat --patch --full-diff
@@ -41,7 +42,7 @@
     squashm = "!git squash-into-branch $(git default-branch)"
 
     # provider specific
-    pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr \"$@\"; else git github-pr \"$@\"; fi; }; f"
+    pr = "!f() { git po && if git remote get-url origin | grep -q 'gitlab'; then git gitlab-mr \"$@\"; else git github-pr \"$@\"; fi; }; f"
     mr = pr
     github-pr = "!gh pr create --base $(git parent) --fill --web"
     gitlab-mr = "!f() { target=${1:-$(git parent)}; echo \"$target\"; glab mr create --target-branch \"$target\" --fill --web; }; f"

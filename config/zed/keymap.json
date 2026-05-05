@@ -38,8 +38,8 @@
       // Q to replay macro q
       "shift-q": ["vim::PushReplayRegister", { "register": "q" }],
       // space-c/C to copy file path
-      "space c": "workspace::CopyPath",
-      "space shift-c": "workspace::CopyRelativePath",
+      "space c": "workspace::CopyRelativePath",
+      "space shift-c": "workspace::CopyPath",
       // mini.surround-style keybindings (using SendKeystrokes to map to existing ys/ds/cs)
       "s a": ["workspace::SendKeystrokes", "y s"], // sa{motion}{char} to add surrounding
       "s d": ["workspace::SendKeystrokes", "d s"], // sd{char} to delete surrounding
@@ -72,6 +72,7 @@
       // "c i l": ["workspace::SendKeystrokes", "^ c g _"],
       // "c a l": ["workspace::SendKeystrokes", "0 c $"],
       "Y": ["workspace::SendKeystrokes", "y $"],
+      "g y": "editor::CopyFileLocation",
     },
   },
   {
@@ -82,6 +83,13 @@
       // Incremental selection (like nvim-treesitter)
       "enter": "editor::SelectLargerSyntaxNode",
       "shift-enter": "editor::SelectSmallerSyntaxNode",
+      "g y": [
+        "action::Sequence",
+        [
+          "editor::CopyFileLocation",
+          "editor::Cancel"
+        ]
+      ],
     },
   },
   {
@@ -110,6 +118,7 @@
       "ctrl-;": "workspace::ToggleZoom",
       "cmd-[": "pane::SwapItemLeft",
       "cmd-]": "pane::SwapItemRight",
+      "cmd-shift-t": "git::Worktree",
     },
   },
   {

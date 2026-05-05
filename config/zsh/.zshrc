@@ -57,13 +57,15 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 export HISTFILE="$ZDOTDIR/zsh_history"
 
-# Backup history hourly, keep last 3 days
-if [[ ! -f "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d%H)" ]]; then
-    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d%H)" 2>/dev/null
+# Backup history every 10 minutes, keep last 3 days
+backup_stamp="$(date +%Y%m%d%H)$((10#$(date +%M) / 10))"
+if [[ ! -f "$ZDOTDIR/zsh_history.backup.$backup_stamp" ]]; then
+    cp "$ZDOTDIR/zsh_history" "$ZDOTDIR/zsh_history.backup.$backup_stamp" 2>/dev/null
     find "$ZDOTDIR" -name "zsh_history.backup.*" -mtime +3 -delete 2>/dev/null &!
 fi
 
-# Safe history with append-only writes (crash-safe, no file rewrites)
+# Keep history append-only across concurrent shells.
+setopt APPEND_HISTORY
 setopt INC_APPEND_HISTORY
 setopt HIST_FCNTL_LOCK
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -72,8 +74,36 @@ setopt HIST_FIND_NO_DUPS
 
 setopt autocd extendedglob
 setopt CLOBBER
-alias hist="fc -RI" # update current shell w/ history from file
-alias histfix="fc -W" # save current shell's history to file
+# Import history from a file into this shell without rewriting HISTFILE.
+histload() {
+  local source_file="${1:-$HISTFILE}"
+  fc -RI "$source_file"
+}
+
+# Dump this shell's in-memory history to a separate file by default.
+histdump() {
+  local target="${1:-$ZDOTDIR/zsh_history.dump.$(date +%Y%m%d%H%M%S)}"
+  fc -W "$target"
+  print -r -- "$target"
+}
+
+# Replace the main history file with a known-good backup, keeping a rollback copy.
+histrestoremain() {
+  local source_file="$1"
+  if [[ -z "$source_file" ]]; then
+    print -u2 -- "usage: histrestoremain <history-file>"
+    return 1
+  fi
+
+  local rollback="$ZDOTDIR/zsh_history.backup.$(date +%Y%m%d%H%M%S).pre_restore"
+  histdump >/dev/null || return 1
+  cp "$HISTFILE" "$rollback" || return 1
+  cp "$source_file" "$HISTFILE" || return 1
+  fc -p "$HISTFILE" "$HISTSIZE" "$SAVEHIST"
+  fc -R "$HISTFILE"
+  print -r -- "restored $HISTFILE from $source_file"
+  print -r -- "rollback saved to $rollback"
+}
 bindkey -e
 
 source <(fzf --zsh)
@@ -114,6 +144,7 @@ export DISABLE_AUTOUPDATER=1
 if [ -f ~/.workrc  ]; then
     source ~/.workrc
 fi
+[[ -f ~/dev/workfiles/workfiles.sh ]] && source ~/dev/workfiles/workfiles.sh
 source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 # zprof
