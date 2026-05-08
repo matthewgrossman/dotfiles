@@ -118,7 +118,7 @@
       "ctrl-;": "workspace::ToggleZoom",
       "cmd-[": "pane::SwapItemLeft",
       "cmd-]": "pane::SwapItemRight",
-      "cmd-shift-t": "git::Worktree",
+      "cmd-shift-g": "git::Worktree",
     },
   },
   {

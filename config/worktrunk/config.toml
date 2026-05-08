@@ -1,0 +1,7 @@
+worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}"
+
+[pre-start]
+uv-sync = "if [ -f pyproject.toml ]; then uv sync; fi"
+
+[aliases]
+new = "wt switch --create --no-cd {{ args }}"

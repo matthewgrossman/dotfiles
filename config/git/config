@@ -50,8 +50,6 @@
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
     comment = "!gh pr comment -b"
 
-    wtc = "!f() { git worktree add \"$(pwd)--$1\" -b $1; }; f"
-
     # glab
     mrid = "!glab mr list --source-branch=\"$(git branch --show-current)\" -F json | jq '.[0].iid'"
 
@@ -89,13 +87,13 @@
 	insteadOf = "https://github.com/"
 
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = delta
 
 [delta]
     navigate = true    # use n and N to move between diff sections
 
 [diff]
-    colorMoved = default
+    colorMoved = no
 	submodule = log
 	algorithm = histogram
 [status]
