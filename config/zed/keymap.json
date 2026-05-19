@@ -141,7 +141,9 @@
   {
     "context": "Terminal",
     "bindings": {
-      "shift-enter": ["terminal::SendText", "\u0016\n"],
+      // Send a distinct escape sequence so the shell prompt can treat
+      // shift-enter as "insert newline" without looking like paste to TUIs.
+      "shift-enter": ["terminal::SendText", "\u001b[13;2u"],
       "ctrl-/": "terminal::ToggleViMode",
     },
   },

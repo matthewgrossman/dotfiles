@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "file_finder": {
+    "modal_max_width": "full"
+  },
   "project_panel": {
     "dock": "right",
   },
@@ -18,6 +21,7 @@
   },
   "git": {
     "path_style": "file_path_first",
+    "worktree_directory": "../worktrees",
   },
   "confirm_quit": true,
   "agent": {
