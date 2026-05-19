@@ -1,0 +1,40 @@
+# Ghostty config based on config/wezterm/wezterm.lua.
+# This only carries over settings that have a direct, stable equivalent.
+
+font-family = Fira Code
+font-family-italic = JetBrains Mono
+font-size = 17
+
+# Approximate WezTerm's "RESIZE" look on macOS: keep the frame, hide the titlebar.
+macos-titlebar-style = hidden
+
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = false
+
+# Approximate OneDark without depending on a built-in theme name.
+background = 282c34
+foreground = abb2bf
+
+# Match Terminal.app-style word navigation.
+keybind = alt+left=esc:b
+keybind = alt+right=esc:f
+
+# Keep the WezTerm tab shortcuts explicit.
+keybind = super+t=new_tab
+keybind = super+[=previous_tab
+keybind = super+]=next_tab
+keybind = super+1=goto_tab:1
+keybind = super+2=goto_tab:2
+keybind = super+3=goto_tab:3
+keybind = super+4=goto_tab:4
+keybind = super+5=goto_tab:5
+keybind = super+6=goto_tab:6
+keybind = super+7=goto_tab:7
+keybind = super+8=goto_tab:8
+
+# Remove defaults you explicitly disabled in WezTerm.
+keybind = ctrl+shift+t=unbind
+keybind = ctrl+shift+r=unbind
+keybind = ctrl+shift+f=unbind
+keybind = ctrl+-=unbind
