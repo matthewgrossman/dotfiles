@@ -55,6 +55,9 @@ defaults -currentHost write -g com.apple.trackpad.threeFingerDragGesture -bool t
 defaults -currentHost write -g com.apple.trackpad.threeFingerHorizSwipeGesture -int 0
 defaults -currentHost write -g com.apple.trackpad.threeFingerVertSwipeGesture -int 0
 
+# keep the Mac awake on AC power
+sudo pmset -c sleep 0
+
 killall Finder
 killall Dock
 killall SystemUIServer
