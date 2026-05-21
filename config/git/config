@@ -13,6 +13,7 @@
     cm = "!git checkout $(git default-branch)"
     c = commit
     ca = commit --all
+    amend-signoff = commit --amend --no-edit --signoff
     a = add
     rv = revert
     rs = reset
@@ -75,6 +76,8 @@
     default = current
 [init]
 	defaultBranch = main
+[format]
+    signOff = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -113,3 +116,11 @@
 	allowAnySHA1InWant = true
 [lfs]
 	sshtransfer = never
+
+# Use work email for repos in NVIDIA
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA-NeMo/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA-dev/**"]
+    path = ~/dev/workfiles/gitconfig

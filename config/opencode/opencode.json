@@ -7,13 +7,5 @@
       "type": "remote",
       "url": "https://mcp.linear.app/mcp"
     }
-  },
-  "plugin": ["opencode-openai-residency"],
-  "provider": {
-    "openai": {
-      "options": {
-        "enforce_residency": "us"
-      }
-    }
   }
 }
