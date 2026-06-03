@@ -23,9 +23,12 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.diffopt:append({ 'algorithm:patience' })
+vim.opt.winbar = ' %f'
+vim.opt.laststatus = 3
 
 -- [[ Keymaps ]]
 
@@ -34,7 +37,8 @@ vim.keymap.set('n', '<C-[>', function()
   vim.cmd('nohlsearch')
 end)
 
--- Diagnostics to quickfix
+-- Diagnostics
+vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
 vim.keymap.set('n', '<leader>d', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
 
 -- Split navigation
@@ -233,6 +237,8 @@ use('https://github.com/echasnovski/mini.nvim', function()
   require('mini.diff').setup()
 
   require('mini.statusline').setup()
+
+  require('mini.tabline').setup()
 end)
 
 -- Install all plugins (parallel), then run configs
