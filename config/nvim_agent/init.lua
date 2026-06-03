@@ -40,6 +40,9 @@ end)
 -- Diagnostics
 vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
 vim.keymap.set('n', '<leader>d', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
+vim.keymap.set('n', '<leader>td', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = 'Toggle diagnostics' })
 
 -- Split navigation
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
@@ -60,6 +63,7 @@ vim.keymap.set('n', 'Q', '@q')
 vim.keymap.set('i', '<C-a>', '<c-o>^')
 vim.keymap.set('i', '<C-b>', '<Left>')
 vim.keymap.set('i', '<C-d>', '<Del>')
+vim.keymap.set('i', '<C-s-t>', '<c-d>')
 vim.keymap.set('i', '<C-e>', '<c-o>$')
 vim.keymap.set('i', '<C-f>', '<Right>')
 vim.keymap.set('c', '<C-a>', '<Home>')
@@ -114,7 +118,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
   group = vim.api.nvim_create_augroup('terminal-keymaps', { clear = true }),
   callback = function(ev)
     local opts = { buffer = ev.buf }
-    vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+    vim.keymap.set('t', '<M-[>', [[<C-\><C-n>]], opts)
     vim.keymap.set('n', '<C-e>', ':startinsert<CR><C-e>', opts)
     vim.keymap.set('n', '<C-a>', ':startinsert<CR><C-a>', opts)
     vim.keymap.set('n', '<C-c>', ':startinsert<CR>', opts)
@@ -145,6 +149,8 @@ local function use(spec, config)
 end
 
 use('https://github.com/tpope/vim-sleuth')
+use('https://github.com/tpope/vim-repeat')
+use('https://github.com/tpope/vim-unimpaired')
 
 use('https://github.com/arborist-ts/arborist.nvim', function()
   require('arborist').setup({ prefer_wasm = false })
@@ -174,6 +180,23 @@ end)
 -- lspconfig provides lsp/*.lua configs; custom overrides in our lsp/ dir.
 -- Servers installed via brew: ruff, ty, lua-language-server, gopls, rust-analyzer, etc.
 use('https://github.com/neovim/nvim-lspconfig', function()
+  vim.lsp.config('ty', {
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local root = vim.fs.root(fname, { 'pyproject.toml', 'ty.toml' }) or vim.fs.root(fname, '.git')
+      if root then on_dir(root) end
+    end,
+  })
+
+  vim.lsp.config('lua_ls', {
+    settings = {
+      Lua = {
+        diagnostics = { globals = { 'vim' } },
+        workspace = { checkThirdParty = false },
+      },
+    },
+  })
+
   vim.lsp.enable({ 'ruff', 'ty', 'lua_ls', 'gopls', 'rust_analyzer' })
 end)
 
@@ -184,6 +207,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if not client then return end
 
     client.server_capabilities.semanticTokensProvider = nil
+
+    vim.keymap.set('n', 'gf', function()
+      vim.lsp.buf.code_action({
+        context = { only = { 'source.organizeImports' } },
+        apply = true,
+      })
+      vim.lsp.buf.format({ async = true })
+    end, { buffer = ev.buf, desc = 'Organize imports + format buffer' })
 
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
       vim.keymap.set('n', '<leader>th', function()
@@ -198,6 +229,8 @@ use({ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }, function()
     keymap = {
       preset = 'enter',
       ['<C-CR>'] = { 'select_and_accept' },
+      ['<C-j>'] = { 'scroll_documentation_down', 'fallback' },
+      ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
     },
     completion = {
       documentation = { auto_show = true, auto_show_delay_ms = 0 },
