@@ -1,0 +1,13 @@
+#!/bin/sh
+# Auto-append Signed-off-by trailer to every commit message.
+# Skips if the trailer is already present.
+
+COMMIT_MSG_FILE=$1
+
+NAME=$(git config user.name)
+EMAIL=$(git config user.email)
+SIGNOFF="Signed-off-by: $NAME <$EMAIL>"
+
+if ! grep -qF "$SIGNOFF" "$COMMIT_MSG_FILE"; then
+    git interpret-trailers --in-place --trailer "$SIGNOFF" "$COMMIT_MSG_FILE"
+fi

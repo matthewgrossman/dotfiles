@@ -70,14 +70,13 @@
     logallrefupdates = true
     quotePath = false
     commitGraph = true
+    hooksPath = ~/.config/git/hooks
 [pull]
     rebase = false
 [push]
     default = current
 [init]
 	defaultBranch = main
-[format]
-    signOff = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
