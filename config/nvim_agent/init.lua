@@ -124,53 +124,70 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- [[ Plugins via vim.pack ]]
-vim.pack.add({
-  'https://github.com/echasnovski/mini.nvim',
-})
+-- [[ Plugins ]]
+-- use() collects specs and deferred configs; pack_install() batches the
+-- download then runs all configs once plugins are on the runtimepath.
+local _pack_specs = {}
+local _pack_configs = {}
+local function use(spec, config)
+  -- spec can be a URL string or a table like { src = '...', version = '...' }
+  table.insert(_pack_specs, spec)
+  if config then table.insert(_pack_configs, config) end
+end
 
--- mini.pick: fuzzy finder
-require('mini.pick').setup()
-vim.keymap.set('n', '<C-p>', '<cmd>Pick files<CR>')
-vim.keymap.set('n', '<leader>sf', '<cmd>Pick files<CR>', { desc = 'Search files' })
-vim.keymap.set('n', '<leader>sg', '<cmd>Pick grep_live<CR>', { desc = 'Search grep' })
-vim.keymap.set('n', '<leader>sw', '<cmd>Pick grep pattern="<cword>"<CR>', { desc = 'Search word' })
-vim.keymap.set('n', '<leader>sh', '<cmd>Pick help<CR>', { desc = 'Search help' })
-vim.keymap.set('n', '<leader>sr', '<cmd>Pick resume<CR>', { desc = 'Search resume' })
-vim.keymap.set('n', '<leader><leader>', '<cmd>Pick buffers<CR>', { desc = 'Find buffers' })
+use('https://github.com/tpope/vim-sleuth')
 
--- mini.files: file explorer
-local miniFiles = require('mini.files')
-miniFiles.setup()
-vim.keymap.set('n', '-', function()
-  local current_file = vim.api.nvim_buf_get_name(0)
-  if vim.fn.filereadable(current_file) == 1 then
-    miniFiles.open(current_file)
-  else
-    miniFiles.open(vim.fn.fnamemodify(current_file, ':h'))
-  end
+use('https://github.com/stevearc/oil.nvim', function()
+  require('oil').setup({
+    view_options = { show_hidden = true },
+    keymaps = {
+      ['<C-h>'] = false,
+      ['<C-l>'] = false,
+      ['<C-s>'] = false,
+      ['<C-r>'] = 'actions.refresh',
+      ['<C-\\>'] = { 'actions.select', opts = { vertical = true }, desc = 'Open in vertical split' },
+      ['<C-_>'] = { 'actions.select', opts = { horizontal = true }, desc = 'Open in horizontal split' },
+    },
+    git = {
+      add = function(_) return true end,
+      mv = function(_, _) return true end,
+      rm = function(_) return true end,
+    },
+  })
+  vim.keymap.set('n', '-', '<cmd>Oil<CR>')
 end)
 
--- mini.ai: better textobjects
-require('mini.ai').setup({ n_lines = 500 })
-vim.keymap.set('x', 'il', 'g_o^')
-vim.keymap.set('o', 'il', ':normal vil<CR>')
+use('https://github.com/echasnovski/mini.nvim', function()
+  require('mini.icons').setup()
 
--- mini.surround: surround operations
-require('mini.surround').setup()
+  require('mini.pick').setup()
+  vim.keymap.set('n', '<C-p>', '<cmd>Pick files<CR>')
+  vim.keymap.set('n', '<leader>sf', '<cmd>Pick files<CR>', { desc = 'Search files' })
+  vim.keymap.set('n', '<leader>sg', '<cmd>Pick grep_live<CR>', { desc = 'Search grep' })
+  vim.keymap.set('n', '<leader>sw', '<cmd>Pick grep pattern="<cword>"<CR>', { desc = 'Search word' })
+  vim.keymap.set('n', '<leader>sh', '<cmd>Pick help<CR>', { desc = 'Search help' })
+  vim.keymap.set('n', '<leader>sr', '<cmd>Pick resume<CR>', { desc = 'Search resume' })
+  vim.keymap.set('n', '<leader><leader>', '<cmd>Pick buffers<CR>', { desc = 'Find buffers' })
 
--- mini.bufremove: clean buffer deletion
-local miniBufremove = require('mini.bufremove')
-miniBufremove.setup()
-vim.keymap.set('n', '<C-q>', miniBufremove.delete)
+  require('mini.ai').setup({ n_lines = 500 })
+  vim.keymap.set('x', 'il', 'g_o^')
+  vim.keymap.set('o', 'il', ':normal vil<CR>')
 
--- mini.diff: inline git diff
-require('mini.diff').setup()
+  require('mini.surround').setup()
 
--- mini.statusline: lightweight statusline
-require('mini.statusline').setup()
+  local miniBufremove = require('mini.bufremove')
+  miniBufremove.setup()
+  vim.keymap.set('n', '<C-q>', miniBufremove.delete)
 
--- mini.icons: icons for pick, files, statusline
-require('mini.icons').setup()
+  require('mini.diff').setup()
+
+  require('mini.statusline').setup()
+end)
+
+-- Install all plugins (parallel), then run configs
+vim.pack.add(_pack_specs)
+for _, config in ipairs(_pack_configs) do
+  config()
+end
 
 -- vim: ts=2 ss=2 sw=2 et

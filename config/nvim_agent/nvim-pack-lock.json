@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "mini.nvim": {
+      "rev": "11afe78a10570fe1d0c7ed0b6fc2b5b19098cb45",
+      "src": "https://github.com/echasnovski/mini.nvim"
+    },
+    "oil.nvim": {
+      "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "vim-sleuth": {
+      "rev": "be69bff86754b1aa5adcbb527d7fcd1635a84080",
+      "src": "https://github.com/tpope/vim-sleuth"
+    }
+  }
+}
