@@ -29,6 +29,11 @@ vim.opt.diffopt:append({ 'algorithm:patience' })
 
 -- [[ Keymaps ]]
 
+-- Clear search highlight on Esc
+vim.keymap.set('n', '<C-[>', function()
+  vim.cmd('nohlsearch')
+end)
+
 -- Diagnostics to quickfix
 vim.keymap.set('n', '<leader>d', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
 
@@ -137,6 +142,10 @@ end
 
 use('https://github.com/tpope/vim-sleuth')
 
+use('https://github.com/arborist-ts/arborist.nvim', function()
+  require('arborist').setup({ prefer_wasm = false })
+end)
+
 use('https://github.com/stevearc/oil.nvim', function()
   require('oil').setup({
     view_options = { show_hidden = true },
@@ -157,7 +166,49 @@ use('https://github.com/stevearc/oil.nvim', function()
   vim.keymap.set('n', '-', '<cmd>Oil<CR>')
 end)
 
+-- [[ LSP ]]
+-- lspconfig provides lsp/*.lua configs; custom overrides in our lsp/ dir.
+-- Servers installed via brew: ruff, ty, lua-language-server, gopls, rust-analyzer, etc.
+use('https://github.com/neovim/nvim-lspconfig', function()
+  vim.lsp.enable({ 'ruff', 'ty', 'lua_ls', 'gopls', 'rust_analyzer' })
+end)
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if not client then return end
+
+    client.server_capabilities.semanticTokensProvider = nil
+
+    if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+      vim.keymap.set('n', '<leader>th', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }))
+      end, { buffer = ev.buf, desc = 'Toggle inlay hints' })
+    end
+  end,
+})
+
+use({ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }, function()
+  require('blink.cmp').setup({
+    keymap = {
+      preset = 'enter',
+      ['<C-CR>'] = { 'select_and_accept' },
+    },
+    completion = {
+      documentation = { auto_show = true, auto_show_delay_ms = 0 },
+    },
+    signature = { enabled = true },
+    sources = {
+      default = { 'lsp', 'path', 'snippets', 'buffer' },
+    },
+    fuzzy = { implementation = 'prefer_rust_with_warning' },
+  })
+end)
+
 use('https://github.com/echasnovski/mini.nvim', function()
+  require('mini.hues').setup({ background = '#192330', foreground = '#cdcecf' })
+
   require('mini.icons').setup()
 
   require('mini.pick').setup()
