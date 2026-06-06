@@ -85,10 +85,7 @@
       "shift-enter": "editor::SelectSmallerSyntaxNode",
       "g y": [
         "action::Sequence",
-        [
-          "editor::CopyFileLocation",
-          "editor::Cancel"
-        ]
+        ["editor::CopyFileLocation", "editor::Cancel"],
       ],
     },
   },
@@ -141,8 +138,8 @@
   {
     "context": "Terminal",
     "bindings": {
-      // Send a distinct escape sequence so the shell prompt can treat
-      // shift-enter as "insert newline" without looking like paste to TUIs.
+      // Zed's terminal doesn't support kitty keyboard protocol, so
+      // shift-enter sends the same \x0d as enter. Manually send CSI u.
       "shift-enter": ["terminal::SendText", "\u001b[13;2u"],
       "ctrl-/": "terminal::ToggleViMode",
     },

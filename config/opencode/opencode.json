@@ -1,6 +1,21 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "lsp": false,
+  "disabled_providers": ["opencode", "huggingface", "nvidia"],
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local (llama serve)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "local": {
+          "name": "Local Model"
+        }
+      }
+    }
+  },
   "mcp": {
     "linear": {
       "enabled": true,

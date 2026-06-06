@@ -142,7 +142,8 @@ shift-enter-newline() {
   LBUFFER+=$'\n'
 }
 zle -N shift-enter-newline
-bindkey -M emacs '^[[13;2u' shift-enter-newline
+bindkey -M emacs '^[[13;2u' shift-enter-newline   # CSI u (Zed/Alacritty)
+bindkey -M emacs '^[[27;2;13~' shift-enter-newline  # fixterms (Ghostty)
 
 export DISABLE_AUTOUPDATER=1
 
