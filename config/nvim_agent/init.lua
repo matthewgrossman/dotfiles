@@ -44,11 +44,11 @@ vim.keymap.set('n', '<leader>td', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle diagnostics' })
 
--- Split navigation
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- Split navigation (works from normal and terminal mode)
+vim.keymap.set({ 'n', 't' }, '<C-h>', '<C-\\><C-n><C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set({ 'n', 't' }, '<C-l>', '<C-\\><C-n><C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set({ 'n', 't' }, '<C-j>', '<C-\\><C-n><C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set({ 'n', 't' }, '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Save
 vim.keymap.set('n', '<C-s>', ':w<CR>')
@@ -119,10 +119,6 @@ vim.api.nvim_create_autocmd('TermOpen', {
   callback = function(ev)
     local opts = { buffer = ev.buf }
     vim.keymap.set('t', '<M-[>', [[<C-\><C-n>]], opts)
-    vim.keymap.set('n', '<C-e>', ':startinsert<CR><C-e>', opts)
-    vim.keymap.set('n', '<C-a>', ':startinsert<CR><C-a>', opts)
-    vim.keymap.set('n', '<C-c>', ':startinsert<CR>', opts)
-    vim.keymap.set('n', '<C-p>', ':startinsert<CR><C-p>', opts)
     vim.keymap.set('t', '<S-CR>', '<C-v><C-j>', opts)
     vim.wo[vim.fn.bufwinid(ev.buf)].foldmethod = 'manual'
   end,
@@ -151,6 +147,33 @@ end
 use('https://github.com/tpope/vim-sleuth')
 use('https://github.com/tpope/vim-repeat')
 use('https://github.com/tpope/vim-unimpaired')
+
+use('https://github.com/folke/snacks.nvim', function()
+  require('snacks').setup({
+    terminal = {
+      win = { style = 'terminal', position = 'bottom', height = 0.3 },
+    },
+  })
+
+  -- Toggle terminal panel: <C-/> (also <C-_> for tmux compat)
+  vim.keymap.set({ 'n', 't' }, '<C-/>', function()
+    Snacks.terminal.toggle()
+  end, { desc = 'Toggle terminal' })
+
+  -- Cycle through terminals
+  vim.keymap.set({ 'n', 't' }, '<C-S-]>', function()
+    local current = vim.api.nvim_get_current_buf()
+    for i, t in ipairs(terms) do
+      if t.buf == current then
+        local next = terms[(i % #terms) + 1]
+        vim.api.nvim_set_current_buf(next.buf)
+        return
+      end
+    end
+    -- Not in a terminal, focus the first one
+    terms[1]:focus()
+  end, { desc = 'Next terminal' })
+end)
 
 use('https://github.com/arborist-ts/arborist.nvim', function()
   require('arborist').setup({ prefer_wasm = false })
@@ -243,9 +266,15 @@ use({ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }, function()
   })
 end)
 
-use('https://github.com/echasnovski/mini.nvim', function()
-  require('mini.hues').setup({ background = '#192330', foreground = '#cdcecf' })
+use('https://github.com/rebelot/kanagawa.nvim', function()
+  require('kanagawa').setup({
+    dimInactive = true,
+    terminalColors = true,
+  })
+  vim.cmd.colorscheme('kanagawa')
+end)
 
+use('https://github.com/echasnovski/mini.nvim', function()
   require('mini.icons').setup()
 
   require('mini.pick').setup()
