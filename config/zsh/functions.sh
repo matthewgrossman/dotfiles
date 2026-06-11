@@ -282,6 +282,31 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+wt-prune() {
+    local branches selected
+    branches=$(wt list --branches --format json | jq -r '.[] | select(.main_state == "integrated" and .is_main == false) | .branch // empty')
+    [[ -z "$branches" ]] && echo "No merged branches to prune." && return
+    local search=$(echo "$branches" | awk '{printf "head:%s ", $0}')
+    local tmpfile=$(mktemp)
+    trap "rm -f $tmpfile" EXIT
+    gh pr list --state merged --search "$search" --json number,title,url,headRefName 2>/dev/null > "$tmpfile"
+    local items=$(echo "$branches" | while read -r b; do
+        local label=$(jq -r --arg b "$b" '.[] | select(.headRefName == $b) | "#\(.number) \(.title)"' "$tmpfile")
+        if [[ -n "$label" ]]; then
+            echo "$b	$label | $b"
+        else
+            echo "$b	$b"
+        fi
+    done)
+    selected=$(echo "$items" | fzf --multi --delimiter=$'\t' --with-nth=2 --height=~100% \
+        --header='tab: select, enter: remove, ctrl-o: open PR' \
+        --bind="ctrl-o:execute-silent(jq -r --arg b {1} '.[] | select(.headRefName == \$b) | .url' $tmpfile | xargs open)" \
+        | cut -f1)
+    rm -f "$tmpfile"
+    [[ -z "$selected" ]] && return
+    echo "$selected" | xargs wt remove --force
+}
+
 alias kgpu='kubectl view-allocations -r nvidia.com/gpu'
 alias ls="ls -AGltr"
 alias dotf='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
