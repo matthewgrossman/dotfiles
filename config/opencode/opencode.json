@@ -5,13 +5,25 @@
   "provider": {
     "llama.cpp": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "Local (llama serve)",
+      "name": "llama.cpp",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "http://localhost:8080/v1"
       },
       "models": {
         "local": {
           "name": "Local Model"
+        }
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3.6:27b": {
+          "name": "Qwen 3.6 27B"
         }
       }
     }
