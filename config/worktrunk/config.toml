@@ -5,3 +5,4 @@ uv-sync = "if [ -f pyproject.toml ]; then unset VIRTUAL_ENV && uv sync; fi"
 
 [aliases]
 new = "wt switch --create --no-cd {{ args }}"
+review = "wt switch --no-cd {{ args }}"
