@@ -58,4 +58,11 @@
     "use_new_terminal": true,
     "hide": "always",
   },
+  // {
+  //   "label": "Create branch for new worktree",
+  //   "command": "if git -C \"$ZED_WORKTREE_ROOT\" symbolic-ref -q HEAD >/dev/null; then exit 0; fi; branch=$(basename \"$ZED_WORKTREE_ROOT\"); git -C \"$ZED_WORKTREE_ROOT\" switch -c \"$branch\" main && if [ -f \"$ZED_WORKTREE_ROOT/pyproject.toml\" ]; then (cd \"$ZED_WORKTREE_ROOT\" && uv sync); fi",
+  //   "hooks": ["create_worktree"],
+  //   "reveal": "no_focus",
+  //   "hide": "on_success"
+  // },
 ]

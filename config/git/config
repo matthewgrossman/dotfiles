@@ -13,12 +13,14 @@
     cm = "!git checkout $(git default-branch)"
     c = commit
     ca = commit --all
+    amend-signoff = commit --amend --no-edit --signoff
     a = add
     rv = revert
     rs = reset
     d = diff --no-ext-diff
     s = status
     m = merge
+    ri = "!git rebase -i $(git merge-base $(git default-branch) HEAD)"
     l = log
     ll = log --pretty=format:'%C(yellow)%h%Creset %C(blue)%an%Creset: %s' -10 --reverse
     ld = log --stat --patch --full-diff
@@ -41,15 +43,13 @@
     squashm = "!git squash-into-branch $(git default-branch)"
 
     # provider specific
-    pr = "!f() { git po && if git remote -v | grep -q gitlab; then git gitlab-mr \"$@\"; else git github-pr \"$@\"; fi; }; f"
+    pr = "!f() { git po && if git remote get-url origin | grep -q 'gitlab'; then git gitlab-mr \"$@\"; else git github-pr \"$@\"; fi; }; f"
     mr = pr
     github-pr = "!gh pr create --base $(git parent) --fill --web"
     gitlab-mr = "!f() { target=${1:-$(git parent)}; echo \"$target\"; glab mr create --target-branch \"$target\" --fill --web; }; f"
     clo = "!gh repo clone"
     scratch = "!git ls-files --other --exclude-standard | xargs -I{} mv {} scratch/"
     comment = "!gh pr comment -b"
-
-    wtc = "!f() { git worktree add \"$(pwd)--$1\" -b $1; }; f"
 
     # glab
     mrid = "!glab mr list --source-branch=\"$(git branch --show-current)\" -F json | jq '.[0].iid'"
@@ -70,6 +70,7 @@
     logallrefupdates = true
     quotePath = false
     commitGraph = true
+    hooksPath = ~/.config/git/hooks
 [pull]
     rebase = false
 [push]
@@ -88,13 +89,13 @@
 	insteadOf = "https://github.com/"
 
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = delta
 
 [delta]
     navigate = true    # use n and N to move between diff sections
 
 [diff]
-    colorMoved = default
+    colorMoved = no
 	submodule = log
 	algorithm = histogram
 [status]
@@ -114,3 +115,11 @@
 	allowAnySHA1InWant = true
 [lfs]
 	sshtransfer = never
+
+# Use work email for repos in NVIDIA
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA-NeMo/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA-dev/**"]
+    path = ~/dev/workfiles/gitconfig
