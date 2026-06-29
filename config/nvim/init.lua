@@ -227,46 +227,11 @@ function _G.file_contains(file_path, search_string)
   return content:find(search_string, 1, true) ~= nil
 end
 
-local function setupPythonVenv()
-  local path = vim.fn.stdpath('data') .. '/venv'
-  if not (vim.fn.isdirectory(path) == 1) then
-    print('Creating new python venv')
-    local packages = { 'pynvim', 'debugpy', 'typing_extensions' }
-    local cmd = string.format(
-      [[
-      uv venv %s;
-      UV_PYTHON=%s uv pip install %s
-      ]],
-      path,
-      path,
-      table.concat(packages, ' ')
-    )
-    print(string.format('Running cmd:\n%s', cmd))
-    local result = vim.system({ 'bash', '-c', cmd }):wait()
-    if result.code ~= 0 then
-      print('Error setting up Python environment:', result.stderr)
-    else
-      print('Python environment setup complete!')
-    end
-  end
-  vim.g.python3_host_prog = path .. '/bin/python'
-end
+-- pynvim provider: run `uv tool install pynvim` once.
+-- Nvim 0.12 auto-detects it via the pynvim-python uv tool entrypoint,
+-- even when a project virtualenv is active.
 
-setupPythonVenv()
 
-_G.getPythonPath = function()
-  local virtual_env = vim.fn.getenv('VIRTUAL_ENV')
-  if virtual_env ~= vim.NIL then
-    -- if we're explicitly in an active venv, use that python
-    return virtual_env .. '/bin/python'
-  elseif vim.uv.fs_stat('.venv/bin/python') then
-    -- if there's a venv in the cwd, use that
-    return '.venv/bin/python'
-  else
-    -- else use the nvim venv; never use the global python!
-    return vim.g.python3_host_prog
-  end
-end
 
 -- useful helper for snagging the visual selection
 _G.get_visual_selection = function()
@@ -782,14 +747,14 @@ require('lazy').setup({
       { 'williamboman/mason.nvim', version = '^1.0.0' },
       -- Translates between lspconfig server names and mason package names (e.g. helm_ls → helm-language-server).
       -- Works passively via after/lsp/ files on the runtimepath; does not need an explicit require().
-      { 'williamboman/mason-lspconfig.nvim' },
+      -- Pinned to v1: mason-tool-installer uses lspconfig_to_mason which was
+      -- renamed to lspconfig_to_package in mason-lspconfig v2.
+      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
-
-      'microsoft/python-type-stubs',
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -902,28 +867,6 @@ require('lazy').setup({
         },
       })
 
-      vim.lsp.config('pyright', {
-        root_dir = function(bufnr, on_dir)
-          local fname = vim.api.nvim_buf_get_name(bufnr)
-          -- Prefer git root for monorepo setups, fall back to standard markers
-          local root = vim.fs.root(fname, '.git') or vim.fs.root(fname, { 'pyproject.toml', 'pyrightconfig.json', 'setup.py' })
-          if root then
-            on_dir(root)
-          end
-        end,
-        settings = {
-          pyright = { disableOrganizeImports = true },
-          python = {
-            pythonPath = getPythonPath(),
-            analysis = {
-              stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
-              exclude = { 'bazel-bin/**', '**/venv', '**/.venv' },
-              diagnosticMode = 'openFilesOnly',
-            },
-          },
-        },
-      })
-
       vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
@@ -938,8 +881,7 @@ require('lazy').setup({
         'gopls',
         'helm_ls',
         'lua_ls',
-        'pyright',
-        -- 'ty',
+        'ty',
         'ruff',
         'rust_analyzer',
         'terraformls',
@@ -954,8 +896,7 @@ require('lazy').setup({
           'gopls',
           'helm_ls',
           'lua_ls',
-          'mypy',
-          'pyright',
+          'ty',
           { 'ruff', version = '0.12.3' },
           'rust_analyzer',
           'stylua',
