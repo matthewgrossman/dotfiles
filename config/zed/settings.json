@@ -32,6 +32,7 @@
     },
     "favorite_models": [],
     "model_parameters": [],
+    "thinking_display": "always_collapsed",
   },
   "agent_servers": {
     "claude-acp": {

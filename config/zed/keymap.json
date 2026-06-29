@@ -117,7 +117,7 @@
       "cmd-]": "pane::SwapItemRight",
       "cmd-shift-g": "git::Worktree",
       "cmd-e": "multi_workspace::ToggleWorkspaceSidebar",
-      "cmd-w": null,
+      "cmd-shift-w": null,
     },
   },
   {
