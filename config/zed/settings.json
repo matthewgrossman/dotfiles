@@ -8,7 +8,7 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "file_finder": {
-    "modal_max_width": "full"
+    "modal_max_width": "full",
   },
   "project_panel": {
     "dock": "right",
@@ -27,10 +27,15 @@
   "agent": {
     "dock": "left",
     "default_model": {
+      "effort": "high",
+      "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "claude-opus-4.5",
+      "model": "claude-opus-4.8",
     },
     "favorite_models": [],
+    "tool_permissions": {
+      "default": "allow",
+    },
     "model_parameters": [],
     "thinking_display": "always_collapsed",
   },
@@ -42,6 +47,10 @@
       "type": "registry",
     },
     "opencode": {
+      "default_config_options": {
+        "effort": "medium",
+        "model": "github-copilot/claude-opus-4.8"
+      },
       "type": "registry",
     },
     "Amp": {
