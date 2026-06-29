@@ -1,4 +1,4 @@
-worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}"
+worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}/{{ repo }}"
 
 [pre-start]
 uv-sync = "if [ -f pyproject.toml ]; then unset VIRTUAL_ENV && uv sync; fi"

@@ -148,9 +148,6 @@ bindkey -M emacs '^[[27;2;13~' shift-enter-newline  # fixterms (Ghostty)
 export DISABLE_AUTOUPDATER=1
 
 # work configuration
-if [ -f ~/.workrc  ]; then
-    source ~/.workrc
-fi
 [[ -f ~/dev/workfiles/workfiles.sh ]] && source ~/dev/workfiles/workfiles.sh
 source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

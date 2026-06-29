@@ -50,7 +50,7 @@
     },
   },
   "colorize_brackets": true,
-  "diff_view_style": "split",
+  "diff_view_style": "unified",
   "edit_predictions": {
     "provider": "copilot",
   },
