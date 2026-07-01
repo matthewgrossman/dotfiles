@@ -121,6 +121,14 @@
     },
   },
   {
+    // Prevent cmd-w from closing docks (which closes the whole window).
+    // See zed-industries/zed#34865, zed-industries/zed#57922.
+    "context": "ProjectPanel || GitPanel || OutlinePanel || CollabPanel || ThreadsSidebar",
+    "bindings": {
+      "cmd-w": "menu::Cancel",
+    },
+  },
+  {
     "context": "Pane",
     "bindings": {
       "ctrl-tab": "pane::ActivateNextItem",

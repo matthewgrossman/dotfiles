@@ -24,6 +24,9 @@
       "models": {
         "qwen3.6:27b": {
           "name": "Qwen 3.6 27B"
+        },
+        "hf.co/deepreinforce-ai/Ornith-1.0-9B-GGUF:latest": {
+          "name": "Ornith 9B"
         }
       }
     }
