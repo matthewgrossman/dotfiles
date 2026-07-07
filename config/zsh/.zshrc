@@ -28,6 +28,8 @@ else
     HOMEBREW_PREFIX="/opt/homebrew"
 fi
 
+eval "$(mise activate zsh)"
+
 export WORDCHARS=${WORDCHARS/\/}
 # export PYTHONBREAKPOINT="ipdb.set_trace"
 export PYTHONBREAKPOINT=pdbp.set_trace
