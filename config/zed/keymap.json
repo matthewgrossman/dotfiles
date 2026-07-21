@@ -64,9 +64,11 @@
       "space g h": "editor::OpenPermalinkToLine", // like :GBrowse - opens in browser
       "space g y": "editor::CopyPermalinkToLine", // copy permalink to clipboard
       "space g d": "editor::ToggleSelectedDiffHunks", // toggle inline diff
+      "] g": "editor::ExpandAllDiffHunks", // unimpaired-style: turn diffs ON
+      "[ g": "editor::CollapseAllDiffHunks", // unimpaired-style: turn diffs OFF
       "space g p": "git::Push", // git push
       // text objects
-      // "y i l": ["workspace::SendKeystrokes", "^ y g _"],
+      // "y i l": ["workspace::SendKeystrokes", "_ y g _"], // yank inner line (no whitespace)
       // "d i l": ["workspace::SendKeystrokes", "^ d g _"],
       // "d a l": ["workspace::SendKeystrokes", "0 d $"],
       // "c i l": ["workspace::SendKeystrokes", "^ c g _"],

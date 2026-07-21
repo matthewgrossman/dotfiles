@@ -1,7 +1,7 @@
 worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}/{{ repo }}"
 
 [pre-start]
-uv-sync = "if [ -f pyproject.toml ]; then unset VIRTUAL_ENV && uv sync; fi"
+init = '''exec "$XDG_CONFIG_HOME/worktrunk/wt-pre-start"'''
 
 [aliases]
 new = "wt switch --create --no-cd {{ args }}"

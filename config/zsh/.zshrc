@@ -28,6 +28,8 @@ else
     HOMEBREW_PREFIX="/opt/homebrew"
 fi
 
+export SCCACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sccache"
+
 eval "$(mise activate zsh)"
 
 export WORDCHARS=${WORDCHARS/\/}
