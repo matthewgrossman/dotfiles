@@ -54,6 +54,25 @@ vim.keymap.set({ 'n', 't' }, '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move fo
 vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('v', '<C-s>', '<esc>:w<CR>gv')
 
+-- Copy a file location for sharing with agents
+vim.keymap.set({ 'n', 'x' }, 'gy', function()
+  local path = vim.fn.expand('%')
+  if path == '' then
+    vim.notify('Buffer has no file path', vim.log.levels.WARN)
+    return
+  end
+
+  local first, last = vim.fn.line('.'), vim.fn.line('.')
+  if vim.fn.mode():find('[vV\22]') then
+    first, last = vim.fn.line('v'), vim.fn.line('.')
+  end
+  if first > last then first, last = last, first end
+
+  local location = first == last and string.format('%s:%d', path, first) or string.format('%s:%d-%d', path, first, last)
+  vim.fn.setreg('+', location)
+  vim.notify('Copied ' .. location)
+end, { desc = 'Copy file location' })
+
 -- Repeat / macro
 vim.keymap.set('v', '.', ':normal .<CR>')
 vim.keymap.set('v', 'Q', ':normal @q<CR>')
@@ -179,6 +198,22 @@ use('https://github.com/arborist-ts/arborist.nvim', function()
   require('arborist').setup({ prefer_wasm = false })
 end)
 
+use('https://github.com/esmuellert/codediff.nvim', function()
+  require('codediff').setup()
+  vim.api.nvim_create_user_command('CodeDiffMain', 'CodeDiff main...HEAD', {
+    desc = 'Review branch changes since diverging from main',
+  })
+  vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
+end)
+
+use('https://github.com/NeogitOrg/neogit', function()
+  require('neogit').setup({
+    integrations = { codediff = true, mini_pick = true },
+    diff_viewer = 'codediff',
+  })
+  vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<CR>', { desc = 'Open Neogit' })
+end)
+
 use('https://github.com/stevearc/oil.nvim', function()
   require('oil').setup({
     view_options = { show_hidden = true },
@@ -296,7 +331,14 @@ use('https://github.com/echasnovski/mini.nvim', function()
   miniBufremove.setup()
   vim.keymap.set('n', '<C-q>', miniBufremove.delete)
 
-  require('mini.diff').setup()
+  local miniDiff = require('mini.diff')
+  miniDiff.setup({
+    mappings = {
+      goto_prev = '[c',
+      goto_next = ']c',
+    },
+  })
+  vim.keymap.set('n', 'yog', miniDiff.toggle_overlay, { desc = 'Toggle Git diff overlay' })
 
   require('mini.statusline').setup()
 

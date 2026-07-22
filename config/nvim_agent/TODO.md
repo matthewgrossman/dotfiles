@@ -94,20 +94,36 @@ Tracking remaining work for the agentic nvim config.
 
 ## Git
 
-- [ ] Hunk navigation — `[c` / `]c` to jump between changed hunks
-  - mini.diff provides this but need to verify keymaps
-  - gitsigns.nvim is the more full-featured option (hunk staging, blame, etc.)
-- [ ] Git signs in the sign column (added/changed/deleted indicators)
-  - Currently have mini.diff — shows inline diffs but may not do sign column
-  - gitsigns.nvim is the standard for gutter signs + hunk operations
-- [ ] Changed file navigation — see all modified files and jump between them
-  - Options:
-    - `mini.pick` with a git-status source (if it has one)
-    - `vim-fugitive` — `:Git` shows status, `:Git diff`, `:GBrowse`, etc.
-    - Built-in: `git diff --name-only | ...` piped into quickfix
-  - Old config used fugitive for `:tab Git`, `:Gvdiffsplit`, `:Git blame`, `:GBrowse`
-- [ ] Decide: mini.diff vs gitsigns.nvim vs both
-- [ ] Decide: fugitive vs something lighter vs just shell git
+- [x] Use mini.diff + Neogit + CodeDiff as the Git stack
+  - mini.diff owns lightweight indicators, hunk actions, and the existing-buffer overlay
+  - Neogit owns repository status and Git operations
+  - CodeDiff owns dedicated repository/file review views
+- [x] Keep mini.diff for buffer-level diff indicators and hunk operations
+  - `[c` / `]c` navigate previous/next hunks; `[H` / `]H` jump to first/last
+  - `yog` toggles the persistent inline overlay with added, deleted, and character-level changes
+  - `ghgh` stages the hunk under the cursor; `gHgh` resets it
+  - Compares the working buffer against the Git index, so staged changes disappear from its view
+  - Can stage but cannot unstage hunks; use Neogit to inspect or unstage the index
+  - With line numbers enabled, the default view highlights line numbers rather than sign-column glyphs
+  - Uses mini.diff's own histogram/indent-heuristic/linematch defaults; global `diffopt` does not control it
+- [x] Add Neogit for repository status and Git operations
+  - `<leader>gg` / `:Neogit` opens staged, unstaged, untracked, and conflicted sections
+  - Stage with `s`, unstage with `u`, and discard with `x`
+  - Uses mini.pick for selections and CodeDiff as its supported external diff viewer
+- [x] Add CodeDiff for standalone diff and repository review
+  - `<leader>gd` / `:CodeDiff` opens its Git status explorer
+  - `:CodeDiffMain` reviews committed branch changes with `main...HEAD`, excluding working-tree changes
+  - Supports arbitrary file/directory comparisons, inline and side-by-side layouts, history, staging, and conflicts
+  - Always opens a dedicated tab; CodeDiff's "inline" mode means unified layout inside that tab
+- [x] Do not add Gitsigns, Fugitive, or Diffview alongside the selected stack
+  - Gitsigns overlaps mini.diff; reconsider only for buffer-level unstaging, blame, or dedicated gutter signs
+  - Fugitive provides native Git-object diff buffers, but overlaps Neogit's repository workflow
+  - Diffview delegates native diff windows but is unnecessary when Neogit uses CodeDiff
+- [x] Keep the original global `diffopt` customization (`algorithm:patience`)
+  - It affects only native diff mode, not mini.diff or CodeDiff
+- [ ] Local review comments for feeding structured feedback back to coding agents
+  - `review.nvim` integrates with codediff.nvim and exports AI-ready Markdown
+  - Other options persist agent-readable files directly (agent-review.nvim, wishes.nvim, local-review.nvim)
 
 ## Terminal Panels
 

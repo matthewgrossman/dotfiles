@@ -9,6 +9,10 @@
       "src": "https://github.com/saghen/blink.cmp",
       "version": "'v1'"
     },
+    "codediff.nvim": {
+      "rev": "46727b842e6315cc3586c2ea9051a0ac6abce6c8",
+      "src": "git@github.com:esmuellert/codediff.nvim"
+    },
     "kanagawa.nvim": {
       "rev": "bb85e4bfc8d89b0e62c8fa53ccdd13d12e2f77b3",
       "src": "https://github.com/rebelot/kanagawa.nvim"
@@ -16,6 +20,10 @@
     "mini.nvim": {
       "rev": "11afe78a10570fe1d0c7ed0b6fc2b5b19098cb45",
       "src": "https://github.com/echasnovski/mini.nvim"
+    },
+    "neogit": {
+      "rev": "2043096b7ae81e8350ec8cceb3e7ab08dca1dcfe",
+      "src": "https://github.com/NeogitOrg/neogit"
     },
     "nvim-lspconfig": {
       "rev": "07dff35e7c95288861200b788ef32d6103f107f0",
@@ -28,10 +36,6 @@
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
       "src": "https://github.com/folke/snacks.nvim"
-    },
-    "tree-sitter-manager.nvim": {
-      "rev": "bb66b815aff01e87b2e26be995116be8d2f91474",
-      "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
     "vim-repeat": {
       "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
