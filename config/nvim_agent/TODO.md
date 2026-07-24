@@ -55,6 +55,15 @@ Tracking remaining work for the agentic nvim config.
   - Could add a helper that diffs `_pack_specs` against installed and runs `vim.pack.del()`
   - Or just document a manual `:packdel` workflow
 
+## Picker / Search
+
+- [x] Use Snacks Picker instead of mini.pick
+  - `<C-p>` / `<leader>sf` search files
+  - `<leader>sg` searches repository contents
+  - `<leader>sw` searches for the word under the cursor
+  - `<leader>sh` searches help, `<leader>sr` resumes the last picker, and `<leader><leader>` finds buffers
+  - Neogit also uses Snacks Picker for selections
+
 ## Python Environment
 
 - [x] Get LSP servers working with the local uv `.venv`
@@ -94,6 +103,11 @@ Tracking remaining work for the agentic nvim config.
 
 ## Git
 
+- [x] Add `<leader>gh` to open the current line or visual range on the Git host
+  - Uses Snacks.gitbrowse with the current file, line or visual range, and Git branch
+  - Supports GitHub, GitLab, Bitbucket, and SourceHut remotes
+- [x] Add a Neogit action that runs `git pr`
+  - Press `P` in Neogit's Push popup to push and open a GitHub PR or GitLab MR
 - [x] Use mini.diff + Neogit + CodeDiff as the Git stack
   - mini.diff owns lightweight indicators, hunk actions, and the existing-buffer overlay
   - Neogit owns repository status and Git operations
@@ -109,7 +123,7 @@ Tracking remaining work for the agentic nvim config.
 - [x] Add Neogit for repository status and Git operations
   - `<leader>gg` / `:Neogit` opens staged, unstaged, untracked, and conflicted sections
   - Stage with `s`, unstage with `u`, and discard with `x`
-  - Uses mini.pick for selections and CodeDiff as its supported external diff viewer
+  - Uses Snacks Picker for selections and CodeDiff as its supported external diff viewer
 - [x] Add CodeDiff for standalone diff and repository review
   - `<leader>gd` / `:CodeDiff` opens its Git status explorer
   - `:CodeDiffMain` reviews committed branch changes with `main...HEAD`, excluding working-tree changes

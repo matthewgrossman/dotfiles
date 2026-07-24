@@ -56,21 +56,20 @@ vim.keymap.set('v', '<C-s>', '<esc>:w<CR>gv')
 
 -- Copy a file location for sharing with agents
 vim.keymap.set({ 'n', 'x' }, 'gy', function()
-  local path = vim.fn.expand('%')
-  if path == '' then
-    vim.notify('Buffer has no file path', vim.log.levels.WARN)
-    return
+  local file = vim.fn.expand('%')
+  local first = vim.fn.line('v')
+  local last = vim.fn.line('.')
+
+  if first > last then
+    first, last = last, first
   end
 
-  local first, last = vim.fn.line('.'), vim.fn.line('.')
-  if vim.fn.mode():find('[vV\22]') then
-    first, last = vim.fn.line('v'), vim.fn.line('.')
-  end
-  if first > last then first, last = last, first end
+  local location = first == last
+      and ('%s:%d'):format(file, first)
+      or ('%s:%d-%d'):format(file, first, last)
 
-  local location = first == last and string.format('%s:%d', path, first) or string.format('%s:%d-%d', path, first, last)
   vim.fn.setreg('+', location)
-  vim.notify('Copied ' .. location)
+  vim.api.nvim_feedkeys(vim.keycode('<Esc>'), 'nx', false)
 end, { desc = 'Copy file location' })
 
 -- Repeat / macro
@@ -168,15 +167,31 @@ use('https://github.com/tpope/vim-repeat')
 use('https://github.com/tpope/vim-unimpaired')
 
 use('https://github.com/folke/snacks.nvim', function()
-  require('snacks').setup({
+  local snacks = require('snacks')
+
+  snacks.setup({
+    picker = { enabled = true },
     terminal = {
       win = { style = 'terminal', position = 'bottom', height = 0.3 },
     },
   })
 
+  vim.keymap.set('n', '<C-p>', function() snacks.picker.files() end)
+  vim.keymap.set('n', '<leader>sf', function() snacks.picker.files() end, { desc = 'Search files' })
+  vim.keymap.set('n', '<leader>sg', function() snacks.picker.grep() end, { desc = 'Search grep' })
+  vim.keymap.set('n', '<leader>sw', function() snacks.picker.grep_word() end, { desc = 'Search word' })
+  vim.keymap.set('n', '<leader>sh', function() snacks.picker.help() end, { desc = 'Search help' })
+  vim.keymap.set('n', '<leader>sr', function() snacks.picker.resume() end, { desc = 'Search resume' })
+  vim.keymap.set('n', '<leader><leader>', function() snacks.picker.buffers() end, { desc = 'Find buffers' })
+
+  -- Open the current line or visual selection on the current Git branch
+  vim.keymap.set({ 'n', 'x' }, '<leader>gh', function()
+    snacks.gitbrowse({ what = 'file' })
+  end, { desc = 'Open current lines on Git host' })
+
   -- Toggle terminal panel: <C-/> (also <C-_> for tmux compat)
   vim.keymap.set({ 'n', 't' }, '<C-/>', function()
-    Snacks.terminal.toggle()
+    snacks.terminal.toggle()
   end, { desc = 'Toggle terminal' })
 
   -- Cycle through terminals
@@ -208,7 +223,7 @@ end)
 
 use('https://github.com/NeogitOrg/neogit', function()
   require('neogit').setup({
-    integrations = { codediff = true, mini_pick = true },
+    integrations = { codediff = true, snacks = true },
     diff_viewer = 'codediff',
   })
   vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<CR>', { desc = 'Open Neogit' })
@@ -311,15 +326,6 @@ end)
 
 use('https://github.com/echasnovski/mini.nvim', function()
   require('mini.icons').setup()
-
-  require('mini.pick').setup()
-  vim.keymap.set('n', '<C-p>', '<cmd>Pick files<CR>')
-  vim.keymap.set('n', '<leader>sf', '<cmd>Pick files<CR>', { desc = 'Search files' })
-  vim.keymap.set('n', '<leader>sg', '<cmd>Pick grep_live<CR>', { desc = 'Search grep' })
-  vim.keymap.set('n', '<leader>sw', '<cmd>Pick grep pattern="<cword>"<CR>', { desc = 'Search word' })
-  vim.keymap.set('n', '<leader>sh', '<cmd>Pick help<CR>', { desc = 'Search help' })
-  vim.keymap.set('n', '<leader>sr', '<cmd>Pick resume<CR>', { desc = 'Search resume' })
-  vim.keymap.set('n', '<leader><leader>', '<cmd>Pick buffers<CR>', { desc = 'Find buffers' })
 
   require('mini.ai').setup({ n_lines = 500 })
   vim.keymap.set('x', 'il', 'g_o^')

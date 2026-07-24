@@ -29,6 +29,7 @@ else
 fi
 
 export SCCACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sccache"
+export NVIM_APPNAME=nvim_agent
 
 eval "$(mise activate zsh)"
 
