@@ -60,7 +60,7 @@ Tracking remaining work for the agentic nvim config.
 - [x] Use Snacks Picker instead of mini.pick
   - `<C-p>` / `<leader>sf` search files
   - `<leader>sg` searches repository contents
-  - `<leader>sw` searches for the word under the cursor
+  - `<leader>sw` searches for the word under the cursor or the visual selection
   - `<leader>sh` searches help, `<leader>sr` resumes the last picker, and `<leader><leader>` finds buffers
   - Neogit also uses Snacks Picker for selections
 
@@ -94,12 +94,10 @@ Tracking remaining work for the agentic nvim config.
   - 0.12 built-ins: `v_an` / `v_in` (parent/child node), `v_]n` / `v_[n` (sibling nav)
   - Textobjects: old config had `af`/`if` for function outer/inner via nvim-treesitter-textobjects
   - nvim-treesitter-textobjects is archived — check if mini.ai covers this or need alternative
-- [ ] Readline / emacs-style bindings in insert + cmdline mode
-  - Currently inlined manually (C-a, C-b, C-d, C-e, C-f in both insert and cmdline)
-  - Options:
-    - **tpope/vim-rsi** — plugin that provides readline bindings + the C-t/C-S-t indent trick
-    - **Keep inline** — we already have ~10 lines doing this, no plugin needed
-  - vim-rsi also handles edge cases (C-a in cmdline = insert-all-completions vs Home)
+- [x] Use vim-rsi for Readline / Emacs-style bindings in insert + cmdline mode
+  - Replaces the inlined C-a, C-b, C-d, C-e, C-f, and C-S-t mappings
+  - Preserves important built-in Vim behavior such as insert-mode C-n/C-p completion
+  - Handles context-sensitive behavior and terminal-safe Meta mappings
 
 ## Git
 
