@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Initialize Python dependencies for newly created worktrees.
+
+set -euo pipefail
+
+[[ -f pyproject.toml ]] || exit 0
+
+# Do not reuse a virtual environment inherited from the invoking shell.
+unset VIRTUAL_ENV
+
+# Let mise resolve the repository's declared toolchain when it manages one.
+if command -v mise >/dev/null 2>&1 &&
+  { [[ -f mise.toml ]] || [[ -f .mise.toml ]] || [[ -f .tool-versions ]]; }; then
+  exec mise exec -- uv sync
+fi
+
+exec uv sync
