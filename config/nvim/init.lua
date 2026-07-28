@@ -1412,9 +1412,5 @@ require('lazy').setup({
   },
 })
 
-if vim.env.HERDR_ENV == '1' and vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '' then
-  require('vendor.vim_herdr_navigation')
-end
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 ss=2 sw=2 et
