@@ -54,23 +54,28 @@ vim.keymap.set({ 'n', 't' }, '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move fo
 vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('v', '<C-s>', '<esc>:w<CR>gv')
 
+-- Copy a file location for sharing with agents
+vim.keymap.set({ 'n', 'x' }, 'gy', function()
+  local file = vim.fn.expand('%')
+  local first = vim.fn.line('v')
+  local last = vim.fn.line('.')
+
+  if first > last then
+    first, last = last, first
+  end
+
+  local location = first == last
+      and ('%s:%d'):format(file, first)
+      or ('%s:%d-%d'):format(file, first, last)
+
+  vim.fn.setreg('+', location)
+  vim.api.nvim_feedkeys(vim.keycode('<Esc>'), 'nx', false)
+end, { desc = 'Copy file location' })
+
 -- Repeat / macro
 vim.keymap.set('v', '.', ':normal .<CR>')
 vim.keymap.set('v', 'Q', ':normal @q<CR>')
 vim.keymap.set('n', 'Q', '@q')
-
--- Emacs-style insert/cmdline navigation
-vim.keymap.set('i', '<C-a>', '<c-o>^')
-vim.keymap.set('i', '<C-b>', '<Left>')
-vim.keymap.set('i', '<C-d>', '<Del>')
-vim.keymap.set('i', '<C-s-t>', '<c-d>')
-vim.keymap.set('i', '<C-e>', '<c-o>$')
-vim.keymap.set('i', '<C-f>', '<Right>')
-vim.keymap.set('c', '<C-a>', '<Home>')
-vim.keymap.set('c', '<C-b>', '<Left>')
-vim.keymap.set('c', '<C-d>', '<Del>')
-vim.keymap.set('c', '<C-e>', '<End>')
-vim.keymap.set('c', '<C-f>', '<Right>')
 
 -- Word wrap navigation
 vim.keymap.set({ 'n', 'v' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -147,17 +152,36 @@ end
 use('https://github.com/tpope/vim-sleuth')
 use('https://github.com/tpope/vim-repeat')
 use('https://github.com/tpope/vim-unimpaired')
+use('https://github.com/tpope/vim-rsi')
 
 use('https://github.com/folke/snacks.nvim', function()
-  require('snacks').setup({
+  local snacks = require('snacks')
+
+  snacks.setup({
+    picker = { enabled = true },
     terminal = {
       win = { style = 'terminal', position = 'bottom', height = 0.3 },
     },
   })
 
+  vim.keymap.set('n', '<C-p>', function() snacks.picker.files() end)
+  vim.keymap.set('n', '<leader>sf', function() snacks.picker.files() end, { desc = 'Search files' })
+  vim.keymap.set('n', '<leader>sg', function() snacks.picker.grep() end, { desc = 'Search grep' })
+  vim.keymap.set({ 'n', 'x' }, '<leader>sw', function()
+    snacks.picker.grep_word()
+  end, { desc = 'Search selection or word' })
+  vim.keymap.set('n', '<leader>sh', function() snacks.picker.help() end, { desc = 'Search help' })
+  vim.keymap.set('n', '<leader>sr', function() snacks.picker.resume() end, { desc = 'Search resume' })
+  vim.keymap.set('n', '<leader><leader>', function() snacks.picker.buffers() end, { desc = 'Find buffers' })
+
+  -- Open the current line or visual selection on the current Git branch
+  vim.keymap.set({ 'n', 'x' }, '<leader>gh', function()
+    snacks.gitbrowse({ what = 'file' })
+  end, { desc = 'Open current lines on Git host' })
+
   -- Toggle terminal panel: <C-/> (also <C-_> for tmux compat)
   vim.keymap.set({ 'n', 't' }, '<C-/>', function()
-    Snacks.terminal.toggle()
+    snacks.terminal.toggle()
   end, { desc = 'Toggle terminal' })
 
   -- Cycle through terminals
@@ -177,6 +201,22 @@ end)
 
 use('https://github.com/arborist-ts/arborist.nvim', function()
   require('arborist').setup({ prefer_wasm = false })
+end)
+
+use('https://github.com/esmuellert/codediff.nvim', function()
+  require('codediff').setup()
+  vim.api.nvim_create_user_command('CodeDiffMain', 'CodeDiff main...HEAD', {
+    desc = 'Review branch changes since diverging from main',
+  })
+  vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
+end)
+
+use('https://github.com/NeogitOrg/neogit', function()
+  require('neogit').setup({
+    integrations = { codediff = true, snacks = true },
+    diff_viewer = 'codediff',
+  })
+  vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<CR>', { desc = 'Open Neogit' })
 end)
 
 use('https://github.com/stevearc/oil.nvim', function()
@@ -277,15 +317,6 @@ end)
 use('https://github.com/echasnovski/mini.nvim', function()
   require('mini.icons').setup()
 
-  require('mini.pick').setup()
-  vim.keymap.set('n', '<C-p>', '<cmd>Pick files<CR>')
-  vim.keymap.set('n', '<leader>sf', '<cmd>Pick files<CR>', { desc = 'Search files' })
-  vim.keymap.set('n', '<leader>sg', '<cmd>Pick grep_live<CR>', { desc = 'Search grep' })
-  vim.keymap.set('n', '<leader>sw', '<cmd>Pick grep pattern="<cword>"<CR>', { desc = 'Search word' })
-  vim.keymap.set('n', '<leader>sh', '<cmd>Pick help<CR>', { desc = 'Search help' })
-  vim.keymap.set('n', '<leader>sr', '<cmd>Pick resume<CR>', { desc = 'Search resume' })
-  vim.keymap.set('n', '<leader><leader>', '<cmd>Pick buffers<CR>', { desc = 'Find buffers' })
-
   require('mini.ai').setup({ n_lines = 500 })
   vim.keymap.set('x', 'il', 'g_o^')
   vim.keymap.set('o', 'il', ':normal vil<CR>')
@@ -296,7 +327,14 @@ use('https://github.com/echasnovski/mini.nvim', function()
   miniBufremove.setup()
   vim.keymap.set('n', '<C-q>', miniBufremove.delete)
 
-  require('mini.diff').setup()
+  local miniDiff = require('mini.diff')
+  miniDiff.setup({
+    mappings = {
+      goto_prev = '[c',
+      goto_next = ']c',
+    },
+  })
+  vim.keymap.set('n', 'yog', miniDiff.toggle_overlay, { desc = 'Toggle Git diff overlay' })
 
   require('mini.statusline').setup()
 
@@ -307,6 +345,10 @@ end)
 vim.pack.add(_pack_specs)
 for _, config in ipairs(_pack_configs) do
   config()
+end
+
+if vim.env.HERDR_ENV == '1' and vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '' then
+  require('vendor.vim_herdr_navigation')
 end
 
 -- vim: ts=2 ss=2 sw=2 et
