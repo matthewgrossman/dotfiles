@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "cli_default_open_behavior": "existing_window",
   "file_finder": {
     "modal_max_width": "full",
   },
@@ -49,7 +50,7 @@
     "opencode": {
       "default_config_options": {
         "effort": "medium",
-        "model": "github-copilot/claude-opus-4.8"
+        "model": "github-copilot/gpt-5.6-sol"
       },
       "type": "registry",
     },
