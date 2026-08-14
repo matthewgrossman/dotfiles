@@ -1,4 +1,5 @@
 Helpers = require('helpers')
+Mouse = require('mouse')
 
 -- gotta go fast
 hs.window.animationDuration = 0
