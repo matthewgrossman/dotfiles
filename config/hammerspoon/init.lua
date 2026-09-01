@@ -1,5 +1,6 @@
 Helpers = require('helpers')
 Mouse = require('mouse')
+UtilitiesMenu = require('utilities_menu').new()
 
 -- gotta go fast
 hs.window.animationDuration = 0
