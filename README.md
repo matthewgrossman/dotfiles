@@ -15,6 +15,19 @@ The first program installed should be `google-drive`, which is a first priority 
 
 This script will end up prompting for password a few times (ideally at the beginning), so check on it periodically.
 
+#### SOPS age key
+The `homelab` repository uses [SOPS](https://github.com/getsops/sops) with
+[age](https://github.com/FiloSottile/age) to keep secrets encrypted in Git. To
+edit or decrypt those secrets on a new computer, retrieve the SOPS age private
+key from the password manager and install it at SOPS's default key location:
+
+```sh
+mkdir -p ~/.config/sops/age
+# use keepassxc to download keys.txt to `~/.config/sops/age/keys.txt`
+```
+
+Never commit or otherwise copy this private key into either repository.
+
 `setup.sh` should handle lots of default macos settings, but AFAIK these still require manual clicking:
 1. Disable cmd-space for spotlight in keyboard settings (and modify alfred to use this instead)
 1. Turn off auto-brightness in Displays
