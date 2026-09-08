@@ -14,26 +14,29 @@ channel = "stable"
 name = "catppuccin"
 auto_switch = false
 
+[keys]
+zoom = "ctrl+;"
+
 [[keys.command]]
 key = "ctrl+h"
-type = "plugin_action"
-command = "vim-herdr-navigation.left"
+type = "shell"
+command = "~/.config/herdr/vim-herdr-navigation.sh left"
 description = "navigate left (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+j"
-type = "plugin_action"
-command = "vim-herdr-navigation.down"
+type = "shell"
+command = "~/.config/herdr/vim-herdr-navigation.sh down"
 description = "navigate down (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+k"
-type = "plugin_action"
-command = "vim-herdr-navigation.up"
+type = "shell"
+command = "~/.config/herdr/vim-herdr-navigation.sh up"
 description = "navigate up (vim/herdr)"
 
 [[keys.command]]
 key = "ctrl+l"
-type = "plugin_action"
-command = "vim-herdr-navigation.right"
+type = "shell"
+command = "~/.config/herdr/vim-herdr-navigation.sh right"
 description = "navigate right (vim/herdr)"

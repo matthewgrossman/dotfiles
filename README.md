@@ -3,6 +3,7 @@
 1. Sign-in to apple ID
 1. Start a download for a system update
 1. Install homebrew via [brew.sh](brew.sh)
+1. Temporarily add Homebrew to this shell with `eval "$(/opt/homebrew/bin/brew shellenv)"`; do not add it to `.zshrc`, since `link.sh` will install the dotfiles
 1. While that's happening, sign in to [github.com](github.com).
 1. `brew install gh`
 1. `gh auth login`
@@ -14,6 +15,16 @@ The first program installed should be `google-drive`, which is a first priority 
 1. Open keepassxc with `gdrive://sync/pwdb.kdbx`
 
 This script will end up prompting for password a few times (ideally at the beginning), so check on it periodically.
+
+#### KeePassXC
+1. Enable browser integration in Settings > Browser Integration
+1. Disable "Lock databases when the session is locked or the lid is closed"
+1. Prevent KeePassXC from replacing the database file so KeePassium does not lose its file reference:
+   - Go to Settings > General > Basic Settings > File Management
+   - Enable "Use alternative saving method" and select "Directly write to database file (dangerous)"
+   - Enable "Backup database file before saving"
+   - If KeePassium already lost the file reference, open the existing database again from KeePassium's Databases screen
+   - See the [KeePassium troubleshooting guide](https://support.keepassium.com/kb/database-does-not-exist/) for details
 
 #### SOPS age key
 The `homelab` repository uses [SOPS](https://github.com/getsops/sops) with
@@ -30,6 +41,9 @@ Never commit or otherwise copy this private key into either repository.
 
 `setup.sh` should handle lots of default macos settings, but AFAIK these still require manual clicking:
 1. Disable cmd-space for spotlight in keyboard settings (and modify alfred to use this instead)
+1. Map Caps Lock to Control in System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys
+1. Select the denser scaled resolution in System Settings > Displays
+1. Set up the display arrangement for the desk in System Settings > Displays > Arrange
 1. Turn off auto-brightness in Displays
 1. Enable bluetooth in the top bar
 

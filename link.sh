@@ -28,13 +28,18 @@ symlink() {
         echo "Backed up: $target -> $backup_path"
     fi
 
-    ln -sfn "$source" "$target"
+    if [ -L "$target" ]; then
+        rm "$target"
+    fi
+
+    ln -s "$source" "$target"
     echo "Created symlink: $target -> $source"
 }
 export -f symlink
 export BACKUP_DIR
 
 cd "$HOME/dotfiles/config" || exit 1
+mkdir -p "$HOME/.config"
 
 # These applications write generated data alongside their configuration, so
 # keep their destination directories real and link only tracked files.

@@ -1,4 +1,4 @@
--- Vendored from paulbkim-dev/vim-herdr-navigation at commit 53e318c772c4.
+-- Vendored from paulbkim-dev/vim-herdr-navigation at commit 79679dacc791.
 --
 -- Seamless <C-h/j/k/l> navigation between Neovim splits and Herdr panes: move
 -- between Neovim splits, and at a split edge hand off to Herdr so focus crosses
@@ -17,7 +17,7 @@ local function nav(wincmd, dir)
     if herdr == nil or herdr == '' then
       herdr = 'herdr'
     end
-    vim.fn.system({ herdr, 'pane', 'focus', '--direction', dir, '--current' })
+    vim.fn.system({ herdr, 'pane', 'focus', '--direction', dir, '--pane', vim.env.HERDR_PANE_ID })
   elseif vim.env.TMUX and vim.env.TMUX ~= '' then
     local tmux = { left = 'Left', down = 'Down', up = 'Up', right = 'Right' }
     pcall(vim.cmd, 'TmuxNavigate' .. tmux[dir])
