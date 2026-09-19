@@ -47,6 +47,7 @@ brew 'ag'
 brew 'age'
 brew 'atuin'
 brew 'bash'
+brew 'oven-sh/bun/bun', trusted: true
 brew 'coreutils'
 brew 'fnm'
 brew 'fzf'

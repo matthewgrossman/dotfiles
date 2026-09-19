@@ -46,6 +46,9 @@
     "thinking_display": "always_collapsed",
   },
   "agent_servers": {
+    "pi-acp": {
+      "type": "registry"
+    },
     "claude-acp": {
       "type": "registry",
     },

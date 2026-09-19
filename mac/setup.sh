@@ -11,7 +11,8 @@ brew bundle --file="$HOME/dotfiles/mac/Brewfile"
 # install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# install opencode
+# curl installers (what could go wrong?)
+curl -fsSL https://pi.dev/install.sh | sh
 curl -fsSL https://opencode.ai/install | bash
 
 # link hammerspoon data
