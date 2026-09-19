@@ -60,6 +60,20 @@ Never commit or otherwise copy this private key into either repository.
 1. The most recent time I did this, I had issues that simply restarting resolved. I also had to unplug my dock, which was wild.
 
 
+## Pi
+Pi's global configuration is tracked in `config/pi/`. `PI_CODING_AGENT_DIR` is
+set to `$XDG_CONFIG_HOME/pi`, so the normal file-linking behavior in `link.sh`
+symlinks tracked Pi files into `~/.config/pi/`. That destination remains a real
+directory because Pi also stores credentials, sessions, trust decisions,
+downloaded model metadata, and installed package data alongside its config.
+Only the explicitly tracked files are symlinked into the repository. Pi may
+update runtime metadata in the tracked `settings.json` file.
+
+After bootstrapping, authenticate Pi separately with `/login`; credentials are
+not stored in this repository. Packages listed in the tracked settings are
+installed by Pi when needed.
+
+
 ## windows
 1. Open `Powershell` **as administrator** and run the following:
     ```powershell

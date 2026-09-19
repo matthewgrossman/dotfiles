@@ -1,0 +1,11 @@
+{
+  "theme": "dark",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-6-astra",
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-mcp-adapter"
+  ],
+  "lastChangelogVersion": "0.85.1"
+}

@@ -39,7 +39,8 @@ export -f symlink
 export BACKUP_DIR
 
 cd "$HOME/dotfiles/config" || exit 1
-mkdir -p "$HOME/.config"
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+mkdir -p "$CONFIG_HOME"
 
 # These applications write generated data alongside their configuration, so
 # keep their destination directories real and link only tracked files.
@@ -47,6 +48,7 @@ FILE_LINK_DIRS=(
     git
     herdr
     opencode
+    pi
     zed
     zsh
 )
@@ -75,7 +77,7 @@ for source_dir in "$HOME"/dotfiles/config/*/; do
         continue
     fi
 
-    symlink "${source_dir%/}" "$HOME/.config/$directory"
+    symlink "${source_dir%/}" "$CONFIG_HOME/$directory"
 done
 
 # Link tracked files individually for applications that mix generated data
@@ -89,7 +91,8 @@ git ls-files | while read -r file; do
         fi
     fi
 
-    target_dir="$HOME/.config/$(dirname "$file")"
+    target="$CONFIG_HOME/$file"
+    target_dir="$(dirname "$target")"
 
     # If target_dir is a symlink, remove it so we can create a real directory.
     if [ -L "$target_dir" ]; then
@@ -98,5 +101,5 @@ git ls-files | while read -r file; do
     fi
 
     mkdir -p "$target_dir"
-    symlink "$HOME/dotfiles/config/$file" "$HOME/.config/$file"
+    symlink "$HOME/dotfiles/config/$file" "$target"
 done
