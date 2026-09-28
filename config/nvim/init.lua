@@ -1175,8 +1175,9 @@ require('lazy').setup({
 
       vim.keymap.set('n', '<C-p>', function()
         Snacks.picker.smart({
+          hidden = true,
           multi = {
-            { source = 'files', hidden = true },
+            { source = 'files' },
           },
         })
       end)
