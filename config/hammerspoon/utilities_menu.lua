@@ -1,7 +1,12 @@
-local M1DDC = '/opt/homebrew/bin/m1ddc'
+local M1DDC = hs.execute('command -v m1ddc', true):match('[^\n]+')
 local BRIGHTNESS_PRESETS = { 1, 50, 100 }
 
 local function setBrightness(screen, percent)
+  if not M1DDC then
+    hs.alert.show('m1ddc not found on your PATH (brew install m1ddc, then reload Hammerspoon)')
+    return
+  end
+
   hs.task.new(M1DDC, function(exitCode, _, stdErr)
     if exitCode ~= 0 then
       hs.alert.show(string.format(
