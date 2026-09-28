@@ -1,7 +1,7 @@
 {
   "theme": "dark",
   "defaultProvider": "github-copilot",
-  "defaultModel": "gpt-6-astra",
+  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "medium",
   "packages": [
     "npm:pi-web-access",
