@@ -204,11 +204,34 @@ use('https://github.com/arborist-ts/arborist.nvim', function()
 end)
 
 use('https://github.com/esmuellert/codediff.nvim', function()
-  require('codediff').setup()
+  require('codediff').setup({
+    diff = {
+      layout = 'inline',
+    },
+    keymaps = {
+      view = {
+        stage_hunk = 'gs',
+        unstage_hunk = 'gu',
+      },
+    },
+  })
   vim.api.nvim_create_user_command('CodeDiffMain', 'CodeDiff main...HEAD', {
     desc = 'Review branch changes since diverging from main',
   })
   vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
+end)
+
+-- review.nvim uses nui.nvim for its comment editor and picker popups.
+use('https://github.com/MunifTanjim/nui.nvim')
+use('https://github.com/georgeguimaraes/review.nvim', function()
+  require('review').setup()
+
+  -- Actions used while reviewing are buffer-local (`i`, `d`, `e`, `c`, `C`,
+  -- and `q`). These mappings select a review scope or add a standalone note.
+  vim.keymap.set('n', '<leader>rr', '<cmd>Review<CR>', { desc = 'Review working tree' })
+  vim.keymap.set('n', '<leader>rc', '<cmd>Review commits<CR>', { desc = 'Review commits' })
+  vim.keymap.set('n', '<leader>rb', '<cmd>Review branch<CR>', { desc = 'Review branch' })
+  vim.keymap.set({ 'n', 'x' }, '<leader>rn', ':Review note<CR>', { desc = 'Add review note' })
 end)
 
 use('https://github.com/NeogitOrg/neogit', function()
