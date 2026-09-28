@@ -31,8 +31,6 @@ fi
 export SCCACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sccache"
 export NVIM_APPNAME=nvim_agent
 
-eval "$(mise activate zsh)"
-
 export WORDCHARS=${WORDCHARS/\/}
 # export PYTHONBREAKPOINT="ipdb.set_trace"
 export PYTHONBREAKPOINT=pdbp.set_trace
@@ -52,6 +50,10 @@ if [ -z "$NVIM" ]; then
 
     # when in nvim, VISUAL is overriden by nvr instead
     export VISUAL="$(which nvim)"
+fi
+
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
 fi
 
 if command -v direnv > /dev/null; then
