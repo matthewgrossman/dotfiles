@@ -164,7 +164,9 @@ use('https://github.com/folke/snacks.nvim', function()
     },
   })
 
-  vim.keymap.set('n', '<C-p>', function() snacks.picker.files() end)
+  vim.keymap.set('n', '<C-p>', function()
+    snacks.picker.smart({ hidden = true, multi = { 'files' } })
+  end)
   vim.keymap.set('n', '<leader>sf', function() snacks.picker.files() end, { desc = 'Search files' })
   vim.keymap.set('n', '<leader>sg', function() snacks.picker.grep() end, { desc = 'Search grep' })
   vim.keymap.set({ 'n', 'x' }, '<leader>sw', function()
