@@ -29,6 +29,7 @@ else
 fi
 
 export SCCACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sccache"
+mkdir -p "$SCCACHE_DIR"
 export NVIM_APPNAME=nvim_agent
 
 export WORDCHARS=${WORDCHARS/\/}

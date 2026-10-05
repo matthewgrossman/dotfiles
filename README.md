@@ -60,6 +60,12 @@ Never commit or otherwise copy this private key into either repository.
 1. The most recent time I did this, I had issues that simply restarting resolved. I also had to unplug my dock, which was wild.
 
 
+## Herdr
+`config/herdr/config.toml` holds shared daemon/TUI settings;
+`config/herdr/config-gpui.local.toml` holds GUI overrides and reloads automatically.
+`link.sh` links tracked files into `~/.config/herdr/` individually, leaving
+generated defaults (`config-gpui.toml`), runtime data, and credentials outside Git.
+
 ## Pi
 Pi's global configuration is tracked in `config/pi/`. `PI_CODING_AGENT_DIR` is
 set to `$XDG_CONFIG_HOME/pi`, so the normal file-linking behavior in `link.sh`

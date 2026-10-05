@@ -1,0 +1,14 @@
+# Herdr GPUI overrides. Saved changes reload automatically.
+# Unset keys inherit config-gpui.toml; tables merge key by key.
+
+# New installs start with the roomy rounded sidebar. Remove this line for
+# the managed default, or pick another layout listed in config-gpui.toml.
+layout = "comfortable-rounded"
+contrast = "standard"
+theme = "light:Catppuccin Mocha,dark:Django"
+
+[keybindings]
+next_workspace = "cmd-j"
+previous_workspace = "cmd-k"
+next_tab = "ctrl-tab"
+previous_tab = "ctrl-shift-tab"

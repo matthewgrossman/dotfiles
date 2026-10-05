@@ -181,11 +181,6 @@ use('https://github.com/folke/snacks.nvim', function()
     snacks.gitbrowse({ what = 'file' })
   end, { desc = 'Open current lines on Git host' })
 
-  -- Toggle terminal panel: <C-/> (also <C-_> for tmux compat)
-  vim.keymap.set({ 'n', 't' }, '<C-/>', function()
-    snacks.terminal.toggle()
-  end, { desc = 'Toggle terminal' })
-
   -- Cycle through terminals
   vim.keymap.set({ 'n', 't' }, '<C-S-]>', function()
     local current = vim.api.nvim_get_current_buf()

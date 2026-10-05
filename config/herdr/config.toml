@@ -4,6 +4,7 @@ onboarding = false
 agent_panel_sort = "spaces"
 show_agent_labels_on_pane_borders = false
 
+status_indicators = "symbols"
 [worktrees]
 directory = "~/dev/worktrees"
 
@@ -15,6 +16,7 @@ name = "catppuccin"
 auto_switch = false
 
 [keys]
+prefix = "ctrl+/"
 zoom = "ctrl+;"
 
 [[keys.command]]
