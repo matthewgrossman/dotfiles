@@ -88,6 +88,14 @@ vim.keymap.set({ 'n', 'v' }, 'L', '$')
 -- Match pair
 vim.keymap.set('n', 'mm', '%')
 
+-- Incremental syntax selection (built into Neovim 0.12; parsers supplied by Arborist)
+vim.keymap.set({ 'n', 'x' }, '<CR>', function()
+  vim.treesitter.select('parent', vim.v.count1)
+end, { desc = 'Select / expand syntax node' })
+vim.keymap.set('x', '<S-CR>', function()
+  vim.treesitter.select('child', vim.v.count1)
+end, { desc = 'Shrink syntax node selection' })
+
 -- macOS word deletion
 vim.keymap.set('i', '<A-BS>', '<C-W>')
 
@@ -198,6 +206,11 @@ end)
 
 use('https://github.com/arborist-ts/arborist.nvim', function()
   require('arborist').setup({ prefer_wasm = false })
+end)
+
+use('https://github.com/matthewgrossman/tree-swap.nvim', function()
+  vim.keymap.set({ 'n', 'x' }, ']a', require('tree_swap').swap_next)
+  vim.keymap.set({ 'n', 'x' }, '[a', require('tree_swap').swap_previous)
 end)
 
 use('https://github.com/esmuellert/codediff.nvim', function()
