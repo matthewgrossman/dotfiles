@@ -114,6 +114,10 @@ histrestoremain() {
 }
 bindkey -e
 
+# Word navigation for terminals that preserve Alt-arrow sequences (Herdr GPUI).
+bindkey -M emacs '^[[1;3D' backward-word
+bindkey -M emacs '^[[1;3C' forward-word
+
 source <(fzf --zsh)
 
 if [ -d "$HOME/.kube"  ]; then
