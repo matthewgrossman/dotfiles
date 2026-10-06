@@ -205,6 +205,9 @@ use('https://github.com/esmuellert/codediff.nvim', function()
     diff = {
       layout = 'inline',
     },
+    explorer = {
+      view_mode = 'tree',
+    },
     keymaps = {
       view = {
         stage_hunk = 'gs',
@@ -212,9 +215,24 @@ use('https://github.com/esmuellert/codediff.nvim', function()
       },
     },
   })
-  vim.api.nvim_create_user_command('CodeDiffMain', 'CodeDiff main...HEAD', {
-    desc = 'Review branch changes since diverging from main',
+  vim.api.nvim_create_user_command('CodeDiffMain', function()
+    local base = vim.fn.systemlist({ 'git', 'default-branch' })[1]
+    if vim.v.shell_error ~= 0 or not base or base == '' then
+      vim.notify('No default Git branch found', vim.log.levels.WARN)
+      return
+    end
+    vim.cmd({ cmd = 'CodeDiff', args = { base .. '...' } })
+  end, {
+    desc = 'Review branch changes since diverging from the default branch',
   })
+  vim.api.nvim_create_user_command('CodeDiffPR', function()
+    local base = vim.fn.systemlist({ 'gh', 'pr', 'view', '--json', 'baseRefName', '--jq', '.baseRefName' })[1]
+    if vim.v.shell_error ~= 0 or not base or base == '' then
+      vim.cmd('CodeDiffMain')
+      return
+    end
+    vim.cmd({ cmd = 'CodeDiff', args = { base .. '...HEAD' } })
+  end, { desc = 'Review current branch against its PR base (or default branch)' })
   vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
 end)
 
@@ -228,6 +246,7 @@ use('https://github.com/georgeguimaraes/review.nvim', function()
   vim.keymap.set('n', '<leader>rr', '<cmd>Review<CR>', { desc = 'Review working tree' })
   vim.keymap.set('n', '<leader>rc', '<cmd>Review commits<CR>', { desc = 'Review commits' })
   vim.keymap.set('n', '<leader>rb', '<cmd>Review branch<CR>', { desc = 'Review branch' })
+  vim.keymap.set('n', '<leader>rm', '<cmd>CodeDiffPR<CR>', { desc = 'Review current branch against PR base' })
   vim.keymap.set({ 'n', 'x' }, '<leader>rn', ':Review note<CR>', { desc = 'Add review note' })
 end)
 
@@ -257,6 +276,7 @@ use('https://github.com/stevearc/oil.nvim', function()
     },
   })
   vim.keymap.set('n', '-', '<cmd>Oil<CR>')
+  vim.keymap.set('n', '<leader>o', '<cmd>Oil --float<CR>', { desc = 'Open Oil popup' })
 end)
 
 -- [[ LSP ]]

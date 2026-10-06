@@ -10,8 +10,8 @@
       "version": "'v1'"
     },
     "codediff.nvim": {
-      "rev": "46727b842e6315cc3586c2ea9051a0ac6abce6c8",
-      "src": "git@github.com:esmuellert/codediff.nvim"
+      "rev": "09d9ebef2cc5a5c04db7a349cd6c61bdf84ecc8e",
+      "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "kanagawa.nvim": {
       "rev": "bb85e4bfc8d89b0e62c8fa53ccdd13d12e2f77b3",
