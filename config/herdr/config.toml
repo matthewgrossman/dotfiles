@@ -20,6 +20,18 @@ prefix = "ctrl+/"
 zoom = "ctrl+;"
 
 [[keys.command]]
+key = "prefix+y"
+type = "shell"
+command = 'test -n "$HERDR_ACTIVE_PANE_ID" && printf "%s" "$HERDR_ACTIVE_PANE_ID" | pbcopy'
+description = "copy active pane ID for agent messaging"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "local.pane-picker.open"
+description = "fuzzy-find and copy pane ID"
+
+[[keys.command]]
 key = "ctrl+h"
 type = "shell"
 command = "~/.config/herdr/vim-herdr-navigation.sh left"
