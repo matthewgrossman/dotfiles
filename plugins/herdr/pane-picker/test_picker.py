@@ -1,140 +1,110 @@
-import contextlib
-import io
+import json
 import os
-import shlex
-import subprocess
-import sys
-import unittest
 from pathlib import Path
-from unittest.mock import patch
+import subprocess
+import tempfile
+import unittest
 
-import picker
 
-
-def snapshot():
-    return {
-        "focused_workspace_id": "w1",
-        "focused_tab_id": "w1:t1",
-        "workspaces": [{"workspace_id": "w1", "label": "dotfiles"},
-                       {"workspace_id": "w2", "label": "project"}],
-        "tabs": [{"tab_id": "w1:t1", "label": "agents"},
-                 {"tab_id": "w2:t1", "label": "shell"}],
-        "panes": [
-            {"pane_id": "w1:p1", "workspace_id": "w1", "tab_id": "w1:t1",
-             "agent": "opencode", "terminal_title_stripped": "Review", "cwd": "/code"},
-            {"pane_id": "w2:p1", "workspace_id": "w2", "tab_id": "w2:t1", "cwd": "/project"},
-        ],
-    }
+SCRIPT = Path(__file__).with_name("picker.sh")
 
 
 class PickerTests(unittest.TestCase):
-    def test_defaults_to_agents_and_provides_all_panes_toggle(self):
-        def run_fzf(argv, **kwargs):
-            self.assertIn("--prompt=Agents> ", argv)
-            self.assertIn("ctrl-a:transform:", argv[-1])
-            self.assertIn("w1:p1\t", kwargs["input"])
-            self.assertNotIn("w2:p1\t", kwargs["input"])
-            env = kwargs["env"]
-            for key, ids in (("HERDR_PICKER_SHOW_ALL", ["w1:p1", "w2:p1"]),
-                             ("HERDR_PICKER_SHOW_AGENTS", ["w1:p1"])):
-                command = env[key].split("+reload:", 1)[1]
-                path = shlex.split(command)[1]
-                rows = Path(path).read_text().splitlines()
-                self.assertEqual([row.split("\t", 1)[0] for row in rows], ids)
-            return subprocess.CompletedProcess(argv, 130, "")
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="herdr picker test ")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.clipboard = self.root / "clipboard"
+        self.data = {
+            "focused_workspace_id": "w2", "focused_tab_id": "w2:t2",
+            "workspaces": [{"workspace_id": "w1", "label": "Other"},
+                           {"workspace_id": "w2", "label": "Current"}],
+            "tabs": [{"tab_id": "w2:t1", "label": "Tab one"},
+                     {"tab_id": "w2:t2", "label": "Tab two"}],
+            "panes": [
+                {"pane_id": "w1:p1", "workspace_id": "w1", "tab_id": "w1:t1", "agent": "claude"},
+                {"pane_id": "w2:p1", "workspace_id": "w2", "tab_id": "w2:t1", "agent": "pi"},
+                {"pane_id": "w2:p2", "workspace_id": "w2", "tab_id": "w2:t2", "cwd": "/shell"},
+                {"pane_id": "w2:p3", "workspace_id": "w2", "tab_id": "w2:t2", "agent": "opencode"},
+                {"pane_id": "w2:p4", "workspace_id": "w2", "tab_id": "w2:t2", "agent": "codex"},
+            ],
+        }
+        self.mock("herdr", '[ "$*" = "api snapshot" ] || exit 2\ncat "$TEST_SNAPSHOT"')
+        self.mock("pbcopy", 'cat > "$TEST_CLIPBOARD"')
+        self.mock("fzf", 'cat > "$TEST_ROWS"\nexit 130')
+        self.env = {**os.environ, "PATH": f"{self.root}:{os.environ['PATH']}", "HERDR_ENV": "1",
+                    "HERDR_BIN_PATH": str(self.root / "herdr"),
+                    "TEST_SNAPSHOT": str(self.root / "snapshot.json"),
+                    "TEST_CLIPBOARD": str(self.clipboard), "TEST_ROWS": str(self.root / "rows")}
 
-        with patch.object(subprocess, "run", side_effect=run_fzf):
-            self.assertIsNone(picker.pick_pane(snapshot()))
+    def mock(self, name, body):
+        path = self.root / name
+        path.write_text("#!/bin/bash\nset -euo pipefail\n" + body + "\n")
+        path.chmod(0o755)
 
-    def test_no_agents_still_allows_toggling_to_terminals(self):
-        data = snapshot()
-        data["panes"] = [data["panes"][1]]
-        with patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 130, "")) as run:
-            self.assertIsNone(picker.pick_pane(data))
-        self.assertEqual(run.call_args.kwargs["input"], "")
+    def run_picker(self, *args, script=SCRIPT):
+        Path(self.env["TEST_SNAPSHOT"]).write_text(json.dumps({"result": {"snapshot": self.data}}))
+        return subprocess.run(["bash", str(script), *args], env=self.env, capture_output=True, text=True)
 
-    def test_current_tab_then_current_workspace_then_other_workspaces(self):
-        data = snapshot()
-        data["focused_workspace_id"] = "w2"
-        data["focused_tab_id"] = "w2:t2"
-        data["panes"] += [
-            {"pane_id": "w3:p1", "workspace_id": "w3", "tab_id": "w3:t1"},
-            {"pane_id": "w2:p3", "workspace_id": "w2", "tab_id": "w2:t2"},
-            {"pane_id": "w2:p4", "workspace_id": "w2", "tab_id": "w2:t1"},
-            {"pane_id": "w2:p5", "workspace_id": "w2", "tab_id": "w2:t2"},
-        ]
-        original_ids = [pane["pane_id"] for pane in data["panes"]]
-        ids = [row.split("\t", 1)[0] for row in picker.pane_rows(data)]
-        self.assertEqual(ids, ["w2:p3", "w2:p5", "w2:p1", "w2:p4", "w1:p1", "w3:p1"])
-        self.assertEqual([pane["pane_id"] for pane in data["panes"]], original_ids)
+    def ids(self, result):
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return [row.split("\t", 1)[0] for row in result.stdout.splitlines()]
 
-    def test_missing_focus_keeps_existing_order(self):
-        data = snapshot()
-        del data["focused_workspace_id"], data["focused_tab_id"]
-        ids = [row.split("\t", 1)[0] for row in picker.pane_rows(data)]
-        self.assertEqual(ids, [pane["pane_id"] for pane in data["panes"]])
+    def test_agents_only_and_locality_order(self):
+        self.assertEqual(self.ids(self.run_picker("--list")), ["w2:p3", "w2:p4", "w2:p1", "w1:p1"])
 
-    def test_includes_all_workspaces_nonagents_and_current_pane(self):
-        rows = picker.pane_rows(snapshot())
-        self.assertEqual(len(rows), 2)
-        self.assertIn("w1:p1\tdotfiles · agents · Review · /code · opencode · w1:p1", rows)
-        self.assertIn("w2:p1\tproject · shell · /project · terminal · w2:p1", rows)
+    def test_all_panes_preserves_order_within_groups(self):
+        self.assertEqual(self.ids(self.run_picker("--list", "all")),
+                         ["w2:p2", "w2:p3", "w2:p4", "w2:p1", "w1:p1"])
 
-    def test_sanitizes_title_without_changing_id(self):
-        data = snapshot()
-        data["panes"][0]["terminal_title_stripped"] = "Title\nforged\trow\x1b[31m"
-        row = picker.pane_rows(data)[0]
-        self.assertTrue(row.startswith("w1:p1\t"))
+    def test_missing_focus_preserves_snapshot_order(self):
+        del self.data["focused_workspace_id"], self.data["focused_tab_id"]
+        self.assertEqual(self.ids(self.run_picker("--list", "all")),
+                         [pane["pane_id"] for pane in self.data["panes"]])
+
+    def test_sanitizes_titles(self):
+        self.data["panes"][3]["terminal_title"] = "Title\nforged\trow\x1b[31m"
+        result = self.run_picker("--list")
+        row = result.stdout.splitlines()[0]
         self.assertEqual(row.count("\t"), 1)
-        self.assertNotIn("\n", row)
         self.assertNotIn("\x1b", row)
+        self.assertEqual(len(result.stdout.splitlines()), 4)
 
-    def test_selection_returns_only_id(self):
-        with patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "w2:p1\tlabel\n")) as run:
-            self.assertEqual(picker.pick_pane(snapshot()), "w2:p1")
-        self.assertIn("--no-sort", run.call_args.args[0])
+    def test_cancel_and_failure_leave_clipboard_unchanged(self):
+        for status in (1, 2, 130):
+            self.clipboard.write_text("existing clipboard")
+            self.mock("fzf", f'cat > "$TEST_ROWS"\nexit {status}')
+            self.assertEqual(self.run_picker().returncode, status)
+            self.assertEqual(self.clipboard.read_text(), "existing clipboard")
 
-    def test_invalid_selection_and_empty_list_fail(self):
-        with patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "w9:p9\tforged\n")):
-            with self.assertRaisesRegex(ValueError, "Invalid picker selection"):
-                picker.pick_pane(snapshot())
-        data = snapshot()
-        data["panes"] = []
-        with self.assertRaisesRegex(ValueError, "No Herdr panes"):
-            picker.pick_pane(data)
+    def test_selection_copies_id_only_without_newline(self):
+        self.mock("fzf", 'cat > "$TEST_ROWS"\nprintf "w2:p3\\tlabel\\n"')
+        result = self.run_picker()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.clipboard.read_bytes(), b"w2:p3")
 
-    def test_escape_leaves_clipboard_unchanged(self):
-        with patch.object(picker, "herdr", return_value={"snapshot": snapshot()}) as herdr, \
-                patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 130, "")) as run:
-            picker.copy_pane()
-        herdr.assert_called_once_with("api", "snapshot")
-        run.assert_called_once()
-        self.assertEqual(run.call_args.args[0][0], "fzf")
+    def test_no_agents_can_reload_all_without_temp_files(self):
+        self.data["panes"] = [self.data["panes"][2]]
+        self.mock("fzf", 'cat > "$TEST_ROWS"\neval "$HERDR_PICKER_LIST all" > "$TEST_ROWS.all"\nexit 130')
+        result = self.run_picker()
+        self.assertEqual(result.returncode, 130, result.stderr)
+        self.assertEqual((self.root / "rows").read_text(), "")
+        self.assertIn("w2:p2\t", (self.root / "rows.all").read_text())
 
-    def test_copies_exact_id_without_newline_and_never_sends_input(self):
-        with patch.object(picker, "herdr", return_value={"snapshot": snapshot()}) as herdr, \
-                patch.object(picker, "pick_pane", return_value="w2:p1"), \
-                patch.object(subprocess, "run") as run, contextlib.redirect_stdout(io.StringIO()):
-            picker.copy_pane()
-        herdr.assert_called_once_with("api", "snapshot")
-        run.assert_called_once_with(["/usr/bin/pbcopy"], input="w2:p1", capture_output=True,
-                                    text=True, timeout=5, check=True)
+    def test_reload_command_handles_script_paths_with_spaces(self):
+        script = self.root / "picker with spaces.sh"
+        script.write_text(SCRIPT.read_text())
+        self.mock("fzf", 'cat > "$TEST_ROWS"\neval "$HERDR_PICKER_LIST all" > "$TEST_ROWS.all"\nexit 130')
+        result = self.run_picker(script=script)
+        self.assertEqual(result.returncode, 130, result.stderr)
+        self.assertIn("w2:p2\t", (self.root / "rows.all").read_text())
 
-    def test_launch_does_not_require_source_context_or_pass_target_pane(self):
-        with patch.dict(os.environ, {"HERDR_ENV": "1"}), \
-                patch.object(sys, "argv", ["picker.py", "--open"]), \
-                patch.object(picker, "herdr") as herdr:
-            os.environ.pop("HERDR_PANE_ID", None)
-            self.assertEqual(picker.main(), 0)
-        herdr.assert_called_once_with("plugin", "pane", "open", "--plugin", "local.pane-picker",
-                                      "--entrypoint", "picker")
-
-    def test_refuses_to_run_outside_herdr(self):
-        with patch.dict(os.environ, {"HERDR_ENV": "0"}), \
-                patch.object(picker, "herdr") as herdr, \
-                contextlib.redirect_stderr(io.StringIO()):
-            self.assertEqual(picker.main(), 1)
-        herdr.assert_not_called()
+    def test_requires_herdr(self):
+        self.env["HERDR_ENV"] = "0"
+        result = self.run_picker()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("inside Herdr", result.stderr)
+        self.assertFalse(self.clipboard.exists())
 
 
 if __name__ == "__main__":

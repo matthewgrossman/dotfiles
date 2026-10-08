@@ -9,7 +9,7 @@ platforms = ["macos"]
 id = "open"
 title = "Copy pane reference"
 contexts = ["global"]
-command = ["python3", "picker.py", "--open"]
+command = ["sh", "-c", "exec \"${HERDR_BIN_PATH:-herdr}\" plugin pane open --plugin local.pane-picker --entrypoint picker"]
 
 [[panes]]
 id = "picker"
@@ -17,4 +17,4 @@ title = "Copy pane reference"
 placement = "popup"
 width = "90%"
 height = "70%"
-command = ["python3", "picker.py"]
+command = ["bash", "picker.sh"]
