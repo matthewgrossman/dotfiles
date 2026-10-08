@@ -66,6 +66,15 @@ Never commit or otherwise copy this private key into either repository.
 `link.sh` links tracked files into `~/.config/herdr/` individually, leaving
 generated defaults (`config-gpui.toml`), runtime data, and credentials outside Git.
 
+## Agent skills
+Run `./install-skills.sh` to install all local skills and the selected external
+skills globally for the configured agents. Requires Node.js and npm (`npx`).
+Local skills live in `skills/<name>/SKILL.md`; new ones are installed automatically
+without changing the script.
+Edit the `SKILLS` array to change the selection. Rerunning refreshes the listed
+skills without removing existing ones. The script then runs
+`~/dev/workfiles/install-skills.sh` if it exists.
+
 ## Pi
 Pi's global configuration is tracked in `config/pi/`. `PI_CODING_AGENT_DIR` is
 set to `$XDG_CONFIG_HOME/pi`, so the normal file-linking behavior in `link.sh`
