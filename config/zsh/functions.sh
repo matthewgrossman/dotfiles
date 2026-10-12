@@ -283,28 +283,34 @@ function y() {
 }
 
 wt-prune() {
-    local branches selected
-    branches=$(wt list --branches --format json | jq -r '.[] | select(.main_state == "integrated" and .is_main == false) | .branch // empty')
-    [[ -z "$branches" ]] && echo "No merged branches to prune." && return
-    local search=$(echo "$branches" | awk '{printf "head:%s ", $0}')
-    local tmpfile=$(mktemp)
-    trap "rm -f $tmpfile" EXIT
-    gh pr list --state merged --search "$search" --json number,title,url,headRefName 2>/dev/null > "$tmpfile"
-    local items=$(echo "$branches" | while read -r b; do
-        local label=$(jq -r --arg b "$b" '.[] | select(.headRefName == $b) | "#\(.number) \(.title)"' "$tmpfile")
+    local listing branches selected b main_state pr label url
+    local -a items
+    listing=$(wt list --branches --format json) || return
+    branches=$(printf '%s\n' "$listing" | jq -r '.[] | select(.is_main == false and .branch != null) | [.branch, .main_state] | @tsv') || return
+    [[ -z "$branches" ]] && echo "No branches to prune." && return
+
+    echo "Checking GitHub for merged PRs..."
+    while IFS=$'\t' read -r b main_state; do
+        # Query each head explicitly: combined head: search terms can miss PRs.
+        pr=$(gh pr list --state merged --head "$b" --limit 1 --json number,title,url,headRefName) || return
+        label=$(printf '%s\n' "$pr" | jq -r --arg b "$b" '.[] | select(.headRefName == $b) | "#\(.number) \(.title)"') || return
+        url=$(printf '%s\n' "$pr" | jq -r --arg b "$b" '.[] | select(.headRefName == $b) | .url') || return
+        [[ "$main_state" != "integrated" && -z "$label" ]] && continue
         if [[ -n "$label" ]]; then
-            echo "$b	$label | $b"
+            items+=("$b"$'\t'"$label | $b"$'\t'"$url")
         else
-            echo "$b	$b"
+            items+=("$b"$'\t'"$b"$'\t')
         fi
-    done)
-    selected=$(echo "$items" | fzf --multi --delimiter=$'\t' --with-nth=2 --height=~100% \
-        --header='tab: select, enter: remove, ctrl-o: open PR' \
-        --bind="ctrl-o:execute-silent(jq -r --arg b {1} '.[] | select(.headRefName == \$b) | .url' $tmpfile | xargs open)" \
+    done <<< "$branches"
+    (( ${#items} == 0 )) && echo "No merged branches to prune." && return
+
+    selected=$(printf '%s\n' "${items[@]}" | fzf --multi --delimiter=$'\t' --with-nth=2 --height=~100% \
+        --header='tab: select, enter: remove (protects dirty worktrees), ctrl-o: open PR' \
+        --bind='ctrl-o:transform-header(if test -n {3}; then /usr/bin/open {3} 2>&1 && printf "Opened PR in browser | tab: select, enter: remove, ctrl-o: open PR"; else printf "No merged PR link for this branch | tab: select, enter: remove"; fi)' \
         | cut -f1)
-    rm -f "$tmpfile"
     [[ -z "$selected" ]] && return
-    echo "$selected" | xargs wt remove --force
+    # Let wt protect local files and retain branches it cannot prove integrated.
+    wt remove "${(@f)selected}"
 }
 
 alias kgpu='kubectl view-allocations -r nvidia.com/gpu'
