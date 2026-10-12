@@ -10,8 +10,8 @@ theme = "light:Catppuccin Mocha,dark:Nvim Dark"
 [keybindings]
 next_workspace = "cmd-j"
 previous_workspace = "cmd-k"
-next_tab = ["ctrl-tab", "cmd-shift-]", "cmd-}"]
-previous_tab = ["ctrl-shift-tab", "cmd-shift-[", "cmd-{"]
+next_tab = ["ctrl-tab", "cmd-}"]
+previous_tab = ["ctrl-shift-tab", "cmd-{"]
 
 [terminal]
 size = 16.0

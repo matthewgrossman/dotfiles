@@ -3,8 +3,9 @@ onboarding = false
 [ui]
 agent_panel_sort = "spaces"
 show_agent_labels_on_pane_borders = false
+status_indicators = "dots"
+right_click_passthrough_modifier = "ctrl"
 
-status_indicators = "symbols"
 [worktrees]
 directory = "~/dev/worktrees"
 
