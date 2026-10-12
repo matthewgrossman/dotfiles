@@ -244,8 +244,9 @@ use('https://github.com/esmuellert/codediff.nvim', function()
       vim.cmd('CodeDiffMain')
       return
     end
-    vim.cmd({ cmd = 'CodeDiff', args = { base .. '...HEAD' } })
-  end, { desc = 'Review current branch against its PR base (or default branch)' })
+    -- The green side should be the real working tree, not a HEAD snapshot.
+    vim.cmd({ cmd = 'CodeDiff', args = { base .. '...' } })
+  end, { desc = 'Review working tree against PR base (or default branch)' })
   vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
 end)
 
@@ -254,12 +255,12 @@ use('https://github.com/MunifTanjim/nui.nvim')
 use('https://github.com/georgeguimaraes/review.nvim', function()
   require('review').setup()
 
-  -- Actions used while reviewing are buffer-local (`i`, `d`, `e`, `c`, `C`,
-  -- and `q`). These mappings select a review scope or add a standalone note.
+  -- Start readonly for i/d/e comment actions; R toggles edit mode.
+  -- These mappings select a review scope or add a standalone note.
   vim.keymap.set('n', '<leader>rr', '<cmd>Review<CR>', { desc = 'Review working tree' })
   vim.keymap.set('n', '<leader>rc', '<cmd>Review commits<CR>', { desc = 'Review commits' })
   vim.keymap.set('n', '<leader>rb', '<cmd>Review branch<CR>', { desc = 'Review branch' })
-  vim.keymap.set('n', '<leader>rm', '<cmd>CodeDiffPR<CR>', { desc = 'Review current branch against PR base' })
+  vim.keymap.set('n', '<leader>rm', '<cmd>CodeDiffPR<CR>', { desc = 'Review working tree against PR base' })
   vim.keymap.set({ 'n', 'x' }, '<leader>rn', ':Review note<CR>', { desc = 'Add review note' })
 end)
 
