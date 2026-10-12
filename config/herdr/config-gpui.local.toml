@@ -5,10 +5,17 @@
 # the managed default, or pick another layout listed in config-gpui.toml.
 layout = "comfortable-rounded"
 contrast = "standard"
-theme = "light:Catppuccin Mocha,dark:Django"
+theme = "light:Catppuccin Mocha,dark:Nvim Dark"
 
 [keybindings]
 next_workspace = "cmd-j"
 previous_workspace = "cmd-k"
-next_tab = "ctrl-tab"
-previous_tab = "ctrl-shift-tab"
+next_tab = ["ctrl-tab", "cmd-shift-]", "cmd-}"]
+previous_tab = ["ctrl-shift-tab", "cmd-shift-[", "cmd-{"]
+
+[terminal]
+size = 16.0
+
+[palette]
+# Disable the double-Shift gesture that opens the palette.
+double_shift = false
