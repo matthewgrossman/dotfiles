@@ -134,7 +134,8 @@ export LLM_USER_PATH="$XDG_CONFIG_HOME/io.datasette.llm"
 export FZF_DEFAULT_OPTS="--ansi --no-height"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_DIR_COMMAND=""
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Include gitignored files (e.g. tmp/ written by agents), but skip .git internals
+export FZF_CTRL_T_COMMAND="rg --files --hidden --no-ignore-vcs -g '!.git/'"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 # eval "$(atuin init zsh --disable-ctrl-r)"  # Use atuin for history recording only
 # source "$HOME/dotfiles/config/zsh/fzf-atuin.zsh"  # Custom fzf+atuin ctrl-r
