@@ -244,8 +244,9 @@ use('https://github.com/esmuellert/codediff.nvim', function()
       vim.cmd('CodeDiffMain')
       return
     end
-    -- The green side should be the real working tree, not a HEAD snapshot.
-    vim.cmd({ cmd = 'CodeDiff', args = { base .. '...' } })
+    -- Use the remote-tracking base, not a potentially stale local branch.
+    -- Three-dot mode keeps the real working tree on the green side.
+    vim.cmd({ cmd = 'CodeDiff', args = { 'origin/' .. base .. '...' } })
   end, { desc = 'Review working tree against PR base (or default branch)' })
   vim.keymap.set('n', '<leader>gd', '<cmd>CodeDiff<CR>', { desc = 'Open CodeDiff' })
 end)
