@@ -39,6 +39,113 @@ mkdir -p ~/.config/sops/age
 
 Never commit or otherwise copy this private key into either repository.
 
+#### Homelab CA
+My self-hosted services use HTTPS certificates from my own CA, and accept only
+my devices (mTLS). Each device trusts the CA once; after that, a new server
+just needs a certificate from it, and nothing changes on the devices.
+[mkcert](https://github.com/FiloSottile/mkcert) issues the certificates;
+`.zshrc` points it at the CA with `CAROOT=~/dev/certs`. Never run
+`mkcert -install`: it would make this Mac trust the CA.
+
+`~/dev/certs` is never committed, and is backed up as one attachment on the
+"Homelab CA" entry in KeePassXC:
+
+| File | What | Who gets a copy |
+|---|---|---|
+| `rootCA.pem` | The CA's certificate, "homelab CA" (10 years, until Oct 2036) | Devices, to trust servers; servers, to check devices |
+| `rootCA-key.pem` | The CA's private key | Nobody |
+| `clients.pem` | Every allowed device's certificate | Servers, which accept only these |
+
+Issuing any certificate needs both `rootCA.pem` and `rootCA-key.pem`.
+`clients.pem` is my list; each server has its own copy, so any change to it
+means updating every server.
+
+Back up after every change, and restore on a new computer:
+
+```sh
+tar -czf certs.tgz -C ~/dev certs       # attach to the "Homelab CA" entry, then delete
+mkdir -p ~/dev && tar -xzf certs.tgz -C ~/dev
+```
+
+##### Creating the CA (once)
+mkcert would name its own CA after this Mac and user, so it's made with openssl:
+
+```sh
+mkdir -p ~/dev/certs && cd ~/dev/certs
+openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 3650 \
+  -keyout rootCA-key.pem -out rootCA.pem -subj "/CN=homelab CA" \
+  -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+  -addext "keyUsage=critical,keyCertSign,cRLSign"
+```
+
+`pathlen:1` lets it sign intermediate CAs, but not intermediates of those.
+
+##### Adding an intermediate CA
+For a machine that should issue its own certificates without the root key.
+It's limited to one domain, so its key can't be used to impersonate other
+sites to my devices. Devices need nothing new.
+
+```sh
+cd ~/dev/certs && d=lab.mrg.lol && t=$(mktemp -d)
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out $t/key.pem
+openssl req -new -key $t/key.pem -subj "/CN=homelab $d CA" |
+  openssl x509 -req -CA rootCA.pem -CAkey rootCA-key.pem -days 1826 -out $t/cert.pem \
+    -extfile <(printf '%s\n' "basicConstraints=critical,CA:TRUE,pathlen:0" \
+      "keyUsage=critical,keyCertSign,cRLSign" "nameConstraints=critical,permitted;DNS:$d" \
+      "subjectKeyIdentifier=hash" "authorityKeyIdentifier=keyid")
+```
+
+Give the machine `$t/cert.pem` and `$t/key.pem` (then `rm -rf $t`). There,
+mkcert issues from it with `CAROOT` pointing at a folder holding them as
+`rootCA.pem` and `rootCA-key.pem`. Servers must send their certificate
+followed by the intermediate's, and every host name must be under the domain.
+Name devices like email addresses (`mkcert -client ... iphone@homelab`), which
+the limit doesn't cover. Intermediates last 5 years; renew the same way.
+
+##### Adding a server, or renewing its certificate
+Server certificates last 825 days (iOS's limit). Use a name that resolves to
+the server, e.g. a wildcard under `mrg.lol`:
+
+```sh
+mkcert '*.home.mrg.lol'   # writes ./_wildcard.home.mrg.lol.pem and -key.pem
+```
+
+Give the server those two files, plus `rootCA.pem` and `clients.pem` if it
+should require my devices, then delete the local copies. Server certificates
+aren't backed up; issue a new one when needed.
+
+##### Adding a device
+E.g. an iPhone:
+
+```sh
+cd ~/Downloads
+mkcert -client -pkcs12 -p12-file iphone.p12 iphone     # password: changeit
+openssl pkcs12 -legacy -in iphone.p12 -passin pass:changeit -nokeys -clcerts |
+  openssl x509 >>~/dev/certs/clients.pem
+```
+
+1. AirDrop `~/dev/certs/rootCA.pem` and `iphone.p12` to the phone (if iOS
+   doesn't recognize the `.pem`, copy it to a `.crt` name first).
+2. Settings → General → VPN & Device Management: install both (the `.p12`
+   password is `changeit`).
+3. Settings → General → About → Certificate Trust Settings: turn on full trust
+   for "homelab CA". iOS doesn't do this on its own, and without it the phone
+   silently drops connections.
+4. Delete `iphone.p12` from the Mac.
+5. Back up `~/dev/certs`, and update `clients.pem` on every server. Until then
+   they reject the new device.
+
+A device certificate can also come from an intermediate CA. It's still one
+identity for every server, but servers should trust that intermediate's
+certificate alongside `rootCA.pem`, rather than rely on the device to send it.
+
+##### Revoking a device
+Delete its block from `clients.pem` (list them with
+`openssl crl2pkcs7 -nocrl -certfile ~/dev/certs/clients.pem | openssl pkcs7 -print_certs -noout`),
+then back up and update every server, as when adding one. Caddy refuses to
+start with an empty `clients.pem`, so to revoke the last device, stop the
+servers instead.
+
 `setup.sh` should handle lots of default macos settings, but AFAIK these still require manual clicking:
 1. Disable cmd-space for spotlight in keyboard settings (and modify alfred to use this instead)
 1. Map Caps Lock to Control in System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys

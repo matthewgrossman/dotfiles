@@ -36,6 +36,8 @@ export WORDCHARS=${WORDCHARS/\/}
 # export PYTHONBREAKPOINT="ipdb.set_trace"
 export PYTHONBREAKPOINT=pdbp.set_trace
 export GOPATH=$HOME/dev
+# mkcert issues certificates from my homelab CA (see the dotfiles README)
+export CAROOT="$HOME/dev/certs"
 
 # only modify PATH if we aren't in a nvim subshell
 if [ -z "$NVIM" ]; then
