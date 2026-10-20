@@ -1,0 +1,6 @@
+{
+  "name": "opencode-herdr-title",
+  "private": true,
+  "type": "module",
+  "exports": { "./tui": "./tui.ts" }
+}
