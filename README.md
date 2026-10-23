@@ -195,6 +195,10 @@ After bootstrapping, authenticate Pi separately with `/login`; credentials are
 not stored in this repository. Packages listed in the tracked settings are
 installed by Pi when needed.
 
+## Useful tools
+A persistent bookmark list of handy web tools.
+
+- [gif.statico.io](https://gif.statico.io/) — GIF tool
 
 ## windows
 1. Open `Powershell` **as administrator** and run the following:
