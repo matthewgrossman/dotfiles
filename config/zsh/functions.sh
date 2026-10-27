@@ -319,7 +319,7 @@ alias dotf='cd $HOME/dotfiles; wezterm cli set-tab-title "dotfiles" 2>/dev/null'
 alias g="git"
 
 alias vim='nvim'
-alias nagent='NVIM_APPNAME=nvim_agent nvim'
+alias nvim_deprecated='NVIM_APPNAME=nvim_deprecated nvim'
 alias k='kubectl'
 alias icat="kitty +kitten icat"
 alias rn='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'

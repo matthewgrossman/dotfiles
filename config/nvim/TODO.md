@@ -1,4 +1,4 @@
-# nvim_agent TODO
+# nvim TODO
 
 Tracking remaining work for the agentic nvim config.
 
