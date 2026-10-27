@@ -149,12 +149,6 @@ Tracking remaining work for the agentic nvim config.
   - Possible workaround: wrapper script that replaces `\x1b[2m` with `\x1b[90m` (bright black)
     - e.g. `claude "$@" | sed 's/\x1b\[2m/\x1b[90m/g'` — but may break interactive input
     - Or a `script`/`unbuffer` approach to preserve PTY behavior
-- [ ] Integrate cmux for terminal management outside nvim
-  - Pivot: nvim's embedded terminal has rendering limitations (no dim/faint text)
-  - Use cmux to manage terminals alongside nvim instead of inside it
-  - Research: keybinds to switch between cmux panes and nvim
-  - Research: how to send commands from nvim to a cmux terminal (e.g., run tests)
-  - May want to remove or simplify snacks terminal setup if cmux handles everything
 
 ## Open Questions
 

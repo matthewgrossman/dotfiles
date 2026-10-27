@@ -14,7 +14,6 @@ mas 'Amphetamine', id: 937984704
 # essentials
 cask 'alfred'
 cask 'betterdisplay'
-cask 'cmux'
 cask 'penso/tap/herdr-gpui', trusted: true
 cask 'zed'
 cask 'firefox'
