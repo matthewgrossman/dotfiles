@@ -396,6 +396,14 @@ use('https://github.com/echasnovski/mini.nvim', function()
   require('mini.tabline').setup()
 end)
 
+-- Registered after the colorscheme so markview derives its highlights from it.
+use('https://github.com/OXY2DEV/markview.nvim', function()
+  require('markview').setup({
+    preview = { icon_provider = 'mini' },
+  })
+  vim.keymap.set('n', '<leader>tm', '<cmd>Markview toggle<CR>', { desc = 'Toggle markdown preview' })
+end)
+
 -- Install all plugins (parallel), then run configs
 vim.pack.add(_pack_specs)
 for _, config in ipairs(_pack_configs) do
