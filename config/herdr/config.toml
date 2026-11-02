@@ -5,6 +5,8 @@ agent_panel_sort = "spaces"
 show_agent_labels_on_pane_borders = false
 status_indicators = "dots"
 right_click_passthrough_modifier = "ctrl"
+pane_gaps = false
+pane_outer_borders = false
 
 [worktrees]
 directory = "~/dev/worktrees"
