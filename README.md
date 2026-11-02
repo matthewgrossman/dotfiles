@@ -179,6 +179,12 @@ buffers. Cmd-clicked file paths use it via `editor_command`. Leave a view with
 `:detach`; `:q` on the last window stops the shared nvim. Inside Herdr, zsh puts
 it on `PATH` and uses `hvim --wait` (returns once the buffer is closed) as `$VISUAL`.
 
+`config/herdr-app/` holds the Herdr desktop app's keys, settings, and the
+`my-main` layout (a clone of the shipped `main`) that
+hosts the `vimnav` mod. That mod gives ctrl-h/j/k/l to Vim when it is in the
+focused pane and otherwise moves between panes. `link.sh` links these files
+individually, because the app writes generated files next to them.
+
 ## Agent skills
 Run `./install-skills.sh` to install all local skills and the selected external
 skills globally for the configured agents. Requires Node.js and npm (`npx`).

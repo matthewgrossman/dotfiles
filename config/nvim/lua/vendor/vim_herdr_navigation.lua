@@ -12,7 +12,11 @@ local function nav(wincmd, dir)
     return
   end
 
-  if vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '' then
+  -- herdr-app terminals can inherit a stale HERDR_PANE_ID, so check for it first.
+  -- Its ctrl-h/j/k/l are handled by the `vimnav` mod in ~/.config/herdr-app.
+  if vim.env.HC_TERMINAL_ID and vim.env.HC_TERMINAL_ID ~= '' then
+    vim.system({ 'herdr-app', 'do', 'pane.go', '--direction', dir })
+  elseif vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '' then
     local herdr = vim.env.HERDR_BIN_PATH
     if herdr == nil or herdr == '' then
       herdr = 'herdr'

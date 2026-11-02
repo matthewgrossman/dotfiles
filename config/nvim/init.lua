@@ -408,7 +408,7 @@ for _, config in ipairs(_pack_configs) do
   config()
 end
 
-if vim.env.HERDR_ENV == '1' and vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '' then
+if (vim.env.HC_TERMINAL_ID or '') ~= '' or (vim.env.HERDR_ENV == '1' and (vim.env.HERDR_PANE_ID or '') ~= '') then
   require('vendor.vim_herdr_navigation')
 end
 

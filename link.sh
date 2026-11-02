@@ -47,6 +47,7 @@ mkdir -p "$CONFIG_HOME"
 FILE_LINK_DIRS=(
     git
     herdr
+    herdr-app
     opencode
     pi
     zed
