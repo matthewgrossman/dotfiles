@@ -1,0 +1,8 @@
+{
+  "name": "opencode-spork",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tui": "./tui.ts"
+  }
+}

@@ -3,6 +3,9 @@
   "defaultProvider": "github-copilot",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "medium",
+  "extensions": [
+    "~/dotfiles/plugins/pi/spork/index.ts"
+  ],
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter"
