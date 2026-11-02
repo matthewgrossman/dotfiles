@@ -42,10 +42,8 @@ local function newChordLayer(key, tapAction)
   }
 
   bind(key, function()
-    if not layer.down then
-      layer.used = false
-    end
     layer.down = true
+    layer.used = false
   end, function()
     layer.down = false
     if not layer.used then
@@ -56,8 +54,16 @@ local function newChordLayer(key, tapAction)
   return layer
 end
 
-local function runFirstChord(chords, ...)
-  for _, chord in ipairs(chords or {}) do
+-- Chords keyed by trigger: a key name, a mouse button number, or 'scroll'.
+local chords = {}
+
+local function bindChord(layer, trigger, action)
+  chords[trigger] = chords[trigger] or {}
+  table.insert(chords[trigger], { layer = layer, action = action })
+end
+
+local function runFirstChord(trigger, ...)
+  for _, chord in ipairs(chords[trigger] or {}) do
     if chord.layer.down then
       chord.layer.used = true
       chord.action(...)
@@ -67,21 +73,12 @@ local function runFirstChord(chords, ...)
   return false
 end
 
-local keyboardButtonChords = {}
-
 local function bindKeyboardButton(key, standaloneAction)
-  local chords = {}
-  keyboardButtonChords[key] = chords
-
   bind(key, function()
-    if not runFirstChord(chords) then
+    if not runFirstChord(key) then
       standaloneAction()
     end
   end)
-end
-
-local function bindKeyboardButtonChord(layer, key, action)
-  table.insert(keyboardButtonChords[key], { layer = layer, action = action })
 end
 
 local eventTypes = hs.eventtap.event.types
@@ -94,17 +91,6 @@ local mouseDownTypes = {
   [eventTypes.rightMouseDown] = true,
   [eventTypes.otherMouseDown] = true,
 }
-local mouseButtonChords = {}
-local scrollChords = {}
-
-local function bindMouseButtonChord(layer, button, action)
-  mouseButtonChords[button] = mouseButtonChords[button] or {}
-  table.insert(mouseButtonChords[button], { layer = layer, action = action })
-end
-
-local function bindScrollChord(layer, action)
-  table.insert(scrollChords, { layer = layer, action = action })
-end
 
 -- Chord layers and their standalone actions.
 local paddleLayer = newChordLayer(THUMB_PADDLE, systemKeyAction('PLAY'))
@@ -118,21 +104,21 @@ bindKeyboardButton(TOP_MIDDLE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 's'))
 bindKeyboardButton(BOTTOM_MIDDLE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 't'))
 
 -- Chord actions.
-bindKeyboardButtonChord(topThumbLayer, SCROLL_BUMP_LEFT, keyAction({ 'cmd', 'alt' }, 'h'))
-bindKeyboardButtonChord(topThumbLayer, SCROLL_BUMP_RIGHT, keyAction({ 'cmd', 'alt' }, 'l'))
+bindChord(topThumbLayer, SCROLL_BUMP_LEFT, keyAction({ 'cmd', 'alt' }, 'h'))
+bindChord(topThumbLayer, SCROLL_BUMP_RIGHT, keyAction({ 'cmd', 'alt' }, 'l'))
 
-bindMouseButtonChord(paddleLayer, LEFT_MOUSE_BUTTON, systemKeyAction('PREVIOUS'))
-bindMouseButtonChord(paddleLayer, RIGHT_MOUSE_BUTTON, systemKeyAction('NEXT'))
-bindMouseButtonChord(paddleLayer, MIDDLE_MOUSE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 's'))
+bindChord(paddleLayer, LEFT_MOUSE_BUTTON, systemKeyAction('PREVIOUS'))
+bindChord(paddleLayer, RIGHT_MOUSE_BUTTON, systemKeyAction('NEXT'))
+bindChord(paddleLayer, MIDDLE_MOUSE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 's'))
 
-bindMouseButtonChord(topThumbLayer, LEFT_MOUSE_BUTTON, keyAction({ 'fn', 'ctrl' }, 'left'))
-bindMouseButtonChord(topThumbLayer, RIGHT_MOUSE_BUTTON, keyAction({ 'fn', 'ctrl' }, 'right'))
-bindMouseButtonChord(topThumbLayer, MIDDLE_MOUSE_BUTTON, keyAction({ 'cmd', 'alt' }, 'k'))
+bindChord(topThumbLayer, LEFT_MOUSE_BUTTON, keyAction({ 'fn', 'ctrl' }, 'left'))
+bindChord(topThumbLayer, RIGHT_MOUSE_BUTTON, keyAction({ 'fn', 'ctrl' }, 'right'))
+bindChord(topThumbLayer, MIDDLE_MOUSE_BUTTON, keyAction({ 'cmd', 'alt' }, 'k'))
 
-bindMouseButtonChord(bottomThumbLayer, LEFT_MOUSE_BUTTON, keyAction({ 'cmd' }, '['))
-bindMouseButtonChord(bottomThumbLayer, RIGHT_MOUSE_BUTTON, keyAction({ 'cmd' }, ']'))
+bindChord(bottomThumbLayer, LEFT_MOUSE_BUTTON, keyAction({ 'cmd' }, '['))
+bindChord(bottomThumbLayer, RIGHT_MOUSE_BUTTON, keyAction({ 'cmd' }, ']'))
 
-bindScrollChord(paddleLayer, function(delta)
+bindChord(paddleLayer, 'scroll', function(delta)
   postSystemKey(delta > 0 and 'SOUND_DOWN' or 'SOUND_UP')
 end)
 
@@ -155,17 +141,17 @@ M.mouseChordTap = hs.eventtap.new({
       return false
     end
 
-    return runFirstChord(scrollChords, delta)
+    return runFirstChord('scroll', delta)
   end
 
   local button = event:getProperty(eventProperties.mouseEventButtonNumber)
 
   if mouseDownTypes[eventType] then
-    if runFirstChord(mouseButtonChords[button]) then
-      suppressedMouseButtons[button] = true
-      return true
-    end
-    return false
+    -- Assign on every mouseDown so a missed mouseUp can't leave a stale flag
+    -- that swallows the next normal click's mouseUp.
+    local handled = runFirstChord(button)
+    suppressedMouseButtons[button] = handled or nil
+    return handled
   end
 
   if suppressedMouseButtons[button] then
