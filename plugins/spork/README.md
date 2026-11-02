@@ -21,9 +21,9 @@ applied when creating the Herdr destination, before launch.
 
 ## Loading
 
-- OpenCode: load `~/dotfiles/plugins/opencode/spork` in
-  `~/.config/opencode/cli.json`'s `plugins` array. Restart the TUI after changing
-  plugin code.
+- OpenCode: load `plugins/opencode/spork` in the `plugins` array of
+  `~/.config/opencode/cli.json`. This repository's `config/opencode/cli.json`
+  already does so. Restart the TUI after changing plugin code.
 - Pi 1.1.0: load `~/dotfiles/plugins/pi/spork/index.ts` in the `extensions` array
   in Pi's settings. This repository's `config/pi/settings.json` already does
   so. Restart Pi or use `/reload` in existing conversations.
