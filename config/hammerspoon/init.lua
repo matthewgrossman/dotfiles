@@ -150,7 +150,8 @@ hs.hotkey.bind(AppHyper, '0', function()
 end)
 
 ApplicationIsOnMainScreen = function(app)
-  return app:mainWindow():screen() == hs.screen:primaryScreen()
+  local win = app:mainWindow()
+  return win ~= nil and win:screen() == hs.screen.primaryScreen()
 end
 
 ToggleAppHidden = function(appName)
