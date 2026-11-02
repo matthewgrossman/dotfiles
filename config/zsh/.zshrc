@@ -87,7 +87,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 
-setopt autocd extendedglob
+setopt autocd
 setopt CLOBBER
 # Import history from a file into this shell without rewriting HISTFILE.
 histload() {
