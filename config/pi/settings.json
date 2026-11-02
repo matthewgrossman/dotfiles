@@ -8,7 +8,7 @@
   ],
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-mcp-adapter"
+    "~/dev/workfiles/pi"
   ],
   "lastChangelogVersion": "0.87.1"
 }

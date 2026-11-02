@@ -207,6 +207,9 @@ After bootstrapping, authenticate Pi separately with `/login`; credentials are
 not stored in this repository. Packages listed in the tracked settings are
 installed by Pi when needed.
 
+Work-specific Pi config lives in the `~/dev/workfiles/pi` package, listed in
+the tracked settings. Pi skips local packages that don't exist.
+
 ## Useful tools
 A persistent bookmark list of handy web tools.
 
