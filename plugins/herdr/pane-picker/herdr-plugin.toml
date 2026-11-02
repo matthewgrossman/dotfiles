@@ -1,19 +1,19 @@
 id = "local.pane-picker"
-name = "Copy Pane Reference"
+name = "Insert Pane Reference"
 version = "0.1.0"
 min_herdr_version = "0.9.1"
-description = "Fuzzy-find any Herdr pane and copy its ID to the clipboard"
+description = "Fuzzy-find a Herdr pane and insert or copy its reference"
 platforms = ["macos"]
 
 [[actions]]
 id = "open"
-title = "Copy pane reference"
-contexts = ["global"]
-command = ["sh", "-c", "exec \"${HERDR_BIN_PATH:-herdr}\" plugin pane open --plugin local.pane-picker --entrypoint picker"]
+title = "Insert pane reference"
+contexts = ["pane"]
+command = ["sh", "-c", "exec \"${HERDR_BIN_PATH:-herdr}\" plugin pane open --plugin local.pane-picker --entrypoint picker --env \"HERDR_PICKER_SOURCE_PANE_ID=${HERDR_PANE_ID:?Missing original pane ID}\""]
 
 [[panes]]
 id = "picker"
-title = "Copy pane reference"
+title = "Insert pane reference"
 placement = "popup"
 width = "90%"
 height = "70%"

@@ -1,20 +1,23 @@
 # Herdr pane reference picker
 
-Press **Ctrl+/ then F**, fuzzy-find a pane, and press Enter to copy its ID
-(e.g. `w2G:p1`) to the macOS clipboard, without a trailing newline. Escape
-cancels without changing the clipboard. The popup closes after selection.
+Press **Ctrl+/ then F**, fuzzy-find a pane, and press **Enter** to insert
+`herdr <pane-id>` (e.g. `herdr w2G:p1`) into the pane that opened the picker,
+without submitting it. **Ctrl+Y** copies the same text to the macOS clipboard
+instead. Escape cancels without typing or changing the clipboard. The popup
+closes after selection.
 
 Search matches workspace/tab names, pane titles, directories, agent types, and
 IDs. **Agents-only is the default. Ctrl+A toggles between agents and all panes**,
 including ordinary terminals and the pane you're currently in. The prompt shows
 the current mode; toggling preserves your query. Each toggle reloads a fresh
 `herdr api snapshot` through `jq`. No temporary files are needed.
-The picker never reads messages, calls OpenCode, types into panes, or
-submits prompts. No agent integrations are required.
+The picker never reads messages, calls OpenCode, or submits prompts. Insertion
+uses `herdr pane send-text`, so the original pane should be at an input prompt.
+No agent integrations are required.
 
-Panes in the current tab appear first, followed by other tabs in the current
-workspace, then other workspaces. Herdr's original order is preserved within
-each group. Typing filters matches without overriding this locality ordering.
+With an empty query, panes in the current tab appear first, followed by other
+tabs in the current workspace, then other workspaces. Typing ranks results by
+fuzzy-match quality; equal-score matches retain that locality ordering.
 
 ## Setup
 

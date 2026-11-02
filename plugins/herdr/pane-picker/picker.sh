@@ -30,8 +30,9 @@ export HERDR_PICKER_LIST
 selection=$(
   unset FZF_DEFAULT_OPTS FZF_DEFAULT_OPTS_FILE
   bash "$0" --list agents |
-    fzf --no-multi --no-sort --layout=reverse --delimiter=$'\t' --with-nth=2.. \
-      --prompt='Agents> ' --header='Ctrl+A: agents/all panes · Enter: copy ID · Esc: cancel' \
+    fzf --no-multi --tiebreak=index --layout=reverse --delimiter=$'\t' --with-nth=2.. \
+      --prompt='Agents> ' --expect=ctrl-y \
+      --header='Enter: insert · Ctrl+Y: copy · Ctrl+A: agents/all panes · Esc: cancel' \
       --with-shell='bash -c' --bind='ctrl-a:transform:
         if [ "$FZF_PROMPT" = "Agents> " ]; then
           printf "change-prompt(All panes> )+reload:%s all\n" "$HERDR_PICKER_LIST"
@@ -40,5 +41,14 @@ selection=$(
         fi'
 ) || exit $?
 
-# Do not launch pbcopy on cancellation: it would clear the existing clipboard.
-[[ -n $selection ]] && printf '%s' "${selection%%$'\t'*}" | pbcopy
+# --expect prints the key (blank for Enter), then the selected row.
+[[ $selection == *$'\n'* ]] || exit 0
+key=${selection%%$'\n'*}
+row=${selection#*$'\n'}
+reference="herdr ${row%%$'\t'*}"
+if [[ $key == ctrl-y ]]; then
+  printf '%s' "$reference" | pbcopy
+else
+  "${HERDR_BIN_PATH:-herdr}" pane send-text \
+    "${HERDR_PICKER_SOURCE_PANE_ID:?Missing original pane ID}" "$reference" >/dev/null
+fi

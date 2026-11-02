@@ -30,7 +30,7 @@ description = "copy active pane ID for agent messaging"
 key = "prefix+f"
 type = "plugin_action"
 command = "local.pane-picker.open"
-description = "fuzzy-find and copy pane ID"
+description = "fuzzy-find and insert pane reference"
 
 [[keys.command]]
 key = "ctrl+h"
