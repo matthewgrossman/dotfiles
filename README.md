@@ -173,6 +173,12 @@ servers instead.
 `link.sh` links tracked files into `~/.config/herdr/` individually, leaving
 generated defaults (`config-gpui.toml`), runtime data, and credentials outside Git.
 
+`config/herdr/bin/hvim` keeps one headless nvim per Herdr workspace and opens a
+view of it (`--remote-ui`) in the current pane, so every pane edits the same
+buffers. Cmd-clicked file paths use it via `editor_command`. Leave a view with
+`:detach`; `:q` on the last window stops the shared nvim. Inside Herdr, zsh puts
+it on `PATH` and uses `hvim --wait` (returns once the buffer is closed) as `$VISUAL`.
+
 ## Agent skills
 Run `./install-skills.sh` to install all local skills and the selected external
 skills globally for the configured agents. Requires Node.js and npm (`npx`).

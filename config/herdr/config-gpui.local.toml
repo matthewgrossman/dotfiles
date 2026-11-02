@@ -7,6 +7,9 @@ layout = "comfortable-rounded"
 contrast = "standard"
 theme = "light:Catppuccin Mocha,dark:Nvim Dark"
 
+# Cmd-clicked file paths go to the workspace's shared nvim (see bin/hvim).
+editor_command = "~/.config/herdr/bin/hvim +{line} {file}"
+
 [keybindings]
 next_workspace = "cmd-j"
 previous_workspace = "cmd-k"
