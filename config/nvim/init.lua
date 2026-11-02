@@ -107,6 +107,19 @@ vim.keymap.set('n', 'gp', '`[v`]')
 vim.keymap.set('n', '<leader>c', ":let @+ = expand('%')<CR>", { silent = true })
 vim.keymap.set('n', '<leader>C', ":let @+ = expand('%:p')<CR>", { silent = true })
 
+-- Open parent folder in the system file manager (Finder / xdg-open)
+-- On macOS, reveal the file itself so Finder highlights it
+local function open_parent()
+  local file = vim.fn.expand('%:p')
+  if vim.fn.has('mac') == 1 and vim.uv.fs_stat(file) then
+    vim.system({ 'open', '-R', file })
+  else
+    vim.ui.open(vim.fn.expand('%:p:h'))
+  end
+end
+vim.keymap.set('n', '<leader>O', open_parent, { desc = 'Open parent folder externally' })
+vim.api.nvim_create_user_command('Finder', open_parent, { desc = 'Open parent folder externally' })
+
 -- Yank register paste
 vim.keymap.set({ 'n', 'v' }, 'X', '"0p')
 
