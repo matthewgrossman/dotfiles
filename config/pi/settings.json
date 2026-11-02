@@ -10,5 +10,7 @@
     "npm:pi-web-access",
     "~/dev/workfiles/pi"
   ],
-  "lastChangelogVersion": "0.87.1"
+  "lastChangelogVersion": "1.2.0",
+  "deviceId": "ae23d25f-b3ad-45ca-a49f-c1ea59348ee8",
+  "hideThinkingBlock": false
 }
