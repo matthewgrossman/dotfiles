@@ -1,0 +1,39 @@
+id = "local.auto-alias"
+name = "Automatic agent aliases"
+version = "0.1.0"
+min_herdr_version = "0.9.1"
+description = "Derive agent aliases from workspace/tab names; trailing _ marks automatic names"
+platforms = ["macos", "linux"]
+
+[[startup]]
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "pane.agent_detected"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "workspace.renamed"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "tab.renamed"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "pane.moved"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "pane.closed"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[events]]
+on = "tab.moved"
+command = ["python3", "sync_aliases.py", "--apply"]
+
+[[actions]]
+id = "sync"
+title = "Synchronize automatic agent aliases"
+contexts = ["global"]
+command = ["python3", "sync_aliases.py", "--apply"]
