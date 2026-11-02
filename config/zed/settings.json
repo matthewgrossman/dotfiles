@@ -86,7 +86,7 @@
     },
   },
   "agent_buffer_font_size": 16.0,
-  "base_keymap": "Zed",
+  "base_keymap": "VSCode",
   "vim_mode": true,
   "ui_font_size": 17.0,
   "buffer_font_size": 15,
