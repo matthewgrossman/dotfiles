@@ -180,10 +180,5 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
+# bun global installs (bun itself comes from Homebrew)
+export PATH="$HOME/.bun/bin:$PATH"
