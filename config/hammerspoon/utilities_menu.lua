@@ -41,7 +41,7 @@ local function addBrightnessSection(menu, title, screens)
   end
 end
 
-local function buildMenu()
+local function buildMenu(pomodoro)
   local screens = hs.screen.allScreens()
   table.sort(screens, function(a, b)
     return a:name() < b:name()
@@ -60,6 +60,7 @@ local function buildMenu()
   end
 
   return {
+    { title = 'Pomodoro', menu = pomodoro.menu() },
     { title = 'Displays', menu = displays },
     { title = '-' },
     { title = 'Reload Hammerspoon', fn = hs.reload },
@@ -70,7 +71,10 @@ local function new()
   local menu = hs.menubar.new(true, 'Hammerspoon Utilities')
   menu:setTitle('⚙︎')
   menu:setTooltip('Hammerspoon Utilities')
-  menu:setMenu(buildMenu())
+  local pomodoro = require('pomodoro').new(function(suffix)
+    menu:setTitle('⚙︎' .. suffix)
+  end)
+  menu:setMenu(buildMenu(pomodoro))
   return menu
 end
 
