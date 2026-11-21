@@ -353,7 +353,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-use({ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }, function()
+use({ src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.*') }, function()
   require('blink.cmp').setup({
     keymap = {
       preset = 'enter',
