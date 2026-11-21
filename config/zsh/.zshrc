@@ -52,12 +52,6 @@ if [ -z "$NVIM" ]; then
 
     # when in nvim, VISUAL is overriden by nvr instead
     export VISUAL="$(which nvim)"
-
-    # inside Herdr, share one nvim per workspace
-    if [ -n "$HERDR_WORKSPACE_ID" ]; then
-        export PATH="$HOME/.config/herdr/bin:$PATH"
-        export VISUAL="$HOME/.config/herdr/bin/hvim --wait"
-    fi
 fi
 
 if command -v mise >/dev/null 2>&1; then

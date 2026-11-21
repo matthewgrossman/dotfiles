@@ -173,12 +173,6 @@ servers instead.
 `link.sh` links tracked files into `~/.config/herdr/` individually, leaving
 generated defaults (`config-gpui.toml`), runtime data, and credentials outside Git.
 
-`config/herdr/bin/hvim` keeps one headless nvim per Herdr workspace and opens a
-view of it (`--remote-ui`) in the current pane, so every pane edits the same
-buffers. Cmd-clicked file paths use it via `editor_command`. Leave a view with
-`:detach`; `:q` on the last window stops the shared nvim. Inside Herdr, zsh puts
-it on `PATH` and uses `hvim --wait` (returns once the buffer is closed) as `$VISUAL`.
-
 `config/herdr-app/` holds the Herdr desktop app's keys, settings, and the
 `my-main` layout (a clone of the shipped `main`) that
 hosts the `vimnav` mod. That mod gives ctrl-h/j/k/l to Vim when it is in the
