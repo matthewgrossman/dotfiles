@@ -118,3 +118,9 @@
     path = ~/dev/workfiles/gitconfig
 [includeIf "hasconfig:remote.*.url:git@github.com:NVIDIA-dev/**"]
     path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:git@github.com:ai-openshell/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:ssh://*@gitlab-master.nvidia.com:12051/**"]
+    path = ~/dev/workfiles/gitconfig
+[includeIf "hasconfig:remote.*.url:https://gitlab-master.nvidia.com/**"]
+    path = ~/dev/workfiles/gitconfig
