@@ -5,7 +5,7 @@
 # the managed default, or pick another layout listed in config-gpui.toml.
 layout = "comfortable-rounded"
 contrast = "standard"
-theme = "light:Catppuccin Latte,dark:Catppuccin Mocha"
+theme = "light:Catppuccin Mocha,dark:Catppuccin Mocha"
 
 [keybindings]
 next_workspace = "cmd-j"
