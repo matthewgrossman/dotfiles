@@ -10,6 +10,25 @@ local function keyAction(modifiers, key)
   end
 end
 
+-- Like keyAction, but presses modifiers one at a time (and releases them in
+-- reverse) so apps that watch raw modifier state, like dictation apps, see a
+-- real-looking sequence.
+local function stagedKeyAction(modifiers, key)
+  return function()
+    local held = {}
+    for _, modifier in ipairs(modifiers) do
+      table.insert(held, modifier)
+      hs.eventtap.event.newKeyEvent(held, modifier, true):post()
+    end
+    hs.eventtap.event.newKeyEvent(modifiers, key, true):post()
+    hs.eventtap.event.newKeyEvent(modifiers, key, false):post()
+    for i = #modifiers, 1, -1 do
+      table.remove(held)
+      hs.eventtap.event.newKeyEvent(held, modifiers[i], false):post()
+    end
+  end
+end
+
 local function postSystemKey(key)
   hs.eventtap.event.newSystemKeyEvent(key, true):post()
   hs.eventtap.event.newSystemKeyEvent(key, false):post()
@@ -100,12 +119,15 @@ local bottomThumbLayer = newChordLayer(BOTTOM_THUMB_BUTTON, keyAction({ 'cmd' },
 -- Standalone button actions.
 bindKeyboardButton(SCROLL_BUMP_LEFT, keyAction({ 'cmd' }, 'up'))
 bindKeyboardButton(SCROLL_BUMP_RIGHT, keyAction({ 'cmd' }, 'down'))
-bindKeyboardButton(TOP_MIDDLE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 's'))
+-- Handy toggle-transcription shortcut: press to start dictating, press to stop.
+bindKeyboardButton(TOP_MIDDLE_BUTTON, stagedKeyAction({ 'cmd', 'shift' }, '/'))
 bindKeyboardButton(BOTTOM_MIDDLE_BUTTON, keyAction({ 'ctrl', 'cmd' }, 't'))
 
 -- Chord actions.
 bindChord(topThumbLayer, SCROLL_BUMP_LEFT, keyAction({ 'cmd', 'alt' }, 'h'))
 bindChord(topThumbLayer, SCROLL_BUMP_RIGHT, keyAction({ 'cmd', 'alt' }, 'l'))
+
+bindChord(paddleLayer, TOP_MIDDLE_BUTTON, keyAction({}, 'return'))
 
 bindChord(paddleLayer, LEFT_MOUSE_BUTTON, systemKeyAction('PREVIOUS'))
 bindChord(paddleLayer, RIGHT_MOUSE_BUTTON, systemKeyAction('NEXT'))
