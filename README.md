@@ -185,6 +185,26 @@ hosts the `vimnav` mod. That mod gives ctrl-h/j/k/l to Vim when it is in the
 focused pane and otherwise moves between panes. `link.sh` links these files
 individually, because the app writes generated files next to them.
 
+## Rex
+`config/rex/init.lua` carries over the Herdr keybindings that differ from Rex's
+defaults. This includes `cmd+j`/`cmd+k` and `ctrl+1..9` for sessions, `ctrl+;`
+for zoom, the `ctrl+/` prefix, and Vim-aware `ctrl+h/j/k/l`. Rex doesn't watch
+the file, so run `rex config reload` after editing it.
+
+The **New Worktree** action (`rex do new_worktree name=BRANCH`, or the command
+palette) creates a session named `PROJECT/BRANCH` whose first tab runs `wt
+switch --create BRANCH` in the focused pane's repository. `PROJECT` is the
+current session's label up to its first `/`, and the new session is placed after
+the project's other sessions. Without a name it picks one such as
+`amber-summit-8341`.
+
+Neovim's half of the Vim-aware navigation is `config/nvim/lua/vim_rex_navigation.lua`.
+`init.lua` loads it only inside Rex (when `REX_SESSION` is set), the same way it
+loads the Herdr version inside Herdr.
+
+The theme, font size, appearance, and sounds are Rex app settings, not config.
+Set them in Rex's Settings window.
+
 ## Agent skills
 Run `./install-skills.sh` to install all local skills and the selected external
 skills globally for the configured agents. Requires Node.js and npm (`npx`).

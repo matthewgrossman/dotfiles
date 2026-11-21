@@ -423,6 +423,8 @@ end
 
 if (vim.env.HC_TERMINAL_ID or '') ~= '' or (vim.env.HERDR_ENV == '1' and (vim.env.HERDR_PANE_ID or '') ~= '') then
   require('vendor.vim_herdr_navigation')
+elseif (vim.env.REX_SESSION or '') ~= '' then
+  require('vim_rex_navigation')
 end
 
 -- vim: ts=2 ss=2 sw=2 et
