@@ -18,12 +18,5 @@
         }
       }
     },
-  },
-  "mcp": {
-    "linear": {
-      "enabled": true,
-      "type": "remote",
-      "url": "https://mcp.linear.app/mcp"
-    }
   }
 }
