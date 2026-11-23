@@ -116,4 +116,32 @@
   system.activationScripts.postActivation.text = ''
     pmset -c sleep 0
   '';
+
+  # macOS-specific CLI tools (migrated from mac/Brewfile; shared tools live in common.nix).
+  home-manager.users.mg.home.packages = with pkgs; [
+    blueutil
+    bun
+    fswatch
+    git-filter-repo
+    glab
+    graphviz
+    imagemagick
+    iproute2mac
+    k9s
+    kubernetes-helm
+    lua-language-server
+    m1ddc
+    mise
+    mkcert
+    moreutils
+    mosh
+    ninja
+    pandoc
+    ty
+    universal-ctags
+    watch
+    wireguard-tools
+    yarn
+    zellij
+  ];
 }

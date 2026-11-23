@@ -22,7 +22,6 @@
     {
       homeManagerModules = {
         common = ./nix/common.nix;
-        mac = ./nix/mac.nix;
         opencode = ./nix/opencode.nix;
         default = ./nix/common.nix;
       };
@@ -36,12 +35,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.mg = {
-              imports = [
-                ./nix/common.nix
-                ./nix/mac.nix
-              ];
-            };
+            home-manager.users.mg.imports = [ ./nix/common.nix ];
           }
         ];
       };
