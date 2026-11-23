@@ -1,22 +1,16 @@
 #!/usr/bin/env zsh
 set -Eeuxo pipefail
 
-# Link dotfiles using the script's Bash interpreter.
+# Homebrew (for GUI casks/mas) and Determinate Nix are prerequisites.
 bash "$HOME/dotfiles/link.sh"
-zsh "$HOME/dotfiles/mac/mac_defaults.sh"
 
-# Homebrew and its Xcode Command Line Tools dependency are prerequisites.
-brew bundle --file="$HOME/dotfiles/mac/Brewfile"
+if command -v darwin-rebuild >/dev/null 2>&1; then
+    sudo -H darwin-rebuild switch --flake "$HOME/dotfiles#mac"
+else
+    sudo -H nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/dotfiles#mac"
+fi
 
-# install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# curl installers (what could go wrong?)
-curl -fsSL https://pi.dev/install.sh | sh
-curl -fsSL https://opencode.ai/install | bash
-
-# link hammerspoon data
-defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
-
-# reload ZSH now that setup is done
-zsh "$HOME/.config/zsh/.zshrc"
+# Optional curl-only tools not managed by Nix.
+if ! command -v pi >/dev/null 2>&1; then
+    curl -fsSL https://pi.dev/install.sh | sh
+fi

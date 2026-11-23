@@ -1,20 +1,26 @@
 ## macos
-### Bootstrapping the `setup.sh` script
-1. Sign-in to apple ID
-1. Start a download for a system update
-1. Install homebrew via [brew.sh](brew.sh)
-1. Temporarily add Homebrew to this shell with `eval "$(/opt/homebrew/bin/brew shellenv)"`; do not add it to `.zshrc`, since `link.sh` will install the dotfiles
-1. While that's happening, sign in to [github.com](github.com).
-1. `brew install gh`
-1. `gh auth login`
-1. `gh repo clone matthewgrossman/dotfiles`
-1. `cd dotfiles/mac; ./setup.sh`
+### Bootstrapping a new Mac
+1. Sign in to Apple ID and start any macOS updates.
+1. Install Homebrew via [brew.sh](https://brew.sh) (used by `nix-darwin` for GUI casks and Mac App Store apps).
+1. Install Determinate Nix:
+   ```sh
+   curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+   ```
+1. Clone this repo and run the setup script:
+   ```sh
+   git clone https://github.com/matthewgrossman/dotfiles.git ~/dotfiles
+   ~/dotfiles/mac/setup.sh
+   ```
+   *(On the very first `nix-darwin` run, if prompted about existing `/etc/zshrc` or `/etc/bashrc`, rename them to `*.before-nix-darwin` and re-run.)*
 
-The first program installed should be `google-drive`, which is a first priority to get access to keepass.
+Subsequent updates (packages, casks, macOS defaults) are just:
+```sh
+sudo -H darwin-rebuild switch --flake ~/dotfiles#mac
+```
+
+The first casks installed are `google-drive` and `keepassxc` to unblock logins:
 1. Sign into Google Drive
-1. Open keepassxc with `gdrive://sync/pwdb.kdbx`
-
-This script will end up prompting for password a few times (ideally at the beginning), so check on it periodically.
+1. Open KeePassXC with `gdrive://sync/pwdb.kdbx`
 
 #### KeePassXC
 1. Enable browser integration in Settings > Browser Integration
