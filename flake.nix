@@ -18,6 +18,7 @@
     {
       homeManagerModules = {
         common = ./nix/common.nix;
+        opencode = ./nix/opencode.nix;
         default = ./nix/common.nix;
       };
 

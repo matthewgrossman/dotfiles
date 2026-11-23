@@ -5,6 +5,8 @@
   ...
 }:
 {
+  imports = [ ./opencode.nix ];
+
   home.username = lib.mkDefault "mg";
   home.homeDirectory = lib.mkDefault (
     if pkgs.stdenv.hostPlatform.isDarwin then
@@ -19,26 +21,6 @@
   # Don't auto-restart user services on switch so OpenCode can run `home-manager switch`
   # without killing its own running session; restart manually when ready.
   systemd.user.startServices = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (lib.mkDefault "suggest");
-
-  home.sessionPath = [ "$HOME/.opencode/bin" ];
-
-  # Bootstrap OpenCode via its official self-updating installer when not yet present.
-  # Upgrades are managed directly via `opencode upgrade`.
-  home.activation.installOpenCode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    if [ ! -x "$HOME/.opencode/bin/opencode" ]; then
-      run env PATH="${
-        lib.makeBinPath [
-          pkgs.bash
-          pkgs.coreutils
-          pkgs.curl
-          pkgs.gnutar
-          pkgs.gzip
-          pkgs.unzip
-        ]
-      }:$PATH" \
-        ${lib.getExe pkgs.bash} -c '${lib.getExe pkgs.curl} -fsSL https://opencode.ai/v2/install | ${lib.getExe pkgs.bash} -s -- --no-modify-path'
-    fi
-  '';
 
   home.packages =
     with pkgs;
