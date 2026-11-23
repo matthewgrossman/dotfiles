@@ -18,7 +18,7 @@ if [[ "$(uname)" == "Linux" ]]; then
     HOMEBREW_PREFIX="/usr"
     source /usr/share/doc/fzf/examples/key-bindings.zsh
     source /usr/share/doc/fzf/examples/completion.zsh
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     alias ls='ls --color=auto'
     if [[ -n "WSL_DISTRO_NAME" ]]; then
         source $XDG_CONFIG_HOME/zsh/wsl.zsh
@@ -40,7 +40,7 @@ export CAROOT="$HOME/dev/certs"
 
 # only modify PATH if we aren't in a nvim subshell
 if [ -z "$NVIM" ]; then
-    export PATH="/opt/homebrew/bin:$PATH"
+    export PATH="$PATH:/opt/homebrew/bin:/opt/homebrew/sbin"
     export PATH="/usr/local/sbin:$PATH"
     export PATH="$HOME/.krew/bin:$PATH"
     export PATH="$HOME/.cargo/bin:$PATH"
@@ -49,6 +49,11 @@ if [ -z "$NVIM" ]; then
     export PATH="$HOME/bin:$PATH"
     export PATH="/usr/local/opt/llvm/bin:$PATH"
     export PATH="$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$PATH"
+    # Keep Nix profiles and OpenCode ahead of Homebrew/system bins.
+    for _p in "/nix/var/nix/profiles/default/bin" "/run/current-system/sw/bin" "$HOME/.nix-profile/bin" "/etc/profiles/per-user/$USER/bin" "$HOME/.opencode/bin"; do
+        [[ -d "$_p" ]] && export PATH="$_p:$PATH"
+    done
+    unset _p
 
     # when in nvim, VISUAL is overriden by nvr instead
     export VISUAL="$(which nvim)"
