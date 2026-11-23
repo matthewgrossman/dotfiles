@@ -168,8 +168,21 @@ export DISABLE_AUTOUPDATER=1
 
 # work configuration
 [[ -f ~/dev/workfiles/workfiles.sh ]] && source ~/dev/workfiles/workfiles.sh
-source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+for _plugin in \
+    "zsh-autosuggestions/zsh-autosuggestions.zsh" \
+    "zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"; do
+    for _dir in \
+        "/etc/profiles/per-user/$USER/share" \
+        "$HOME/.nix-profile/share" \
+        "/run/current-system/sw/share" \
+        "${HOMEBREW_PREFIX}/share"; do
+        if [[ -r "$_dir/$_plugin" ]]; then
+            source "$_dir/$_plugin"
+            break
+        fi
+    done
+done
+unset _plugin _dir
 # zprof
 
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"

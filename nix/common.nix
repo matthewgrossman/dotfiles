@@ -5,7 +5,7 @@
   ...
 }:
 {
-  imports = [ ./opencode.nix ];
+  imports = [ ./external-tools.nix ];
 
   home.username = lib.mkDefault "mg";
   home.homeDirectory = lib.mkDefault (

@@ -9,8 +9,3 @@ if command -v darwin-rebuild >/dev/null 2>&1; then
 else
     sudo -H nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/dotfiles#mac"
 fi
-
-# Optional curl-only tools not managed by Nix.
-if ! command -v pi >/dev/null 2>&1; then
-    curl -fsSL https://pi.dev/install.sh | sh
-fi

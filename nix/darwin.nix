@@ -18,6 +18,12 @@
 
   programs.zsh.enable = true;
 
+  # Expose zsh plugins installed via Home Manager under /etc/profiles/per-user/$USER/share.
+  environment.pathsToLink = [
+    "/share/zsh-autosuggestions"
+    "/share/zsh-syntax-highlighting"
+  ];
+
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.hack
@@ -116,6 +122,12 @@
   system.activationScripts.postActivation.text = ''
     pmset -c sleep 0
   '';
+
+  # Self-updating tools installed outside nixpkgs (defined in nix/external-tools.nix).
+  home-manager.users.mg.externalTools = {
+    opencode.enable = true;
+    pi.enable = true;
+  };
 
   # macOS-specific CLI tools (migrated from mac/Brewfile; shared tools live in common.nix).
   home-manager.users.mg.home.packages = with pkgs; [

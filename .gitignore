@@ -11,3 +11,7 @@ config/herdr/.config.toml.gpui-lock
 # vendor in `SpoonInstall`, and but then let it manage all other spoons
 config/hammerspoon/Spoons/*
 !config/hammerspoon/Spoons/SpoonInstall.spoon/
+
+# Nix build result symlinks
+/result
+/result-*

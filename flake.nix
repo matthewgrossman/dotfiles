@@ -1,5 +1,5 @@
 {
-  description = "Personal cross-platform Nix configuration (nix-darwin + Home Manager)";
+  description = "Cross-platform Home Manager modules (Linux/macOS) and nix-darwin configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -22,7 +22,7 @@
     {
       homeManagerModules = {
         common = ./nix/common.nix;
-        opencode = ./nix/opencode.nix;
+        externalTools = ./nix/external-tools.nix;
         default = ./nix/common.nix;
       };
 
