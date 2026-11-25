@@ -6,6 +6,17 @@ vim.g.maplocalleader = ' '
 
 -- [[ Options ]]
 vim.opt.number = true
+if vim.fn.has('linux') == 1 and not vim.env.DISPLAY and not vim.env.WAYLAND_DISPLAY then
+  local osc52 = require('vim.ui.clipboard.osc52')
+  local function paste()
+    return { vim.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('') }
+  end
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = { ['+'] = osc52.copy('+'), ['*'] = osc52.copy('*') },
+    paste = { ['+'] = paste, ['*'] = paste },
+  }
+end
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
