@@ -41,7 +41,11 @@ kube_status() {
 }
 
 setopt prompt_subst
+remote_host=""
+if [[ -n "${SSH_CONNECTION:-}" || -n "${SSH_TTY:-}" || "$(uname)" == "Linux" ]]; then
+    remote_host=$(zc '@%m' 'black' 'cyan')
+fi
 path_name=$(zc '%~' 'black' 'blue')
 leading=$'\u00BB'
-export PROMPT="${path_name}\$(kube_status)\$(git_status)
+export PROMPT="${remote_host}${path_name}\$(kube_status)\$(git_status)
 ${leading} "
