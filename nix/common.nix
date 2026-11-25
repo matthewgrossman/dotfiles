@@ -5,7 +5,10 @@
   ...
 }:
 {
-  imports = [ ./external-tools.nix ];
+  imports = [
+    ./external-tools.nix
+    ./links.nix
+  ];
 
   home.username = lib.mkDefault "mg";
   home.homeDirectory = lib.mkDefault (

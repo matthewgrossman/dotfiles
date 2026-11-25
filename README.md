@@ -152,7 +152,7 @@ then back up and update every server, as when adding one. Caddy refuses to
 start with an empty `clients.pem`, so to revoke the last device, stop the
 servers instead.
 
-`setup.sh` should handle lots of default macos settings, but AFAIK these still require manual clicking:
+`nix/darwin.nix` handles most macOS defaults, but AFAIK these still require manual clicking:
 1. Disable cmd-space for spotlight in keyboard settings (and modify alfred to use this instead)
 1. Map Caps Lock to Control in System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys
 1. Select the denser scaled resolution in System Settings > Displays
@@ -176,13 +176,13 @@ servers instead.
 ## Herdr
 `config/herdr/config.toml` holds shared daemon/TUI settings;
 `config/herdr/config-gpui.local.toml` holds GUI overrides and reloads automatically.
-`link.sh` links tracked files into `~/.config/herdr/` individually, leaving
+Home Manager (`nix/links.nix`) links tracked files into `~/.config/herdr/` individually, leaving
 generated defaults (`config-gpui.toml`), runtime data, and credentials outside Git.
 
 `config/herdr-app/` holds the Herdr desktop app's keys, settings, and the
 `my-main` layout (a clone of the shipped `main`) that
 hosts the `vimnav` mod. That mod gives ctrl-h/j/k/l to Vim when it is in the
-focused pane and otherwise moves between panes. `link.sh` links these files
+focused pane and otherwise moves between panes. Home Manager (`nix/links.nix`) links these files
 individually, because the app writes generated files next to them.
 
 ## Rex
@@ -216,7 +216,7 @@ skills without removing existing ones. The script then runs
 
 ## Pi
 Pi's global configuration is tracked in `config/pi/`. `PI_CODING_AGENT_DIR` is
-set to `$XDG_CONFIG_HOME/pi`, so the normal file-linking behavior in `link.sh`
+set to `$XDG_CONFIG_HOME/pi`, so Home Manager (`nix/links.nix`)
 symlinks tracked Pi files into `~/.config/pi/`. That destination remains a real
 directory because Pi also stores credentials, sessions, trust decisions,
 downloaded model metadata, and installed package data alongside its config.
@@ -254,6 +254,5 @@ There are some apps that can't be installed via that script:
 ```bash
 $> git clone git@github.com:matthewgrossman/dotfiles.git
 $> cd dotfiles
-$> sh link.sh
 $> sh windows/setup_wsl.sh
 ```
